@@ -100,14 +100,14 @@ switch (x){
 /*- Дано змінну time яка рівна числу від 0 до 59. Потрібно написати код, який перевірить, до якої четверті години попадає число
 (в першу, другу, третю или четверту частину години).*/
 
-let time = 25;
-if (0 < time <= 15) {
+let time = -856;
+if (time>=0 && time <= 15) {
     console.log('Час належить до першої четверті години');
-} else if (15 < time <= 30) {
+} else if (time>15&&time <= 30) {
     console.log('Час належить до другої четверті години');
-} else if (30 < time <= 45) {
+} else if (time>30 && time <= 45) {
     console.log('Час належить до третьої четверті години');
-} else if (45 < time <= 60) {
+} else if (time>45 &&time <= 60) {
     console.log('Час належить до четвертої четверті години');
 } else {
     console.log('undefined');
@@ -116,12 +116,12 @@ if (0 < time <= 15) {
 /*- У змінній day дано якесь число від 1 до 31. Потрібно визначити, у яку половину(декаду) місяця потрапляє це число
 (у першу, другу чи третю).*/
 
-let day = 12;
-if (0 < day <= 10) {
+let day = -2365;
+if (day>=0 && day<= 10) {
     console.log('First decade');
-} else if (10 < day <= 20) {
+} else if (day>10 && day<= 20) {
     console.log('Second decade');
-} else if (20 < day <= 31) {
+} else if (day>20 && day<= 31) {
     console.log('Third decade');
 } else {
     console.log('undefined');
