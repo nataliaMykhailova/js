@@ -179,13 +179,196 @@ console.log(ourMas.reverse());
 
 
 /*- Створити масив з 10 числових елементів. Вивести в консоль всі його елементи в циклі.*/
+
+let massNum = [1,15,45,88,889,332,445,668,88,632];
+for (const mass1 of massNum) {
+    console.log(mass1);
+}
+
+
+
+
+
+
+
+
+
+
 /*- Створити масив з 10 строкрових елементів. Вивести в консоль всі його елементи в циклі.*/
+let massString = ['ddfdf','fsdfdf','frfgwq', 'fggfgfg', 'dd', 'ewe', 'ee', 'ev', 're', 'poi'];
+for (const string of massString) {
+    console.log(string);
+}
+
 /*- Створити масив з 10 елементів будь-якого типу. Вивести в консоль всі його елементи в циклі.*/
-/*- Створити масив з 10 елементів числового, стірчкового і булевого типу. За допомогою if та typeof вивести тільки булеві елементи*/
-/*- Створити масив з 10 елементів числового, стірчкового і булевого типу. За допомогою if та typeof вивести тільки числові елементи*/
-/*- Створити масив з 10 елементів числового, стрічкового і булевого типу. За допомогою if та typeof вивести тільки рядкові елементи*/
+let massMix = [true, 1, 8, 896, false, 'qwe', 'asd', 8924, 'cvb', 7332];
+for (const massMix1 of massMix) {
+    console.log(massMix1);
+}
 
 
 
+/*- Створити масив з 10 елементів числового, стірчкового і булевого типу.
+ За допомогою if та typeof вивести тільки булеві елементи*/
+for (const massMix1 of massMix) {
+    if (typeof massMix1==="boolean"){
+        console.log(massMix1);
+    }
+}
+
+
+
+
+
+/*- Створити масив з 10 елементів числового, стірчкового і булевого типу.
+За допомогою if та typeof вивести тільки числові елементи*/
+for (const massMix1 of massMix) {
+    if (typeof massMix1==="number"){
+        console.log(massMix1);
+    }
+}
+
+
+
+/*- Створити масив з 10 елементів числового, стрічкового і булевого типу.
+ За допомогою if та typeof вивести тільки рядкові елементи*/
+for (const massMix1 of massMix) {
+    if (typeof massMix1==="string"){
+        console.log(massMix1);
+    }
+}
+
+
+
+/*- Створити порожній масив. Наповнити його 10 елементами (різними за типами) через звернення до конкретних індексів.
+Вивести в консоль всі його елементи в циклі.*/
+
+let emptyMass = [];
+emptyMass[0] = true;
+emptyMass[1]=25;
+emptyMass[2]='oreo';
+emptyMass[3]=47;
+emptyMass[4]=false;
+emptyMass[5]=88;
+emptyMass[6]='lolita';
+emptyMass[7]='chita';
+emptyMass[8]='pes';
+emptyMass[9]=true;
+
+
+
+
+
+
+/*- Створити цикл for на 10  ітерацій з кроком 1. Вивести поточний номер кроку через console.log та document.write*/
+let numOfIter = 0;
+for(i=0; i<10; i++){
+     numOfIter += 1;
+}
+console.log(numOfIter);
+document.write(`<p>${numOfIter}</p>`);
+
+
+
+
+
+/*- Створити цикл for на 100 ітерацій з кроком 1. Вивести поточний номер кроку через console.log та document.write*/
+let numOfIter1 = 0;
+for (i=0; i<100; i++){
+    numOfIter1 +=1;
+}
+console.log(numOfIter1);
+document.write(`<p>${numOfIter1}</p>`);
+
+
+
+
+
+/*- Створити цикл for на 100 ітерацій з кроком 2. Вивести поточний номер кроку через console.log та document.write*/
+let numOfIter2 = 0;
+for (i=0; i<100; i=i+2){
+    numOfIter2 +=1;
+}
+console.log(numOfIter2);
+document.write(`<p>${numOfIter2}</p>`);
+
+
+
+
+/*- Створити цикл for на 100 ітерацій. Вивести тільки парні кроки. через console.log + document.write*/
+for (i=0; i<100; i++){
+    if (i%2===0&&i!==0){
+        console.log(i);
+        document.write(`<p>${i}</p>`)
+    }
+}
+
+/*- Створити цикл for на 100 ітерацій. Вивести тільки непарні кроки. через console.log + document.write
+*/
+for (i=0; i<100; i++){
+    if(i%2!==0){
+        console.log(i);
+        document.write(`${i}`);
+    }
+}
+
+
+
+
+/*стоврити масив книжок (назва, кількість сторінок, автори , жанри).*/
+let books = [
+    {name: 'Solar', countOfShits: 800, outers: ['Rio Pio', 'Mao Dao'], genre: ['drama', 'comedy']},
+    {name: 'Love', countOfShits: 120, outers: ['Rey Gans'], genre: ['drama', 'biography']},
+    {name: 'Lolita', countOfShits: 90, outers: ['Max Liter', 'Sem More'], genre: ['poem']},
+    {name: 'Space inside me', countOfShits: 420, outers: ['Mario Ameba'], genre: ['fantasy', 'comedy']},
+    {name: 'Animal', countOfShits: 304, outers: ['Cris Po', 'Samanta Lenin'], genre: ['scientific']}
+]
+/*-знайти наібльшу книжку.*/
+let element = books[0].countOfShits;
+for (const book of books) {
+    if (element<book.countOfShits){
+        element=book;
+    }
+}
+console.log(element);
+
+
+
+/*- знайти книжку/ки з найбільшою кількістю жанрів*/
+let element1 = books[0].genre.length;
+for (const book of books) {
+    if (element1<= book.genre.length){
+        console.log(book);
+    }
+}
+
+
+
+
+
+/*- знайти книжку/ки з найдовшою назвою*/
+let element2 = books[0].name;
+for (const book of books) {
+    if (element2<book.name){
+        element2 = book;
+    }
+}
+console.log(element2);
+
+
+
+/*- знайти книжку/ки які писали 2 автори*/
+for (const book of books) {
+    if(book.outers.length===2){
+        console.log(book);
+    }
+}
+/* знайти книжку/ки які писав 1 автор*/
+for (const book of books) {
+    if (book.outers.length===1){
+        console.log(book);
+    }
+
+}
 
 
