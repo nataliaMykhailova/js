@@ -37,7 +37,7 @@ console.log(upJsCool.toLowerCase());
 
 /*- Є "брудна" стрінга let str = ' dirty string   ' . Почистити її від зайвих пробілів.*/
 let str = ' dirty string   ';
-let newStr = str.replaceAll(' ', '');
+let newStr = str.trim();
 console.log(newStr, newStr.length);
 
 
@@ -177,7 +177,7 @@ console.log(diamondCards);
 
 
 /*- всі трефи від 9 та більше*/
-let clubsCards = cards.filter(value => (value.suit === 'clubs' && value.value > '9') || (value.suit === 'clubs' && value.value === '10'));
+let clubsCards = cards.filter(value => (value.suit === 'clubs' && value.value >= '9') || (value.suit === 'clubs' && value.value === '10'));
 console.log(clubsCards);
 
 
