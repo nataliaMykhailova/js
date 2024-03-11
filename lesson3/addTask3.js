@@ -159,16 +159,45 @@ let usersWithCities = [
     // TO BE CONTINUED .....
 ]
 */
+let usersWithId = [
+    {id: 1, name: 'vasya', age: 31, status: false},
+    {id: 2, name: 'petya', age: 30, status: true},
+    {id: 3, name: 'kolya', age: 29, status: true},
+    {id: 4, name: 'olya', age: 28, status: false}
+];
+
+let citiesWithId = [
+    {user_id: 3, country: 'USA', city: 'Portland'},
+    {user_id: 1, country: 'Ukraine', city: 'Ternopil'},
+    {user_id: 2, country: 'Poland', city: 'Krakow'},
+    {user_id: 4, country: 'USA', city: 'Miami'}
+];
+
+for (const user of usersWithId) {
+    user.address = [];
+    for (const address of citiesWithId) {
+        if (user.id === address.user_id) {
+            user.address.push(address);
+        }
+    }
+}
+console.log(usersWithId);
 
 
 
 /*- Взяти масив з 10 чисел або створити його. Вивести в консоль тільки ті елементи, значення яких є парними.*/
+let randomMass = [8,9,6,42,355,8,64,77,52,67];
+let filterRandomMass = randomMass.filter(value => value%2===0);
+console.log(filterRandomMass);
 
 /*- Взяти масив з 10 чисел або створити його. Створити 2й порожній масив. За допомогою будь-якого циклу скопіювати
-значення одного масиву в інший.
- */
+значення одного масиву в інший. */
+let emptyMass = [...randomMass];
+console.log(emptyMass);
 
 
 /*- Дано масив: [ 'a', 'b', 'c'] . За допомогою циклу for зібрати всі букви в слово.*/
 /*- Дано масив: [ 'a', 'b', 'c'] . За допомогою циклу while зібрати всі букви в слово.*/
 /*- Дано масив: [ 'a', 'b', 'c'] . За допомогою циклу for of зібрати всі букви в слово.*/
+let myArr = ['a', 'b', 'c'];
+console.log(myArr.join(''));
