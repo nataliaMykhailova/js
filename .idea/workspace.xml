@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7840f2ee-0b85-4354-a859-da1daa72cc18" name="Changes" comment="commit7">
-      <change afterPath="$PROJECT_DIR$/lesson8/homeWork.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lesson8/main.js" afterDir="false" />
+    <list default="true" id="7840f2ee-0b85-4354-a859-da1daa72cc18" name="Changes" comment="commit8">
+      <change afterPath="$PROJECT_DIR$/lesson9/homeWork.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson9/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson9/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,7 +92,8 @@
       <workItem from="1710082354921" duration="8792000" />
       <workItem from="1710153820557" duration="6521000" />
       <workItem from="1710236602658" duration="16332000" />
-      <workItem from="1710317429732" duration="5100000" />
+      <workItem from="1710317429732" duration="5947000" />
+      <workItem from="1710411719710" duration="16856000" />
     </task>
     <task id="LOCAL-00001" summary="commit1">
       <option name="closed" value="true" />
@@ -165,7 +167,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710165344205</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="commit8">
+      <option name="closed" value="true" />
+      <created>1710323891980</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1710323891980</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -192,6 +202,7 @@
     <MESSAGE value="commit6" />
     <MESSAGE value="commit6_1" />
     <MESSAGE value="commit7" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit7" />
+    <MESSAGE value="commit8" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit8" />
   </component>
 </project>
