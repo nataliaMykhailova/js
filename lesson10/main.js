@@ -130,6 +130,7 @@ checkForm.onsubmit = function (ev) {
 let creator = document.getElementById('creator');
 let tableDiv = document.getElementsByClassName('divTable')[0];
 let table = document.createElement('table');
+let tableButton = document.getElementById('tableButton');
 creator.onsubmit = function (ev) {
     ev.preventDefault();
     let rows = document.getElementById('rows').value;
@@ -145,6 +146,7 @@ creator.onsubmit = function (ev) {
         table.appendChild(tr);
         tableDiv.appendChild(table);
     }
+    tableButton.disabled = true;
 }
 
 /*(Додатковачастина для завдання)*** (подібне було вище, але...будьте уважні в другій частині)
@@ -152,9 +154,7 @@ creator.onsubmit = function (ev) {
 при перезавантаженні сторінки до значаення додається по 10грн, але !!!
  зміна ціни відбувається тільки на перезавантаження, які відбулись пізніше ніж 10 секунд після попереднього.
  При перезавантаженні, яке відбулось раніше ніж минуло 10 секунд - нічого не відбувається*/
-
-localStorage.setItem('time', JSON.stringify({time: new Date().getTime(), cash: 100}));
-let storageObg = JSON.parse(localStorage.getItem('time'));
+let storageObg = JSON.parse(localStorage.getItem('time')||{});
 let storageTime =storageObg.time;
 let storageCash =storageObg.cash;
 let curTime = new Date().getTime();
