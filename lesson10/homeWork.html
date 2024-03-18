@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .divTable>table{
+            background-color: mediumpurple;
+            min-width: 200px;
+            min-height: 200px;
+        }
+        .divTable>table>tr, td{
+            border: 2px solid black;
+        }
+
+    </style>
+</head>
+<body>
+
+<form action="" id = "saveText">
+    <input id="name" name="name"  type="text" placeholder="name">
+    <input id="surname" name="surname"  type="text" placeholder="surname">
+    <input id="age" name="age"  type="number" placeholder="age">
+    <button>send</button>
+</form>
+<p class="text"></p>
+<h1 id = "number"></h1>
+<h1 id = "h1"></h1>
+<div>
+<form action="" id = "checkAge">
+    <input id="ageCheck" name="ageCheck" type="number" placeholder="age">
+    <button>Check age</button>
+    <p class="divInfo"></p>
+</form>
+</div>
+<form action="" id = "creator">
+    <input id="rows" name="rows" type="number" placeholder="rows">
+    <input id="columns" name="columns" type="number" placeholder="columns">
+    <input id="contents" name="contents" type="text" placeholder="content">
+    <button >Створити</button>
+</form>
+<div class="divTable"></div>
+<h1 id = "hryvnia"></h1>
+<script src="main.js"></script>
+</body>
+</html>
