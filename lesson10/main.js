@@ -100,9 +100,9 @@ butNext.onclick = function () {
 на кнопку зникав елемент з id="text".
  */
 let h1Remove = document.getElementById('h1');
-h1Remove.innerText = 'rfergtmfdcjghkfdngf';
+h1Remove.innerText = 'Натисни на кнопку і зітри текст!!!';
 let removeButton = document.createElement('button');
-removeButton.innerText = 'remove block';
+removeButton.innerText = 'Стерти текст';
 document.body.append(h1Remove, removeButton);
 removeButton.onclick = function () {
     h1Remove.remove();
