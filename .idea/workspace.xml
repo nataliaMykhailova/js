@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7840f2ee-0b85-4354-a859-da1daa72cc18" name="Changes" comment="commit10_1">
+    <list default="true" id="7840f2ee-0b85-4354-a859-da1daa72cc18" name="Changes" comment="commit10_2">
+      <change afterPath="$PROJECT_DIR$/lesson11/homeWork.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson11/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson11/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson11/user-details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson11/user-details.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson11/users.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lesson11/users.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lesson10/homeWork.html" beforeDir="false" afterPath="$PROJECT_DIR$/lesson10/homeWork.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lesson10/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/lesson10/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -18,6 +24,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -98,7 +105,11 @@
       <workItem from="1710595408316" duration="22595000" />
       <workItem from="1710666658387" duration="41043000" />
       <workItem from="1710752360904" duration="5388000" />
-      <workItem from="1710758269587" duration="6712000" />
+      <workItem from="1710758269587" duration="11830000" />
+      <workItem from="1710840860456" duration="734000" />
+      <workItem from="1710938248060" duration="1873000" />
+      <workItem from="1711021898704" duration="27212000" />
+      <workItem from="1711103271322" duration="479000" />
     </task>
     <task id="LOCAL-00001" summary="commit1">
       <option name="closed" value="true" />
@@ -204,7 +215,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710763479557</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="commit10_2">
+      <option name="closed" value="true" />
+      <created>1710779466401</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1710779466401</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,6 +254,7 @@
     <MESSAGE value="commit9" />
     <MESSAGE value="commit10" />
     <MESSAGE value="commit10_1" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit10_1" />
+    <MESSAGE value="commit10_2" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit10_2" />
   </component>
 </project>

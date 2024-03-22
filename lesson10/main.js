@@ -30,13 +30,14 @@ numberH1.innerText = localStorage.getItem('p');
  якої потрібно відмалювати всю інформацію про відвідування сторінки index.html. Інфу НЕ виводити в консоль,
  а побудувати дом структуру під кожну сессію
 =========================*/
+let date = new Date();
 let newDate = {
-    year: new Date().getFullYear(),
-    month: new Date().getMonth(),
-    date: new Date().getDate(),
-    hours: new Date().getHours(),
-    minutes: new Date().getMinutes(),
-    seconds: new Date().getSeconds()
+    year: date.getFullYear(),
+    month: date.getMonth(),
+    date: date.getDate(),
+    hours: date.getHours(),
+    minutes: date.getMinutes(),
+    seconds: date.getSeconds()
 }
 window.onload = function () {
     let visiting = JSON.parse(localStorage.getItem('visiting')) || [];
@@ -69,7 +70,6 @@ let tenElements = function () {
             let p = document.createElement('p');
             const arrElement = arr[i];
             p.innerText = `${arrElement.id} ${arrElement.count}`;
-            console.log(arrElement);
             div.appendChild(p);
         }
     }
@@ -143,6 +143,7 @@ creator.onsubmit = function (ev) {
             td.innerText = content;
             tr.appendChild(td);
         }
+
         table.appendChild(tr);
         tableDiv.appendChild(table);
     }
