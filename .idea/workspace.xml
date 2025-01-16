@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7840f2ee-0b85-4354-a859-da1daa72cc18" name="Changes" comment="commit12" />
+    <list default="true" id="7840f2ee-0b85-4354-a859-da1daa72cc18" name="Changes" comment="commit13" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,18 +21,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "nataliaMykhailova"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;nataliaMykhailova&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/nataliaMykhailova/js.git",
-    "accountId": "40cfc8d0-8876-4593-8a83-34a9f4ec9f7c"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/nataliaMykhailova/js.git&quot;,
+    &quot;accountId&quot;: &quot;40cfc8d0-8876-4593-8a83-34a9f4ec9f7c&quot;
   }
-}]]></component>
+}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
@@ -130,6 +130,7 @@
       <workItem from="1711638857457" duration="73000" />
       <workItem from="1719565353576" duration="4000" />
       <workItem from="1736946425897" duration="255000" />
+      <workItem from="1737019194286" duration="1476000" />
     </task>
     <task id="LOCAL-00001" summary="commit1">
       <option name="closed" value="true" />
@@ -267,7 +268,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736946514579</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="commit13">
+      <option name="closed" value="true" />
+      <created>1737019264090</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1737019264090</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -301,6 +310,7 @@
     <MESSAGE value="commit10_2" />
     <MESSAGE value="commit11" />
     <MESSAGE value="commit12" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit12" />
+    <MESSAGE value="commit13" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit13" />
   </component>
 </project>
