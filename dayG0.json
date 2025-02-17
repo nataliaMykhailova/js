@@ -1,0 +1,28 @@
+{
+  "users_go": [
+    {
+      "username": "andrii-chichkan",
+      "first_name": "Андрій",
+      "last_name": "Чичкан",
+      "avatar": "https://s.dou.ua/img/avatars/200x200_anon.png"
+    },
+    {
+      "username": "volodimir-gryadushkn",
+      "first_name": "Володимир",
+      "last_name": "Грядушкін",
+      "avatar": "https://s.dou.ua/img/avatars/200x200_anon.png"
+    },
+    {
+      "username": "lera-koshevaya",
+      "first_name": "Лера",
+      "last_name": "Кошевая",
+      "avatar": "https://s.dou.ua/img/avatars/200x200_anon.png"
+    },
+    {
+      "username": "test-user",
+      "first_name": "Тест",
+      "last_name": "Користувач",
+      "avatar": "https://s.dou.ua/img/avatars/200x200_anon.png"
+    }
+  ]
+}
