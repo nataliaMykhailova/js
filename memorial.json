@@ -34,7 +34,7 @@
         "img": "https://s.dou.ua/storage-files/dmytro-barabash.jpg",
         "title": "JavaScript-розробник у MobiDev / військовослужбовець",
         "title_eng": "JavaScript Developer at MobiDev / Serviceman",
-        "dates": "03.2024",
+        "dates": "(невідомо) — 03.2024",
         "died": "Він мобілізувався в серпні 2023 року, загинув у березні 2024-го від удару авіабомби на Сумському напрямку.",
         "died_eng": "He was mobilized in August 2023 and was killed in March 2024 by an airstrike on the Sumy front.",
         "description": "У Дмитра залишилися дружина і син. Колеги поділилися спогадами про Дмитра <a href=\"https://dou.ua/lenta/news/dmytro-barabash-died-in-the-war/\" target=_blank>в цьому матеріалі</a>.",
@@ -135,7 +135,7 @@
         "name": "Микола Гук",
         "name_eng": "Mykola Huk",
         "wartype": "military",
-        "img": "https://s.dou.ua/storage-files/mykola-huk.jpg",
+        "img": "https://s.dou.ua/storage-files/M_Huk_01.png",
         "title": "Android Developer в Uptech / військовослужбовець",
         "title_eng": "Android Developer at Uptech / Serviceman",
         "dates": "25.10.1998 — 14–20.09.2024",
@@ -164,7 +164,7 @@
         "img": "https://s.dou.ua/storage-files/danyil-zhmuidov.jpg",
         "title": "співробітник ZONE3000 / бойовий медик",
         "title_eng": "Employee at ZONE3000 / Combat Medic",
-        "dates": "27.12.2023",
+        "dates": "(невідомо) — 27.12.2023",
         "died": "Помер у Харкові 27 грудня 2023-го.",
         "died_eng": "He died in Kharkiv on December 27, 2023.",
         "description": "Даниїл Жмуйдов був добровольцем з 2016 року. З початку повномасштабної війни пішов у спецпідрозділ поліції «Схід». З жовтня 2022-го став бойовим медиком Першого добровольчого мобільного шпиталю імені Миколи Пирогова і працював на фронті.\nТакож Даниїл був одним із засновників і керівником ГО <a href=\"https://www.facebook.com/tacmed.kh\" target=_blank>«Такмед Харків»</a>, де викладав тактичну медицину для цивільних та військових.\nУ Даниїла залишилася дружина. Спогади колег і побратимів зібрані <a href=\"https://dou.ua/forums/topic/47382/?from=slider\" target=_blank>в цьому матеріалі</a>.",
@@ -203,7 +203,7 @@
         "img": "https://s.dou.ua/storage-files/artem-zbaranskyi.jpg",
         "title": "Software Development Lead у Sellbery / військовослужбовець",
         "title_eng": "Software Development Lead at Sellbery / Serviceman",
-        "dates": "31.12.2022",
+        "dates": "(невідомо) — 31.12.2022",
         "died": "31 грудня 2022 року загинув, потрапивши під артилерійський обстріл на Луганщині.",
         "died_eng": "He was killed on December 31, 2022, after being hit by artillery fire in Lugansk.",
         "description": "Артем Збаранський народився в Кривому Розі. У 2017–2019 роках працював у компанії <a href=\"https://jobs.dou.ua/companies/incode/\" target=_blank>Incode Group</a> на позиції Full Stack Developer, був тимлідом. Згодом перейшов у команду <a href=\"https://jobs.dou.ua/companies/sellbery/\" target=_blank>Sellbery</a> та обіймав посаду Software Development Lead. Коли розпочалася повномасштабна війна, Артем пішов на фронт добровольцем, мав позивний Турист.\nСпогади колег можна переглянути <a href=\"https://dou.ua/lenta/news/artem-zbaransky-died-in-the-war/\" target=_blank>в цьому матеріалі</a>.",
@@ -229,15 +229,15 @@
         "img": "https://s.dou.ua/storage-files/volodymyr-ivaschenko.jpg",
         "title": "Embedded-розробник у Larch Networks / головний сержант роти 4-ї бригади Нацгвардії",
         "title_eng": "Embedded Developer at Larch Networks / Chief Sergeant of the Company of the 4th National Guard Brigade",
-        "dates": "03.05.2024",
+        "dates": "(невідомо) — 03.05.2024",
         "died": "Загинув 3 травня 2024 року в боях.",
         "died_eng": "He was killed in combat on May 3, 2024.",
         "description": "Випускник Русанівського фізико-математичного ліцею, а відтак — КПІ. Навчався в американському коледжі Ridley High School.\n24 лютого 2022 року Володимир був у відпустці в Мексиці. Коли він дізнався про початок бойових дій, то разом зі своєю нареченою повернувся до України й долучився до Сил оборони. Про свою мобілізацію і службу в ЗСУ він розповідав <a href=\"https://dou.ua/forums/topic/38839/\" target=_blank>у цьому матеріалі на DOU</a>.",
         "description_eng": "A graduate of the Rusanyiv Physics and Mathematics Lyceum and later KPI, Volodymyr studied at the American Ridley High School. On February 24, 2022, while on vacation in Mexico, he learned of the outbreak of hostilities and returned to Ukraine with his fiancée to join the Defense Forces. He recounted his mobilization and service in the Armed Forces <a href=\"https://dou.ua/forums/topic/38839/\" target=_blank>in this article on DOU</a>."
       },
       {
-        "name": "Іващенко Володимир Олексійович",
-        "name_eng": "Volodymyr Ivashchenko Oleksiyovych",
+        "name": "Володимир Іващенко",
+        "name_eng": "Ivashchenko Volodymyr",
         "wartype": "military",
         "img": "https://s.dou.ua/storage-files/volodymyr-ivaschenko2.jpg",
         "title": "Java Software Engineer в AltexSoft / старший солдат у ЗСУ",
@@ -307,15 +307,15 @@
         "img": "https://s.dou.ua/storage-files/ehor-kuklev.jpg",
         "title": "Information Support Specialist в Uklon / доброволець ТрО",
         "title_eng": "Information Support Specialist at Uklon / Territorial Defense Volunteer",
-        "dates": "21.04.2022",
+        "dates": "(невідомо) — 21.04.2022",
         "died": "Він загинув 20 березня 2022 року внаслідок обстрілу росіянами торгового центру Retroville у Подільському районі Києва. Біля ТРЦ на той час перебували українські захисники.",
         "died_eng": "He was killed on March 20, 2022, as a result of Russian shelling of the Retroville shopping center in the Podil district of Kyiv, where Ukrainian defenders were present.",
         "description": "Єгор <a href=\"https://dou.ua/lenta/news/uklon-hero-kuklev/\" target=_blank>народився і жив</a> у Києві. Навчався в коледжі морського і річкового флоту, згодом вступив до Державного університету інфраструктури та технологій.\nЄгорові було 23 роки.",
         "description_eng": "Yehor <a href=\"https://dou.ua/lenta/news/uklon-hero-kuklev/\" target=_blank>was born and lived</a> in Kyiv. He studied at the Maritime and River Fleet College and later enrolled at the State University of Infrastructure and Technologies. He was 23 years old."
       },
       {
-        "name": "Василь Лаврись (Володимирович)",
-        "name_eng": "Vasyl Lavrys (Volodymyrovych)",
+        "name": "Василь Лаврись",
+        "name_eng": "Vasyl Lavrys",
         "wartype": "military",
         "img": "https://s.dou.ua/storage-files/vasyl-lavrys.png",
         "title": "3D Animator в Gameloft / військовослужбовець 41-ї окремої механізованої бригади ЗСУ",
@@ -424,7 +424,7 @@
         "img": "https://s.dou.ua/storage-files/mykola-petrenko.jpg",
         "title": "Senior C++ Developer в Intellias / командир відділення мінометної групи 71-ї окремої єгерської бригади Десантно-штурмових військ ЗСУ",
         "title_eng": "Senior C++ Developer at Intellias / Commander of the Mortar Group Section of the 71st Separate Jaeger Brigade of the Ukrainian Airmobile Forces",
-        "dates": "19.11.2023",
+        "dates": "(невідомо) — 19.11.2023",
         "died": "Загинув 19 листопада 2023 року під час виконання бойового завдання на Запорізькому напрямку.",
         "died_eng": "He was killed on November 19, 2023 while carrying out a combat mission on the Zaporizhzhia front.",
         "description": "Микола Петренко — випускник фізичного факультету КНУ. У компанії Intellias працював з 2017 року на проєктах Mobility.\nУ грудні 2022 року Микола долучився до Сил оборони України. У нього залишилися дружина та син.",
@@ -461,7 +461,7 @@
         "name": "Павло Чаркін",
         "name_eng": "Pavlo Charkin",
         "wartype": "military",
-        "img": "https://s.dou.ua/storage-files/pavlo-charkin.jpg",
+        "img": "https://s.dou.ua/storage-files/Charkin-01.png",
         "title": "Системний адміністратор MobiDev / командир 1-го мінометного взводу 92-ї окремої штурмової бригади імені Сірка",
         "title_eng": "System Administrator at MobiDev / Commander of the 1st Mortar Squad of the 92nd Separate Assault Brigade named after Sirko",
         "dates": "01.02.1994 — 04.09.2024",
@@ -490,7 +490,7 @@
         "img": "https://s.dou.ua/storage-files/taras-savchuk.jpg",
         "title": "Front-end Engineer в Abto / воїн 54/131 ОРБ та 10 ОГШБр",
         "title_eng": "Front-end Engineer at Abto / Fighter of the 54/131 Operational Response Battalion and 10th Airmobile Brigade",
-        "dates": "22.12.2022",
+        "dates": "(невідомо) — 22.12.2022",
         "died": "Загинув на Бахмутському напрямку у 29 років.",
         "died_eng": "He was killed on the Bakhmut front at the age of 29.",
         "description": "Тарас був добровольцем і обороняв Україну ще з 2014 року. Активний учасник подій Революції гідності, УНСівець. Воїн 54/131 ОРБ та 10 ОГШБр, мав позивний Вовкулака. Їхній підрозділ захищав Київщину, Чернігівщину, Сумщину, Харківщину, Луганщину.\nТарас цікавився військовою історією, астрофотографією, любив походи в гори, мототуризм.Також займався науково-дослідною діяльністю. Спогади про Тараса — <a href=\"https://dou.ua/lenta/news/taras-savchuk-died-in-the-war/\" target=_blank>на сайті</a>.",
@@ -610,8 +610,8 @@
         "dates": "22.06.1989 — 02.07.2024",
         "died": "Загинув у Бахмутському районі на Донеччині від ворожого FPV.",
         "died_eng": "He was killed in the Bakhmut district in Donetsk region by an enemy FPV drone.",
-        "description": "Костянтин Шкрьоб народився в Миколаєві, закінчив Національний університет суднобудування. З 2009 року працював в ІТ як Full Stack Web Developer.\n11 листопада 2023 року Костянтин мобілізувався до війська, де отримав позивний «Нео».\nУ нього залишилася дружина і син. Спогадами про Костю поділилися в цьому матеріалі.",
-        "description_eng": "Kostiantyn Shkriob was born in Mykolaiv and graduated from the National University of Shipbuilding. Since 2009, he worked as a Full Stack Web Developer in IT. On November 11, 2023, he was mobilized into the military and received the callsign 'Neo'. He is survived by his wife and son. Memories of him are shared in this article."
+        "description": "Костянтин Шкрьоб народився в Миколаєві, закінчив Національний університет суднобудування. З 2009 року працював в ІТ як Full Stack Web Developer.\n11 листопада 2023 року Костянтин мобілізувався до війська, де отримав позивний «Нео».\nУ нього залишилася дружина і син. Спогадами про Костю поділилися <a href=\"https://dou.ua/forums/topic/51606/\" target=_blank>в цьому матеріалі</a>.",
+        "description_eng": "Kostiantyn Shkriob was born in Mykolaiv and graduated from the National University of Shipbuilding. Since 2009, he worked as a Full Stack Web Developer in IT. On November 11, 2023, he was mobilized into the military and received the callsign 'Neo'. He is survived by his wife and son. Memories of him are shared <a href=\"https://dou.ua/forums/topic/51606/\" target=_blank>in this article</a>."
       },
       {
         "name": "Вікторія Амеліна",
@@ -632,10 +632,10 @@
         "name_eng": "Yevhenia Bazylevych and her daughter Yaryna",
         "wartype": "civil",
         "gender": "female",
-        "img": "https://s.dou.ua/storage-files/bazylevych.jpg",
+        "img": "https://s.dou.ua/storage-files/Bazylevych_01.png",
         "title": "SEO Specialist в Abto Software і Project Manager в офісі «Львів — молодіжна столиця Європи 2025»",
         "title_eng": "SEO Specialist at Abto Software and Project Manager at the 'Lviv — Youth Capital of Europe 2025' Office",
-        "dates": "04.09.2024",
+        "dates": "1981/5.06.2003 — 04.09.2024",
         "died": "Євгенія Базилевич <a href=\"https://dou.ua/lenta/news/memories-of-eugenia-and-yaryna-bazylevych/\" target=_blank>загинула</a> 4 вересня 2024-го внаслідок російської ракетної атаки на Львів, а разом з нею — три доньки: Ярина, Дарія та Емілія.",
         "died_eng": "Yevhenia Bazylevych was killed on September 4, 2024 as a result of a Russian missile attack on Lviv, along with her three daughters: Yaryna, Daria, and Emilia.",
         "description": "У компанії Abto Software Євгенія працювала як SEO Specialist. Також була інструкторкою з йоги. Її донька Ярина здобула освіту в Інституті комп’ютерних наук та інформаційних технологій Львівської політехніки й розпочинала кар’єру як Project Manager.\nЄвгенія, Ярина та Дарія входили до організації «Пласт». Наймолодшій доньці Емілії було сім років.",
@@ -648,7 +648,7 @@
         "img": "https://s.dou.ua/storage-files/anatolii-berezhnyi.jpg",
         "title": "HelpDesk-спеціаліст, системний адміністратор у tech/uklon",
         "title_eng": "HelpDesk Specialist, System Administrator at tech/uklon",
-        "dates": "06.03.2022",
+        "dates": "(невідомо) — 06.03.2022",
         "died": "6 березня він допомагав місцевій жінці з дітьми дістатися евакуаційних автобусів. Разом із ними 26-річний Анатолій загинув від ворожого мінометного обстрілу.",
         "died_eng": "On March 6, while helping a local woman with children reach evacuation buses, 26-year-old Anatolii was killed by enemy mortar fire.",
         "description": "Анатолій народився в місті Сєвєродонецьк Луганської області. Восени 2020-го разом з дружиною переїхав до Ірпеня. На початку повномасштабної війни вивіз дружину на захід країни, а заразом ще 15 людей. Сам повернувся й брав участь в евакуації мешканців Ірпеня.\nСпогади рідних зібрані <a href=\"https://dou.ua/lenta/articles/story-of-anatolii-berezhnyi/\" target=_blank>в цьому матеріалі</a>.",
@@ -661,7 +661,7 @@
         "img": "https://s.dou.ua/storage-files/kurylenko-petrova.jpg",
         "title": "ІТ-фахівець компанії Aspectum і менеджерка з туризму",
         "title_eng": "IT Specialist at Aspectum and Tourism Manager",
-        "dates": "24.06.2023",
+        "dates": "28.06.1990/27.03.1994 — 24.06.2023",
         "died": "Загинули 24 червня 2023 року.",
         "died_eng": "They were killed on June 24, 2023.",
         "description": "Даніїл народився в Новій Каховці Херсонської області. Навчався у фізико-математичному ліцеї. Далі здобув фах програміста, почав працювати в ІТ-компанії.\nЮлія родом із Хмельниччини. Працювала менеджеркою з туризму. Даніїл і Юлія захоплювалися історичними реконструкціями.\nЧастина російської ракети влучила в помешкання подружжя в Солом’янському районі Києва. Спогади про Юлію та Даніїла зібрані <a href=\"https://dou.ua/lenta/news/daniil-kurylenko-and-yulia-petrova-died-in-kyiv/\" target=_blank>в цьому матеріалі</a>.",
@@ -672,7 +672,7 @@
         "name_eng": "Anastasiia Yalanska",
         "wartype": "civil",
         "gender": "female",
-        "img": "https://s.dou.ua/storage-files/anastasiya-yalanska.jpg",
+        "img": "https://s.dou.ua/storage-files/Yalanska.png",
         "title": "рекрутерка DataRobot / волонтерка",
         "title_eng": "Recruiter at DataRobot / Volunteer",
         "dates": "13.09.1995 — 04.03.2022",
@@ -707,7 +707,58 @@
         "died_eng": "She died on June 28 in Dnipro after a Russian missile hit her home.",
         "description": "Ольга Сергеєва у 2015 році переїхала до Дніпра з Донецька. У 2018-му розпочала працювати в SoftServe на позиції Recruiter Trainee. За кілька років зросла до посади TSL Lead, а у 2023-му змінила кар’єрний напрям, ставши Change Manager.\nКолеги поділилися спогадами про Ольгу <a href=\"https://dou.ua/lenta/news/olha-serheeva-died-in-dnipro/\" target=_blank>в цьому матеріалі</a>.",
         "description_eng": "Olha Serheieva moved from Donetsk to Dnipro in 2015. In 2018, she began working at SoftServe as a Recruiter Trainee, quickly rising to the position of TSL Lead, and in 2023 she transitioned to become a Change Manager. Colleagues shared their memories of Olha <a href=\"https://dou.ua/lenta/news/olha-serheeva-died-in-dnipro/\" target=_blank>in this article</a>."
+      },
+      {
+        "name": "Сергій Сухарєв",
+        "name_eng": "Serhiy Sukharev",
+        "wartype": "civil",
+        "img": "https://s.dou.ua/storage-files/sukharev_wTvOuRG.png",
+        "title": "Програміст, спортсмен",
+        "title_eng": "programmer, athlete",
+        "dates": "8.11.1990 — 18.12.2022",
+        "died": "<a href=\"https://dou.ua/lenta/news/serhiy-sukharev-died-in-sumy/\">Загинув</a> внаслідок російської атаки по житловому мікрорайону у Сумах 17 листопада. Сергієві було 70 років. У нього залишились дружина Тетяна, син Кирило (він захищає Україну в лавах ЗСУ), донька Марія, троє онуків й онучка.",
+        "died_eng": "He <a href=\"https://dou.ua/lenta/news/serhiy-sukharev-died-in-sumy/\">died</a> as a result of a Russian attack on a residential neighborhood in Sumy on November 17. Serhiy was 70 years old. He is survived by his wife Tetyana, son Kyrylo (who is defending Ukraine in the Armed Forces), daughter Maria, three grandsons and a granddaughter.",
+        "description": "Сергій працював програмістом у «Сумиобленерго», мав фах учителя математики та фізики. Також був кандидатом у майстри спорту, виступав у збірній Сумщини на змаганнях зі спортивного орієнтування, <a href=\"https://ocpo.sumy.ua/peresuvnij-pnz/dlja-pedagogiv/istorija-rozvitku-turizmu-i-krajeznavstva-na-sumschini.html\">розробив</a> програму «Орієнтир».",
+        "description_eng": "Sergiy worked as a programmer at Sumyoblenergo and received a degree in math and physics. He was also a candidate for master of sports, competed in the Sumy region national team in orienteering competitions, and <a href=\"https://ocpo.sumy.ua/peresuvnij-pnz/dlja-pedagogiv/istorija-rozvitku-turizmu-i-krajeznavstva-na-sumschini.html\">developed</a> the Orientir program."
       }
     ]
+  },
+  "texts": {
+    "memorial": {
+      "ukr": "МЕМОРІАЛ IT-СПІЛЬНОТИ",
+      "eng": "IT COMMUNITY MEMORIAL"
+    },
+    "top_text": {
+      "ukr": "Проєкт редакції DOU на честь загиблих айтівців у російсько-українській війні.\n\nТут зібрані короткі біографії військових, які віддали життя за Україну, а також цивільних, які загинули від рук росіян.",
+      "eng": "A project by the DOU editorial team in honor of fallen IT professionals in the Russo-Ukrainian War.\n\nHere you will find brief biographies of military personnel who gave their lives for Ukraine, as well as civilians killed by Russian forces."
+    },
+    "tell": {
+      "ukr": "РОЗКАЗАТИ ПРО ЗАГИБЛИХ",
+      "eng": "TELL ABOUT THE FALLEN"
+    },
+    "filter_all": {
+      "ukr": "ВСІ",
+      "eng": "ALL"
+    },
+    "filter_military": {
+      "ukr": "ВІЙСЬКОВІ",
+      "eng": "MILITARY"
+    },
+    "filter_civil": {
+      "ukr": "ЦИВІЛЬНІ",
+      "eng": "CIVILIANS"
+    },
+    "share": {
+      "ukr": "ПОДІЛИТИСЬ",
+      "eng": "SHARE"
+    },
+    "artycoders": {
+      "ukr": "ДИЗАЙН ТА РОЗРОБКА ARTYCODERS",
+      "eng": "DESIGN & DEVELOPMENT BY ARTYCODERS"
+    },
+    "glory": {
+      "ukr": "СЛАВА ГЕРОЯМ!",
+      "eng": "GLORY TO THE HEROES!"
+    }
   }
 }
