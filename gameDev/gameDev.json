@@ -1,0 +1,2519 @@
+{
+  "male": {
+    "Software Engineer": {
+      "name": "Software Engineer",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb54f21dfa7f7c10aa_Softwareengineermale.webp",
+      "description": "Заклинають алгоритми. Пишуть код для гри. Зібрано 271 анкету, з них 92% чоловіків та 8% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху оволодіння темною магією коду. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Ти заклинаєш алгоритми та без страху йдеш стежками, які оминають юні володарі темного коду. Твої вміння дають тобі змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Тебе було покликано володарювати над темною магією коду. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі та ламаєш межі можливого, а темна магія коду — невід'ємна частина тебе. Перед тобою відступають хаос і сумніви, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе покликано заклинати алгоритми та писати код для гри. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 200,
+        "median": 3000,
+        "highest": 16000
+      },
+      "age": {
+        "youngest": 18,
+        "median": 28,
+        "oldest": 47
+      },
+      "working_hours_per_week": 66,
+      "financial_status": {
+        "spend_more_than_earn": 11,
+        "spend_equal_to_earn": 28,
+        "spend_less_than_earn": 61
+      },
+      "marital_status": {
+        "single": 28,
+        "in_relationship": 22,
+        "married": 36.2,
+        "cohabiting": 13.8
+      },
+      "children": {
+        "have_children": 19.2,
+        "no_children": 80.8
+      },
+      "it_entry_age": {
+        "youngest": 16,
+        "median": 21,
+        "oldest": 35
+      },
+      "it_experience": {
+        "1-2_years": 19,
+        "3-5_years": 34,
+        "6-9_years": 20,
+        "10+_years": 25
+      },
+      "specialty_experience": {
+        "1-2_years": 26,
+        "3-5_years": 38,
+        "6-9_years": 20,
+        "10+_years": 13,
+        "comment": "Лише 3% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 15,
+        "middle": 39,
+        "senior": 30,
+        "team_tech_lead": 16
+      },
+      "english_proficiency": {
+        "pre_intermediate": 8,
+        "intermediate": 35,
+        "upper_intermediate": 48,
+        "advanced": 8,
+        "comment": "Менше, як 1% володіють англійською на елементарному рівні"
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 54,
+        "c++": 21,
+        "java": 4,
+        "javascript": 4,
+        "python": 2,
+        "typescript": 7,
+        "other_languages": 8
+      },
+      "game_engines": {
+        "unity": 48,
+        "unreal_engine": 14,
+        "other_engine": 11.2,
+        "none": 21.5
+      },
+      "location": {
+        "kyiv_region": 43,
+        "lviv_region": 14,
+        "kharkiv_region": 6.7,
+        "vinnytsia_region": 5.4,
+        "dnipro_region": 4.9,
+        "rivne_region": 3,
+        "poltava_region": 3,
+        "odesa_region": 3,
+        "ivano_frankivsk_region": 2.7,
+        "cherkasy_region": 1.8,
+        "uzhhorod_region": 1.8,
+        "mykolaiv_region": 1.8,
+        "zhytomyr_region": 1.8,
+        "chernihiv_region": 1.4,
+        "lutsk_volyn_region": 1.4,
+        "khmelnytskyi_region": 0.9,
+        "ternopil_region": 0.9,
+        "chernivtsi_region": 0.4,
+        "sumy_region": 0.4,
+        "kropyvnytskyi_region": 0.4,
+        "zaporizhzhia_region": 0.4,
+        "other": 0.4
+      },
+      "settlement_type": {
+        "big_city": 82.4,
+        "small_city": 13.5,
+        "rural_area": 4.1
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 50.2,
+        "foreign_legal_entity": 41.1,
+        "not_registered_salary_in_cash": 8.7
+      },
+      "employment_type": {
+        "gig_contract": 16.5,
+        "foreign_contract": 3.3,
+        "minimum_salary_rest_in_cash": 1.2,
+        "official_ukrainian_labor_code": 6.2,
+        "self_employed_fop": 64.2,
+        "not_registered_salary_in_cash": 8.2
+      },
+      "work_arrangement": {
+        "fully_remote": 72.3,
+        "mostly_remote": 12.4,
+        "mostly_office": 7.4,
+        "fully_office": 4,
+        "equally_remote_office": 3.7
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 65.8,
+        "receive": 28.1,
+        "received_before": 6.1
+      },
+      "salary_review_last_6_months": {
+        "no_review": 47,
+        "review_without_promotion": 29.9,
+        "review_due_to_new_company": 11.5,
+        "review_due_to_promotion": 11.5
+      },
+      "overtime_payment": {
+        "fully_paid": 15.5,
+        "partially_paid": 8.9,
+        "not_paid": 32.5,
+        "no_overtime": 39.4,
+        "freelance": 3.7
+      },
+      "salary_satisfaction": {
+        "satisfied": 31.7,
+        "mostly_satisfied": 50.8,
+        "not_satisfied": 17.5
+      },
+      "gaming_habits": {
+        "play_games": 87.8,
+        "do_not_play": 12.2
+      },
+      "gaming_platforms": {
+        "pc_laptop": 38.1,
+        "playstation": 2.8,
+        "xbox": 0.5,
+        "smartphone_tablet": 1.9,
+        "multiple_platforms": 56.7
+      },
+      "retro_consoles": {
+        "snes_nes": 0.4,
+        "sega_mega_drive": 0.8,
+        "ps1": 0,
+        "ps2": 1.6,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0.4,
+        "ps_vita": 0
+      }
+    },
+    "QA": {
+      "name": "QA",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb31ee7bd404ed91d3_QAmale.webp",
+      "description": "Винищують баги світлом тестів. Забезпечують стабільність. Зібрано 145 анкета, з них 64% чоловіків та 36% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху очищення коду від темряви. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Ти винищуєш баги світлом тестів і ти не новачок у цій справі. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Тебе було покликано очищувати темну магію коду. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі та ламаєш межі можливого. Перед тобою відступають хаос і баги, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе покликано винищувати баги світлом тестів та забезпечувати стабільність. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 300,
+        "median": 1700,
+        "highest": 9500
+      },
+      "age": {
+        "youngest": 19,
+        "median": 28,
+        "oldest": 43
+      },
+      "working_hours_per_week": 76,
+      "financial_status": {
+        "spend_more_than_earn": 10,
+        "spend_equal_to_earn": 33,
+        "spend_less_than_earn": 57
+      },
+      "marital_status": {
+        "single": 19.6,
+        "in_relationship": 26.1,
+        "married": 34.8,
+        "cohabiting": 19.6
+      },
+      "children": {
+        "have_children": 17.4,
+        "no_children": 82.6
+      },
+      "it_entry_age": {
+        "youngest": 17,
+        "median": 24,
+        "oldest": 40
+      },
+      "it_experience": {
+        "1-2_years": 21,
+        "3-5_years": 40,
+        "6-9_years": 24,
+        "10+_years": 12
+      },
+      "specialty_experience": {
+        "1-2_years": 29,
+        "3-5_years": 46,
+        "6-9_years": 17,
+        "10+_years": 5,
+        "comment": "лише 3% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 18,
+        "middle": 41,
+        "senior": 21,
+        "team_tech_lead": 20
+      },
+      "english_proficiency": {
+        "pre_intermediate": 16,
+        "intermediate": 27,
+        "upper_intermediate": 44,
+        "advanced": 12,
+        "comment": "Трошки більш як 1% володіють англійською на елементарному рівні"
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 35.9,
+        "unreal_engine": 18.5,
+        "other_engine": 6.5,
+        "none": 39
+      },
+      "location": {
+        "kyiv_region": 58,
+        "lviv_region": 9,
+        "kharkiv_region": 7.8,
+        "vinnytsia_region": 3.9,
+        "dnipro_region": 2.6,
+        "rivne_region": 1.3,
+        "poltava_region": 0,
+        "odesa_region": 7.8,
+        "ivano_frankivsk_region": 1.3,
+        "cherkasy_region": 3.9,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 1.3,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 1.3,
+        "zaporizhzhia_region": 1.3,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 86.9,
+        "small_city": 10.9,
+        "rural_area": 2.2
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 53.3,
+        "foreign_legal_entity": 44.4,
+        "not_registered_salary_in_cash": 2.2
+      },
+      "employment_type": {
+        "gig_contract": 15.4,
+        "foreign_contract": 5.6,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 6.7,
+        "self_employed_fop": 69.2,
+        "not_registered_salary_in_cash": 3.3
+      },
+      "work_arrangement": {
+        "fully_remote": 52.7,
+        "mostly_remote": 24.2,
+        "mostly_office": 9.9,
+        "fully_office": 7.7,
+        "equally_remote_office": 5.5
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 56.5,
+        "receive": 35.9,
+        "received_before": 7.6
+      },
+      "salary_review_last_6_months": {
+        "no_review": 53.9,
+        "review_without_promotion": 24.7,
+        "review_due_to_new_company": 6.7,
+        "review_due_to_promotion": 14.6
+      },
+      "overtime_payment": {
+        "fully_paid": 27.2,
+        "partially_paid": 15.2,
+        "not_paid": 27.2,
+        "no_overtime": 30.4,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 19.6,
+        "mostly_satisfied": 59.8,
+        "not_satisfied": 20.7
+      },
+      "gaming_habits": {
+        "play_games": 90.2,
+        "do_not_play": 9.8
+      },
+      "gaming_platforms": {
+        "pc_laptop": 42.2,
+        "playstation": 4.8,
+        "xbox": 2.4,
+        "smartphone_tablet": 1.2,
+        "multiple_platforms": 49.4
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 2.2,
+        "ps2": 5.4,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 2.2,
+        "ps_vita": 1.1
+      }
+    },
+    "Artist / Animator": {
+      "name": "Artist / Animator",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bc0557bdcd9c2730cd_Artist_Animatormale.webp",
+      "description": "Оживлюють ілюзії у спрайтах та полігонах. Наповнюють гру образами. Зібрано 144 анкети, з них 63% чоловіків та 37% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху володарювання над пікселями та полігонами. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Ілюзії у твоїх спрайтах та полігонах майже, як живі. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Ілюзії у твоїх спрайтах та полігонах майже досконалі. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі, ламаєш межі можливого, а твої ілюзії з пікселів та полігонів не відрізнити від живих. Перед тобою відступають хаос і сумніви, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом",
+      "no-points": "Тебе було покликано оживляти ілюзії у спрайтах та полігонах, а також наповнювати гру образами.Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 300,
+        "median": 2200,
+        "highest": 15000
+      },
+      "age": {
+        "youngest": 20,
+        "median": 32,
+        "oldest": 44
+      },
+      "working_hours_per_week": 66,
+      "financial_status": {
+        "spend_more_than_earn": 15,
+        "spend_equal_to_earn": 27,
+        "spend_less_than_earn": 58
+      },
+      "marital_status": {
+        "single": 26.4,
+        "in_relationship": 13.2,
+        "married": 35.2,
+        "cohabiting": 25.2
+      },
+      "children": {
+        "have_children": 25.6,
+        "no_children": 74.4
+      },
+      "it_entry_age": {
+        "youngest": 17,
+        "median": 24,
+        "oldest": 39
+      },
+      "it_experience": {
+        "1-2_years": 22,
+        "3-5_years": 24,
+        "6-9_years": 22,
+        "10+_years": 31
+      },
+      "specialty_experience": {
+        "1-2_years": 27,
+        "3-5_years": 31,
+        "6-9_years": 19,
+        "10+_years": 22,
+        "comment": "лише 1% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 15,
+        "middle": 36,
+        "senior": 21,
+        "team_tech_lead": 16
+      },
+      "english_proficiency": {
+        "pre_intermediate": 27,
+        "intermediate": 33,
+        "upper_intermediate": 27,
+        "advanced": 6,
+        "comment": "8% володіють англійською на елементарному рівні"
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 27.5,
+        "unreal_engine": 37.4,
+        "other_engine": 9.9,
+        "none": 19.8
+      },
+      "location": {
+        "kyiv_region": 54.5,
+        "lviv_region": 11.7,
+        "kharkiv_region": 2.6,
+        "vinnytsia_region": 3.9,
+        "dnipro_region": 6.5,
+        "rivne_region": 2.6,
+        "poltava_region": 0,
+        "odesa_region": 2.6,
+        "ivano_frankivsk_region": 2.6,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 1.3,
+        "mykolaiv_region": 2.6,
+        "zhytomyr_region": 1.3,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 1.3,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 1.3,
+        "zaporizhzhia_region": 2.6,
+        "other": 2.6
+      },
+      "settlement_type": {
+        "big_city": 87.8,
+        "small_city": 10,
+        "rural_area": 2.2
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 44.3,
+        "foreign_legal_entity": 50,
+        "not_registered_salary_in_cash": 6.7
+      },
+      "employment_type": {
+        "gig_contract": 11.1,
+        "foreign_contract": 5.6,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 5.6,
+        "self_employed_fop": 72.2,
+        "not_registered_salary_in_cash": 5.6
+      },
+      "work_arrangement": {
+        "fully_remote": 73,
+        "mostly_remote": 12.4,
+        "mostly_office": 5.6,
+        "fully_office": 5.6,
+        "equally_remote_office": 3.4
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 82.4,
+        "receive": 12.1,
+        "received_before": 5.5
+      },
+      "salary_review_last_6_months": {
+        "no_review": 42.5,
+        "review_without_promotion": 27.6,
+        "review_due_to_new_company": 11.5,
+        "review_due_to_promotion": 18.4
+      },
+      "overtime_payment": {
+        "fully_paid": 16.5,
+        "partially_paid": 5.5,
+        "not_paid": 29.7,
+        "no_overtime": 45,
+        "freelance": 3.3
+      },
+      "salary_satisfaction": {
+        "satisfied": 35.2,
+        "mostly_satisfied": 45,
+        "not_satisfied": 19.8
+      },
+      "gaming_habits": {
+        "play_games": 89,
+        "do_not_play": 11
+      },
+      "gaming_platforms": {
+        "pc_laptop": 48.2,
+        "playstation": 2.5,
+        "xbox": 0,
+        "smartphone_tablet": 0,
+        "multiple_platforms": 49.3
+      },
+      "retro_consoles": {
+        "snes_nes": 1.1,
+        "sega_mega_drive": 2.2,
+        "ps1": 1.1,
+        "ps2": 2.2,
+        "nintendo_ds_3ds": 1.1,
+        "game_boy": 0,
+        "psp": 1.1,
+        "ps_vita": 1.1
+      }
+    },
+    "Game design": {
+      "name": "Game design",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba1330ba1ba0b0b37e_GameDesignermale.webp",
+      "description": "Варять зілля механік. Формують ігровий процес. Зібрано 86 анкет, з них 64% чоловіків та 36% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху формування ігрового досвіду. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Твоя трансмутація механік в ігровий досвід вже заслуговує на повагу. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Ти за крок від створення ідеальної формули ігрових механік. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі, ламаєш межі можливого та володарюєш над філософським каменем ігроладу. Перед тобою відступають хаос і сумніви, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе було покликано варити зілля механік та формувати ігровий процес. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 300,
+        "median": 1950,
+        "highest": 9500
+      },
+      "age": {
+        "youngest": 19,
+        "median": 28,
+        "oldest": 40
+      },
+      "working_hours_per_week": 71,
+      "financial_status": {
+        "spend_more_than_earn": 20,
+        "spend_equal_to_earn": 42,
+        "spend_less_than_earn": 38
+      },
+      "marital_status": {
+        "single": 29.1,
+        "in_relationship": 12.7,
+        "married": 40,
+        "cohabiting": 18.2
+      },
+      "children": {
+        "have_children": 25.6,
+        "no_children": 76.4
+      },
+      "it_entry_age": {
+        "youngest": 16,
+        "median": 23,
+        "oldest": 37
+      },
+      "it_experience": {
+        "1-2_years": 13,
+        "3-5_years": 44,
+        "6-9_years": 16,
+        "10+_years": 22
+      },
+      "specialty_experience": {
+        "1-2_years": 20,
+        "3-5_years": 40,
+        "6-9_years": 11,
+        "10+_years": 15,
+        "comment": "14% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 29,
+        "middle": 35,
+        "senior": 23,
+        "team_tech_lead": 8
+      },
+      "english_proficiency": {
+        "pre_intermediate": 11,
+        "intermediate": 31,
+        "upper_intermediate": 29,
+        "advanced": 21,
+        "comment": "8% володіють англійською на елементарному рівні"
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 38.2,
+        "unreal_engine": 36.4,
+        "other_engine": 3.6,
+        "none": 9
+      },
+      "location": {
+        "kyiv_region": 59.2,
+        "lviv_region": 10.2,
+        "kharkiv_region": 4,
+        "vinnytsia_region": 2,
+        "dnipro_region": 8.2,
+        "rivne_region": 0,
+        "poltava_region": 0,
+        "odesa_region": 4,
+        "ivano_frankivsk_region": 0,
+        "cherkasy_region": 2,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 2,
+        "ternopil_region": 2,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 4,
+        "zaporizhzhia_region": 0,
+        "other": 2
+      },
+      "settlement_type": {
+        "big_city": 78.2,
+        "small_city": 20,
+        "rural_area": 1.8
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 40.7,
+        "foreign_legal_entity": 53.7,
+        "not_registered_salary_in_cash": 5.7
+      },
+      "employment_type": {
+        "gig_contract": 13,
+        "foreign_contract": 3.7,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 5.6,
+        "self_employed_fop": 68.5,
+        "not_registered_salary_in_cash": 9.3
+      },
+      "work_arrangement": {
+        "fully_remote": 67.9,
+        "mostly_remote": 18.9,
+        "mostly_office": 5.7,
+        "fully_office": 7.5,
+        "equally_remote_office": 0
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 85.4,
+        "receive": 7.3,
+        "received_before": 7.3
+      },
+      "salary_review_last_6_months": {
+        "no_review": 53,
+        "review_without_promotion": 17.7,
+        "review_due_to_new_company": 11.8,
+        "review_due_to_promotion": 17.7
+      },
+      "overtime_payment": {
+        "fully_paid": 21.8,
+        "partially_paid": 3.6,
+        "not_paid": 32.7,
+        "no_overtime": 38.2,
+        "freelance": 3.6
+      },
+      "salary_satisfaction": {
+        "satisfied": 20,
+        "mostly_satisfied": 49,
+        "not_satisfied": 30.9
+      },
+      "gaming_habits": {
+        "play_games": 98.2,
+        "do_not_play": 1.8
+      },
+      "gaming_platforms": {
+        "pc_laptop": 22.2,
+        "playstation": 1.8,
+        "xbox": 1.8,
+        "smartphone_tablet": 1.8,
+        "multiple_platforms": 72.4
+      },
+      "retro_consoles": {
+        "snes_nes": 1.8,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 1.8,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 1.8,
+        "ps_vita": 0
+      }
+    },
+    "Manager": {
+      "name": "Manager",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba87c0f28a7cbb989b_Managermale.webp",
+      "description": "Закликають ресурси з потойбіччя. Контролюють процеси в команді. Зібрано 50 анкет, з них 60% чоловіків та 40% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху управління командами. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Завдяки тобі процеси в команді майже налаштовані. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "З тобою на чолі команди майже нездоланні і їх не лякають випробування, що зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі та ламаєш межі можливого. Перед тобою відступають майлстоуни та роадмапи, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе було покликано залучати ресурси з потойбіччя та контролювати процеси в команді. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 700,
+        "median": 2900,
+        "highest": 8500
+      },
+      "age": {
+        "youngest": 22,
+        "median": 33,
+        "oldest": 41
+      },
+      "working_hours_per_week": 54,
+      "financial_status": {
+        "spend_more_than_earn": 11,
+        "spend_equal_to_earn": 28,
+        "spend_less_than_earn": 61
+      },
+      "marital_status": {
+        "single": 14.3,
+        "in_relationship": 10.7,
+        "married": 53.6,
+        "cohabiting": 21.4
+      },
+      "children": {
+        "have_children": 32.1,
+        "no_children": 67.9
+      },
+      "it_entry_age": {
+        "youngest": 17,
+        "median": 26,
+        "oldest": 32
+      },
+      "it_experience": {
+        "1-2_years": 11,
+        "3-5_years": 36,
+        "6-9_years": 29,
+        "10+_years": 21
+      },
+      "specialty_experience": {
+        "1-2_years": 18,
+        "3-5_years": 43,
+        "6-9_years": 21,
+        "10+_years": 3,
+        "comment": "15% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 3,
+        "middle": 20,
+        "senior": 40,
+        "team_tech_lead": 17
+      },
+      "english_proficiency": {
+        "pre_intermediate": 3,
+        "intermediate": 14,
+        "upper_intermediate": 40,
+        "advanced": 37,
+        "comment": "6% володіють англійською на елементарному рівні"
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 35.7,
+        "unreal_engine": 17.9,
+        "other_engine": 7.1,
+        "none": 39.3
+      },
+      "location": {
+        "kyiv_region": 59,
+        "lviv_region": 22.7,
+        "kharkiv_region": 0,
+        "vinnytsia_region": 0,
+        "dnipro_region": 4.5,
+        "rivne_region": 0,
+        "poltava_region": 0,
+        "odesa_region": 4.5,
+        "ivano_frankivsk_region": 4.5,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 4.5,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 82.1,
+        "small_city": 10.7,
+        "rural_area": 7.1
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 39.3,
+        "foreign_legal_entity": 57.1,
+        "not_registered_salary_in_cash": 3.6
+      },
+      "employment_type": {
+        "gig_contract": 14.3,
+        "foreign_contract": 10.7,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 7.1,
+        "self_employed_fop": 64.3,
+        "not_registered_salary_in_cash": 3.6
+      },
+      "work_arrangement": {
+        "fully_remote": 75,
+        "mostly_remote": 7.1,
+        "mostly_office": 3.6,
+        "fully_office": 10.7,
+        "equally_remote_office": 3.6
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 60.7,
+        "receive": 32.1,
+        "received_before": 7.1
+      },
+      "salary_review_last_6_months": {
+        "no_review": 36,
+        "review_without_promotion": 36,
+        "review_due_to_new_company": 16,
+        "review_due_to_promotion": 12
+      },
+      "overtime_payment": {
+        "fully_paid": 35.7,
+        "partially_paid": 3.6,
+        "not_paid": 32.1,
+        "no_overtime": 28.6,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 25,
+        "mostly_satisfied": 71.4,
+        "not_satisfied": 3.6
+      },
+      "gaming_habits": {
+        "play_games": 89.3,
+        "do_not_play": 10.7
+      },
+      "gaming_platforms": {
+        "pc_laptop": 28,
+        "playstation": 8.3,
+        "xbox": 0,
+        "smartphone_tablet": 0,
+        "multiple_platforms": 63.7
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    },
+    "Marketing": {
+      "name": "Marketing",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bac9e81f250ad76c97_Marketingmale.webp",
+      "description": "Чарують рекламою. Просувають гру на ринку. Зібрано 30 анкет, з них 60% жінки та 40% чоловіки.",
+      "4-8": "Це лише перший крок на тернистому шляху просування гри. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Твої таланти просувати ігри не викликають сумнівів та іноді цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Просувати ігри важко, але не тобі. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі проєктів та ламаєш межі можливого. Перед тобою відступають рекламні стратегії та цільові аудиторії, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе було покликано чарувати рекламою та просувати ігри на ринку. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 1300,
+        "median": 2500,
+        "highest": 5200
+      },
+      "age": {
+        "youngest": 26,
+        "median": 32,
+        "oldest": 37
+      },
+      "working_hours_per_week": 70,
+      "financial_status": {
+        "spend_more_than_earn": 0,
+        "spend_equal_to_earn": 60,
+        "spend_less_than_earn": 40
+      },
+      "marital_status": {
+        "single": 50,
+        "in_relationship": 10,
+        "married": 30,
+        "cohabiting": 10
+      },
+      "children": {
+        "have_children": 30,
+        "no_children": 70
+      },
+      "it_entry_age": {
+        "youngest": 19,
+        "median": 25,
+        "oldest": 34
+      },
+      "it_experience": {
+        "1-2_years": 10,
+        "3-5_years": 30,
+        "6-9_years": 30,
+        "10+_years": 10
+      },
+      "specialty_experience": {
+        "1-2_years": 20,
+        "3-5_years": 20,
+        "6-9_years": 30,
+        "10+_years": 20,
+        "comment": "10% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 10,
+        "middle": 10,
+        "senior": 30,
+        "team_tech_lead": 20
+      },
+      "english_proficiency": {
+        "pre_intermediate": 0,
+        "intermediate": 10,
+        "upper_intermediate": 50,
+        "advanced": 40,
+        "comment": "Немає людей, що володіють англійською на елементарному рівні"
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 0,
+        "unreal_engine": 0,
+        "other_engine": 0,
+        "none": 0
+      },
+      "location": {
+        "kyiv_region": 87.5,
+        "lviv_region": 0,
+        "kharkiv_region": 0,
+        "vinnytsia_region": 0,
+        "dnipro_region": 12.5,
+        "rivne_region": 0,
+        "poltava_region": 0,
+        "odesa_region": 0,
+        "ivano_frankivsk_region": 0,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 0,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 90,
+        "small_city": 10,
+        "rural_area": 0
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 20,
+        "foreign_legal_entity": 80,
+        "not_registered_salary_in_cash": 0
+      },
+      "employment_type": {
+        "gig_contract": 0,
+        "foreign_contract": 20,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 10,
+        "self_employed_fop": 70,
+        "not_registered_salary_in_cash": 0
+      },
+      "work_arrangement": {
+        "fully_remote": 80,
+        "mostly_remote": 20,
+        "mostly_office": 0,
+        "fully_office": 0,
+        "equally_remote_office": 0
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 90,
+        "receive": 10,
+        "received_before": 0
+      },
+      "salary_review_last_6_months": {
+        "no_review": 40,
+        "review_without_promotion": 20,
+        "review_due_to_new_company": 20,
+        "review_due_to_promotion": 20
+      },
+      "overtime_payment": {
+        "fully_paid": 40,
+        "partially_paid": 30,
+        "not_paid": 20,
+        "no_overtime": 10,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 10,
+        "mostly_satisfied": 80,
+        "not_satisfied": 10
+      },
+      "gaming_habits": {
+        "play_games": 90,
+        "do_not_play": 10
+      },
+      "gaming_platforms": {
+        "pc_laptop": 11,
+        "playstation": 11,
+        "xbox": 0,
+        "smartphone_tablet": 0,
+        "multiple_platforms": 78
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    },
+    "HR": {
+      "name": "HR",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba2a4d8928c88c03d7_HRmale.webp",
+      "description": "Полює на найкращих. Підсилює команду. Зібрано 46 анкету, з них 89% жінки та 11% чоловіки.",
+      "4-8": "Це лише перший крок на тернистому шляху пошуку талантів в хащах геймдеву. Цей світ жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Ти почуваєшся майже вільно на полюванні в хащах ринку. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "У пошуках найкращих тобі майже немає рівних. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі, ламаєш межі можливого та впольовуєш найкращих. Перед тобою відступають хаос і сумніви, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе було покликано полювати на кращих та підсилювати команду. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 1000,
+        "median": 2800,
+        "highest": 4500
+      },
+      "age": {
+        "youngest": 26,
+        "median": 33,
+        "oldest": 41
+      },
+      "working_hours_per_week": 80,
+      "financial_status": {
+        "spend_more_than_earn": 20,
+        "spend_equal_to_earn": 0,
+        "spend_less_than_earn": 80
+      },
+      "marital_status": {
+        "single": 40,
+        "in_relationship": 20,
+        "married": 20,
+        "cohabiting": 20
+      },
+      "children": {
+        "have_children": 20,
+        "no_children": 80
+      },
+      "it_entry_age": {
+        "youngest": 21,
+        "median": 25,
+        "oldest": 26
+      },
+      "it_experience": {
+        "1-2_years": 0,
+        "3-5_years": 40,
+        "6-9_years": 40,
+        "10+_years": 20
+      },
+      "specialty_experience": {
+        "1-2_years": 0,
+        "3-5_years": 60,
+        "6-9_years": 40,
+        "10+_years": 0,
+        "comment": "0% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 0,
+        "middle": 37,
+        "senior": 25,
+        "team_tech_lead": 25
+      },
+      "english_proficiency": {
+        "pre_intermediate": 0,
+        "intermediate": 12,
+        "upper_intermediate": 62,
+        "advanced": 12,
+        "comment": "12% володіють англійською на елементарному рівні"
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 0,
+        "unreal_engine": 0,
+        "other_engine": 0,
+        "none": 0
+      },
+      "location": {
+        "kyiv_region": 60,
+        "lviv_region": 0,
+        "kharkiv_region": 0,
+        "vinnytsia_region": 0,
+        "dnipro_region": 20,
+        "rivne_region": 0,
+        "poltava_region": 0,
+        "odesa_region": 0,
+        "ivano_frankivsk_region": 20,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 0,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 100,
+        "small_city": 0,
+        "rural_area": 0
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 40,
+        "foreign_legal_entity": 60,
+        "not_registered_salary_in_cash": 0
+      },
+      "employment_type": {
+        "gig_contract": 20,
+        "foreign_contract": 0,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 0,
+        "self_employed_fop": 80,
+        "not_registered_salary_in_cash": 0
+      },
+      "work_arrangement": {
+        "fully_remote": 25,
+        "mostly_remote": 25,
+        "mostly_office": 0,
+        "fully_office": 50,
+        "equally_remote_office": 0
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 80,
+        "receive": 20,
+        "received_before": 0
+      },
+      "salary_review_last_6_months": {
+        "no_review": 60,
+        "review_without_promotion": 0,
+        "review_due_to_new_company": 40,
+        "review_due_to_promotion": 0
+      },
+      "overtime_payment": {
+        "fully_paid": 0,
+        "partially_paid": 20,
+        "not_paid": 20,
+        "no_overtime": 60,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 20,
+        "mostly_satisfied": 80,
+        "not_satisfied": 0
+      },
+      "gaming_habits": {
+        "play_games": 100,
+        "do_not_play": 0
+      },
+      "gaming_platforms": {
+        "pc_laptop": 0,
+        "playstation": 40,
+        "xbox": 0,
+        "smartphone_tablet": 0,
+        "multiple_platforms": 60
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    }
+  },
+  "female": {
+    "Software Engineer": {
+      "name": "Software Engineer",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbe5b0cf60e6cf7ede_Softwareengineerfemale.webp",
+      "description": "Заклинають алгоритми. Пишуть код для гри. Зібрано 271 анкету, з них 92% чоловіків та 8% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху оволодіння темною магією коду. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Ти заклинаєш алгоритми та без страху йдеш стежками, які оминають юні володарі темного коду. Твої вміння дають тобі змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Тебе було покликано володарювати над темною магією коду. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі та ламаєш межі можливого, а темна магія коду — невід'ємна частина тебе. Перед тобою відступають хаос і сумніви, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе покликано заклинати алгоритми та писати код для гри. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 500,
+        "median": 2000,
+        "highest": 4200
+      },
+      "age": {
+        "youngest": 20,
+        "median": 25,
+        "oldest": 39
+      },
+      "working_hours_per_week": 64,
+      "financial_status": {
+        "spend_more_than_earn": 4,
+        "spend_equal_to_earn": 32,
+        "spend_less_than_earn": 64
+      },
+      "marital_status": {
+        "single": 13.6,
+        "in_relationship": 41,
+        "married": 18.2,
+        "cohabiting": 27.2
+      },
+      "children": {
+        "have_children": 18.2,
+        "no_children": 81.8
+      },
+      "it_entry_age": {
+        "youngest": 17,
+        "median": 21,
+        "oldest": 28
+      },
+      "it_experience": {
+        "1-2_years": 23,
+        "3-5_years": 40,
+        "6-9_years": 23,
+        "10+_years": 14
+      },
+      "specialty_experience": {
+        "1-2_years": 32,
+        "3-5_years": 45,
+        "6-9_years": 4,
+        "10+_years": 5,
+        "comment": "14% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 30,
+        "middle": 43,
+        "senior": 17,
+        "team_tech_lead": 9
+      },
+      "english_proficiency": {
+        "pre_intermediate": 9,
+        "intermediate": 22,
+        "upper_intermediate": 52,
+        "advanced": 17,
+        "comment": ""
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 52,
+        "c++": 22,
+        "ruby": 4,
+        "javascript": 13,
+        "python": 4,
+        "typescript": 4,
+        "other_languages": 1
+      },
+      "game_engines": {
+        "unity": 36.4,
+        "unreal_engine": 4.5,
+        "other_engine": 4.5,
+        "none": 54.5
+      },
+      "location": {
+        "kyiv_region": 43.7,
+        "lviv_region": 18.7,
+        "kharkiv_region": 6.2,
+        "vinnytsia_region": 6.2,
+        "dnipro_region": 6.2,
+        "rivne_region": 0,
+        "poltava_region": 0,
+        "odesa_region": 0,
+        "ivano_frankivsk_region": 0,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 6.2,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 6.2,
+        "khmelnytskyi_region": 6.2,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 0,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 86.4,
+        "small_city": 9,
+        "rural_area": 4.6
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 60,
+        "foreign_legal_entity": 35,
+        "not_registered_salary_in_cash": 5
+      },
+      "employment_type": {
+        "gig_contract": 13.6,
+        "foreign_contract": 9,
+        "minimum_salary_rest_in_cash": 4.5,
+        "official_ukrainian_labor_code": 13.6,
+        "self_employed_fop": 54.5,
+        "not_registered_salary_in_cash": 4.5
+      },
+      "work_arrangement": {
+        "fully_remote": 68.2,
+        "mostly_remote": 9,
+        "mostly_office": 13.6,
+        "fully_office": 4.5,
+        "equally_remote_office": 4.5
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 77.3,
+        "receive": 18.2,
+        "received_before": 4.5
+      },
+      "salary_review_last_6_months": {
+        "no_review": 40.9,
+        "review_without_promotion": 22.7,
+        "review_due_to_new_company": 18.2,
+        "review_due_to_promotion": 18.2
+      },
+      "overtime_payment": {
+        "fully_paid": 22.7,
+        "partially_paid": 4.5,
+        "not_paid": 54.5,
+        "no_overtime": 18.2,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 22.7,
+        "mostly_satisfied": 63.6,
+        "not_satisfied": 13.6
+      },
+      "gaming_habits": {
+        "play_games": 54.6,
+        "do_not_play": 45.4
+      },
+      "gaming_platforms": {
+        "pc_laptop": 25,
+        "playstation": 16.7,
+        "xbox": 0,
+        "smartphone_tablet": 0,
+        "multiple_platforms": 58.3
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    },
+    "QA": {
+      "name": "QA",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb6f224bd9fcb03f5e_QAfemale.webp",
+      "description": "Винищують баги світлом тестів. Забезпечують стабільність. Зібрано 145 анкета, з них 64% чоловіків та 36% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху очищення коду від темряви. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Ти винищуєш баги світлом тестів і ти не новачок у цій справі. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Тебе було покликано очищувати темну магію коду. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі та ламаєш межі можливого. Перед тобою відступають хаос і баги, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе покликано винищувати баги світлом тестів та забезпечувати стабільність. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 300,
+        "median": 1800,
+        "highest": 5000
+      },
+      "age": {
+        "youngest": 20,
+        "median": 30,
+        "oldest": 40
+      },
+      "working_hours_per_week": 79,
+      "financial_status": {
+        "spend_more_than_earn": 13,
+        "spend_equal_to_earn": 50,
+        "spend_less_than_earn": 37
+      },
+      "marital_status": {
+        "single": 17.2,
+        "in_relationship": 15.4,
+        "married": 52,
+        "cohabiting": 15.4
+      },
+      "children": {
+        "have_children": 19.2,
+        "no_children": 80.8
+      },
+      "it_entry_age": {
+        "youngest": 18,
+        "median": 25,
+        "oldest": 33
+      },
+      "it_experience": {
+        "1-2_years": 15,
+        "3-5_years": 50,
+        "6-9_years": 27,
+        "10+_years": 6
+      },
+      "specialty_experience": {
+        "1-2_years": 19,
+        "3-5_years": 54,
+        "6-9_years": 21,
+        "10+_years": 0,
+        "comment": "6% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 20,
+        "middle": 31,
+        "senior": 31,
+        "team_tech_lead": 15
+      },
+      "english_proficiency": {
+        "pre_intermediate": 18,
+        "intermediate": 18,
+        "upper_intermediate": 44,
+        "advanced": 20,
+        "comment": ""
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 28.8,
+        "unreal_engine": 19.2,
+        "other_engine": 3.8,
+        "none": 46
+      },
+      "location": {
+        "kyiv_region": 56.8,
+        "lviv_region": 9,
+        "kharkiv_region": 6.8,
+        "vinnytsia_region": 6.8,
+        "dnipro_region": 9,
+        "rivne_region": 0,
+        "poltava_region": 0,
+        "odesa_region": 9,
+        "ivano_frankivsk_region": 0,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 2.3,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 86.6,
+        "small_city": 9.6,
+        "rural_area": 3.8
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 44.9,
+        "foreign_legal_entity": 55.1,
+        "not_registered_salary_in_cash": 0
+      },
+      "employment_type": {
+        "gig_contract": 23.1,
+        "foreign_contract": 9.6,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 15.4,
+        "self_employed_fop": 50,
+        "not_registered_salary_in_cash": 1.9
+      },
+      "work_arrangement": {
+        "fully_remote": 55.8,
+        "mostly_remote": 23.1,
+        "mostly_office": 9.6,
+        "fully_office": 3.8,
+        "equally_remote_office": 7.7
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 50,
+        "receive": 44.2,
+        "received_before": 5.8
+      },
+      "salary_review_last_6_months": {
+        "no_review": 47,
+        "review_without_promotion": 23.5,
+        "review_due_to_new_company": 5.9,
+        "review_due_to_promotion": 23.5
+      },
+      "overtime_payment": {
+        "fully_paid": 30.8,
+        "partially_paid": 5.8,
+        "not_paid": 26.9,
+        "no_overtime": 36.5,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 19.2,
+        "mostly_satisfied": 55.8,
+        "not_satisfied": 25
+      },
+      "gaming_habits": {
+        "play_games": 71.2,
+        "do_not_play": 28.8
+      },
+      "gaming_platforms": {
+        "pc_laptop": 24.3,
+        "playstation": 10.8,
+        "xbox": 0,
+        "smartphone_tablet": 2.7,
+        "multiple_platforms": 62.2
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    },
+    "Artist / Animator": {
+      "name": "Artist / Animator",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bcc68d2c0165533ba6_Artist_Animatorfemale.webp",
+      "description": "Оживлюють ілюзії у спрайтах та полігонах. Наповнюють гру образами. Зібрано 144 анкети, з них 63% чоловіків та 37% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху володарювання над пікселями та полігонами. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Ілюзії у твоїх спрайтах та полігонах майже, як живі. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Ілюзії у твоїх спрайтах та полігонах майже досконалі. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі, ламаєш межі можливого, а твої ілюзії з пікселів та полігонів не відрізнити від живих. Перед тобою відступають хаос і сумніви, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом",
+      "no-points": "Тебе було покликано оживляти ілюзії у спрайтах та полігонах, а також наповнювати гру образами.Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 400,
+        "median": 1400,
+        "highest": 16000
+      },
+      "age": {
+        "youngest": 18,
+        "median": 28,
+        "oldest": 45
+      },
+      "working_hours_per_week": 74,
+      "financial_status": {
+        "spend_more_than_earn": 17,
+        "spend_equal_to_earn": 49,
+        "spend_less_than_earn": 34
+      },
+      "marital_status": {
+        "single": 18.9,
+        "in_relationship": 18.9,
+        "married": 35.8,
+        "cohabiting": 26.4
+      },
+      "children": {
+        "have_children": 9.4,
+        "no_children": 90.6
+      },
+      "it_entry_age": {
+        "youngest": 15,
+        "median": 23,
+        "oldest": 36
+      },
+      "it_experience": {
+        "1-2_years": 23,
+        "3-5_years": 36,
+        "6-9_years": 19,
+        "10+_years": 11
+      },
+      "specialty_experience": {
+        "1-2_years": 30,
+        "3-5_years": 38,
+        "6-9_years": 15,
+        "10+_years": 6,
+        "comment": "11% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 26,
+        "middle": 37,
+        "senior": 15,
+        "team_tech_lead": 11
+      },
+      "english_proficiency": {
+        "pre_intermediate": 24,
+        "intermediate": 26,
+        "upper_intermediate": 31,
+        "advanced": 8,
+        "comment": ""
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 26.4,
+        "unreal_engine": 20.7,
+        "other_engine": 3.7,
+        "none": 45.3
+      },
+      "location": {
+        "kyiv_region": 41.3,
+        "lviv_region": 19.6,
+        "kharkiv_region": 4.3,
+        "vinnytsia_region": 4.3,
+        "dnipro_region": 6.5,
+        "rivne_region": 2.2,
+        "poltava_region": 2.2,
+        "odesa_region": 6.5,
+        "ivano_frankivsk_region": 2.2,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 2.2,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 2.2,
+        "chernivtsi_region": 4.3,
+        "sumy_region": 2.2,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 0,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 86.8,
+        "small_city": 9.4,
+        "rural_area": 3.8
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 54.9,
+        "foreign_legal_entity": 39.2,
+        "not_registered_salary_in_cash": 5.9
+      },
+      "employment_type": {
+        "gig_contract": 22.6,
+        "foreign_contract": 5.6,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 5.6,
+        "self_employed_fop": 60.44,
+        "not_registered_salary_in_cash": 5.6
+      },
+      "work_arrangement": {
+        "fully_remote": 73.6,
+        "mostly_remote": 7.5,
+        "mostly_office": 5.7,
+        "fully_office": 13.2,
+        "equally_remote_office": 0
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 83,
+        "receive": 13.2,
+        "received_before": 3.8
+      },
+      "salary_review_last_6_months": {
+        "no_review": 45.8,
+        "review_without_promotion": 14.6,
+        "review_due_to_new_company": 20.8,
+        "review_due_to_promotion": 18.7
+      },
+      "overtime_payment": {
+        "fully_paid": 9.4,
+        "partially_paid": 7.5,
+        "not_paid": 18.9,
+        "no_overtime": 62.3,
+        "freelance": 1.9
+      },
+      "salary_satisfaction": {
+        "satisfied": 13.2,
+        "mostly_satisfied": 67.9,
+        "not_satisfied": 18.9
+      },
+      "gaming_habits": {
+        "play_games": 73.6,
+        "do_not_play": 26.4
+      },
+      "gaming_platforms": {
+        "pc_laptop": 35.9,
+        "playstation": 5.1,
+        "xbox": 0,
+        "smartphone_tablet": 7.7,
+        "multiple_platforms": 51.3
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    },
+    "Game design": {
+      "name": "Game design",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba68cf943d2900a9ed_GameDesignerfemale.webp",
+      "description": "Варять зілля механік. Формують ігровий процес. Зібрано 86 анкет, з них 64% чоловіків та 36% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху формування ігрового досвіду. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Твоя трансмутація механік в ігровий досвід вже заслуговує на повагу. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Ти за крок від створення ідеальної формули ігрових механік. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі, ламаєш межі можливого та володарюєш над філософським каменем ігроладу. Перед тобою відступають хаос і сумніви, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе було покликано варити зілля механік та формувати ігровий процес. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 150,
+        "median": 1250,
+        "highest": 3000
+      },
+      "age": {
+        "youngest": 20,
+        "median": 29,
+        "oldest": 43
+      },
+      "working_hours_per_week": 65,
+      "financial_status": {
+        "spend_more_than_earn": 9,
+        "spend_equal_to_earn": 52,
+        "spend_less_than_earn": 39
+      },
+      "marital_status": {
+        "single": 22.6,
+        "in_relationship": 16.1,
+        "married": 35.5,
+        "cohabiting": 25.8
+      },
+      "children": {
+        "have_children": 12.9,
+        "no_children": 87.1
+      },
+      "it_entry_age": {
+        "youngest": 18,
+        "median": 25,
+        "oldest": 37
+      },
+      "it_experience": {
+        "1-2_years": 16,
+        "3-5_years": 35,
+        "6-9_years": 40,
+        "10+_years": 3
+      },
+      "specialty_experience": {
+        "1-2_years": 19,
+        "3-5_years": 42,
+        "6-9_years": 26,
+        "10+_years": 0,
+        "comment": "13% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 33,
+        "middle": 50,
+        "senior": 0,
+        "team_tech_lead": 6
+      },
+      "english_proficiency": {
+        "pre_intermediate": 17,
+        "intermediate": 50,
+        "upper_intermediate": 11,
+        "advanced": 22,
+        "comment": ""
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 48.4,
+        "unreal_engine": 3,
+        "other_engine": 9.7,
+        "none": 35.5
+      },
+      "location": {
+        "kyiv_region": 56,
+        "lviv_region": 8,
+        "kharkiv_region": 0,
+        "vinnytsia_region": 0,
+        "dnipro_region": 8,
+        "rivne_region": 4,
+        "poltava_region": 4,
+        "odesa_region": 4,
+        "ivano_frankivsk_region": 4,
+        "cherkasy_region": 4,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 4,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 4,
+        "other": 2
+      },
+      "settlement_type": {
+        "big_city": 80.6,
+        "small_city": 12.9,
+        "rural_area": 6.5
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 53.3,
+        "foreign_legal_entity": 43.3,
+        "not_registered_salary_in_cash": 3.3
+      },
+      "employment_type": {
+        "gig_contract": 25.8,
+        "foreign_contract": 9.7,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 19.4,
+        "self_employed_fop": 41.9,
+        "not_registered_salary_in_cash": 3.2
+      },
+      "work_arrangement": {
+        "fully_remote": 71,
+        "mostly_remote": 19.4,
+        "mostly_office": 6.5,
+        "fully_office": 3.2,
+        "equally_remote_office": 0
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 83.9,
+        "receive": 12.9,
+        "received_before": 3.2
+      },
+      "salary_review_last_6_months": {
+        "no_review": 46.7,
+        "review_without_promotion": 20,
+        "review_due_to_new_company": 13.3,
+        "review_due_to_promotion": 20
+      },
+      "overtime_payment": {
+        "fully_paid": 9.7,
+        "partially_paid": 6.4,
+        "not_paid": 32.3,
+        "no_overtime": 51.6,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 16.1,
+        "mostly_satisfied": 67.7,
+        "not_satisfied": 16.1
+      },
+      "gaming_habits": {
+        "play_games": 96.8,
+        "do_not_play": 3.2
+      },
+      "gaming_platforms": {
+        "pc_laptop": 13.3,
+        "playstation": 0,
+        "xbox": 0,
+        "smartphone_tablet": 0,
+        "multiple_platforms": 86.7
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    },
+    "Manager": {
+      "name": "Manager",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bae5b0cf60e6cf7e3b_Managerfemale.webp",
+      "description": "Закликають ресурси з потойбіччя. Контролюють процеси в команді. Зібрано 50 анкет, з них 60% чоловіків та 40% жінок.",
+      "4-8": "Це лише перший крок на тернистому шляху управління командами. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Завдяки тобі процеси в команді майже налаштовані. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "З тобою на чолі команди майже нездоланні і їх не лякають випробування, що зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі та ламаєш межі можливого. Перед тобою відступають майлстоуни та роадмапи, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе було покликано залучати ресурси з потойбіччя та контролювати процеси в команді. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 530,
+        "median": 2350,
+        "highest": 7000
+      },
+      "age": {
+        "youngest": 20,
+        "median": 31,
+        "oldest": 48
+      },
+      "working_hours_per_week": 72,
+      "financial_status": {
+        "spend_more_than_earn": 17,
+        "spend_equal_to_earn": 39,
+        "spend_less_than_earn": 44
+      },
+      "marital_status": {
+        "single": 16.7,
+        "in_relationship": 22.2,
+        "married": 27.8,
+        "cohabiting": 33.3
+      },
+      "children": {
+        "have_children": 11.1,
+        "no_children": 88.9
+      },
+      "it_entry_age": {
+        "youngest": 20,
+        "median": 25,
+        "oldest": 45
+      },
+      "it_experience": {
+        "1-2_years": 17,
+        "3-5_years": 28,
+        "6-9_years": 33,
+        "10+_years": 22
+      },
+      "specialty_experience": {
+        "1-2_years": 22,
+        "3-5_years": 44,
+        "6-9_years": 17,
+        "10+_years": 17,
+        "comment": "0% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 4,
+        "middle": 19,
+        "senior": 23,
+        "team_tech_lead": 27
+      },
+      "english_proficiency": {
+        "pre_intermediate": 0,
+        "intermediate": 15,
+        "upper_intermediate": 35,
+        "advanced": 50,
+        "comment": ""
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 50,
+        "unreal_engine": 5.6,
+        "other_engine": 0,
+        "none": 33.3
+      },
+      "location": {
+        "kyiv_region": 66.7,
+        "lviv_region": 6.6,
+        "kharkiv_region": 0,
+        "vinnytsia_region": 0,
+        "dnipro_region": 13.3,
+        "rivne_region": 6.6,
+        "poltava_region": 0,
+        "odesa_region": 6.6,
+        "ivano_frankivsk_region": 0,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 0,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 77.8,
+        "small_city": 11.1,
+        "rural_area": 11.1
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 22.2,
+        "foreign_legal_entity": 66.7,
+        "not_registered_salary_in_cash": 11.1
+      },
+      "employment_type": {
+        "gig_contract": 16.7,
+        "foreign_contract": 5.6,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 5.6,
+        "self_employed_fop": 60.1,
+        "not_registered_salary_in_cash": 11.1
+      },
+      "work_arrangement": {
+        "fully_remote": 44.4,
+        "mostly_remote": 44.4,
+        "mostly_office": 5.7,
+        "fully_office": 0,
+        "equally_remote_office": 5.7
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 61.1,
+        "receive": 22.2,
+        "received_before": 16.7
+      },
+      "salary_review_last_6_months": {
+        "no_review": 40,
+        "review_without_promotion": 13.3,
+        "review_due_to_new_company": 26.7,
+        "review_due_to_promotion": 20
+      },
+      "overtime_payment": {
+        "fully_paid": 11.1,
+        "partially_paid": 22.2,
+        "not_paid": 38.9,
+        "no_overtime": 27.8,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 22.2,
+        "mostly_satisfied": 55.6,
+        "not_satisfied": 22.2
+      },
+      "gaming_habits": {
+        "play_games": 83.3,
+        "do_not_play": 16.7
+      },
+      "gaming_platforms": {
+        "pc_laptop": 13.3,
+        "playstation": 6.7,
+        "xbox": 0,
+        "smartphone_tablet": 13.3,
+        "multiple_platforms": 66.7
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    },
+    "Marketing": {
+      "name": "Marketing",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba2eece2e9883a223c_Marketingfemale.webp",
+      "description": "Чарують рекламою. Просувають гру на ринку. Зібрано 30 анкет, з них 60% жінки та 40% чоловіки.",
+      "4-8": "Це лише перший крок на тернистому шляху просування гри. Світ геймдеву жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Твої таланти просувати ігри не викликають сумнівів та іноді цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "Просувати ігри важко, але не тобі. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі проєктів та ламаєш межі можливого. Перед тобою відступають рекламні стратегії та цільові аудиторії, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе було покликано чарувати рекламою та просувати ігри на ринку. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 800,
+        "median": 3250,
+        "highest": 4000
+      },
+      "age": {
+        "youngest": 23,
+        "median": 30,
+        "oldest": 34
+      },
+      "working_hours_per_week": 67,
+      "financial_status": {
+        "spend_more_than_earn": 6,
+        "spend_equal_to_earn": 44,
+        "spend_less_than_earn": 50
+      },
+      "marital_status": {
+        "single": 27.8,
+        "in_relationship": 11.1,
+        "married": 38.9,
+        "cohabiting": 22.2
+      },
+      "children": {
+        "have_children": 22.2,
+        "no_children": 77.8
+      },
+      "it_entry_age": {
+        "youngest": 20,
+        "median": 23,
+        "oldest": 29
+      },
+      "it_experience": {
+        "1-2_years": 22,
+        "3-5_years": 44,
+        "6-9_years": 28,
+        "10+_years": 6
+      },
+      "specialty_experience": {
+        "1-2_years": 17,
+        "3-5_years": 66,
+        "6-9_years": 17,
+        "10+_years": 0,
+        "comment": "0% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 0,
+        "middle": 33,
+        "senior": 33,
+        "team_tech_lead": 0
+      },
+      "english_proficiency": {
+        "pre_intermediate": 0,
+        "intermediate": 16,
+        "upper_intermediate": 67,
+        "advanced": 17,
+        "comment": ""
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 0,
+        "unreal_engine": 0,
+        "other_engine": 0,
+        "none": 0
+      },
+      "location": {
+        "kyiv_region": 80,
+        "lviv_region": 13.3,
+        "kharkiv_region": 0,
+        "vinnytsia_region": 0,
+        "dnipro_region": 0,
+        "rivne_region": 0,
+        "poltava_region": 0,
+        "odesa_region": 0,
+        "ivano_frankivsk_region": 6.7,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 0,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 94,
+        "small_city": 6,
+        "rural_area": 0
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 35.3,
+        "foreign_legal_entity": 58.8,
+        "not_registered_salary_in_cash": 5.9
+      },
+      "employment_type": {
+        "gig_contract": 0,
+        "foreign_contract": 11.1,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 5.6,
+        "self_employed_fop": 77.8,
+        "not_registered_salary_in_cash": 5.6
+      },
+      "work_arrangement": {
+        "fully_remote": 61.1,
+        "mostly_remote": 27.8,
+        "mostly_office": 5.6,
+        "fully_office": 0,
+        "equally_remote_office": 5.6
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 66.7,
+        "receive": 33.3,
+        "received_before": 0
+      },
+      "salary_review_last_6_months": {
+        "no_review": 50,
+        "review_without_promotion": 11.1,
+        "review_due_to_new_company": 22.2,
+        "review_due_to_promotion": 16.7
+      },
+      "overtime_payment": {
+        "fully_paid": 11.1,
+        "partially_paid": 5.6,
+        "not_paid": 38.9,
+        "no_overtime": 44.4,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 33.3,
+        "mostly_satisfied": 55.7,
+        "not_satisfied": 11.1
+      },
+      "gaming_habits": {
+        "play_games": 55.6,
+        "do_not_play": 44.4
+      },
+      "gaming_platforms": {
+        "pc_laptop": 20,
+        "playstation": 10,
+        "xbox": 0,
+        "smartphone_tablet": 10,
+        "multiple_platforms": 60
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    },
+    "HR": {
+      "name": "HR",
+      "avatar": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba6eef2da80d754428_HRfemale.webp",
+      "description": "Полює на найкращих. Підсилює команду. Зібрано 46 анкету, з них 89% жінки та 11% чоловіки.",
+      "4-8": "Це лише перший крок на тернистому шляху пошуку талантів в хащах геймдеву. Цей світ жорстокий, і зараз випробовує тебе. Без знань та досвіду тіні сумнівів огортають твій шлях. Та не лякайся – навіть з попелу можна піднятися, якщо горить вогонь прагнення.",
+      "9-14": "Ти почуваєшся майже вільно на полюванні в хащах ринку. Та цього замало. Твої вміння дають змогу вижити, але не завжди перемагати. Ти балансуєш між успіхом і невдачею, ніби по лезу меча. Ще кілька кроків, ще трохи знань – і темрява відступить.",
+      "15-20": "У пошуках найкращих тобі майже немає рівних. Пережиті тобою випробування зламали багатьох. Досвід викарбуваний у кожному твоєму рішенні, а навички – наче гостро відточена зброя. Але не варто забувати: навіть найсильніші можуть впасти, якщо припинять зростати.",
+      "21-25": "Ти вершиш долі, ламаєш межі можливого та впольовуєш найкращих. Перед тобою відступають хаос і сумніви, а задачі – лише тіні, що розвіюються під вагою твого досвіду. Ти створюєш і руйнуєш, не знаючи страху. Лише час стане твоїм єдиним ворогом.",
+      "no-points": "Тебе було покликано полювати на кращих та підсилювати команду. Тобі було відкрито завісу чисел і фактів. У кожному рішенні приховано шлях, у кожній цифрі – історія. Що ти винесеш із побаченого? Лише тобі вирішувати, куди рушити далі.",
+      "salary": {
+        "lowest": 300,
+        "median": 2000,
+        "highest": 8875
+      },
+      "age": {
+        "youngest": 22,
+        "median": 30,
+        "oldest": 48
+      },
+      "working_hours_per_week": 76,
+      "financial_status": {
+        "spend_more_than_earn": 19,
+        "spend_equal_to_earn": 37,
+        "spend_less_than_earn": 44
+      },
+      "marital_status": {
+        "single": 14.6,
+        "in_relationship": 19.6,
+        "married": 43.9,
+        "cohabiting": 21.9
+      },
+      "children": {
+        "have_children": 17.1,
+        "no_children": 82.9
+      },
+      "it_entry_age": {
+        "youngest": 19,
+        "median": 25,
+        "oldest": 41
+      },
+      "it_experience": {
+        "1-2_years": 7,
+        "3-5_years": 58,
+        "6-9_years": 25,
+        "10+_years": 10
+      },
+      "specialty_experience": {
+        "1-2_years": 10,
+        "3-5_years": 53,
+        "6-9_years": 27,
+        "10+_years": 10,
+        "comment": "0% людей з досвідом до 1 року"
+      },
+      "job_title": {
+        "junior": 4,
+        "middle": 41,
+        "senior": 25,
+        "team_tech_lead": 18
+      },
+      "english_proficiency": {
+        "pre_intermediate": 18,
+        "intermediate": 30,
+        "upper_intermediate": 41,
+        "advanced": 11,
+        "comment": ""
+      },
+      "primary_programming_language": {
+        "csharp_dotnet": 0,
+        "c++": 0,
+        "java": 0,
+        "javascript": 0,
+        "python": 0,
+        "typescript": 0,
+        "other_languages": 0
+      },
+      "game_engines": {
+        "unity": 0,
+        "unreal_engine": 0,
+        "other_engine": 0,
+        "none": 0
+      },
+      "location": {
+        "kyiv_region": 64,
+        "lviv_region": 7.7,
+        "kharkiv_region": 7.7,
+        "vinnytsia_region": 2.7,
+        "dnipro_region": 5,
+        "rivne_region": 5,
+        "poltava_region": 2.7,
+        "odesa_region": 5,
+        "ivano_frankivsk_region": 0,
+        "cherkasy_region": 0,
+        "uzhhorod_region": 0,
+        "mykolaiv_region": 0,
+        "zhytomyr_region": 0,
+        "chernihiv_region": 0,
+        "lutsk_volyn_region": 0,
+        "khmelnytskyi_region": 0,
+        "ternopil_region": 0,
+        "chernivtsi_region": 0,
+        "sumy_region": 0,
+        "kropyvnytskyi_region": 0,
+        "zaporizhzhia_region": 0,
+        "other": 0
+      },
+      "settlement_type": {
+        "big_city": 92.5,
+        "small_city": 7.5,
+        "rural_area": 0
+      },
+      "contract_with": {
+        "ukrainian_legal_entity": 65,
+        "foreign_legal_entity": 35,
+        "not_registered_salary_in_cash": 0
+      },
+      "employment_type": {
+        "gig_contract": 4.9,
+        "foreign_contract": 2.4,
+        "minimum_salary_rest_in_cash": 0,
+        "official_ukrainian_labor_code": 24.4,
+        "self_employed_fop": 63.4,
+        "not_registered_salary_in_cash": 4.9
+      },
+      "work_arrangement": {
+        "fully_remote": 38.5,
+        "mostly_remote": 38.5,
+        "mostly_office": 10.3,
+        "fully_office": 5.1,
+        "equally_remote_office": 7.7
+      },
+      "monetary_bonuses": {
+        "do_not_receive": 53.7,
+        "receive": 39,
+        "received_before": 7.3
+      },
+      "salary_review_last_6_months": {
+        "no_review": 48.7,
+        "review_without_promotion": 38.5,
+        "review_due_to_new_company": 5.1,
+        "review_due_to_promotion": 7.7
+      },
+      "overtime_payment": {
+        "fully_paid": 9.8,
+        "partially_paid": 9.8,
+        "not_paid": 26.8,
+        "no_overtime": 53.7,
+        "freelance": 0
+      },
+      "salary_satisfaction": {
+        "satisfied": 26.8,
+        "mostly_satisfied": 61,
+        "not_satisfied": 12.2
+      },
+      "gaming_habits": {
+        "play_games": 31.7,
+        "do_not_play": 68.3
+      },
+      "gaming_platforms": {
+        "pc_laptop": 38.5,
+        "playstation": 7.7,
+        "xbox": 0,
+        "smartphone_tablet": 0,
+        "multiple_platforms": 53.8
+      },
+      "retro_consoles": {
+        "snes_nes": 0,
+        "sega_mega_drive": 0,
+        "ps1": 0,
+        "ps2": 0,
+        "nintendo_ds_3ds": 0,
+        "game_boy": 0,
+        "psp": 0,
+        "ps_vita": 0
+      }
+    }
+  },
+  "artefacts": {
+    "children": {
+      "have_children": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba753103049a3a0e29_have-children.webp",
+      "no_children": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb0870da9f538371fe_no-children.webp"
+    },
+    "salary": {
+      "lowest": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb753103049a3a0e33_lowest.webp",
+      "median": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba98f0bd6903f2b9d6_median.webp",
+      "highest": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092baae40707c0ac77c41_highest.webp"
+    },
+    "marital_status": {
+      "single": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb1a111b8e3f33f846_single.webp",
+      "in_relationship": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba26203a5a4ff2ef0b_in_relationship.webp",
+      "married": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb68cf943d2900aa68_married.webp",
+      "cohabiting": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bcf5dcb7ca5543bbff_cohabiting.webp"
+    },
+    "salary_satisfaction": {
+      "satisfied": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb54f21dfa7f7c10eb_satisfied.webp",
+      "mostly_satisfied": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbe99a8d0d209710c1_mostly_satisfied.webp",
+      "not_satisfied": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbd8bc3deb1064a258_not_satisfied.webp"
+    },
+    "it_experience": {
+      "1-2_years": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bba19c9ba3ed1e8207_1-2_years.webp",
+      "3-5_years": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bc121a3b79ca8651dc_3-5_years.webp",
+      "6-9_years": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb092972a3b0185328_6-9_years.webp",
+      "10+_years": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbb1682cc3d6cad48d_10%2B_years.webp"
+    },
+    "monetary_bonuses": {
+      "do_not_receive": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bae99a8d0d20970fe5_do_not_receive.webp",
+      "receive": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbbf10a104fd9dac2d_receive.webp",
+      "received_before": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb268d8da9e9c8dee9_received_before.webp"
+    }
+  },
+  "bosses": {
+    "Deadline": {
+      "name": "Дедлайн",
+      "description": "Ті, хто не стежив за пісками часу, пізнають його кару",
+      "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092baeee6fd57f6693dd9_Deadline.webp",
+      "points": "2",
+      "damage": "2"
+    },
+    "Burnout": {
+      "name": "Вигорання",
+      "description": "Колись він палав жагою творити, а тепер лише тліє",
+      "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bc41c092c8f7ddb5b7_Burnout.webp",
+      "points": "3",
+      "damage": "2"
+    },
+    "Overtime": {
+      "name": "Овертайм",
+      "description": "Він так довго кував своє світло, що зрештою став його в’язнем",
+      "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092baa78e38104b5e61e9_Overtime.webp",
+      "points": "3",
+      "damage": "2"
+    },
+    "Layoff": {
+      "name": "Скорочення",
+      "description": "Список складено. Він прийде без попередження і лише обрані уникнуть його вироку",
+      "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba8555a002fde9da9d_Layoff.webp",
+      "points": "6",
+      "damage": "2"
+    }
+  }
+}
