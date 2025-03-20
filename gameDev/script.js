@@ -665,10 +665,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".exp-spec-line-6-9").style.height = professionData.specialty_experience["6-9_years"] + "%";
         document.querySelector(".exp-spec-line-10").style.height = professionData.specialty_experience["10+_years"] + "%";
 
-        document.querySelector(".p-10-gilroy-2.title-junior").textContent = professionData.job_title["junior"] + "%";
-        document.querySelector(".p-10-gilroy-2.title-middle").textContent = professionData.job_title["middle"] + "%";
-        document.querySelector(".p-10-gilroy-2.title-senior").textContent = professionData.job_title["senior"] + "%";
-        document.querySelector(".p-10-gilroy-2.title-team-lead").textContent = professionData.job_title["team_tech_lead"] + "%";
+        document.querySelector(".p-10-gilroy.title-junior").textContent = professionData.job_title["junior"] + "%";
+        document.querySelector(".p-10-gilroy.title-middle").textContent = professionData.job_title["middle"] + "%";
+        document.querySelector(".p-10-gilroy.title-senior").textContent = professionData.job_title["senior"] + "%";
+        document.querySelector(".p-10-gilroy.title-team-lead").textContent = professionData.job_title["team_tech_lead"] + "%";
 
         document.querySelector(".junior-block").style.height = professionData.job_title["junior"] + "%";
         document.querySelector(".middle-block").style.height = professionData.job_title["middle"] + "%";
