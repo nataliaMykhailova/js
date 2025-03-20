@@ -637,8 +637,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".have-children").textContent = professionData.children.have_children;
         document.querySelector(".no-children").textContent = professionData.children.no_children;
 
-        document.querySelectorAll(".static-line_track-wrapper-gd")[3].style.width = professionData.children.have_children + "%";
-        document.querySelectorAll(".static-line_track-wrapper-gd")[4].style.width = professionData.children.no_children + "%";
+        document.querySelectorAll(".static-line_track-wrapper-gd-2")[3].style.width = professionData.children.have_children + "%";
+        document.querySelectorAll(".static-line_track-wrapper-gd-2")[4].style.width = professionData.children.no_children + "%";
 
         document.querySelector(".age-it-min").textContent = professionData.it_entry_age.youngest;
         document.querySelector(".age-it-average").textContent = professionData.it_entry_age.median;
