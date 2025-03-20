@@ -618,9 +618,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".spendequalearn").textContent = professionData.financial_status.spend_equal_to_earn;
         document.querySelector(".ernmore").textContent = professionData.financial_status.spend_less_than_earn;
 
-        document.querySelectorAll(".static-line_track-wrapper-gd")[0].style.width = professionData.financial_status.spend_more_than_earn + "%";
-        document.querySelectorAll(".static-line_track-wrapper-gd")[1].style.width = professionData.financial_status.spend_equal_to_earn + "%";
-        document.querySelectorAll(".static-line_track-wrapper-gd")[2].style.width = professionData.financial_status.spend_less_than_earn + "%";
+        document.querySelectorAll(".static-line_track-wrapper-gd-2")[0].style.width = professionData.financial_status.spend_more_than_earn + "%";
+        document.querySelectorAll(".static-line_track-wrapper-gd-2")[1].style.width = professionData.financial_status.spend_equal_to_earn + "%";
+        document.querySelectorAll(".static-line_track-wrapper-gd-2")[2].style.width = professionData.financial_status.spend_less_than_earn + "%";
 
 
         document.querySelector(".family-single").textContent = professionData.marital_status.single;
