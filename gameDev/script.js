@@ -1205,6 +1205,8 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("✅ Логіка вибору рівня англійської ініціалізована");
     }
 
+    console.log('v-1')
+
     initLanguageSelection();
 
 
