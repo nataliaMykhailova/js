@@ -1171,12 +1171,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 langButton.classList.add("active");
                 langTextWrapper.classList.add("active");
 
-                // ✅ Оновлення значення текстового блоку
-                const textElement = langTextWrapper.querySelector("p.lang-text");
-                if (textElement) {
-                    textElement.textContent = points * 10 + "%"; // Наприклад, можна динамічно оновити відсотки
-                }
-
                 // ✅ Оновлення балів
                 addUserPoints("langPoints", points);
                 console.log(`✅ Вибрано рівень: ${selectedLevel}, Бали: ${points}`);
