@@ -744,21 +744,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-        function selectProfession(selectedItem) {
-            document.querySelectorAll(".character-item_wrapper-gd").forEach(item => {
-                item.style.opacity = "0.5";
-                item.querySelector(".character-img-gd").style.filter = "none";
-            });
-
-            selectedItem.style.opacity = "1";
-            selectedItem.querySelector(".character-img-gd").style.filter = "drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))";
-
-            userData.profession = selectedItem.querySelector(".character-name-gd").textContent.trim();
-            userData.avatar = selectedItem.querySelector(".character-img-gd").src;
-
-            console.log("🎯 Вибрана професія:", userData.profession);
-            filterAndUpdateData();
-        }
+        // function selectProfession(selectedItem) {
+        //     document.querySelectorAll(".character-item_wrapper-gd").forEach(item => {
+        //         item.style.opacity = "0.5";
+        //         item.querySelector(".character-img-gd").style.filter = "none";
+        //     });
+        //
+        //     selectedItem.style.opacity = "1";
+        //     selectedItem.querySelector(".character-img-gd").style.filter = "drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))";
+        //
+        //     userData.profession = selectedItem.querySelector(".character-name-gd").textContent.trim();
+        //     userData.avatar = selectedItem.querySelector(".character-img-gd").src;
+        //
+        //     console.log("🎯 Вибрана професія:", userData.profession);
+        //     filterAndUpdateData();
+        // }
     }
 
 // присвоєння артефактів зарплати
@@ -1147,54 +1147,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ======== Вибір рівня англійської мови ======== //
     setTimeout(() => {
-        const langButtons = document.querySelectorAll(".finances-tab-gd-2");
-        const langTexts = document.querySelectorAll(".static-text_wrapper-gd-2 p.lang-text");
+        const langContainers = document.querySelectorAll(".lang-row_wrapper-gd.lang");
 
-        langButtons.forEach(button => {
-            button.addEventListener("click", function () {
-                // Видаляємо клас active з усіх кнопок і текстів
-                langButtons.forEach(btn => btn.classList.remove("active"));
-                langTexts.forEach(txt => txt.parentElement.classList.remove("active"));
+        langContainers.forEach(langContainer => {
+            const langButton = langContainer.querySelector(".finances-tab-gd-2");
+            const langTextWrapper = langContainer.querySelector(".static-text_wrapper-gd-2");
+
+            if (!langButton || !langTextWrapper) {
+                console.error("❌ Відсутня кнопка або текстовий блок у", langContainer);
+                return;
+            }
+
+            langButton.addEventListener("click", function () {
+                // Видаляємо клас active тільки в цьому блоці
+                langContainer.querySelectorAll(".finances-tab-gd-2").forEach(btn => btn.classList.remove("active"));
+                langContainer.querySelectorAll(".static-text_wrapper-gd-2").forEach(txt => txt.classList.remove("active"));
 
                 let selectedLevel = "";
                 let points = 0;
 
-                if (this.classList.contains("pre-intermediate-btn")) {
+                if (langButton.classList.contains("pre-intermediate-btn")) {
                     selectedLevel = "pre-intermediate";
                     points = 1;
-                } else if (this.classList.contains("intermediate-btn")) {
+                } else if (langButton.classList.contains("intermediate-btn")) {
                     selectedLevel = "intermediate";
                     points = 2;
-                } else if (this.classList.contains("upper-intermediate-btn")) {
+                } else if (langButton.classList.contains("upper-intermediate-btn")) {
                     selectedLevel = "upper-intermediate";
                     points = 3;
-                } else if (this.classList.contains("advanced-btn")) {
+                } else if (langButton.classList.contains("advanced-btn")) {
                     selectedLevel = "advanced";
                     points = 4;
                 }
 
-                // Додаємо клас active до вибраного блоку
-                this.classList.add("active");
-                const selectedTextWrapper = document.querySelector(`.${selectedLevel}-text`).parentElement;
-                if (selectedTextWrapper) {
-                    selectedTextWrapper.classList.add("active");
-                } else {
-                    console.error(`❌ Помилка: Елемент .${selectedLevel}-text не знайдено!`);
-                }
+                // Додаємо active до кнопки і тексту тільки в цьому блоці
+                langButton.classList.add("active");
+                langTextWrapper.classList.add("active");
 
                 // Присвоюємо бали у userData.points.langPoints
                 addUserPoints("langPoints", points);
                 console.log(`✅ Вибрано рівень: ${selectedLevel}, Бали: ${points}`);
             });
         });
-
-        function addUserPoints(category, points) {
-            if (!userData.points) {
-                userData.points = {};
-            }
-            userData.points[category] = points;
-            console.log(`🎯 Користувач отримав ${points} бал(ів) за ${category}`);
-        }
 
         console.log("✅ Логіка вибору рівня англійської ініціалізована");
     }, 500);
