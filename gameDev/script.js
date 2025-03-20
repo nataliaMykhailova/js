@@ -1140,7 +1140,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         langContainers.forEach(langContainer => {
             const langButtons = langContainer.querySelectorAll(".finances-tab-gd-2");
-            const langTextWrappers = langContainer.querySelectorAll(".static-text_wrapper-gd-2");
 
             langButtons.forEach(langButton => {
                 langButton.addEventListener("click", function () {
