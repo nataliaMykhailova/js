@@ -1069,10 +1069,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let isDragging = false;
     let positions = [0, 33, 66, 98];
     let selectedIndex = null;
-    userData.jobTitle = "";
+    let userData = { jobTitle: "" };
 
     function setActiveTitle(index) {
-        // Знімаємо клас active з усіх блоків
         titleBlocks.forEach(block => block.classList.remove("active"));
 
         if (index !== null) {
@@ -1105,12 +1104,13 @@ document.addEventListener("DOMContentLoaded", function () {
         let rect = track.getBoundingClientRect();
         let x = ((thumb.getBoundingClientRect().left - rect.left) / rect.width) * 100;
 
-        let closestIndex = positions.reduce((prev, curr, idx) => Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0);
+        let closestIndex = positions.reduce((prev, curr, idx) =>
+            Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
+        );
 
-        if (selectedIndex === null) {
-            selectedIndex = closestIndex; // ✅ Встановлюємо вибір після першого руху
-            setActiveTitle(closestIndex);
-        }
+        // ✅ Оновлюємо selectedIndex кожен раз, а не тільки при першому русі
+        selectedIndex = closestIndex;
+        setActiveTitle(closestIndex);
     }
 
     function dragMove(event) {
@@ -1132,7 +1132,8 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchend", stopDrag);
 
-    moveThumb(0);
+// Початкове положення
+    setActiveTitle(0);
 
 
     // ======== Вибір рівня англійської мови ======== //
