@@ -743,22 +743,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-
-        // function selectProfession(selectedItem) {
-        //     document.querySelectorAll(".character-item_wrapper-gd").forEach(item => {
-        //         item.style.opacity = "0.5";
-        //         item.querySelector(".character-img-gd").style.filter = "none";
-        //     });
-        //
-        //     selectedItem.style.opacity = "1";
-        //     selectedItem.querySelector(".character-img-gd").style.filter = "drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))";
-        //
-        //     userData.profession = selectedItem.querySelector(".character-name-gd").textContent.trim();
-        //     userData.avatar = selectedItem.querySelector(".character-img-gd").src;
-        //
-        //     console.log("🎯 Вибрана професія:", userData.profession);
-        //     filterAndUpdateData();
-        // }
     }
 
 // присвоєння артефактів зарплати
