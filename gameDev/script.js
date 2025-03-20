@@ -1084,7 +1084,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let isDragging = false;
     let positions = [0, 33, 66, 98];
-    let selectedIndex = null; // По дефолту Job Title не вибраний
+    let selectedIndex = null;
+    userData.jobTitle = "";
 
     function setActiveTitle(index) {
         // Знімаємо клас active з усіх блоків
@@ -1147,16 +1148,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchend", stopDrag);
 
-// Початкове положення повзунка ❌ Без вибору Job Title
     moveThumb(0);
 
-// ❌ Бали не нараховуються до вибору користувача
-    addUserPoints("titlePoints", 0);
-    userData.jobTitle = "";
-    console.log("🔹 Початковий стан: Job Title не вибрано, бали = 0");
 
     // ======== Вибір рівня англійської мови ======== //
-    setTimeout(() => {
+    function initLanguageSelection() {
         const langContainers = document.querySelectorAll(".lang-row_wrapper-gd.lang");
 
         langContainers.forEach(langContainer => {
@@ -1190,18 +1186,28 @@ document.addEventListener("DOMContentLoaded", function () {
                     points = 4;
                 }
 
-                // Додаємо active до кнопки і тексту тільки в цьому блоці
+                // ✅ Додаємо `active` тільки у вибраний контейнер
                 langButton.classList.add("active");
                 langTextWrapper.classList.add("active");
 
-                // Присвоюємо бали у userData.points.langPoints
+                // ✅ Оновлення значення текстового блоку
+                const textElement = langTextWrapper.querySelector("p.lang-text");
+                if (textElement) {
+                    textElement.textContent = points * 10 + "%"; // Наприклад, можна динамічно оновити відсотки
+                }
+
+                // ✅ Оновлення балів
                 addUserPoints("langPoints", points);
                 console.log(`✅ Вибрано рівень: ${selectedLevel}, Бали: ${points}`);
             });
         });
 
         console.log("✅ Логіка вибору рівня англійської ініціалізована");
-    }, 500);
+    }
+
+    initLanguageSelection();
+
+
 });
 
 
