@@ -1135,45 +1135,45 @@ document.addEventListener("DOMContentLoaded", function () {
     // ======== Вибір рівня англійської мови ======== //
     function initLanguageSelection() {
         const langContainers = document.querySelectorAll(".lang-row_wrapper-gd.lang");
+        const allLangButtons = document.querySelectorAll(".finances-tab-gd-2");
+        const allLangTextWrappers = document.querySelectorAll(".static-text_wrapper-gd-2");
 
         langContainers.forEach(langContainer => {
-            const langButton = langContainer.querySelector(".finances-tab-gd-2");
-            const langTextWrapper = langContainer.querySelector(".static-text_wrapper-gd-2");
+            const langButtons = langContainer.querySelectorAll(".finances-tab-gd-2");
+            const langTextWrappers = langContainer.querySelectorAll(".static-text_wrapper-gd-2");
 
-            if (!langButton || !langTextWrapper) {
-                console.error("❌ Відсутня кнопка або текстовий блок у", langContainer);
-                return;
-            }
+            langButtons.forEach(langButton => {
+                langButton.addEventListener("click", function () {
+                    // Видаляємо `active` у всіх кнопок та текстових блоків перед додаванням нового активного
+                    allLangButtons.forEach(btn => btn.classList.remove("active"));
+                    allLangTextWrappers.forEach(txt => txt.classList.remove("active"));
 
-            langButton.addEventListener("click", function () {
-                // Видаляємо клас active тільки в цьому блоці
-                langContainer.querySelectorAll(".finances-tab-gd-2").forEach(btn => btn.classList.remove("active"));
-                langContainer.querySelectorAll(".static-text_wrapper-gd-2").forEach(txt => txt.classList.remove("active"));
+                    let selectedLevel = "";
+                    let points = 0;
 
-                let selectedLevel = "";
-                let points = 0;
+                    if (langButton.classList.contains("pre-intermediate-btn")) {
+                        selectedLevel = "pre-intermediate";
+                        points = 1;
+                    } else if (langButton.classList.contains("intermediate-btn")) {
+                        selectedLevel = "intermediate";
+                        points = 2;
+                    } else if (langButton.classList.contains("upper-intermediate-btn")) {
+                        selectedLevel = "upper-intermediate";
+                        points = 3;
+                    } else if (langButton.classList.contains("advanced-btn")) {
+                        selectedLevel = "advanced";
+                        points = 4;
+                    }
 
-                if (langButton.classList.contains("pre-intermediate-btn")) {
-                    selectedLevel = "pre-intermediate";
-                    points = 1;
-                } else if (langButton.classList.contains("intermediate-btn")) {
-                    selectedLevel = "intermediate";
-                    points = 2;
-                } else if (langButton.classList.contains("upper-intermediate-btn")) {
-                    selectedLevel = "upper-intermediate";
-                    points = 3;
-                } else if (langButton.classList.contains("advanced-btn")) {
-                    selectedLevel = "advanced";
-                    points = 4;
-                }
+                    // ✅ Додаємо `active` тільки для вибраного рівня
+                    langButton.classList.add("active");
+                    const selectedTextWrapper = langContainer.querySelector(".static-text_wrapper-gd-2");
+                    if (selectedTextWrapper) selectedTextWrapper.classList.add("active");
 
-                // ✅ Додаємо `active` тільки у вибраний контейнер
-                langButton.classList.add("active");
-                langTextWrapper.classList.add("active");
-
-                // ✅ Оновлення балів
-                addUserPoints("langPoints", points);
-                console.log(`✅ Вибрано рівень: ${selectedLevel}, Бали: ${points}`);
+                    // ✅ Оновлення балів
+                    addUserPoints("langPoints", points);
+                    console.log(`✅ Вибрано рівень: ${selectedLevel}, Бали: ${points}`);
+                });
             });
         });
 
