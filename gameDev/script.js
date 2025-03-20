@@ -1084,20 +1084,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let isDragging = false;
     let positions = [0, 33, 66, 98];
-    let defaultIndex = 0;
+    let selectedIndex = null; // По дефолту Job Title не вибрано
 
     function setActiveTitle(index) {
+        // Знімаємо клас active з усіх блоків
         titleBlocks.forEach(block => block.classList.remove("active"));
-        titleBlocks[index].classList.add("active");
 
-        let jobTitle = ["junior", "middle", "senior", "team_tech_lead"][index];
-        let points = index + 1;
+        if (index !== null) {
+            titleBlocks[index].classList.add("active");
 
+            let jobTitle = ["junior", "middle", "senior", "team_tech_lead"][index];
+            let points = index + 1;
+            addUserPoints("titlePoints", points);
+            console.log(`📌 Вибрано: ${jobTitle} (Бали: ${points})`);
+            userData.jobTitle = jobTitle;
 
-        addUserPoints("titlePoints", points);
-        console.log(`📌 Вибрано: ${jobTitle} (Бали: ${points})`);
-        userData.jobTitle = jobTitle;
-        moveThumb(positions[index]);
+            moveThumb(positions[index]);
+        }
     }
 
     function moveThumb(value) {
@@ -1117,6 +1120,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let x = ((thumb.getBoundingClientRect().left - rect.left) / rect.width) * 100;
 
         let closestIndex = positions.reduce((prev, curr, idx) => Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0);
+        selectedIndex = closestIndex; // Зберігаємо вибір
         setActiveTitle(closestIndex);
     }
 
@@ -1133,28 +1137,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
     thumb.addEventListener("mousedown", startDrag);
     thumb.addEventListener("touchstart", startDrag, {passive: false});
-
     document.addEventListener("mousemove", dragMove);
     document.addEventListener("touchmove", dragMove, {passive: false});
-
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchend", stopDrag);
 
-    setActiveTitle(0)
+    // Початкове положення повзунка (не вибрано)
+    moveThumb(0);
 
-
-
+    // ======== Вибір рівня англійської мови ======== //
     setTimeout(() => {
         const langButtons = document.querySelectorAll(".finances-tab-gd-2");
-        const langTexts = document.querySelectorAll(".static-text_wrapper-gd-2");
+        const langTexts = document.querySelectorAll(".static-text_wrapper-gd-2 p.lang-text");
 
         langButtons.forEach(button => {
             button.addEventListener("click", function () {
-                // Видаляємо активний клас з усіх кнопок і текстів
+                // Видаляємо клас active з усіх кнопок і текстів
                 langButtons.forEach(btn => btn.classList.remove("active"));
-                langTexts.forEach(txt => txt.classList.remove("active"));
+                langTexts.forEach(txt => txt.parentElement.classList.remove("active"));
 
-                // Визначаємо, який рівень вибрано, і додаємо активний клас до відповідного тексту
                 let selectedLevel = "";
                 let points = 0;
 
@@ -1172,10 +1173,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     points = 4;
                 }
 
-                // Перевіряємо, чи існує відповідний блок перед додаванням класу
-                const selectedText = document.querySelector(`.${selectedLevel}-text`);
-                if (selectedText) {
-                    selectedText.classList.add("active");
+                // Додаємо клас active до вибраного блоку
+                this.classList.add("active");
+                const selectedTextWrapper = document.querySelector(`.${selectedLevel}-text`).parentElement;
+                if (selectedTextWrapper) {
+                    selectedTextWrapper.classList.add("active");
                 } else {
                     console.error(`❌ Помилка: Елемент .${selectedLevel}-text не знайдено!`);
                 }
