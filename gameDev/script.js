@@ -1084,7 +1084,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let isDragging = false;
     let positions = [0, 33, 66, 98];
-    let selectedIndex = null; // По дефолту Job Title не вибрано
+    let selectedIndex = null; // По дефолту Job Title не вибраний
 
     function setActiveTitle(index) {
         // Знімаємо клас active з усіх блоків
