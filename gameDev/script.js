@@ -1095,6 +1095,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let jobTitle = ["junior", "middle", "senior", "team_tech_lead"][index];
             let points = index + 1;
+
             addUserPoints("titlePoints", points);
             console.log(`📌 Вибрано: ${jobTitle} (Бали: ${points})`);
             userData.jobTitle = jobTitle;
@@ -1120,8 +1121,11 @@ document.addEventListener("DOMContentLoaded", function () {
         let x = ((thumb.getBoundingClientRect().left - rect.left) / rect.width) * 100;
 
         let closestIndex = positions.reduce((prev, curr, idx) => Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0);
-        selectedIndex = closestIndex; // Зберігаємо вибір
-        setActiveTitle(closestIndex);
+
+        if (selectedIndex === null) {
+            selectedIndex = closestIndex; // ✅ Встановлюємо вибір після першого руху
+            setActiveTitle(closestIndex);
+        }
     }
 
     function dragMove(event) {
@@ -1135,15 +1139,21 @@ document.addEventListener("DOMContentLoaded", function () {
         moveThumb(x);
     }
 
+// Додаємо обробники подій
     thumb.addEventListener("mousedown", startDrag);
-    thumb.addEventListener("touchstart", startDrag, {passive: false});
+    thumb.addEventListener("touchstart", startDrag, { passive: false });
     document.addEventListener("mousemove", dragMove);
-    document.addEventListener("touchmove", dragMove, {passive: false});
+    document.addEventListener("touchmove", dragMove, { passive: false });
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchend", stopDrag);
 
-    // Початкове положення повзунка (не вибрано)
+// Початкове положення повзунка ❌ Без вибору Job Title
     moveThumb(0);
+
+// ❌ Бали не нараховуються до вибору користувача
+    addUserPoints("titlePoints", 0);
+    userData.jobTitle = "";
+    console.log("🔹 Початковий стан: Job Title не вибрано, бали = 0");
 
     // ======== Вибір рівня англійської мови ======== //
     setTimeout(() => {
