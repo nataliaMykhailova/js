@@ -1069,10 +1069,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let isDragging = false;
     let positions = [0, 33, 66, 98];
     let selectedIndex = null;
-    let userData = { jobTitle: "" };
 
     function setActiveTitle(index) {
-        // Видаляємо клас active з усіх блоків
         titleBlocks.forEach(block => block.classList.remove("active"));
 
         if (index !== null) {
@@ -1109,7 +1107,7 @@ document.addEventListener("DOMContentLoaded", function () {
             Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
         );
 
-        // ✅ Оновлюємо selectedIndex кожен раз
+        // ✅ Оновлюємо selectedIndex кожен раз, а не тільки при першому русі
         selectedIndex = closestIndex;
         setActiveTitle(closestIndex);
     }
@@ -1132,9 +1130,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("touchmove", dragMove, { passive: false });
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchend", stopDrag);
-
-// Початкове положення
-    setActiveTitle(0);
 
 
     // ======== Вибір рівня англійської мови ======== //
