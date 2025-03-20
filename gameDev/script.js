@@ -1072,6 +1072,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let userData = { jobTitle: "" };
 
     function setActiveTitle(index) {
+        // Видаляємо клас active з усіх блоків
         titleBlocks.forEach(block => block.classList.remove("active"));
 
         if (index !== null) {
@@ -1108,7 +1109,7 @@ document.addEventListener("DOMContentLoaded", function () {
             Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
         );
 
-        // ✅ Оновлюємо selectedIndex кожен раз, а не тільки при першому русі
+        // ✅ Оновлюємо selectedIndex кожен раз
         selectedIndex = closestIndex;
         setActiveTitle(closestIndex);
     }
