@@ -1064,7 +1064,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const track = document.querySelector(".title-truck_gd");
     const thumb = document.querySelector(".title-trumb-gd");
-    const titleBlocks = document.querySelectorAll(".title-block_item-gd");
+    const titleBlocks = document.querySelectorAll(".title-block_item-gd-2");
 
     let isDragging = false;
     let positions = [0, 33, 66, 98];
