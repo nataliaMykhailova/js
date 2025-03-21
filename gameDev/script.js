@@ -703,25 +703,25 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".is--other-line").style.height = professionData.game_engines["other_engine"] + "%";
 
         document.querySelector(".p-10-gilroy.gold.csharp_dotnet").textContent = professionData.primary_programming_language["csharp_dotnet"] + "%";
-        document.querySelector(".programming-fill-gd.csharp_dotnet").style.height = professionData.primary_programming_language["csharp_dotnet"] + "%";
+        document.querySelector(".programming-fill-gd.csharp_dotnet").style.width = professionData.primary_programming_language["csharp_dotnet"] + "%";
 
         document.querySelector(".p-10-gilroy.gold.java").textContent = professionData.primary_programming_language["java"] + "%";
-        document.querySelector(".programming-fill-gd.java").style.height = professionData.primary_programming_language["java"] + "%";
+        document.querySelector(".programming-fill-gd.java").style.width = professionData.primary_programming_language["java"] + "%";
 
         document.querySelector(".p-10-gilroy.gold.python").textContent = professionData.primary_programming_language["python"] + "%";
-        document.querySelector(".programming-fill-gd.python").style.height = professionData.primary_programming_language["python"] + "%";
+        document.querySelector(".programming-fill-gd.python").style.width = professionData.primary_programming_language["python"] + "%";
 
         document.querySelector(".p-10-gilroy.gold.c").textContent = professionData.primary_programming_language["c++"] + "%";
-        document.querySelector(".programming-fill-gd.c").style.height = professionData.primary_programming_language["c++"] + "%";
+        document.querySelector(".programming-fill-gd.c").style.width = professionData.primary_programming_language["c++"] + "%";
 
         document.querySelector(".p-10-gilroy.gold.javascript").textContent = professionData.primary_programming_language["javascript"] + "%";
-        document.querySelector(".programming-fill-gd.javascript").style.height = professionData.primary_programming_language["javascript"] + "%";
+        document.querySelector(".programming-fill-gd.javascript").style.width = professionData.primary_programming_language["javascript"] + "%";
 
         document.querySelector(".p-10-gilroy.gold.typescript").textContent = professionData.primary_programming_language["typescript"] + "%";
-        document.querySelector(".programming-fill-gd.typescript").style.height = professionData.primary_programming_language["typescript"] + "%";
+        document.querySelector(".programming-fill-gd.typescript").style.width = professionData.primary_programming_language["typescript"] + "%";
 
         document.querySelector(".p-10-gilroy.gold.other_languages").textContent = professionData.primary_programming_language["other_languages"] + "%";
-        document.querySelector(".programming-fill-gd.other_languages").style.height = professionData.primary_programming_language["other_languages"] + "%";
+        document.querySelector(".programming-fill-gd.other_languages").style.width = professionData.primary_programming_language["other_languages"] + "%";
         userData.finStatus = {...professionData.financial_status};
 
         console.log("✅ Оновлено всі дані персонажа:", professionData);
