@@ -68,10 +68,10 @@
       },
       "primary_programming_language": {
         "csharp_dotnet": 54,
-        "c++": 21,
         "java": 4,
-        "javascript": 4,
         "python": 2,
+        "c++": 21,
+        "javascript": 4,
         "typescript": 7,
         "other_languages": 8
       },
