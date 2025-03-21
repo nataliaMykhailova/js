@@ -709,6 +709,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initFamilyTabs();
         initChildrenTabs();
         initEngineRangeSelector();
+        handleEngineBlockVisibility()
 
         initRangeGd({
             salery: {
