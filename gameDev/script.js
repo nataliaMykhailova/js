@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             updateTotalBossPoints();
             handleEngineBlockVisibility();
+            toggleLanguageBlockVisibility()
         });
 
         console.log("🔄 Боси очищені після вибору нової професії:", bossesData);
@@ -700,6 +701,27 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".is--unreal-line").style.height = professionData.game_engines["unreal_engine"] + "%";
         document.querySelector(".is-no-work-line").style.height = professionData.game_engines["none"] + "%";
         document.querySelector(".is--other-line").style.height = professionData.game_engines["other_engine"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.csharp_dotnet").textContent = professionData.primary_programming_language["csharp_dotnet"] + "%";
+        document.querySelector(".programming-fill-gd.csharp_dotnet").style.height = professionData.primary_programming_language["csharp_dotnet"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.java").textContent = professionData.primary_programming_language["java"] + "%";
+        document.querySelector(".programming-fill-gd.java").style.height = professionData.primary_programming_language["java"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.python").textContent = professionData.primary_programming_language["python"] + "%";
+        document.querySelector(".programming-fill-gd.python").style.height = professionData.primary_programming_language["python"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.c").textContent = professionData.primary_programming_language["c++"] + "%";
+        document.querySelector(".programming-fill-gd.c").style.height = professionData.primary_programming_language["c++"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.javascript").textContent = professionData.primary_programming_language["javascript"] + "%";
+        document.querySelector(".programming-fill-gd.javascript").style.height = professionData.primary_programming_language["javascript"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.typescript").textContent = professionData.primary_programming_language["typescript"] + "%";
+        document.querySelector(".programming-fill-gd.typescript").style.height = professionData.primary_programming_language["typescript"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.other_languages").textContent = professionData.primary_programming_language["other_languages"] + "%";
+        document.querySelector(".programming-fill-gd.other_languages").style.height = professionData.primary_programming_language["other_languages"] + "%";
         userData.finStatus = {...professionData.financial_status};
 
         console.log("✅ Оновлено всі дані персонажа:", professionData);
@@ -709,7 +731,9 @@ document.addEventListener("DOMContentLoaded", function () {
         initFamilyTabs();
         initChildrenTabs();
         initEngineRangeSelector();
-        handleEngineBlockVisibility()
+        handleEngineBlockVisibility();
+        initProgrammingLanguageSelection()
+        toggleLanguageBlockVisibility()
 
         initRangeGd({
             salery: {
@@ -1292,6 +1316,73 @@ document.addEventListener("DOMContentLoaded", function () {
         document.addEventListener("touchmove", dragMove, { passive: false });
         document.addEventListener("mouseup", stopDrag);
         document.addEventListener("touchend", stopDrag);
+    }
+
+    function toggleLanguageBlockVisibility() {
+        const langBlock = document.querySelector(".three-part_right-gd.language");
+        if (!langBlock) return;
+
+        if (userData.profession === "Software Engineer") {
+            langBlock.style.display = "block";
+        } else {
+            langBlock.style.display = "none";
+        }
+    }
+
+
+    function initProgrammingLanguageSelection() {
+        const tabs = document.querySelectorAll(".finances-tab-gd-2.language");
+        const thumbs = document.querySelectorAll(".trumb-gold-gd");
+
+        // Очистити активні класи
+        function resetAllLangSelections() {
+            tabs.forEach(tab => tab.classList.remove("active"));
+            thumbs.forEach(thumb => thumb.style.opacity = "0");
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                const langLabel = tab.textContent.trim().toLowerCase();
+
+                // Мапа для відповідності ключів
+                const labelToKey = {
+                    "c#": "csharp_dotnet",
+                    "java": "java",
+                    "python": "python",
+                    "c++": "cpp",
+                    "javascript": "javascript",
+                    "typescript": "typescript",
+                    "інша": "other"
+                };
+
+                const key = labelToKey[langLabel];
+                if (!key) {
+                    console.warn("⚠️ Невідоме значення мови:", langLabel);
+                    return;
+                }
+
+                const fillKey = key === "cpp" ? "c" : key === "other" ? "other_languages" : key;
+
+                resetAllLangSelections();
+
+                tab.classList.add("active");
+
+                // Показати відповідний thumb
+                const thumbEl = document.querySelector(`.trumb-gold-gd.${fillKey}`) ||
+                    document.querySelector(`.programming-fill-gd.${fillKey} .trumb-gold-gd`);
+                if (thumbEl) thumbEl.style.opacity = "1";
+
+                // Призначити користувачу вибір
+                userData.primaryLanguage = key;
+
+                const artefactUrl = professionsData?.artefacts?.programming_language?.[key];
+                if (artefactUrl) {
+                    userData.artefacts.programmingLanguage = artefactUrl;
+                    updateProfileBlocks();
+                    console.log(`👨‍💻 Обрана мова: ${key}, Артефакт: ${artefactUrl}`);
+                }
+            });
+        });
     }
 
 
