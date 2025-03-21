@@ -622,6 +622,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (!userData.gender || !userData.profession) {
             console.error("❌ Помилка: Не вибрано гендер або професію.");
+            console.log(userData);
             return;
         }
 
