@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function resetUserData(keepGender = false) {
         if (!keepGender) {
-            userData.gender = "male";
+            userData.gender = "";
         }
         userData.profession = "";
         userData.avatar = "";
@@ -299,6 +299,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 charactersSection.style.display = "block";
                 setTimeout(() => {
                     charactersSection.classList.add("visible");
+
+                    if (userData.gender && professionsData[userData.gender]) {
+                        displayProfessions(professionsData[userData.gender]);
+                    }
                 }, 0);
             }, 0);
         });
@@ -361,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Повернення до вибору професії
     backButton.addEventListener("click", function () {
-        resetUserData();
+        resetUserData(true);
         charactersSection.classList.remove("visible");
         setTimeout(() => {
             charactersSection.style.display = "none";
