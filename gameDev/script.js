@@ -37,6 +37,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const continueButtonSecondPart = document.querySelector(".continue-btn-gd.second-part");
     const armorySection = document.querySelector(".armory-section-gd");
     const backButtonArmory = document.querySelector(".nav-back_btn-gd.is--armory");
+    const continueButtonArmory = document.querySelector(".continue-btn-gd.armory.w-button");
+    const mapSection = document.querySelector(".map-section-gd");
+    const backButtonMap = document.querySelector(".nav-back_btn-gd.is--map");
 
 
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
@@ -342,6 +345,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
+    continueButtonArmory.addEventListener("click", function () {
+        armorySection.classList.remove("visible");
+
+        setTimeout(() => {
+            armorySection.style.display = "none";
+            mapSection.style.display = "block";
+
+            setTimeout(() => {
+                mapSection.classList.add("visible");
+            }, 0);
+        }, 0);
+    });
+
 
     // Повернення до вибору професії
     backButton.addEventListener("click", function () {
@@ -376,6 +392,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
                 secondPartSection.classList.add("visible");
+            }, 0);
+        }, 0);
+    });
+
+    backButtonMap.addEventListener("click", function () {
+        mapSection.classList.remove("visible");
+
+        setTimeout(() => {
+            mapSection.style.display = "none";
+            armorySection.style.display = "block";
+
+            setTimeout(() => {
+                armorySection.classList.add("visible");
             }, 0);
         }, 0);
     });
