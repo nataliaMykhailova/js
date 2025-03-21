@@ -13,6 +13,10 @@ let userData = {
 
 };
 
+
+
+
+
 let bossesData = {};
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -173,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             updateTotalBossPoints();
+            handleEngineBlockVisibility();
         });
 
         console.log("🔄 Боси очищені після вибору нової професії:", bossesData);
@@ -684,6 +689,17 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".intermediate-line").style.width = professionData.english_proficiency["intermediate"] + "%";
         document.querySelector(".upper-intermediate-line").style.width = professionData.english_proficiency["upper_intermediate"] + "%";
         document.querySelector(".advanced-line").style.width = professionData.english_proficiency["advanced"] + "%";
+
+
+        document.querySelector(".p-10-gilroy.is--unity-text").textContent = professionData.game_engines["unity"] + "%";
+        document.querySelector(".p-10-gilroy.is--unreal-text").textContent = professionData.game_engines["unreal_engine"] + "%";
+        document.querySelector(".p-10-gilroy.is--no-work-text").textContent = professionData.game_engines["none"] + "%";
+        document.querySelector(".p-10-gilroy.is--other-text").textContent = professionData.game_engines["other_engine"] + "%";
+
+        document.querySelector(".is--unity-line").style.height = professionData.game_engines["unity"] + "%";
+        document.querySelector(".is--unreal-line").style.height = professionData.game_engines["unreal_engine"] + "%";
+        document.querySelector(".is-no-work-line").style.height = professionData.game_engines["none"] + "%";
+        document.querySelector(".is--other-line").style.height = professionData.game_engines["other_engine"] + "%";
         userData.finStatus = {...professionData.financial_status};
 
         console.log("✅ Оновлено всі дані персонажа:", professionData);
@@ -691,7 +707,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         initFinanceTabs();
         initFamilyTabs();
-        initChildrenTabs()
+        initChildrenTabs();
+        initEngineRangeSelector();
 
         initRangeGd({
             salery: {
@@ -1182,6 +1199,99 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log('v-1')
 
     initLanguageSelection();
+
+
+
+    function handleEngineBlockVisibility() {
+        const engineBlock = document.querySelector(".title-block-gd.engines");
+        if (!engineBlock) return;
+
+        const hiddenProfessions = ["Marketing", "HR"];
+        if (hiddenProfessions.includes(userData.profession)) {
+            engineBlock.style.display = "none";
+        } else {
+            engineBlock.style.display = "block";
+        }
+    }
+
+    function initEngineRangeSelector() {
+        const track = document.querySelector(".title-truck_gd.engines");
+        const thumb = track?.querySelector(".title-trumb-gd");
+        const engineBlocks = document.querySelectorAll(".title-block_item-gd");
+
+        if (!track || !thumb || engineBlocks.length === 0) {
+            console.error("❌ Блоки або елементи для вибору рушія не знайдені.");
+            return;
+        }
+
+        const positions = [0, 33, 66, 98];
+        const engineKeys = ["unity", "unreal_engine", "no_engine", "other_engine"];
+        let isDragging = false;
+        let selectedIndex = null;
+
+        function moveThumb(value) {
+            thumb.style.left = `${value}%`;
+        }
+
+        function setActiveEngine(index) {
+            engineBlocks.forEach(block => block.classList.remove("active"));
+            if (index !== null) {
+                engineBlocks[index].classList.add("active");
+
+                const engineKey = engineKeys[index];
+                userData.engineExperience = engineKey;
+
+                // призначення артефакта
+                const artefactUrl = professionsData.artefacts?.engine_experience?.[engineKey];
+                if (artefactUrl) {
+                    userData.artefacts.engineExperience = artefactUrl;
+                    updateProfileBlocks();
+                    console.log(`🧩 Призначено артефакт рушія: ${engineKey}, URL: ${artefactUrl}`);
+                }
+
+                moveThumb(positions[index]);
+            }
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            e.preventDefault();
+        }
+
+        function stopDrag() {
+            if (!isDragging) return;
+            isDragging = false;
+
+            const rect = track.getBoundingClientRect();
+            const thumbX = thumb.getBoundingClientRect().left - rect.left;
+            const thumbPercent = (thumbX / rect.width) * 100;
+
+            let closestIndex = positions.reduce((prev, curr, idx) =>
+                Math.abs(curr - thumbPercent) < Math.abs(positions[prev] - thumbPercent) ? idx : prev, 0
+            );
+
+            selectedIndex = closestIndex;
+            setActiveEngine(selectedIndex);
+        }
+
+        function dragMove(e) {
+            if (!isDragging) return;
+
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const rect = track.getBoundingClientRect();
+            let x = ((clientX - rect.left) / rect.width) * 100;
+            x = Math.max(0, Math.min(x, 98));
+
+            moveThumb(x);
+        }
+
+        thumb.addEventListener("mousedown", startDrag);
+        thumb.addEventListener("touchstart", startDrag, { passive: false });
+        document.addEventListener("mousemove", dragMove);
+        document.addEventListener("touchmove", dragMove, { passive: false });
+        document.addEventListener("mouseup", stopDrag);
+        document.addEventListener("touchend", stopDrag);
+    }
 
 
 });
