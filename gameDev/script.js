@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function resetUserData(keepGender = false) {
         if (!keepGender) {
-            userData.gender = "";
+            userData.gender = "male";
         }
         userData.profession = "";
         userData.avatar = "";
