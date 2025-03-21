@@ -2484,6 +2484,21 @@
       "do_not_receive": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bae99a8d0d20970fe5_do_not_receive.webp",
       "receive": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbbf10a104fd9dac2d_receive.webp",
       "received_before": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb268d8da9e9c8dee9_received_before.webp"
+    },
+    "programming_language": {
+      "csharp_dotnet": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd3850644931b8e9c8020f_%D1%81ch.webp",
+      "cpp": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384fe8da95b6469b4ac5_c.webp",
+      "java": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f8348c1c7eb164dce_j.webp",
+      "javascript": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd3850bd7e331b593d3455_js.webp",
+      "python": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd385022d7e236c632176f_p.webp",
+      "typescript": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f44c9d3431033af47_ts.webp",
+      "other": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd385094151b894c980fd7_other.webp"
+    },
+    "engine_experience": {
+      "unity": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f9074b1cb430051bb_59555.webp",
+      "unreal_engine": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384fa3a811e0795f663d_5955.webp",
+      "other_engine": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384faf37e34bf14db4e4_46558.webp",
+      "no_engine": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f81cf91a721de009d_564455.webp"
     }
   },
   "bosses": {
@@ -2517,3 +2532,9 @@
     }
   }
 }
+
+
+
+
+
+
