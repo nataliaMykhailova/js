@@ -778,6 +778,11 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".sumy_region").textContent = professionData.location["sumy_region"] + "%";
         document.querySelector(".kropyvnytskyi_region").textContent = professionData.location["kropyvnytskyi_region"] + "%";
         document.querySelector(".zaporizhzhia_region").textContent = professionData.location["zaporizhzhia_region"] + "%";
+
+        document.querySelector(".settlement-item-gd.rural_area .p-20-gilroy-gd").textContent = professionData.settlement_type["rural_area"] + "%";
+        document.querySelector(".settlement-item-gd.small_city .p-20-gilroy-gd").textContent = professionData.settlement_type["small_city"] + "%";
+        document.querySelector(".settlement-item-gd.big_city .p-20-gilroy-gd").textContent = professionData.settlement_type["big_city"] + "%";
+
         userData.finStatus = {...professionData.financial_status};
 
         console.log("✅ Оновлено всі дані персонажа:", professionData);
@@ -1441,7 +1446,40 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function initSettlementSelection() {
 
+        const settlementItems = document.querySelectorAll(".settlement-item-gd");
+
+        settlementItems.forEach(item => {
+            item.addEventListener("click", function () {
+       ів
+                settlementItems.forEach(i => i.classList.remove("active"));
+
+                item.classList.add("active");
+
+                let selectedSettlement = "";
+                let points = 0;
+
+                if (item.classList.contains("big_city")) {
+                    selectedSettlement = "big_city";
+                    points = 2;
+                } else if (item.classList.contains("small_city")) {
+                    selectedSettlement = "small_city";
+                    points = 1;
+                } else if (item.classList.contains("rural_area")) {
+                    selectedSettlement = "rural_area";
+                    points = 2;
+                }
+
+                addUserPoints("settlementPoints", points);
+                console.log(`✅ Вибрано тип населеного пункту: ${selectedSettlement}, Бали: ${points}`);
+            });
+        });
+
+        console.log("✅ Логіка вибору типу населеного пункту ініціалізована");
+    }
+
+    initSettlementSelection();
 });
 
 
