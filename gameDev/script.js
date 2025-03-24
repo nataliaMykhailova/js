@@ -810,6 +810,14 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".yes-line-gd").style.width = professionData.gaming_habits["play_games"] + "%";
         document.querySelector(".no-line-gd").style.width = professionData.gaming_habits["do_not_play"] + "%";
 
+        document.querySelector(".p-10-gilroy.gold.do_not_receive").textContent = professionData.monetary_bonuses["do_not_receive"] + "%";
+        document.querySelector(".p-10-gilroy.gold.receive").textContent = professionData.monetary_bonuses["receive"] + "%";
+        document.querySelector(".p-10-gilroy.gold.received_before").textContent = professionData.monetary_bonuses["received_before"] + "%";
+
+        document.querySelector(".bonus-fill-gd.do_not_receive").style.width = professionData.monetary_bonuses["do_not_receive"] + "%";
+        document.querySelector(".bonus-fill-gd.receive").style.width = professionData.monetary_bonuses["receive"] + "%";
+        document.querySelector(".bonus-fill-gd.received_before").style.width = professionData.monetary_bonuses["received_before"] + "%";
+
 
         requestAnimationFrame(() => {
             const keys = ["pc_laptop", "playstation", "xbox", "smartphone_tablet", "multiple_platforms"];
@@ -864,6 +872,7 @@ document.addEventListener("DOMContentLoaded", function () {
         resetNavigationProgress();
         initGamingHabits()
         initGamingPlatformSelection();
+        initBonusSelection();
 
 
         initRangeGd({
@@ -1719,7 +1728,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Логіка вибору платформи ігор ініціалізована");
     }
+    function initBonusSelection() {
+        const bonusTabs = document.querySelectorAll(".finances-tab-gd-2.white.bonus");
 
+        bonusTabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                const selectedText = tab.textContent.trim().toLowerCase();
+
+                // Мапа для відповідності ключів
+                const labelToKey = {
+                    "отримую": "receive",
+                    "не отримую": "do_not_receive",
+                    "отримував раніше": "received_before"
+                };
+
+                const key = labelToKey[selectedText];
+                if (!key) {
+                    console.warn("⚠️ Невідоме значення бонусу:", selectedText);
+                    return;
+                }
+
+                // Очистити всі активні стани
+                bonusTabs.forEach(btn => btn.classList.remove("active"));
+                document.querySelectorAll(".bonus-fill-gd").forEach(el => el.classList.remove("active"));
+
+                // Додати активний клас до вибраного
+                tab.classList.add("active");
+
+                const selectedFill = document.querySelector(`.bonus-fill-gd.${key}`);
+                if (selectedFill) {
+                    selectedFill.classList.add("active");
+                }
+
+                // Призначити артефакт
+                const artefactUrl = professionsData?.artefacts?.monetary_bonuses?.[key];
+                if (artefactUrl) {
+                    userData.artefacts.bonusesArtefact = artefactUrl;
+                    updateProfileBlocks();
+                    console.log(`💸 Обраний бонус: ${key}, Артефакт: ${artefactUrl}`);
+                } else {
+                    console.warn(`❌ Артефакт не знайдено для: ${key}`);
+                }
+            });
+        });
+
+        console.log("✅ Логіка вибору бонусів ініціалізована");
+    }
 });
 
 
