@@ -1455,15 +1455,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function initSettlementSelection() {
-
         const settlementItems = document.querySelectorAll(".settlement-item-gd");
 
         settlementItems.forEach(item => {
             item.addEventListener("click", function () {
+                // Зняти активні класи з усіх блоків і зображень
+                settlementItems.forEach(i => {
+                    i.classList.remove("active");
+                    const img = i.querySelector(".settlement-img-gd");
+                    if (img) img.classList.remove("active");
+                });
 
-                settlementItems.forEach(i => i.classList.remove("active"));
-
+                // Додати active до вибраного блоку
                 item.classList.add("active");
+
+                const currentImg = item.querySelector(".settlement-img-gd");
+                if (currentImg) currentImg.classList.add("active");
 
                 let selectedSettlement = "";
                 let points = 0;
