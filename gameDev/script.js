@@ -1522,12 +1522,12 @@ document.addEventListener("DOMContentLoaded", function () {
             button.addEventListener("mouseenter", () => {
                 // Попап для 'Боси' – завжди видно, навіть коли disable
                 if (button.classList.contains("is--bosses") || !button.classList.contains("disable")) {
-                    popup.style.display = "block";
+                    popup.style.opacity = 1;
                 }
             });
 
             button.addEventListener("mouseleave", () => {
-                popup.style.display = "none";
+                popup.style.display = 0;
             });
         });
 
