@@ -15,7 +15,7 @@ let userData = {
 
 
 
-
+const visited = new Set();
 
 let bossesData = {};
 document.addEventListener("DOMContentLoaded", function () {
@@ -801,6 +801,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initProgrammingLanguageSelection();
         toggleLanguageBlockVisibility();
         initLangFactBlock();
+        resetNavigationProgress();
 
 
         initRangeGd({
@@ -1499,6 +1500,105 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     }
+
+    function initNavigationButtons() {
+        const navButtons = document.querySelectorAll(".nav-btn-gd");
+        const bossesButton = document.querySelector(".nav-btn-gd.is--bosses");
+        const bossesPopupText = document.querySelector(".btn-popap-gd.is--bosses .p-16-gd");
+        const mapSection = document.querySelector(".map-section-gd");
+
+        const sectionMap = {
+            "is--taverna": document.querySelector(".tavern-section-gd"),
+            "is--skarbnitsia": document.querySelector(".treasury-section-gd"),
+            "is--port": document.querySelector(".port-section-gd"),
+            "is--bosses": document.querySelector(".boses-section-gd")
+        };
+
+        // 🟡 Ховери для всіх кнопок
+        navButtons.forEach(button => {
+            const popup = button.querySelector(".btn-popap-gd");
+            if (!popup) return;
+
+            button.addEventListener("mouseenter", () => {
+                // Попап для 'Боси' – завжди видно, навіть коли disable
+                if (button.classList.contains("is--bosses") || !button.classList.contains("disable")) {
+                    popup.style.display = "block";
+                }
+            });
+
+            button.addEventListener("mouseleave", () => {
+                popup.style.display = "none";
+            });
+        });
+
+        // 🟢 Клік по кнопках
+        navButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const btnClass = Array.from(button.classList).find(cls =>
+                    ["is--taverna", "is--skarbnitsia", "is--port", "is--bosses"].includes(cls)
+                );
+                if (!btnClass) return;
+
+                // ❌ Блокуємо клік для .disable кнопок
+                if (button.classList.contains("disable")) return;
+
+                // 🔄 Переходи між секціями
+                if (mapSection) {
+                    mapSection.classList.remove("visible");
+                    setTimeout(() => {
+                        mapSection.style.display = "none";
+
+                        const targetSection = sectionMap[btnClass];
+                        if (targetSection) {
+                            targetSection.style.display = "block";
+                            setTimeout(() => targetSection.classList.add("visible"), 0);
+                        }
+                    }, 0);
+                }
+
+                // ✅ Відмічаємо, що користувач натиснув на одну з трьох потрібних кнопок
+                if (["is--taverna", "is--skarbnitsia", "is--port"].includes(btnClass)) {
+                    visited.add(btnClass);
+
+                    // 🔓 Якщо всі натиснуті – розблоковуємо кнопку 'Боси'
+                    if (
+                        visited.has("is--taverna") &&
+                        visited.has("is--skarbnitsia") &&
+                        visited.has("is--port")
+                    ) {
+                        bossesButton.classList.remove("disable");
+                        if (bossesPopupText) {
+                            bossesPopupText.textContent = "Зустрінься з жахами геймдеву!";
+                        }
+                        console.log("🔥 'Боси' активовано");
+                    }
+                }
+            });
+        });
+
+        console.log("✅ Кнопки та попапи ініціалізовано");
+    }
+
+    initNavigationButtons()
+
+// 🔄 Функція для скидання стану
+    function resetNavigationProgress() {
+        visited.clear();
+
+        const bossesButton = document.querySelector(".nav-btn-gd.is--bosses");
+        const bossesPopupText = document.querySelector(".btn-popap-gd.is--bosses .p-16-gd");
+
+        if (bossesButton && !bossesButton.classList.contains("disable")) {
+            bossesButton.classList.add("disable");
+        }
+
+        if (bossesPopupText) {
+            bossesPopupText.textContent = "Фінансові досягнення та задоволення";
+        }
+
+        console.log("🔁 Навігаційні кліки скинуто, 'Боси' знову заблоковано");
+    }
+
 });
 
 
