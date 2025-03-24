@@ -1452,7 +1452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         settlementItems.forEach(item => {
             item.addEventListener("click", function () {
-       ів
+
                 settlementItems.forEach(i => i.classList.remove("active"));
 
                 item.classList.add("active");
