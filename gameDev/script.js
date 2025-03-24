@@ -802,18 +802,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 const fillEl = document.querySelector(`.game-fill-gd.${key}`);
                 const textEl = document.querySelector(`.p-13_gilroy-gd.gold.${key}`);
 
-                if (!fillEl || !textEl) return;
+                console.log(`🔍 Перевірка платформи: ${key}`);
+                if (!fillEl) {
+                    console.warn(`❌ Не знайдено .game-fill-gd.${key}`);
+                    return;
+                }
+
+                if (!textEl) {
+                    console.warn(`❌ Не знайдено .p-13_gilroy-gd.gold.${key}`);
+                }
 
                 const percent = professionData.gaming_platforms[key];
-                textEl.textContent = percent + "%";
+                if (textEl) textEl.textContent = percent + "%";
 
                 const defaultHeight = fillEl.offsetHeight;
+                console.log(`📏 offsetHeight для .game-fill-gd.${key}: ${defaultHeight}px`);
+
+                if (defaultHeight === 0) {
+                    console.warn(`⚠️ offsetHeight = 0 для .game-fill-gd.${key}. Можливо елемент прихований або ще не в DOM.`);
+                    return;
+                }
+
                 const pixelHeight = (defaultHeight * percent) / 100;
+                console.log(`📐 Встановлюю висоту: ${pixelHeight}px (${percent}%)`);
 
                 fillEl.style.height = pixelHeight + "px";
             });
-
-            console.log("🎯 Висота розрахована від 18vw (offsetHeight)");
         });
 
 
