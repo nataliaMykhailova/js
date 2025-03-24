@@ -788,6 +788,16 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".settlement-item-gd.small_city .p-20-gilroy-gd").textContent = professionData.settlement_type["small_city"] + "%";
         document.querySelector(".settlement-item-gd.big_city .p-20-gilroy-gd").textContent = professionData.settlement_type["big_city"] + "%";
 
+
+        document.querySelector(".yes-answer-gd").textContent =  professionData.gaming_habits["play_games"] ;
+        document.querySelector(".no-answer-gd").textContent =  professionData.gaming_habits["do_not_play"] ;
+        document.querySelector(".yes-line-gd").style.width = professionData.gaming_habits["play_games"] + "%";
+        document.querySelector(".no-line-gd").style.width = professionData.gaming_habits["do_not_play"] + "%";
+
+
+        const yesValue = professionData.gaming_habits.play_games;
+        const noValue = professionData.gaming_habits.do_not_play;
+
         userData.finStatus = {...professionData.financial_status};
 
         console.log("✅ Оновлено всі дані персонажа:", professionData);
@@ -1590,6 +1600,36 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("🔁 Навігаційні кліки скинуто, 'Боси' знову заблоковано");
     }
 
+    function initGamingHabits() {
+        const playButtons = document.querySelectorAll(".play-button-gd");
+
+        playButtons.forEach(button => {
+            button.addEventListener("click", () => {
+
+                playButtons.forEach(btn => btn.classList.remove("active"));
+
+                button.classList.add("active");
+
+                let points = 0;
+                let answer = "";
+
+                if (button.classList.contains("btn-yes-gd")) {
+                    points = 1;
+                    answer = "yes";
+                } else if (button.classList.contains("btn-no-gd")) {
+                    points = 0;
+                    answer = "no";
+                }
+
+                userData.gamingHabits = answer;
+                addUserPoints("gamingHabitsPoints", points);
+
+                console.log(`🎮 Вибір ігор: ${answer}, Бали: ${points}`);
+            });
+        });
+
+        console.log("✅ Логіка вибору ігрових звичок ініціалізована");
+    }
 });
 
 
