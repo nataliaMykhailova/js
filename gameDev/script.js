@@ -795,8 +795,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".no-line-gd").style.width = professionData.gaming_habits["do_not_play"] + "%";
 
 
-        const yesValue = professionData.gaming_habits.play_games;
-        const noValue = professionData.gaming_habits.do_not_play;
 
         userData.finStatus = {...professionData.financial_status};
 
@@ -812,6 +810,7 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleLanguageBlockVisibility();
         initLangFactBlock();
         resetNavigationProgress();
+        initGamingHabits()
 
 
         initRangeGd({
