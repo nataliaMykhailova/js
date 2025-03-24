@@ -757,9 +757,27 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".p-10-gilroy.gold.other_languages").textContent = professionData.primary_programming_language["other_languages"] + "%";
         document.querySelector(".programming-fill-gd.other_languages").style.width = professionData.primary_programming_language["other_languages"] + "%";
 
-        Object.keys(professionData.location).forEach(region => {
-            document.querySelector(`.${region}`).textContent = professionData.location[region] + "%";
-        });
+        document.querySelector(".kyiv_region").textContent = professionData.location["kyiv_region"] + "%";
+        document.querySelector(".lviv_region").textContent = professionData.location["lviv_region"] + "%";
+        document.querySelector(".kharkiv_region").textContent = professionData.location["kharkiv_region"] + "%";
+        document.querySelector(".vinnytsia_region").textContent = professionData.location["vinnytsia_region"] + "%";
+        document.querySelector(".dnipro_region").textContent = professionData.location["dnipro_region"] + "%";
+        document.querySelector(".rivne_region").textContent = professionData.location["rivne_region"] + "%";
+        document.querySelector(".poltava_region").textContent = professionData.location["poltava_region"] + "%";
+        document.querySelector(".odesa_region").textContent = professionData.location["odesa_region"] + "%";
+        document.querySelector(".ivano_frankivsk_region").textContent = professionData.location["ivano_frankivsk_region"] + "%";
+        document.querySelector(".cherkasy_region").textContent = professionData.location["cherkasy_region"] + "%";
+        document.querySelector(".uzhhorod_region").textContent = professionData.location["uzhhorod_region"] + "%";
+        document.querySelector(".mykolaiv_region").textContent = professionData.location["mykolaiv_region"] + "%";
+        document.querySelector(".zhytomyr_region").textContent = professionData.location["zhytomyr_region"] + "%";
+        document.querySelector(".chernihiv_region").textContent = professionData.location["chernihiv_region"] + "%";
+        document.querySelector(".lutsk_volyn_region").textContent = professionData.location["lutsk_volyn_region"] + "%";
+        document.querySelector(".khmelnytskyi_region").textContent = professionData.location["khmelnytskyi_region"] + "%";
+        document.querySelector(".ternopil_region").textContent = professionData.location["ternopil_region"] + "%";
+        document.querySelector(".chernivtsi_region").textContent = professionData.location["chernivtsi_region"] + "%";
+        document.querySelector(".sumy_region").textContent = professionData.location["sumy_region"] + "%";
+        document.querySelector(".kropyvnytskyi_region").textContent = professionData.location["kropyvnytskyi_region"] + "%";
+        document.querySelector(".zaporizhzhia_region").textContent = professionData.location["zaporizhzhia_region"] + "%";
         userData.finStatus = {...professionData.financial_status};
 
         console.log("✅ Оновлено всі дані персонажа:", professionData);
