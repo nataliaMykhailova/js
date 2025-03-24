@@ -40,6 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const continueButtonArmory = document.querySelector(".continue-btn-gd.armory.w-button");
     const mapSection = document.querySelector(".map-section-gd");
     const backButtonMap = document.querySelector(".nav-back_btn-gd.is--map");
+    const tavernaMapButton = document.querySelector(".nav-btn-gd.taverna-map");
+    const tavernSection = document.querySelector(".tavern-section-gd");
 
 
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
@@ -362,6 +364,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
+    tavernaMapButton.addEventListener("click", function () {
+        // Приховуємо таверну
+        tavernSection.classList.remove("visible");
+
+        setTimeout(() => {
+            tavernSection.style.display = "none";
+            mapSection.style.display = "block";
+
+            // Додаємо видимість мапі
+            setTimeout(() => {
+                mapSection.classList.add("visible");
+            }, 0);
+        }, 0);
+    });
 
     // Повернення до вибору професії
     backButton.addEventListener("click", function () {
