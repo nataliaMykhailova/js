@@ -808,27 +808,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                if (!textEl) {
-                    console.warn(`❌ Не знайдено .p-13_gilroy-gd.gold.${key}`);
+                const percent = professionData.gaming_platforms[key];
+                if (textEl) {
+                    textEl.textContent = percent + "%";
                 }
 
-                const percent = professionData.gaming_platforms[key];
-                if (textEl) textEl.textContent = percent + "%";
+                const cssHeight = parseFloat(getComputedStyle(fillEl).height);
 
-                const defaultHeight = fillEl.offsetHeight;
-                console.log(`📏 offsetHeight для .game-fill-gd.${key}: ${defaultHeight}px`);
+                console.log(`📏 Висота з getComputedStyle: ${cssHeight}px`);
 
-                if (defaultHeight === 0) {
-                    console.warn(`⚠️ offsetHeight = 0 для .game-fill-gd.${key}. Можливо елемент прихований або ще не в DOM.`);
+                if (cssHeight === 0) {
+                    console.warn(`⚠️ CSS height = 0 для .game-fill-gd.${key}. Елемент може бути прихований.`);
                     return;
                 }
 
-                const pixelHeight = (defaultHeight * percent) / 100;
-                console.log(`📐 Встановлюю висоту: ${pixelHeight}px (${percent}%)`);
+                const pixelHeight = (cssHeight * percent) / 100;
+                console.log(`📐 Обчислено висоту: ${pixelHeight}px (${percent}%)`);
 
                 fillEl.style.height = pixelHeight + "px";
             });
         });
+
 
 
 
