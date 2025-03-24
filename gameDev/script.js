@@ -1491,7 +1491,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (userData.gender === "female") {
             if (langFactBlock) {
-                langFactBlock.remove();
+                langFactBlock.style.display='none';
                 console.log("🚫 Блок з фактом про англійську приховано для female");
             }
         }
