@@ -794,6 +794,21 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".yes-line-gd").style.width = professionData.gaming_habits["play_games"] + "%";
         document.querySelector(".no-line-gd").style.width = professionData.gaming_habits["do_not_play"] + "%";
 
+        document.querySelector(".p-13_gilroy-gd.gold.pc_laptop").textContent = professionData.gaming_platforms["pc_laptop"] + "%";
+        document.querySelector(".game-fill-gd.pc_laptop").style.height = professionData.gaming_platforms["pc_laptop"] + "%";
+
+        document.querySelector(".p-13_gilroy-gd.gold.playstation").textContent = professionData.gaming_platforms["playstation"] + "%";
+        document.querySelector(".game-fill-gd.playstation").style.height = professionData.gaming_platforms["playstation"] + "%";
+
+        document.querySelector(".p-13_gilroy-gd.gold.xbox").textContent = professionData.gaming_platforms["xbox"] + "%";
+        document.querySelector(".game-fill-gd.xbox").style.height = professionData.gaming_platforms["xbox"] + "%";
+
+        document.querySelector(".p-13_gilroy-gd.gold.smartphone_tablet").textContent = professionData.gaming_platforms["smartphone_tablet"] + "%";
+        document.querySelector(".game-fill-gd.smartphone_tablet").style.height = professionData.gaming_platforms["smartphone_tablet"] + "%";
+
+        document.querySelector(".p-13_gilroy-gd.gold.multiple_platforms").textContent = professionData.gaming_platforms["multiple_platforms"] + "%";
+        document.querySelector(".game-fill-gd.multiple_platforms").style.height = professionData.gaming_platforms["multiple_platforms"] + "%";
+
 
 
         userData.finStatus = {...professionData.financial_status};
@@ -811,7 +826,6 @@ document.addEventListener("DOMContentLoaded", function () {
         initLangFactBlock();
         resetNavigationProgress();
         initGamingHabits()
-        fillGamingPlatforms();
         initGamingPlatformSelection();
 
 
@@ -1669,26 +1683,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("✅ Логіка вибору платформи ігор ініціалізована");
     }
 
-    function fillGamingPlatforms() {
-        if (!professionData || !professionData.gaming_platforms) {
-            console.error("❌ Дані про платформи відсутні");
-            return;
-        }
-
-        const platforms = professionData.gaming_platforms;
-
-        Object.keys(platforms).forEach(key => {
-            const percentage = platforms[key] + "%";
-
-            const textEl = document.querySelector(`.p-13_gilroy-gd.gold.${key}`);
-            const fillEl = document.querySelector(`.game-fill-gd.${key}`);
-
-            if (textEl) textEl.textContent = percentage;
-            if (fillEl) fillEl.style.height = percentage;
-        });
-
-        console.log("🎮 Дані про платформи ігор оновлені");
-    }
 });
 
 
