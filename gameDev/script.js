@@ -756,6 +756,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelector(".p-10-gilroy.gold.other_languages").textContent = professionData.primary_programming_language["other_languages"] + "%";
         document.querySelector(".programming-fill-gd.other_languages").style.width = professionData.primary_programming_language["other_languages"] + "%";
+
+        Object.keys(professionData.location).forEach(region => {
+            document.querySelector(`.${region}`).textContent = professionData.location[region] + "%";
+        });
         userData.finStatus = {...professionData.financial_status};
 
         console.log("✅ Оновлено всі дані персонажа:", professionData);

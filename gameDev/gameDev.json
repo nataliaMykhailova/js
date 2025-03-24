@@ -78,8 +78,8 @@
       "game_engines": {
         "unity": 48,
         "unreal_engine": 14,
-        "other_engine": 11.2,
-        "none": 21.5
+        "none": 21.5,
+        "other_engine": 11.2
       },
       "location": {
         "kyiv_region": 43,
@@ -253,8 +253,8 @@
       "game_engines": {
         "unity": 35.9,
         "unreal_engine": 18.5,
-        "other_engine": 6.5,
-        "none": 39
+        "none": 39,
+        "other_engine": 6.5
       },
       "location": {
         "kyiv_region": 58,
@@ -428,8 +428,8 @@
       "game_engines": {
         "unity": 27.5,
         "unreal_engine": 37.4,
-        "other_engine": 9.9,
-        "none": 19.8
+        "none": 19.8,
+        "other_engine": 9.9
       },
       "location": {
         "kyiv_region": 54.5,
@@ -603,8 +603,8 @@
       "game_engines": {
         "unity": 38.2,
         "unreal_engine": 36.4,
-        "other_engine": 3.6,
-        "none": 9
+        "none": 9,
+        "other_engine": 3.6
       },
       "location": {
         "kyiv_region": 59.2,
@@ -778,8 +778,8 @@
       "game_engines": {
         "unity": 35.7,
         "unreal_engine": 17.9,
-        "other_engine": 7.1,
-        "none": 39.3
+        "none": 39.3,
+        "other_engine": 7.1
       },
       "location": {
         "kyiv_region": 59,
@@ -953,8 +953,8 @@
       "game_engines": {
         "unity": 0,
         "unreal_engine": 0,
-        "other_engine": 0,
-        "none": 0
+        "none": 0,
+        "other_engine": 0
       },
       "location": {
         "kyiv_region": 87.5,
@@ -1305,8 +1305,8 @@
       "game_engines": {
         "unity": 36.4,
         "unreal_engine": 4.5,
-        "other_engine": 4.5,
-        "none": 54.5
+        "none": 54.5,
+        "other_engine": 4.5
       },
       "location": {
         "kyiv_region": 43.7,
@@ -1480,8 +1480,8 @@
       "game_engines": {
         "unity": 28.8,
         "unreal_engine": 19.2,
-        "other_engine": 3.8,
-        "none": 46
+        "none": 46,
+        "other_engine": 3.8
       },
       "location": {
         "kyiv_region": 56.8,
@@ -1655,8 +1655,8 @@
       "game_engines": {
         "unity": 26.4,
         "unreal_engine": 20.7,
-        "other_engine": 3.7,
-        "none": 45.3
+        "none": 45.3,
+        "other_engine": 3.7
       },
       "location": {
         "kyiv_region": 41.3,
@@ -1830,8 +1830,8 @@
       "game_engines": {
         "unity": 48.4,
         "unreal_engine": 3,
-        "other_engine": 9.7,
-        "none": 35.5
+        "none": 35.5,
+        "other_engine": 9.7
       },
       "location": {
         "kyiv_region": 56,
@@ -2005,8 +2005,8 @@
       "game_engines": {
         "unity": 50,
         "unreal_engine": 5.6,
-        "other_engine": 0,
-        "none": 33.3
+        "none": 33.3,
+        "other_engine": 0
       },
       "location": {
         "kyiv_region": 66.7,
@@ -2180,8 +2180,8 @@
       "game_engines": {
         "unity": 0,
         "unreal_engine": 0,
-        "other_engine": 0,
-        "none": 0
+        "none": 0,
+        "other_engine": 0
       },
       "location": {
         "kyiv_region": 80,
@@ -2355,8 +2355,8 @@
       "game_engines": {
         "unity": 0,
         "unreal_engine": 0,
-        "other_engine": 0,
-        "none": 0
+        "none": 0,
+        "other_engine": 0
       },
       "location": {
         "kyiv_region": 64,
