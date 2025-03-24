@@ -1514,22 +1514,6 @@ document.addEventListener("DOMContentLoaded", function () {
             "is--bosses": document.querySelector(".boses-section-gd")
         };
 
-        // 🟡 Ховери для всіх кнопок
-        navButtons.forEach(button => {
-            const popup = button.querySelector(".btn-popap-gd");
-            if (!popup) return;
-
-            button.addEventListener("mouseenter", () => {
-                // Попап для 'Боси' – завжди видно, навіть коли disable
-                if (button.classList.contains("is--bosses") || !button.classList.contains("disable")) {
-                    popup.style.opacity = 1;
-                }
-            });
-
-            button.addEventListener("mouseleave", () => {
-                popup.style.display = 0;
-            });
-        });
 
         // 🟢 Клік по кнопках
         navButtons.forEach(button => {
