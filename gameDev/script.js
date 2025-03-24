@@ -705,6 +705,11 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".exp-spec-line-6-9").style.height = professionData.specialty_experience["6-9_years"] + "%";
         document.querySelector(".exp-spec-line-10").style.height = professionData.specialty_experience["10+_years"] + "%";
 
+        document.querySelector(".exp-fact-text").textContent = professionData.specialty_experience["comment"];
+        document.querySelector(".lang-fact-text").textContent = professionData.english_proficiency["comment"];
+
+
+
         document.querySelector(".p-10-gilroy.title-junior").textContent = professionData.job_title["junior"] + "%";
         document.querySelector(".p-10-gilroy.title-middle").textContent = professionData.job_title["middle"] + "%";
         document.querySelector(".p-10-gilroy.title-senior").textContent = professionData.job_title["senior"] + "%";
@@ -1480,6 +1485,20 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     initSettlementSelection();
+
+    function initLangFactBlock() {
+        const langFactBlock = document.querySelector(".fact-block-gd.lang-fact");
+
+        if (userData.gender === "female") {
+            if (langFactBlock) {
+                langFactBlock.remove();
+                console.log("🚫 Блок з фактом про англійську приховано для female");
+            }
+        }
+
+    }
+
+    initLangFactBlock();
 });
 
 
