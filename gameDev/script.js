@@ -811,6 +811,8 @@ document.addEventListener("DOMContentLoaded", function () {
         initLangFactBlock();
         resetNavigationProgress();
         initGamingHabits()
+        fillGamingPlatforms();
+        initGamingPlatformSelection();
 
 
         initRangeGd({
@@ -1628,6 +1630,64 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         console.log("✅ Логіка вибору ігрових звичок ініціалізована");
+    }
+
+    function initGamingPlatformSelection() {
+        const platformBlocks = document.querySelectorAll(".game-block-gd");
+
+        platformBlocks.forEach(block => {
+            block.addEventListener("click", () => {
+                // Очистити всі активні стани
+                platformBlocks.forEach(item => {
+                    const iconChecked = item.querySelector(".game-icon-gd.checked");
+                    const track = item.querySelector(".game-track-gd");
+
+                    if (iconChecked) iconChecked.style.opacity = "0";
+                    if (track) track.style.background = "transparent";
+                });
+
+                // Активувати поточний блок
+                const checkedIcon = block.querySelector(".game-icon-gd.checked");
+                const track = block.querySelector(".game-track-gd");
+
+                if (checkedIcon) checkedIcon.style.opacity = "1";
+                if (track) track.style.background = "#FFD7A2";
+
+                // Зберегти вибір
+                const classList = Array.from(block.classList);
+                const selectedClass = classList.find(cls =>
+                    ["pc_laptop", "xbox", "playstation", "smartphone_tablet", "multiple_platforms"].includes(cls)
+                );
+
+                if (selectedClass) {
+                    userData.gamingPlatform = selectedClass;
+                    console.log(`🎮 Вибрано платформу: ${selectedClass}`);
+                }
+            });
+        });
+
+        console.log("✅ Логіка вибору платформи ігор ініціалізована");
+    }
+
+    function fillGamingPlatforms() {
+        if (!professionData || !professionData.gaming_platforms) {
+            console.error("❌ Дані про платформи відсутні");
+            return;
+        }
+
+        const platforms = professionData.gaming_platforms;
+
+        Object.keys(platforms).forEach(key => {
+            const percentage = platforms[key] + "%";
+
+            const textEl = document.querySelector(`.p-13_gilroy-gd.gold.${key}`);
+            const fillEl = document.querySelector(`.game-fill-gd.${key}`);
+
+            if (textEl) textEl.textContent = percentage;
+            if (fillEl) fillEl.style.height = percentage;
+        });
+
+        console.log("🎮 Дані про платформи ігор оновлені");
     }
 });
 
