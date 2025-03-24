@@ -794,7 +794,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".yes-line-gd").style.width = professionData.gaming_habits["play_games"] + "%";
         document.querySelector(".no-line-gd").style.width = professionData.gaming_habits["do_not_play"] + "%";
 
-        document.querySelector(".p-13_gilroy-gd.gold.pc_laptop").textContent = professionData.gaming_platforms["pc_laptop"] + "%";
+        /*document.querySelector(".p-13_gilroy-gd.gold.pc_laptop").textContent = professionData.gaming_platforms["pc_laptop"] + "%";
         document.querySelector(".game-fill-gd.pc_laptop").style.height = professionData.gaming_platforms["pc_laptop"] + "%";
 
         document.querySelector(".p-13_gilroy-gd.gold.playstation").textContent = professionData.gaming_platforms["playstation"] + "%";
@@ -807,7 +807,32 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".game-fill-gd.smartphone_tablet").style.height = professionData.gaming_platforms["smartphone_tablet"] + "%";
 
         document.querySelector(".p-13_gilroy-gd.gold.multiple_platforms").textContent = professionData.gaming_platforms["multiple_platforms"] + "%";
-        document.querySelector(".game-fill-gd.multiple_platforms").style.height = professionData.gaming_platforms["multiple_platforms"] + "%";
+        document.querySelector(".game-fill-gd.multiple_platforms").style.height = professionData.gaming_platforms["multiple_platforms"] + "%";*/
+
+
+        const keys = ["pc_laptop", "playstation", "xbox", "smartphone_tablet", "multiple_platforms"];
+
+        keys.forEach(key => {
+            const fillEl = document.querySelector(`.game-fill-gd.${key}`);
+            const textEl = document.querySelector(`.p-13_gilroy-gd.gold.${key}`);
+
+            if (!fillEl || !textEl) return;
+
+            // ✅ Отримуємо дефолтну висоту (до зміни)
+            const defaultHeight = fillEl.offsetHeight;
+
+            // ✅ Отримуємо значення з professionData
+            const percent = professionData.gaming_platforms[key];
+
+            // ✅ Записуємо текстовий відсоток
+            textEl.textContent = percent + "%";
+
+            // ✅ Обчислюємо нову висоту відносно дефолтної
+            const newHeight = (defaultHeight * percent) / 100;
+
+            // ✅ Встановлюємо нову висоту
+            fillEl.style.height = newHeight + "px";
+        });
 
 
 
