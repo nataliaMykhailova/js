@@ -798,8 +798,10 @@ document.addEventListener("DOMContentLoaded", function () {
         initChildrenTabs();
         initEngineRangeSelector();
         handleEngineBlockVisibility();
-        initProgrammingLanguageSelection()
-        toggleLanguageBlockVisibility()
+        initProgrammingLanguageSelection();
+        toggleLanguageBlockVisibility();
+        initLangFactBlock();
+
 
         initRangeGd({
             salery: {
@@ -1497,8 +1499,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     }
-
-    initLangFactBlock();
 });
 
 
