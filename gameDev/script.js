@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const backButtonMap = document.querySelector(".nav-back_btn-gd.is--map");
     const tavernaMapButton = document.querySelector(".nav-btn-gd.taverna-map");
     const tavernSection = document.querySelector(".tavern-section-gd");
+    const skarbnitsiaMapButton = document.querySelector(".nav-btn-gd.skarbnitsia-map");
+    const treasurySection = document.querySelector(".treasury-section-gd");
 
 
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
@@ -370,6 +372,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         setTimeout(() => {
             tavernSection.style.display = "none";
+            mapSection.style.display = "block";
+
+            // Додаємо видимість мапі
+            setTimeout(() => {
+                mapSection.classList.add("visible");
+            }, 0);
+        }, 0);
+    });
+
+    skarbnitsiaMapButton.addEventListener("click", function () {
+        // Приховуємо скарбницю
+        treasurySection.classList.remove("visible");
+
+        setTimeout(() => {
+            treasurySection.style.display = "none";
             mapSection.style.display = "block";
 
             // Додаємо видимість мапі
