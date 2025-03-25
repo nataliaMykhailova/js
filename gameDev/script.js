@@ -1796,7 +1796,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initOvertimeSelection() {
         const tabs = document.querySelectorAll(".finances-tab-gd-2.overtime");
-        const allThumbs = document.querySelectorAll(".trumb-gold-gd");
+        const allThumbs = document.querySelectorAll(".trumb-gold-gd.overtime");
 
         tabs.forEach(tab => {
             tab.addEventListener("click", () => {
@@ -1814,6 +1814,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     Overtime: 0,
                     Burnout: 0
                 };
+
+                Object.keys(bossesData).forEach(boss => {
+                    delete bossesData[boss].overtimePoints;
+                });
 
                 switch (value) {
                     case "оплачує повністю":
