@@ -940,6 +940,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 mid1: 2,
                 mid2: 3,
                 max: 4
+            },
+            satisfaction:{
+                min: 1,
+                mid: 2,
+                max: 3
             }
 
         });
