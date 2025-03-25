@@ -1946,7 +1946,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function initSalarySatisfactionSelector() {
         const track = document.querySelector(".title-truck_gd.satisfaction");
         const thumb = track?.querySelector(".title-trumb-gd");
-        const blocks = document.querySelectorAll(".title-block_item-gd.salery");
+        const blocks = document.querySelectorAll(".title-block_item-gd.satisfaction");
 
         if (!track || !thumb || blocks.length === 0) {
             console.error("❌ Блоки для вибору задоволеності не знайдені.");
