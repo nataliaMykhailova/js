@@ -4,12 +4,30 @@ let userData = {
     avatar: "",
     points: {},
     artefacts: {},
+    killedBosses:{},
     salary: 0,
     age: 0,
     workHours: 0,
     finStatus: "",
     family: "",
     kids: "",
+    it_entry_age:"",
+    it_experience:"",
+    specialty_experience:"",
+    job_title:"",
+    english_proficiency:"",
+    primary_programming_language:"",
+    game_engines:"",
+    settlement_type:"",
+    contract_with:"",
+    employment_type:"",
+    work_arrangement:"",
+    monetary_bonuses:"",
+    salary_review_last_6_months:"",
+    overtime_payment:"",
+    salary_satisfaction:"",
+    gaming_habits:"",
+    gaming_platforms:"",
 
 };
 
@@ -46,6 +64,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const treasurySection = document.querySelector(".treasury-section-gd");
     const portMapButton = document.querySelector(".nav-btn-gd.port-map");
     const portSection = document.querySelector(".port-section-gd");
+    const bossBackButton = document.querySelector(".nav-back_btn-gd.is--boss-map");
+    const bossMapButton = document.querySelector(".nav-btn-gd.is--map.boss-map");
+    const bossesSection = document.querySelector(".boses-section-gd");
 
 
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
@@ -158,12 +179,30 @@ document.addEventListener("DOMContentLoaded", function () {
         userData.avatar = "";
         userData.points = {};
         userData.artefacts = {};
+        userData.killedBosses = {};
         userData.salary = 0;
         userData.age = 0;
         userData.workHours = 0;
         userData.finStatus = "";
         userData.family = "";
         userData.kids = "";
+        userData.it_entry_age ="";
+        userData.it_experience ="";
+        userData.specialty_experience ="";
+        userData.job_title ="";
+        userData.english_proficiency ="";
+        userData. primary_programming_language ="";
+        userData.game_engines = "";
+        userData.settlement_type = "";
+        userData.contract_with ="";
+        userData.employment_type ="";
+        userData.work_arrangement ="";
+        userData.monetary_bonuses ="";
+        userData.salary_review_last_6_months ="";
+        userData.overtime_payment ="";
+        userData.salary_satisfaction ="";
+        userData.gaming_habits ="";
+        userData.gaming_platforms ="";
 
         console.log("Дані користувача скинуто", userData);
 
@@ -412,6 +451,24 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 0);
         }, 0);
     });
+
+    function showMapFromBosses() {
+        if (!bossesSection || !mapSection) return;
+
+        bossesSection.classList.remove("visible");
+
+        setTimeout(() => {
+            bossesSection.style.display = "none";
+            mapSection.style.display = "block";
+
+            setTimeout(() => {
+                mapSection.classList.add("visible");
+            }, 0);
+        }, 0);
+    }
+
+    bossBackButton?.addEventListener("click", showMapFromBosses);
+    bossMapButton?.addEventListener("click", showMapFromBosses);
 
     // Повернення до вибору професії
     backButton.addEventListener("click", function () {
@@ -1862,6 +1919,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
 
                 const key = labelToKey[selectedText];
+                userData.monetary_bonuses = key;
                 if (!key) {
                     console.warn("⚠️ Невідоме значення бонусу:", selectedText);
                     return;
@@ -1952,6 +2010,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         break;
                 }
 
+                userData.overtime_payment = key;
+
                 // Додаємо клас active для вибраного треку
                 const selectedTrack = document.querySelector(`.programming-fill-gd.${key}`);
                 if (selectedTrack) {
@@ -2011,6 +2071,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Лог вибору
                 const selectedText = tab.textContent.trim();
+                userData.salary_review_last_6_months = key;
                 console.log(`📝 Вибрано опцію перегляду зарплати: ${selectedText}`);
             });
         });
@@ -2183,6 +2244,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
 
                 const key = labelToKey[label];
+                userData.work_arrangement = key;
                 if (!key) {
                     console.warn("⚠️ Невідомий тип праці:", label);
                     return;
@@ -2246,6 +2308,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (fill) fill.classList.add("active");
                     if (text) text.classList.add("active");
                 }
+                userData.contract_with = key;
+
 
                 console.log(`📝 Обраний тип контракту: ${key}`);
             });
@@ -2253,6 +2317,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Контрактний вибір активовано");
     }
+    function renderBosses() {
+        const bossWrapper = document.querySelector(".boss-wrapper-gd");
+        const bossTemplate = bossWrapper.querySelector(".boss-block-gd");
+
+        if (!bossWrapper || !bossTemplate) {
+            console.error("❌ Контейнер або шаблон .boss-block-gd не знайдено");
+            return;
+        }
+
+        // Очистити, лишивши тільки перший шаблон
+        bossWrapper.innerHTML = "";
+
+        Object.values(bossesData).forEach(boss => {
+            const clonedBoss = bossTemplate.cloneNode(true);
+
+            // Заповнюємо totalPoints
+            const pointsEl = clonedBoss.querySelector(".boss-points-count");
+            if (pointsEl) pointsEl.textContent = boss.totalPoints;
+
+            // Задаємо ширину для .boss-fill-gd
+            const fillEl = clonedBoss.querySelector(".boss-fill-gd");
+            if (fillEl) fillEl.style.width = `${(boss.totalPoints * 100) / 6}%`;
+
+            // Зображення
+            const imgEl = clonedBoss.querySelector(".boss-img-gd");
+            if (imgEl) imgEl.src = boss.img;
+
+            // Назва боса
+            const nameEl = clonedBoss.querySelector(".boss-name");
+            if (nameEl) nameEl.textContent = boss.name;
+
+            // Опис
+            const descEl = clonedBoss.querySelector(".boss-desc-gd");
+            if (descEl) descEl.textContent = boss.description;
+
+            bossWrapper.appendChild(clonedBoss);
+        });
+
+        console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
+    }
+
+    renderBosses();
+
 
 });
 
