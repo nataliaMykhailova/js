@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const tavernSection = document.querySelector(".tavern-section-gd");
     const skarbnitsiaMapButton = document.querySelector(".nav-btn-gd.skarbnitsia-map");
     const treasurySection = document.querySelector(".treasury-section-gd");
+    const portMapButton = document.querySelector(".nav-btn-gd.port-map");
+    const portSection = document.querySelector(".port-section-gd");
 
 
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
@@ -387,6 +389,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         setTimeout(() => {
             treasurySection.style.display = "none";
+            mapSection.style.display = "block";
+
+            // Додаємо видимість мапі
+            setTimeout(() => {
+                mapSection.classList.add("visible");
+            }, 0);
+        }, 0);
+    });
+
+    portMapButton.addEventListener("click", function () {
+        // Приховуємо порт
+        portSection.classList.remove("visible");
+
+        setTimeout(() => {
+            portSection.style.display = "none";
             mapSection.style.display = "block";
 
             // Додаємо видимість мапі
