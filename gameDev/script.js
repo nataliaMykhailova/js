@@ -903,7 +903,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelector(".lang-text.p-10-gilroy-2.gold.ukrainian_legal_entity").textContent = professionData.contract_with["ukrainian_legal_entity"] + "%";
         document.querySelector(".lang-text.p-10-gilroy-2.gold.foreign_legal_entity").textContent = professionData.contract_with["foreign_legal_entity"] + "%";
-        document.querySelector(".lang-text.p-10-gilroy-2.gold.not_registered_salary_in_cash").textContent = professionData.contract_with["not_registered_salary_in_cash"] + "%";
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.not_registered").textContent = professionData.contract_with["not_registered_salary_in_cash"] + "%";
 
         document.querySelector(".contact-line_track-wrapper-gd.ukrainian_legal_entity").style.width = professionData.contract_with["ukrainian_legal_entity"] + "%";
         document.querySelector(".contact-line_track-wrapper-gd.foreign_legal_entity").style.width = professionData.contract_with["foreign_legal_entity"] + "%";
