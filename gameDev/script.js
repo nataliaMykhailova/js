@@ -901,7 +901,13 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".p-10-gilroy.gold.equally_remote_office").textContent = professionData.work_arrangement["equally_remote_office"] + "%";
         document.querySelector(".work-fill-gd.equally_remote_office").style.width = professionData.work_arrangement["equally_remote_office"] + "%";
 
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.ukrainian_legal_entity").textContent = professionData.contract_with["ukrainian_legal_entity"] + "%";
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.foreign_legal_entity").textContent = professionData.contract_with["foreign_legal_entity"] + "%";
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.not_registered_salary_in_cash").textContent = professionData.contract_with["not_registered_salary_in_cash"] + "%";
 
+        document.querySelector(".contact-line_track-wrapper-gd.ukrainian_legal_entity").style.width = professionData.contract_with["ukrainian_legal_entity"] + "%";
+        document.querySelector(".contact-line_track-wrapper-gd.foreign_legal_entity").style.width = professionData.contract_with["foreign_legal_entity"] + "%";
+        document.querySelector(".contact-line_track-wrapper-gd.not_registered_salary_in_cash").style.width = professionData.contract_with["not_registered_salary_in_cash"] + "%";
 
 
         requestAnimationFrame(() => {
@@ -962,7 +968,8 @@ document.addEventListener("DOMContentLoaded", function () {
         initRevisionSelection();
         initSalarySatisfactionSelector();
         initEmploymentSelection();
-        initWorkArrangementSelection()
+        initWorkArrangementSelection();
+        initContractSelection()
 
 
         initRangeGd({
@@ -2190,6 +2197,44 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         console.log("✅ Логіка вибору типу праці ініціалізована");
+    }
+
+    function initContractSelection() {
+        const contractTabs = document.querySelectorAll(".finances-tab-gd-2.contract");
+
+        contractTabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                // Зняти активні класи з усіх кнопок
+                contractTabs.forEach(t => t.classList.remove("active"));
+                tab.classList.add("active");
+
+                // Зняти active з усіх треків
+                document.querySelectorAll(".contact-line_fill-gd").forEach(f => f.classList.remove("active"));
+                document.querySelectorAll(".contact-text_wrapper-gd").forEach(t => t.classList.remove("active"));
+
+                // Знайти ключ
+                const value = tab.textContent.trim().toLowerCase();
+                let key = "";
+
+                if (value.includes("в україні")) key = "ukrainian_legal_entity";
+                else if (value.includes("за кордоном")) key = "foreign_legal_entity";
+                else if (value.includes("в конверті")) key = "not_registered_salary_in_cash";
+
+                // Додати активні класи відповідним елементам
+                const track = document.querySelector(`.contact-line_track-wrapper-gd.${key}`);
+                if (track) {
+                    const fill = track.querySelector(".contact-line_fill-gd");
+                    const text = track.querySelector(".contact-text_wrapper-gd");
+
+                    if (fill) fill.classList.add("active");
+                    if (text) text.classList.add("active");
+                }
+
+                console.log(`📝 Обраний тип контракту: ${key}`);
+            });
+        });
+
+        console.log("✅ Контрактний вибір активовано");
     }
 
 });
