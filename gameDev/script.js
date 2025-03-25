@@ -890,6 +890,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initGamingPlatformSelection();
         initBonusSelection();
         initOvertimeSelection();
+        initRevisionBlock();
 
 
         initRangeGd({
@@ -1872,6 +1873,80 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    function initRevisionSelection() {
+        const tabs = document.querySelectorAll(".finances-tab-gd-2.revision");
+        const allActives = document.querySelectorAll(".revision-fill_icon-active-gd");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                // Очистити всі активні класи
+                tabs.forEach(t => t.classList.remove("active"));
+                allActives.forEach(a => a.classList.remove("active"));
+
+                // Активувати обраний таб
+                tab.classList.add("active");
+
+                const value = tab.textContent.trim().toLowerCase();
+
+                // Мапа відповідності класів
+                const labelToKey = {
+                    "не було": "no_review",
+                    "був перегляд без зміни грейду чи місця роботи": "review_without_promotion",
+                    "перегляд через зміну компанії/місця роботи": "review_due_to_new_company",
+                    "перегляд через перехід на новий рівень/грейд/позицію": "review_due_to_promotion"
+                };
+
+                const key = labelToKey[value];
+                if (!key) {
+                    console.warn("⚠️ Невідомий вибір:", value);
+                    return;
+                }
+
+                const activeFill = document.querySelector(`.revision-fill-gd.${key} .revision-fill_icon-active-gd`);
+                if (activeFill) activeFill.classList.add("active");
+
+                // Можна додати оновлення userData тут, якщо потрібно зберігати вибір
+                userData.salaryReview = key;
+
+                console.log(`📌 Обрано: ${key}`);
+            });
+        });
+
+        console.log("✅ Логіка вибору перегляду зарплати ініціалізована");
+    }
+
+    function initRevisionBlock() {
+        if (!professionData || !professionData.salary_review_last_6_months) {
+            console.error("❌ Дані про перегляд зарплати відсутні");
+            return;
+        }
+
+        const data = professionData.salary_review_last_6_months;
+
+        const keys = [
+            "no_review",
+            "review_without_promotion",
+            "review_due_to_new_company",
+            "review_due_to_promotion"
+        ];
+
+        keys.forEach(key => {
+            const percent = data[key];
+            const percentTextEl = document.querySelector(`.p-10-gilroy.gold.revision.${key}`);
+            const fillIconActive = document.querySelector(`.revision-fill-gd.${key} .revision-fill_icon-active-gd`);
+
+            if (percentTextEl) percentTextEl.textContent = percent + "%";
+
+            if (fillIconActive) {
+                const rotation = (percent / 100) * 180;
+                fillIconActive.style.transform = `rotate(${rotation}deg)`;
+            }
+        });
+
+        console.log("📊 Дані по перегляду зарплати оновлені");
+
+        initRevisionSelection(); // виклик логіки кліків
+    }
 
 
 });
