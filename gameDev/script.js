@@ -1888,26 +1888,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tabButtons.forEach(tab => {
             tab.addEventListener("click", () => {
-                // Зняти active з усіх табів і ліній
+                // Зняти активні класи з усіх табів і іконок
                 tabButtons.forEach(btn => btn.classList.remove("active"));
                 document.querySelectorAll(".revision-fill_icon-active-gd").forEach(icon => {
                     icon.classList.remove("active");
                 });
 
-                // Додати active до табу
+                // Показати всі лінії по замовчуванню
+                document.querySelectorAll(".revision-line-gd").forEach(line => {
+                    line.style.display = "block";
+                });
+
+                // Активний таб
                 tab.classList.add("active");
 
-                // Знайти wrapper
+                // Отримуємо відповідний wrapper
                 const wrapper = tab.closest(".revision-wrapper-gd");
                 if (!wrapper) return;
 
-                // Додати active тільки до іконки в цьому блоці
+                // Активна лінія — показуємо
                 const lineIcon = wrapper.querySelector(".revision-fill_icon-active-gd");
                 if (lineIcon) {
                     lineIcon.classList.add("active");
                 }
 
-                // Можна тут також записати вибір, якщо потрібно
+                // Сховати revision-line-gd у цьому блоці
+                const lineToHide = wrapper.querySelector(".revision-line-gd");
+                if (lineToHide) {
+                    lineToHide.style.display = "none";
+                }
+
+                // Лог вибору
                 const selectedText = tab.textContent.trim();
                 console.log(`📝 Вибрано опцію перегляду зарплати: ${selectedText}`);
             });
