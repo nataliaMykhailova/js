@@ -838,17 +838,10 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".p-10-gilroy.gold.revision.review_due_to_new_company").textContent = professionData.salary_review_last_6_months["review_due_to_new_company"] + "%";
         document.querySelector(".p-10-gilroy.gold.revision.review_due_to_promotion").textContent = professionData.salary_review_last_6_months["review_due_to_promotion"] + "%";
 
-        document.querySelector(".revision-fill-gd.no_review .revision-fill_icon-active-gd").style.transform =
-            "rotate(" + (professionData.salary_review_last_6_months["no_review"] / 100) * 180 + "deg)";
-
-        document.querySelector(".revision-fill-gd.review_without_promotion .revision-fill_icon-active-gd").style.transform =
-            "rotate(" + (professionData.salary_review_last_6_months["review_without_promotion"] / 100) * 180 + "deg)";
-
-        document.querySelector(".revision-fill-gd.review_due_to_new_company .revision-fill_icon-active-gd").style.transform =
-            "rotate(" + (professionData.salary_review_last_6_months["review_due_to_new_company"] / 100) * 180 + "deg)";
-
-        document.querySelector(".revision-fill-gd.review_due_to_promotion .revision-fill_icon-active-gd").style.transform =
-            "rotate(" + (professionData.salary_review_last_6_months["review_due_to_promotion"] / 100) * 180 + "deg)";
+        document.querySelector(".revision-fill-gd.no_review").style.transform = `rotate(${professionData.salary_review_last_6_months["no_review"] / 100 * 180}deg)`;
+        document.querySelector(".revision-fill-gd.review_without_promotion").style.transform = `rotate(${professionData.salary_review_last_6_months["review_without_promotion"] / 100 * 180}deg)`;
+        document.querySelector(".revision-fill-gd.review_due_to_new_company").style.transform = `rotate(${professionData.salary_review_last_6_months["review_due_to_new_company"] / 100 * 180}deg)`;
+        document.querySelector(".revision-fill-gd.review_due_to_promotion").style.transform = `rotate(${professionData.salary_review_last_6_months["review_due_to_promotion"] / 100 * 180}deg)`;
 
 
 
@@ -1891,46 +1884,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function initRevisionSelection() {
-        const tabs = document.querySelectorAll(".finances-tab-gd-2.revision");
-        const allActives = document.querySelectorAll(".revision-fill_icon-active-gd");
+        const tabButtons = document.querySelectorAll(".finances-tab-gd-2.revision");
 
-        tabs.forEach(tab => {
+        tabButtons.forEach(tab => {
             tab.addEventListener("click", () => {
-                // Очистити всі активні класи
-                tabs.forEach(t => t.classList.remove("active"));
-                allActives.forEach(a => a.classList.remove("active"));
+                // Зняти active з усіх табів і ліній
+                tabButtons.forEach(btn => btn.classList.remove("active"));
+                document.querySelectorAll(".revision-fill_icon-active-gd").forEach(icon => {
+                    icon.classList.remove("active");
+                });
 
-                // Активувати обраний таб
+                // Додати active до табу
                 tab.classList.add("active");
 
-                const value = tab.textContent.trim().toLowerCase();
+                // Знайти wrapper
+                const wrapper = tab.closest(".revision-wrapper-gd");
+                if (!wrapper) return;
 
-                // Мапа відповідності класів
-                const labelToKey = {
-                    "не було": "no_review",
-                    "був перегляд без зміни грейду чи місця роботи": "review_without_promotion",
-                    "перегляд через зміну компанії/місця роботи": "review_due_to_new_company",
-                    "перегляд через перехід на новий рівень/грейд/позицію": "review_due_to_promotion"
-                };
-
-                const key = labelToKey[value];
-                if (!key) {
-                    console.warn("⚠️ Невідомий вибір:", value);
-                    return;
+                // Додати active тільки до іконки в цьому блоці
+                const lineIcon = wrapper.querySelector(".revision-fill_icon-active-gd");
+                if (lineIcon) {
+                    lineIcon.classList.add("active");
                 }
 
-                const activeFill = document.querySelector(`.revision-fill-gd.${key} .revision-fill_icon-active-gd`);
-                if (activeFill) activeFill.classList.add("active");
-
-                // Можна додати оновлення userData тут, якщо потрібно зберігати вибір
-                userData.salaryReview = key;
-
-                console.log(`📌 Обрано: ${key}`);
+                // Можна тут також записати вибір, якщо потрібно
+                const selectedText = tab.textContent.trim();
+                console.log(`📝 Вибрано опцію перегляду зарплати: ${selectedText}`);
             });
         });
 
         console.log("✅ Логіка вибору перегляду зарплати ініціалізована");
     }
+
 
 });
 
