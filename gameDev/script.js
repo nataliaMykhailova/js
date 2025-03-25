@@ -833,6 +833,23 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".p-10-gilroy.gold.overtime.freelance").textContent = professionData.overtime_payment["freelance"] + "%";
         document.querySelector(".programming-fill-gd.freelance").style.width = professionData.overtime_payment["freelance"] + "%";
 
+        document.querySelector(".p-10-gilroy.gold.revision.no_review").textContent = professionData.salary_review_last_6_months["no_review"] + "%";
+        document.querySelector(".p-10-gilroy.gold.revision.review_without_promotion").textContent = professionData.salary_review_last_6_months["review_without_promotion"] + "%";
+        document.querySelector(".p-10-gilroy.gold.revision.review_due_to_new_company").textContent = professionData.salary_review_last_6_months["review_due_to_new_company"] + "%";
+        document.querySelector(".p-10-gilroy.gold.revision.review_due_to_promotion").textContent = professionData.salary_review_last_6_months["review_due_to_promotion"] + "%";
+
+        document.querySelector(".revision-fill-gd.no_review .revision-fill_icon-active-gd").style.transform =
+            "rotate(" + (professionData.salary_review_last_6_months["no_review"] / 100) * 180 + "deg)";
+
+        document.querySelector(".revision-fill-gd.review_without_promotion .revision-fill_icon-active-gd").style.transform =
+            "rotate(" + (professionData.salary_review_last_6_months["review_without_promotion"] / 100) * 180 + "deg)";
+
+        document.querySelector(".revision-fill-gd.review_due_to_new_company .revision-fill_icon-active-gd").style.transform =
+            "rotate(" + (professionData.salary_review_last_6_months["review_due_to_new_company"] / 100) * 180 + "deg)";
+
+        document.querySelector(".revision-fill-gd.review_due_to_promotion .revision-fill_icon-active-gd").style.transform =
+            "rotate(" + (professionData.salary_review_last_6_months["review_due_to_promotion"] / 100) * 180 + "deg)";
+
 
 
         requestAnimationFrame(() => {
@@ -890,7 +907,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initGamingPlatformSelection();
         initBonusSelection();
         initOvertimeSelection();
-        initRevisionBlock();
+        initRevisionSelection();
 
 
         initRangeGd({
@@ -1914,40 +1931,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Логіка вибору перегляду зарплати ініціалізована");
     }
-
-    function initRevisionBlock() {
-        if (!professionData || !professionData.salary_review_last_6_months) {
-            console.error("❌ Дані про перегляд зарплати відсутні");
-            return;
-        }
-
-        const data = professionData.salary_review_last_6_months;
-
-        const keys = [
-            "no_review",
-            "review_without_promotion",
-            "review_due_to_new_company",
-            "review_due_to_promotion"
-        ];
-
-        keys.forEach(key => {
-            const percent = data[key];
-            const percentTextEl = document.querySelector(`.p-10-gilroy.gold.revision.${key}`);
-            const fillIconActive = document.querySelector(`.revision-fill-gd.${key} .revision-fill_icon-active-gd`);
-
-            if (percentTextEl) percentTextEl.textContent = percent + "%";
-
-            if (fillIconActive) {
-                const rotation = (percent / 100) * 180;
-                fillIconActive.style.transform = `rotate(${rotation}deg)`;
-            }
-        });
-
-        console.log("📊 Дані по перегляду зарплати оновлені");
-
-        initRevisionSelection(); // виклик логіки кліків
-    }
-
 
 });
 
