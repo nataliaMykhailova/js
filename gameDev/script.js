@@ -818,6 +818,22 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".bonus-fill-gd.receive").style.width = professionData.monetary_bonuses["receive"] + "%";
         document.querySelector(".bonus-fill-gd.received_before").style.width = professionData.monetary_bonuses["received_before"] + "%";
 
+        document.querySelector(".p-10-gilroy.gold.overtime.fully_paid").textContent = professionData.overtime_payment["fully_paid"] + "%";
+        document.querySelector(".programming-fill-gd.fully_paid").style.width = professionData.overtime_payment["fully_paid"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.overtime.partially_paid").textContent = professionData.overtime_payment["partially_paid"] + "%";
+        document.querySelector(".programming-fill-gd.partially_paid").style.width = professionData.overtime_payment["partially_paid"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.overtime.not_paid").textContent = professionData.overtime_payment["not_paid"] + "%";
+        document.querySelector(".programming-fill-gd.not_paid").style.width = professionData.overtime_payment["not_paid"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.overtime.no_overtime").textContent = professionData.overtime_payment["no_overtime"] + "%";
+        document.querySelector(".programming-fill-gd.no_overtime").style.width = professionData.overtime_payment["no_overtime"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.overtime.freelance").textContent = professionData.overtime_payment["freelance"] + "%";
+        document.querySelector(".programming-fill-gd.freelance").style.width = professionData.overtime_payment["freelance"] + "%";
+
+
 
         requestAnimationFrame(() => {
             const keys = ["pc_laptop", "playstation", "xbox", "smartphone_tablet", "multiple_platforms"];
@@ -873,6 +889,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initGamingHabits()
         initGamingPlatformSelection();
         initBonusSelection();
+        initOvertimeSelection();
 
 
         initRangeGd({
@@ -1774,6 +1791,85 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Логіка вибору бонусів ініціалізована");
     }
+
+
+
+    function initOvertimeSelection() {
+        const tabs = document.querySelectorAll(".finances-tab-gd-2.overtime");
+        const allThumbs = document.querySelectorAll(".trumb-gold-gd");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                // Очистити всі класи
+                tabs.forEach(t => t.classList.remove("active"));
+                allThumbs.forEach(th => th.style.opacity = "0");
+
+                tab.classList.add("active");
+
+                const value = tab.textContent.trim().toLowerCase();
+                let key = "";
+                let points = 0;
+                let bossPoints = {
+                    Deadline: 0,
+                    Overtime: 0,
+                    Burnout: 0
+                };
+
+                switch (value) {
+                    case "оплачує повністю":
+                        key = "fully_paid";
+                        points = 1;
+                        bossPoints.Overtime = 1;
+                        bossPoints.Burnout = 1;
+                        break;
+                    case "оплачує частково":
+                        key = "partially_paid";
+                        points = 1;
+                        bossPoints.Overtime = 1;
+                        bossPoints.Burnout = 1;
+                        break;
+                    case "не оплачує":
+                        key = "not_paid";
+                        points = 1;
+                        bossPoints.Overtime = 1;
+                        bossPoints.Burnout = 1;
+                        break;
+                    case "не овертаймлять":
+                        key = "no_overtime";
+                        points = 0;
+                        bossPoints.Deadline = 1;
+                        break;
+                    case "фріланс":
+                        key = "freelance";
+                        points = 0;
+                        bossPoints.Deadline = 1;
+                        break;
+                }
+
+                // Додаємо клас active для вибраного треку
+                const selectedTrack = document.querySelector(`.programming-fill-gd.${key}`);
+                if (selectedTrack) {
+                    allThumbs.forEach(th => th.style.opacity = "0"); // прибрати з усіх
+                    const thumb = selectedTrack.querySelector(".trumb-gold-gd");
+                    if (thumb) thumb.style.opacity = "1";
+                }
+
+                // Нараховуємо бали
+                addUserPoints("overtimePoints", points);
+                if (bossPoints.Overtime) addBossPoints("Overtime", bossPoints.Overtime, "overtimePoints");
+                if (bossPoints.Burnout) addBossPoints("Burnout", bossPoints.Burnout, "overtimePoints");
+                if (bossPoints.Deadline) addBossPoints("Deadline", bossPoints.Deadline, "overtimePoints");
+
+                console.log(`🕒 Обрано: ${key}, Бали користувача: ${points}`, bossPoints);
+            });
+        });
+
+        console.log("✅ Логіка вибору овертаймів ініціалізована");
+    }
+
+
+
+
 });
 
 
