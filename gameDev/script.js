@@ -868,6 +868,23 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".title-block_item-fill-gd.mostly_satisfied").style.height = professionData.salary_satisfaction["mostly_satisfied"] + "%";
         document.querySelector(".title-block_item-fill-gd.not_satisfied").style.height = professionData.salary_satisfaction["not_satisfied"] + "%";
 
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.gig_contract").textContent = professionData.employment_type["gig_contract"] + "%";
+        document.querySelector(".static-line_track-wrapper-gd.gig_contract").style.width = professionData.employment_type["gig_contract"] + "%";
+
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.foreign_contract").textContent = professionData.employment_type["foreign_contract"] + "%";
+        document.querySelector(".static-line_track-wrapper-gd.foreign_contract").style.width = professionData.employment_type["foreign_contract"] + "%";
+
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.minimum_salary_rest_in_cash").textContent = professionData.employment_type["minimum_salary_rest_in_cash"] + "%";
+        document.querySelector(".static-line_track-wrapper-gd.minimum_salary_rest_in_cash").style.width = professionData.employment_type["minimum_salary_rest_in_cash"] + "%";
+
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.official_ukrainian_labor_code").textContent = professionData.employment_type["official_ukrainian_labor_code"] + "%";
+        document.querySelector(".static-line_track-wrapper-gd.official_ukrainian_labor_code").style.width = professionData.employment_type["official_ukrainian_labor_code"] + "%";
+
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.self_employed_fop").textContent = professionData.employment_type["self_employed_fop"] + "%";
+        document.querySelector(".static-line_track-wrapper-gd.self_employed_fop").style.width = professionData.employment_type["self_employed_fop"] + "%";
+
+        document.querySelector(".lang-text.p-10-gilroy-2.gold.not_registered_salary_in_cash").textContent = professionData.employment_type["not_registered_salary_in_cash"] + "%";
+        document.querySelector(".static-line_track-wrapper-gd.not_registered_salary_in_cash").style.width = professionData.employment_type["not_registered_salary_in_cash"] + "%";
 
 
 
@@ -928,6 +945,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initOvertimeSelection();
         initRevisionSelection();
         initSalarySatisfactionSelector();
+        initEmploymentSelection();
 
 
         initRangeGd({
@@ -2037,6 +2055,66 @@ document.addEventListener("DOMContentLoaded", function () {
         document.addEventListener("touchmove", dragMove, { passive: false });
         document.addEventListener("mouseup", stopDrag);
         document.addEventListener("touchend", stopDrag);
+    }
+
+    function initEmploymentSelection() {
+        const tabs = document.querySelectorAll(".finances-tab-gd-2.employment");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                const value = tab.textContent.trim().toLowerCase();
+
+                // Очистити всі активні стани
+                tabs.forEach(t => t.classList.remove("active"));
+                document.querySelectorAll(".employment-text_wrapper-gd-2").forEach(el => el.classList.remove("active"));
+                document.querySelectorAll(".static-line_fill-gd").forEach(el => el.classList.remove("active"));
+
+                tab.classList.add("active");
+
+                let key = "";
+                let points = 0;
+
+                switch (value) {
+                    case "гіг-контракт":
+                        key = "gig_contract";
+                        points = 2;
+                        break;
+                    case "оформлений в іншій країні, згідно з місцевим законодавством":
+                        key = "foreign_contract";
+                        points = 3;
+                        break;
+                    case "оформлений на мінімальну зарплату, залишок “в конверті”":
+                        key = "minimum_salary_rest_in_cash";
+                        points = 1;
+                        break;
+                    case "оформлений офіційно, згідно з кзпп":
+                        key = "official_ukrainian_labor_code";
+                        points = 4;
+                        break;
+                    case "у мене відкрито фоп":
+                        key = "self_employed_fop";
+                        points = 2;
+                        break;
+                    case "ніяк не оформлений, отримую зп в конверті":
+                        key = "not_registered_salary_in_cash";
+                        points = 0;
+                        break;
+                }
+
+                const fillEl = document.querySelector(`.static-line_track-wrapper-gd.${key} .static-line_fill-gd`);
+                const textWrapper = document.querySelector(`.static-line_track-wrapper-gd.${key} .employment-text_wrapper-gd-2`);
+
+                if (fillEl) fillEl.classList.add("active");
+                if (textWrapper) textWrapper.classList.add("active");
+
+                userData.employmentType = key;
+                addUserPoints("employmentPoints", points);
+
+                console.log(`📌 Обрано тип працевлаштування: ${key}, Бали: ${points}`);
+            });
+        });
+
+        console.log("✅ Логіка вибору типу працевлаштування ініціалізована");
     }
 
 
