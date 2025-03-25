@@ -1043,7 +1043,8 @@ document.addEventListener("DOMContentLoaded", function () {
         initSalarySatisfactionSelector();
         initEmploymentSelection();
         initWorkArrangementSelection();
-        initContractSelection()
+        initContractSelection();
+        renderBosses();
 
 
         initRangeGd({
@@ -2317,6 +2318,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Контрактний вибір активовано");
     }
+
     function renderBosses() {
         const bossWrapper = document.querySelector(".boss-wrapper-gd");
         const bossTemplate = bossWrapper.querySelector(".boss-block-gd");
@@ -2357,8 +2359,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
     }
-
-    renderBosses();
 
 
 });
