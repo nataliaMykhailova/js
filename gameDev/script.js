@@ -886,6 +886,22 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".lang-text.p-10-gilroy-2.gold.not_registered_salary_in_cash").textContent = professionData.employment_type["not_registered_salary_in_cash"] + "%";
         document.querySelector(".static-line_track-wrapper-gd.not_registered_salary_in_cash").style.width = professionData.employment_type["not_registered_salary_in_cash"] + "%";
 
+        document.querySelector(".p-10-gilroy.gold.fully_remote").textContent = professionData.work_arrangement["fully_remote"] + "%";
+        document.querySelector(".work-fill-gd.fully_remote").style.width = professionData.work_arrangement["fully_remote"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.mostly_remote").textContent = professionData.work_arrangement["mostly_remote"] + "%";
+        document.querySelector(".work-fill-gd.mostly_remote").style.width = professionData.work_arrangement["mostly_remote"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.mostly_office").textContent = professionData.work_arrangement["mostly_office"] + "%";
+        document.querySelector(".work-fill-gd.mostly_office").style.width = professionData.work_arrangement["mostly_office"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.fully_office").textContent = professionData.work_arrangement["fully_office"] + "%";
+        document.querySelector(".work-fill-gd.fully_office").style.width = professionData.work_arrangement["fully_office"] + "%";
+
+        document.querySelector(".p-10-gilroy.gold.equally_remote_office").textContent = professionData.work_arrangement["equally_remote_office"] + "%";
+        document.querySelector(".work-fill-gd.equally_remote_office").style.width = professionData.work_arrangement["equally_remote_office"] + "%";
+
+
 
 
         requestAnimationFrame(() => {
@@ -946,6 +962,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initRevisionSelection();
         initSalarySatisfactionSelector();
         initEmploymentSelection();
+        initWorkArrangementSelection()
 
 
         initRangeGd({
@@ -2117,6 +2134,63 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("✅ Логіка вибору типу працевлаштування ініціалізована");
     }
 
+
+
+    function initWorkArrangementSelection() {
+        const tabs = document.querySelectorAll(".finances-tab-gd-2.work");
+        const fills = document.querySelectorAll(".work-fill-gd");
+
+        tabs.forEach(tab => {
+            tab.addEventListener("click", () => {
+                // Зняти класи active з усіх
+                tabs.forEach(t => t.classList.remove("active"));
+                fills.forEach(f => f.classList.remove("active"));
+
+                tab.classList.add("active");
+
+                const label = tab.textContent.trim().toLowerCase();
+
+                const labelToKey = {
+                    "повністю віддалено": "fully_remote",
+                    "частіше віддалено, іноді в офісі компанії": "mostly_remote",
+                    "частіше в офісі іноді віддалено": "mostly_office",
+                    "повністю в офісі": "fully_office",
+                    "однаково часто віддалено і в офісі": "equally_remote_office"
+                };
+
+                const key = labelToKey[label];
+                if (!key) {
+                    console.warn("⚠️ Невідомий тип праці:", label);
+                    return;
+                }
+
+                // Активувати відповідний fill
+                const selectedFill = document.querySelector(`.work-fill-gd.${key}`);
+                if (selectedFill) selectedFill.classList.add("active");
+
+                // Присвоїти бали
+                let points = 0;
+                switch (key) {
+                    case "fully_remote":
+                    case "fully_office":
+                        points = 3;
+                        break;
+                    case "mostly_remote":
+                    case "mostly_office":
+                        points = 2;
+                        break;
+                    case "equally_remote_office":
+                        points = 1;
+                        break;
+                }
+
+                addUserPoints("workArrangementPoints", points);
+                console.log(`🏠 Обраний тип роботи: ${key}, Бали користувача: ${points}`);
+            });
+        });
+
+        console.log("✅ Логіка вибору типу праці ініціалізована");
+    }
 
 });
 
