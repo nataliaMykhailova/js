@@ -843,6 +843,15 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".revision-fill-gd.review_due_to_new_company").style.transform = `rotate(${professionData.salary_review_last_6_months["review_due_to_new_company"] / 100 * 180}deg)`;
         document.querySelector(".revision-fill-gd.review_due_to_promotion").style.transform = `rotate(${professionData.salary_review_last_6_months["review_due_to_promotion"] / 100 * 180}deg)`;
 
+        document.querySelector(".p-10-gilroy.satisfied").textContent = professionData.salary_satisfaction["satisfied"] + "%";
+        document.querySelector(".p-10-gilroy.mostly_satisfied").textContent = professionData.salary_satisfaction["mostly_satisfied"] + "%";
+        document.querySelector(".p-10-gilroy.not_satisfied").textContent = professionData.salary_satisfaction["not_satisfied"] + "%";
+
+        document.querySelector(".title-block_item-fill-gd.satisfied").style.height = professionData.salary_satisfaction["satisfied"] + "%";
+        document.querySelector(".title-block_item-fill-gd.mostly_satisfied").style.height = professionData.salary_satisfaction["mostly_satisfied"] + "%";
+        document.querySelector(".title-block_item-fill-gd.not_satisfied").style.height = professionData.salary_satisfaction["not_satisfied"] + "%";
+
+
 
 
         requestAnimationFrame(() => {
@@ -901,6 +910,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initBonusSelection();
         initOvertimeSelection();
         initRevisionSelection();
+        initSalarySatisfactionSelector();
 
 
         initRangeGd({
@@ -1925,6 +1935,86 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         console.log("✅ Логіка вибору перегляду зарплати ініціалізована");
+    }
+
+
+    function initSalarySatisfactionSelector() {
+        const track = document.querySelector(".title-truck_gd.satisfaction");
+        const thumb = track?.querySelector(".title-trumb-gd");
+        const blocks = document.querySelectorAll(".title-block_item-gd.salery");
+
+        if (!track || !thumb || blocks.length === 0) {
+            console.error("❌ Блоки для вибору задоволеності не знайдені.");
+            return;
+        }
+
+        const positions = [0, 49, 98]; // для 3-х блоків
+        const keys = ["satisfied", "mostly_satisfied", "not_satisfied"];
+        let isDragging = false;
+        let selectedIndex = null;
+
+        function moveThumb(value) {
+            thumb.style.left = `${value}%`;
+        }
+
+        function setActiveBlock(index) {
+            blocks.forEach(b => b.classList.remove("active"));
+            if (index !== null) {
+                blocks[index].classList.add("active");
+
+                const key = keys[index];
+                userData.salarySatisfaction = key;
+
+                // призначити артефакт
+                const artefactUrl = professionsData.artefacts?.salary_satisfaction?.[key];
+                if (artefactUrl) {
+                    userData.artefacts.salarySatisfaction = artefactUrl;
+                    updateProfileBlocks();
+                    console.log(`💰 Обрана задоволеність: ${key}, артефакт: ${artefactUrl}`);
+                }
+
+                moveThumb(positions[index]);
+            }
+        }
+
+        function startDrag(e) {
+            isDragging = true;
+            e.preventDefault();
+        }
+
+        function stopDrag() {
+            if (!isDragging) return;
+            isDragging = false;
+
+            const rect = track.getBoundingClientRect();
+            const thumbX = thumb.getBoundingClientRect().left - rect.left;
+            const thumbPercent = (thumbX / rect.width) * 100;
+
+            let closestIndex = positions.reduce((prev, curr, idx) =>
+                Math.abs(curr - thumbPercent) < Math.abs(positions[prev] - thumbPercent) ? idx : prev, 0
+            );
+
+            selectedIndex = closestIndex;
+            setActiveBlock(selectedIndex);
+        }
+
+        function dragMove(e) {
+            if (!isDragging) return;
+
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const rect = track.getBoundingClientRect();
+            let x = ((clientX - rect.left) / rect.width) * 100;
+            x = Math.max(0, Math.min(x, 98));
+
+            moveThumb(x);
+        }
+
+        thumb.addEventListener("mousedown", startDrag);
+        thumb.addEventListener("touchstart", startDrag, { passive: false });
+        document.addEventListener("mousemove", dragMove);
+        document.addEventListener("touchmove", dragMove, { passive: false });
+        document.addEventListener("mouseup", stopDrag);
+        document.addEventListener("touchend", stopDrag);
     }
 
 
