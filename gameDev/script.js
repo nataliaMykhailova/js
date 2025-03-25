@@ -2340,7 +2340,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Задаємо ширину для .boss-fill-gd
             const fillEl = clonedBoss.querySelector(".boss-fill-gd");
-            if (fillEl) fillEl.style.width = `${(boss.totalPoints * 100) / 6}%`;
+            if (fillEl) fillEl.style.height = `${(boss.totalPoints * 100) / 6}%`;
 
             // Зображення
             const imgEl = clonedBoss.querySelector(".boss-img-gd");
