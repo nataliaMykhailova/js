@@ -28,6 +28,7 @@ let userData = {
     salary_satisfaction:"",
     gaming_habits:"",
     gaming_platforms:"",
+    defeated_bosses:{},
 
 };
 
@@ -67,6 +68,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const bossBackButton = document.querySelector(".nav-back_btn-gd.is--boss-map");
     const bossMapButton = document.querySelector(".nav-btn-gd.is--map.boss-map");
     const bossesSection = document.querySelector(".boses-section-gd");
+    const fightBtn = document.querySelector(".nav-btn-gd.to-fight");
+    const finishBtn = document.querySelector(".nav-btn-gd.finish-btn");
+    const fightSection = document.querySelector(".fight-section-gd");
+    const finishSection = document.querySelector(".finish-section-gd");
+
 
 
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
@@ -203,6 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userData.salary_satisfaction ="";
         userData.gaming_habits ="";
         userData.gaming_platforms ="";
+        userData.defeated_bosses ={};
 
         console.log("Дані користувача скинуто", userData);
 
@@ -470,6 +477,30 @@ document.addEventListener("DOMContentLoaded", function () {
     bossBackButton?.addEventListener("click", showMapFromBosses);
     bossMapButton?.addEventListener("click", showMapFromBosses);
 
+
+
+    fightBtn.addEventListener("click", () => {
+        if (!bossesSection || !fightSection) return;
+
+        bossesSection.classList.remove("visible");
+        setTimeout(() => {
+            bossesSection.style.display = "none";
+            fightSection.style.display = "block";
+            setTimeout(() => fightSection.classList.add("visible"), 0);
+        }, 0);
+    });
+
+
+    finishBtn.addEventListener("click", () => {
+        if (!bossesSection || !finishSection) return;
+
+        bossesSection.classList.remove("visible");
+        setTimeout(() => {
+            bossesSection.style.display = "none";
+            finishSection.style.display = "block";
+            setTimeout(() => finishSection.classList.add("visible"), 0);
+        }, 0);
+    });
     // Повернення до вибору професії
     backButton.addEventListener("click", function () {
         resetUserData(true);
