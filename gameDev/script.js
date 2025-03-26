@@ -2376,24 +2376,26 @@ document.addEventListener("DOMContentLoaded", function () {
         const noReadyText = document.querySelector(".p-16-gd.is-no-ready-text");
         if (!noReadyText) return;
 
-        // Копія userData без gender, profession та avatar
         const clone = { ...userData };
         delete clone.gender;
         delete clone.avatar;
         delete clone.profession;
 
-        const hasData = Object.values(clone).some(val => {
+        const hasData = Object.entries(clone).some(([key, val]) => {
+            if (key === "points") {
+                // Ігноруємо, якщо тільки total = 0
+                const keys = Object.keys(val || {});
+                return keys.length > 1 || (keys.length === 1 && val.total > 0);
+            }
+
             if (typeof val === "object") {
                 return Object.keys(val).length > 0;
             }
+
             return val !== "" && val !== 0;
         });
 
-        if (!hasData) {
-            noReadyText.style.display = "block";
-        } else {
-            noReadyText.style.display = "none";
-        }
+        noReadyText.style.display = hasData ? "none" : "block";
     }
 
 });
