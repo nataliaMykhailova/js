@@ -2413,13 +2413,20 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!img) return;
 
             img.addEventListener("click", () => {
+                // Зняти клас active з усіх блоків і скинути opacity
                 bossBlocks.forEach(b => {
                     b.classList.remove("active");
-                    b.style.opacity = "0.5";
+                    b.style.opacity = "1";
                 });
 
+                // Додати active до поточного і приглушити інші
                 block.classList.add("active");
-                block.style.opacity = "1";
+
+                bossBlocks.forEach(b => {
+                    if (!b.classList.contains("active")) {
+                        b.style.opacity = "0.5";
+                    }
+                });
 
                 activeBtn.style.opacity = "1";
             });
