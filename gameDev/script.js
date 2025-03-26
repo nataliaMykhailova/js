@@ -1789,6 +1789,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         const targetSection = sectionMap[btnClass];
                         if (targetSection) {
+
+                            if (userData.points?.total >= 15 && bossesData?.Burnout) {
+                                bossesData.Burnout.damage = 3;
+                                console.log("🔥 Вигорання стає сильнішим! Damage = 3");
+                            }
+
+                            if (Object.keys(userData.artefacts || {}).length >= 7 && !userData.points.artefactBonusePoints) {
+                                addUserPoints("artefactBonusePoints", 1);
+                                console.log("🧩 Бонус за артефакти нараховано: +1 бал");
+                            }
                             targetSection.style.display = "block";
                             setTimeout(() => targetSection.classList.add("visible"), 0);
                         }
