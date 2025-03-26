@@ -2637,79 +2637,83 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function startBattle() {
-        const playerPointsEl = document.querySelector(".profile-point-gd"); // очки гравця
-        const bossPointsEl = document.querySelector(".boss-point-gd"); // очки боса
+        const bossNameEl = document.querySelector(".boss-name");
+        const bossPointsEl = document.querySelector(".boss-point-gd.is-no-margine");
+        const playerPointsEl = document.querySelector(".profile-point-gd");
         const winText = document.querySelector(".win-text.victory");
         const loseText = document.querySelector(".win-text.you-loose");
 
-        if (!playerPointsEl || !bossPointsEl || !selectedBossKey || !bossesData[selectedBossKey]) {
-            console.error("❌ Дані для бою не знайдені");
+        if (!userData.selectedBoss || !bossPointsEl || !playerPointsEl) {
+            console.warn("❌ Немає даних про боса або гравця");
             return;
         }
 
-        // Отримуємо початкові значення
-        let playerPoints = userData.points?.total || 0;
-        let boss = bossesData[selectedBossKey];
-        let bossPoints = boss.totalPoints;
-        const bossInitialPoints = boss.totalPoints;
+        let bossPoints = userData.selectedBoss.totalPoints;
+        let playerPoints = userData.points.total || 0;
+        const bossDamage = userData.selectedBoss.damage || 2;
 
-        // Сховати обидва результати спочатку
+        // Сховати обидва результати на початку
         winText.style.display = "none";
         loseText.style.display = "none";
 
-        // Починаємо цикл атак
-        let turn = "player"; // перший б'є гравець
+        // Оновити початкові значення
+        bossPointsEl.textContent = bossPoints;
+        playerPointsEl.textContent = playerPoints;
 
-        const battleInterval = setInterval(() => {
-            if (turn === "player") {
-                if (playerPoints >= 2) {
-                    bossPoints -= 2;
-                    playerPoints -= 2;
-                    console.log("🧑 Гравець атакує: -2 боса");
-                } else {
-                    console.log("❌ У гравця не вистачає балів для атаки");
-                }
-                turn = "boss";
+        function updateDisplay() {
+            bossPointsEl.textContent = bossPoints;
+            playerPointsEl.textContent = playerPoints;
+        }
+
+        function endBattle(win) {
+            if (win) {
+                winText.style.display = "block";
+                // Додати стартові бали боса до гравця
+                const bossInitialPoints = userData.selectedBoss.totalPoints;
+                userData.points.total = (userData.points.total || 0) + bossInitialPoints;
+
+                // Зберегти боса як переможеного
+                const bossKey = userData.selectedBoss.key;
+                userData.defeated_bosses = {
+                    ...userData.defeated_bosses,
+                    [bossKey]: userData.selectedBoss.img
+                };
+
             } else {
-                if (bossPoints > 0 && playerPoints >= 2) {
-                    playerPoints -= boss.damage || 2;
-                    console.log(`👹 Бос атакує: -${boss.damage || 2} гравцю`);
-                }
-                turn = "player";
+                loseText.style.display = "block";
             }
 
-            // Оновлюємо відображення очок
-            playerPointsEl.textContent = Math.max(playerPoints, 0);
-            bossPointsEl.textContent = Math.max(bossPoints, 0);
+            updateDisplay();
+        }
 
-            // Перевірка на завершення бою
-            if (playerPoints <= 0 || bossPoints <= 0) {
-                clearInterval(battleInterval);
+        let isPlayerTurn = true;
 
-                if (playerPoints > 0 && bossPoints <= 0) {
-                    // Гравець переміг
-                    const reward = bossInitialPoints;
-                    playerPoints += reward;
+        const interval = setInterval(() => {
+            if (isPlayerTurn) {
+                // 🎮 Гравець б'є
+                bossPoints -= 2;
+                playerPoints -= 2;
+                updateDisplay();
 
-                    // Запис нового балу
-                    userData.points.total = playerPoints;
-                    playerPointsEl.textContent = playerPoints;
+                if (bossPoints <= 0) {
+                    clearInterval(interval);
+                    endBattle(true);
+                    return;
+                }
+            } else {
+                // 👹 Бос б'є
+                playerPoints -= bossDamage;
+                updateDisplay();
 
-                    // Додаємо боса у переможених
-                    if (!userData.defeated_bosses) userData.defeated_bosses = {};
-                    userData.defeated_bosses[selectedBossKey] = boss.img;
-
-                    winText.style.display = "block";
-                    console.log(`🏆 Перемога! Отримано +${reward} балів`);
-                } else {
-                    // Програш
-                    userData.points.total = 0;
-                    playerPointsEl.textContent = 0;
-                    loseText.style.display = "block";
-                    console.log("💀 Програш. Усі бали втрачено");
+                if (playerPoints <= 0) {
+                    clearInterval(interval);
+                    endBattle(false);
+                    return;
                 }
             }
-        }, 2000); // кожні 2 секунди
+
+            isPlayerTurn = !isPlayerTurn;
+        }, 2000);
     }
 
 
