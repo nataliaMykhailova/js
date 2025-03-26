@@ -38,6 +38,7 @@ const visited = new Set();
 
 let bossesData = {};
 let professionsData = {};
+let selectedBossKey = null;
 document.addEventListener("DOMContentLoaded", function () {
 
     const heroSection = document.querySelector(".hero-section-gd");
@@ -482,6 +483,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fightBtn.addEventListener("click", () => {
         if (!bossesSection || !fightSection) return;
+
+        if (!selectedBossKey || !bossesData[selectedBossKey]) {
+            console.warn("❌ Боса не обрано!");
+            return;
+        }
+        userData.selectedBoss = {
+            key: selectedBossKey,
+            ...bossesData[selectedBossKey]
+        };
+
+        fillBossFightInfo();
 
         bossesSection.classList.remove("visible");
         setTimeout(() => {
@@ -2470,15 +2482,27 @@ document.addEventListener("DOMContentLoaded", function () {
                     b.style.opacity = "1";
                 });
 
-                // Додати active до поточного і приглушити інші
+                // Додати active до поточного блоку
                 block.classList.add("active");
 
+                // Приглушити інші
                 bossBlocks.forEach(b => {
                     if (!b.classList.contains("active")) {
                         b.style.opacity = "0.5";
                     }
                 });
 
+                // Зберегти обраного боса (по назві з h2)
+                const name = block.querySelector(".boss-name")?.textContent?.trim();
+                if (name) {
+                    const key = Object.keys(bossesData).find(k => bossesData[k].name === name);
+                    if (key) {
+                        selectedBossKey = key;
+                        console.log("🧠 Обраний бос:", key, bossesData[key]);
+                    }
+                }
+
+                // Показати кнопку "В бій"
                 activeBtn.style.opacity = "1";
             });
         });
@@ -2554,6 +2578,26 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (descriptionEl) descriptionEl.textContent = finalText;
+    }
+    function fillBossFightInfo() {
+        if (!selectedBossKey || !bossesData[selectedBossKey]) {
+            console.warn("❌ Не знайдено обраного боса для заповнення");
+            return;
+        }
+
+        const selectedBoss = bossesData[selectedBossKey];
+
+        // Елементи у секції бою
+        const bossImgEl = document.querySelector(".boss--photo-gd");
+        const bossNameEl = document.querySelector(".h2-32-calipso.boss-name");
+        const bossPointsEl = document.querySelector(".boss-point-gd");
+
+        if (bossImgEl) bossImgEl.src = selectedBoss.img;
+        if (bossImgEl) bossImgEl.alt = selectedBoss.name;
+        if (bossNameEl) bossNameEl.textContent = selectedBoss.name;
+        if (bossPointsEl) bossPointsEl.textContent = selectedBoss.totalPoints;
+
+        console.log("📦 Дані боса оновлено:", selectedBoss);
     }
 
 
