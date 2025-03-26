@@ -1011,6 +1011,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
+
                 const pixelHeight = (cssHeight * percent) / 100;
                 console.log(`📐 Обчислено висоту: ${pixelHeight}px (${percent}%)`);
 
@@ -1913,7 +1914,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
                 if (selectedClass) {
-                    userData.gamingPlatform = selectedClass;
+                    userData.gaming_platforms = selectedClass;
                     console.log(`🎮 Вибрано платформу: ${selectedClass}`);
                 }
             });
