@@ -2398,6 +2398,32 @@ document.addEventListener("DOMContentLoaded", function () {
         noReadyText.style.display = hasData ? "none" : "block";
     }
 
+    function initBossSelection() {
+        const bossBlocks = document.querySelectorAll(".boss-block-gd");
+        const activeBtn = document.querySelector(".active-state_btn-gd");
+
+        if (!bossBlocks.length || !activeBtn) return;
+
+        bossBlocks.forEach(bossBlock => {
+            const bossImg = bossBlock.querySelector(".boss-img-gd");
+            if (!bossImg) return;
+
+            bossImg.addEventListener("click", () => {
+                // Прибрати клас `active` з усіх блоків
+                bossBlocks.forEach(b => b.classList.remove("active"));
+
+                // Додати клас `active` до вибраного блоку
+                bossBlock.classList.add("active");
+
+                // Активувати кнопку
+                activeBtn.style.opacity = "1";
+            });
+        });
+    }
+
+    initBossSelection();
+
+
 });
 
 
