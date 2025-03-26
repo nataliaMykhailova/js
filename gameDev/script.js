@@ -499,6 +499,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             bossesSection.style.display = "none";
             finishSection.style.display = "block";
+            fillFinishBlock();
             setTimeout(() => finishSection.classList.add("visible"), 0);
         }, 0);
     });
@@ -1051,67 +1052,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        function fillFinishBlock(professionData) {
-            const positionEl = document.querySelector(".h2-32-calipso.user-position.is--fight.finish");
-            const pointsEl = document.querySelector(".profile-point-gd.is--finish");
-            const artefactContainer = document.querySelector(".artifact-block-gd.is--finish");
-            const killedBossesContainer = document.querySelector(".killed-bosses_block-gd");
-            const photoEl = document.querySelector(".profile-photo-gd.is--finish");
-            const descriptionEl = document.querySelector(".p-16-gd.final-description");
-
-            if (positionEl) positionEl.textContent = userData.profession || "Невідома професія";
-            if (pointsEl) pointsEl.textContent = userData.points?.total || "0";
-            if (photoEl) photoEl.src = userData.avatar || "https://via.placeholder.com/150";
-
-            // 🧩 Артефакти
-            if (artefactContainer) {
-                artefactContainer.innerHTML = ""; // очистити
-                Object.values(userData.artefacts || {}).forEach(src => {
-                    if (src) {
-                        const img = document.createElement("img");
-                        img.src = src;
-                        img.alt = "Артефакт";
-                        img.className = "aftifact-img-gd is--finish";
-                        artefactContainer.appendChild(img);
-                    }
-                });
-            }
-
-            // 👹 Вбиті боси
-            if (killedBossesContainer) {
-                killedBossesContainer.innerHTML = ""; // очистити
-                Object.values(userData.defeated_bosses || {}).forEach(src => {
-                    if (src) {
-                        const img = document.createElement("img");
-                        img.src = src;
-                        img.alt = "Вбитий бос";
-                        img.className = "killed-boss_img-gd";
-                        killedBossesContainer.appendChild(img);
-                    }
-                });
-            }
-
-            // 🧠 Текст залежно від кількості балів
-            const points = userData.points?.total || 0;
-            let finalText = "";
-
-            if (points >= 21) {
-                finalText = professionData["21-25"];
-            } else if (points >= 15) {
-                finalText = professionData["15-20"];
-            } else if (points >= 9) {
-                finalText = professionData["9-14"];
-            } else if (points >= 4) {
-                finalText = professionData["4-8"];
-            } else {
-                finalText = professionData["no-points"];
-            }
-            console.log("final text", finalText)
-            console.log("profession data", professionData["21-25"] )
-            if (descriptionEl) descriptionEl.textContent = finalText;
-        }
-
-
 
 
 
@@ -1137,7 +1077,6 @@ document.addEventListener("DOMContentLoaded", function () {
         initWorkArrangementSelection();
         initContractSelection();
         renderBosses();
-        fillFinishBlock(professionData);
 
 
         initRangeGd({
@@ -2547,6 +2486,75 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("✅ Ініціалізовано вибір босів з приглушенням інших");
     }
 
+
+
+    function fillFinishBlock() {
+        const positionEl = document.querySelector(".h2-32-calipso.user-position.is--fight.finish");
+        const pointsEl = document.querySelector(".profile-point-gd.is--finish");
+        const artefactContainer = document.querySelector(".artifact-block-gd.is--finish");
+        const killedBossesContainer = document.querySelector(".killed-bosses_block-gd");
+        const photoEl = document.querySelector(".profile-photo-gd.is--finish");
+        const descriptionEl = document.querySelector(".p-16-gd.final-description");
+        const gender = userData.gender;
+        const profession = userData.profession;
+        const userProfessionData = professionsData?.[gender]?.[profession];
+
+        if (positionEl) positionEl.textContent = userData.profession || "Невідома професія";
+        if (pointsEl) pointsEl.textContent = userData.points?.total || "0";
+        if (photoEl) photoEl.src = userData.avatar || "https://via.placeholder.com/150";
+
+        // 🧩 Артефакти
+        if (artefactContainer) {
+            artefactContainer.innerHTML = ""; // очистити
+            Object.values(userData.artefacts || {}).forEach(src => {
+                if (src) {
+                    const img = document.createElement("img");
+                    img.src = src;
+                    img.alt = "Артефакт";
+                    img.className = "aftifact-img-gd is--finish";
+                    artefactContainer.appendChild(img);
+                }
+            });
+        }
+
+        // 👹 Вбиті боси
+        if (killedBossesContainer) {
+            killedBossesContainer.innerHTML = ""; // очистити
+            Object.values(userData.defeated_bosses || {}).forEach(src => {
+                if (src) {
+                    const img = document.createElement("img");
+                    img.src = src;
+                    img.alt = "Вбитий бос";
+                    img.className = "killed-boss_img-gd";
+                    killedBossesContainer.appendChild(img);
+                }
+            });
+        }
+
+        // 🧠 Текст залежно від кількості балів
+        const points = userData.points?.total || 0;
+        let finalText = "";
+
+        if (userProfessionData) {
+            const points = userData.points?.total || 0;
+
+            if (points >= 21) {
+                finalText = userProfessionData["21-25"];
+            } else if (points >= 15) {
+                finalText = userProfessionData["15-20"];
+            } else if (points >= 9) {
+                finalText = userProfessionData["9-14"];
+            } else if (points >= 4) {
+                finalText = userProfessionData["4-8"];
+            } else {
+                finalText = userProfessionData["no-points"];
+            }
+        } else {
+            finalText = "Дані професії або гендеру відсутні у професійній базі.";
+        }
+
+        if (descriptionEl) descriptionEl.textContent = finalText;
+    }
 
 
 
