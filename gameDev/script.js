@@ -2542,7 +2542,8 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             finalText = professionsData["no-points"];
         }
-
+        console.log("final text", finalText)
+        console.log("profession data", professionsData["21-25"] )
         if (descriptionEl) descriptionEl.textContent = finalText;
     }
 
