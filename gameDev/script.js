@@ -74,6 +74,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const finishBtn = document.querySelector(".nav-btn-gd.finish-btn");
     const fightSection = document.querySelector(".fight-section-gd");
     const finishSection = document.querySelector(".finish-section-gd");
+    const mapBtnFromFight = document.querySelector(".nav-btn-gd.is--map.fight-section");
+    const finishBtnFromFight = document.querySelector(".nav-btn-gd.is--map.finish-btn.fight-section");
+
 
 
 
@@ -488,6 +491,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.warn("❌ Боса не обрано!");
             return;
         }
+
         userData.selectedBoss = {
             key: selectedBossKey,
             ...bossesData[selectedBossKey]
@@ -499,7 +503,16 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             bossesSection.style.display = "none";
             fightSection.style.display = "block";
-            setTimeout(() => fightSection.classList.add("visible"), 0);
+
+            setTimeout(() => {
+                fightSection.classList.add("visible");
+
+                // ✅ Запускаємо бій з затримкою 2 секунди після появи секції
+                setTimeout(() => {
+                    startBattle();
+                }, 2000);
+
+            }, 0);
         }, 0);
     });
 
@@ -515,6 +528,28 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => finishSection.classList.add("visible"), 0);
         }, 0);
     });
+
+    mapBtnFromFight.addEventListener("click", () => {
+        fightSection.classList.remove("visible");
+        setTimeout(() => {
+            fightSection.style.display = "none";
+            mapSection.style.display = "block";
+            setTimeout(() => mapSection.classList.add("visible"), 0);
+        }, 0);
+    });
+
+    finishBtnFromFight.addEventListener("click", () => {
+        fightSection.classList.remove("visible");
+        setTimeout(() => {
+            fightSection.style.display = "none";
+            finishSection.style.display = "block";
+
+            fillFinishBlock();
+            setTimeout(() => finishSection.classList.add("visible"), 0);
+        }, 0);
+    });
+
+
     // Повернення до вибору професії
     backButton.addEventListener("click", function () {
         resetUserData(true);
@@ -2601,7 +2636,81 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    function startBattle() {
+        const playerPointsEl = document.querySelector(".profile-point-gd"); // очки гравця
+        const bossPointsEl = document.querySelector(".boss-point-gd"); // очки боса
+        const winText = document.querySelector(".win-text.victory");
+        const loseText = document.querySelector(".win-text.you-loose");
 
+        if (!playerPointsEl || !bossPointsEl || !selectedBossKey || !bossesData[selectedBossKey]) {
+            console.error("❌ Дані для бою не знайдені");
+            return;
+        }
+
+        // Отримуємо початкові значення
+        let playerPoints = userData.points?.total || 0;
+        let boss = bossesData[selectedBossKey];
+        let bossPoints = boss.totalPoints;
+        const bossInitialPoints = boss.totalPoints;
+
+        // Сховати обидва результати спочатку
+        winText.style.display = "none";
+        loseText.style.display = "none";
+
+        // Починаємо цикл атак
+        let turn = "player"; // перший б'є гравець
+
+        const battleInterval = setInterval(() => {
+            if (turn === "player") {
+                if (playerPoints >= 2) {
+                    bossPoints -= 2;
+                    playerPoints -= 2;
+                    console.log("🧑 Гравець атакує: -2 боса");
+                } else {
+                    console.log("❌ У гравця не вистачає балів для атаки");
+                }
+                turn = "boss";
+            } else {
+                if (bossPoints > 0 && playerPoints >= 2) {
+                    playerPoints -= boss.damage || 2;
+                    console.log(`👹 Бос атакує: -${boss.damage || 2} гравцю`);
+                }
+                turn = "player";
+            }
+
+            // Оновлюємо відображення очок
+            playerPointsEl.textContent = Math.max(playerPoints, 0);
+            bossPointsEl.textContent = Math.max(bossPoints, 0);
+
+            // Перевірка на завершення бою
+            if (playerPoints <= 0 || bossPoints <= 0) {
+                clearInterval(battleInterval);
+
+                if (playerPoints > 0 && bossPoints <= 0) {
+                    // Гравець переміг
+                    const reward = bossInitialPoints;
+                    playerPoints += reward;
+
+                    // Запис нового балу
+                    userData.points.total = playerPoints;
+                    playerPointsEl.textContent = playerPoints;
+
+                    // Додаємо боса у переможених
+                    if (!userData.defeated_bosses) userData.defeated_bosses = {};
+                    userData.defeated_bosses[selectedBossKey] = boss.img;
+
+                    winText.style.display = "block";
+                    console.log(`🏆 Перемога! Отримано +${reward} балів`);
+                } else {
+                    // Програш
+                    userData.points.total = 0;
+                    playerPointsEl.textContent = 0;
+                    loseText.style.display = "block";
+                    console.log("💀 Програш. Усі бали втрачено");
+                }
+            }
+        }, 2000); // кожні 2 секунди
+    }
 
 
 
