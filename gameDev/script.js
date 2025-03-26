@@ -2370,7 +2370,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
     }
 
-
+console.log(userData);
 });
 
 
