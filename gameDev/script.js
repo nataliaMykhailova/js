@@ -1145,6 +1145,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log(`🔥 ${bossName} отримав ${points} бал(ів) за ${reason}`);
         updateTotalBossPoints();
+        renderBosses();
+
     }
 
 
