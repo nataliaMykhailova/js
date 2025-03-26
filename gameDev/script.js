@@ -1021,7 +1021,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-        userData.finStatus = {...professionData.financial_status};
 
         console.log("✅ Оновлено всі дані персонажа:", professionData);
 
