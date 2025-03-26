@@ -2588,7 +2588,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const selectedBoss = bossesData[selectedBossKey];
 
         // Елементи у секції бою
-        const bossImgEl = document.querySelector(".boss--photo-gd");
+        const bossImgEl = document.querySelector(".boss-photo-gd");
         const bossNameEl = document.querySelector(".h2-32-calipso.boss-name");
         const bossPointsEl = document.querySelector(".boss-point-gd");
 
