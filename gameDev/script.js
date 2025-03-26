@@ -2419,6 +2419,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 block.classList.add("active");
+                block.style.opacity = "1";
 
                 activeBtn.style.opacity = "1";
             });
