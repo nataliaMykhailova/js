@@ -2373,7 +2373,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
-        console.log("✅ Bosses added:", document.querySelectorAll(".boss-block-gd").length);
 
     }
 
@@ -2414,22 +2413,26 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!img) return;
 
             img.addEventListener("click", () => {
-                // Зняти клас active з усіх .boss-block-gd
-                bossBlocks.forEach(b => b.classList.remove("active"));
+                bossBlocks.forEach(b => {
+                    b.classList.remove("active");
+                    b.style.opacity = "1";
+                });
 
-                // Додати клас active до поточного
                 block.classList.add("active");
 
-                // Зробити кнопку видимою
+                bossBlocks.forEach(b => {
+                    if (!b.classList.contains("active")) {
+                        b.style.opacity = "0.5";
+                    }
+                });
+
                 activeBtn.style.opacity = "1";
             });
         });
 
-        console.log("✅ Ініціалізовано вибір босів");
-
-        console.log("🎯 Bosses found:", document.querySelectorAll(".boss-block-gd").length);
-
+        console.log("✅ Ініціалізовано вибір босів з приглушенням інших");
     }
+
 
 
 
