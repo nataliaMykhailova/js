@@ -2415,16 +2415,10 @@ document.addEventListener("DOMContentLoaded", function () {
             img.addEventListener("click", () => {
                 bossBlocks.forEach(b => {
                     b.classList.remove("active");
-                    b.style.opacity = "1";
+                    b.style.opacity = "0.5";
                 });
 
                 block.classList.add("active");
-
-                bossBlocks.forEach(b => {
-                    if (!b.classList.contains("active")) {
-                        b.style.opacity = "0.5";
-                    }
-                });
 
                 activeBtn.style.opacity = "1";
             });
