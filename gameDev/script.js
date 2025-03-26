@@ -1800,6 +1800,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                 console.log("🧩 Бонус за артефакти нараховано: +1 бал");
                             }
                             targetSection.style.display = "block";
+
+                            console.log(userData);
                             setTimeout(() => targetSection.classList.add("visible"), 0);
                         }
                     }, 0);
@@ -2370,7 +2372,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
     }
 
-console.log(userData);
 });
 
 
