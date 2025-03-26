@@ -1044,6 +1044,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initWorkArrangementSelection();
         initContractSelection();
         renderBosses();
+        initBossClickSelection();
 
 
         initRangeGd({
@@ -2424,7 +2425,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    initBossClickSelection();
+
 
 
 });
