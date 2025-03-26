@@ -37,6 +37,7 @@ let userData = {
 const visited = new Set();
 
 let bossesData = {};
+let professionsData = {};
 document.addEventListener("DOMContentLoaded", function () {
 
     const heroSection = document.querySelector(".hero-section-gd");
@@ -83,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Завантаження даних з JSON-файлу
 
     const dataUrl = 'https://raw.githubusercontent.com/nataliaMykhailova/js/refs/heads/master/gameDev/gameDev.json';
-    let professionsData = {};
+
 
     fetch(dataUrl)
         .then(response => response.json())
