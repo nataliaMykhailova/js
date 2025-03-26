@@ -1887,40 +1887,40 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function initGamingPlatformSelection() {
-        const platformBlocks = document.querySelectorAll(".game-block-gd");
+        const container = document.querySelector(".games-wrapper-gd");
 
-        platformBlocks.forEach(block => {
-            block.addEventListener("click", () => {
-                // Очистити всі активні стани
-                platformBlocks.forEach(item => {
-                    const iconChecked = item.querySelector(".game-icon-gd.checked");
-                    const track = item.querySelector(".game-track-gd");
+        container.addEventListener("click", (e) => {
+            const block = e.target.closest(".game-block-gd");
+            if (!block) return;
 
-                    if (iconChecked) iconChecked.style.opacity = "0";
-                    if (track) track.style.background = "transparent";
-                });
+            const platformBlocks = container.querySelectorAll(".game-block-gd");
 
-                // Активувати поточний блок
-                const checkedIcon = block.querySelector(".game-icon-gd.checked");
-                const track = block.querySelector(".game-track-gd");
+            platformBlocks.forEach(item => {
+                const iconChecked = item.querySelector(".game-icon-gd.checked");
+                const track = item.querySelector(".game-track-gd");
 
-                if (checkedIcon) checkedIcon.style.opacity = "1";
-                if (track) track.style.background = "#FFD7A2";
-
-                // Зберегти вибір
-                const classList = Array.from(block.classList);
-                const selectedClass = classList.find(cls =>
-                    ["pc_laptop", "xbox", "playstation", "smartphone_tablet", "multiple_platforms"].includes(cls)
-                );
-
-                if (selectedClass) {
-                    userData.gaming_platforms = selectedClass;
-                    console.log(`🎮 Вибрано платформу: ${selectedClass}`);
-                }
+                if (iconChecked) iconChecked.style.opacity = "0";
+                if (track) track.style.background = "transparent";
             });
+
+            const checkedIcon = block.querySelector(".game-icon-gd.checked");
+            const track = block.querySelector(".game-track-gd");
+
+            if (checkedIcon) checkedIcon.style.opacity = "1";
+            if (track) track.style.background = "#FFD7A2";
+
+            const classList = Array.from(block.classList);
+            const selectedClass = classList.find(cls =>
+                ["pc_laptop", "xbox", "playstation", "smartphone_tablet", "multiple_platforms"].includes(cls)
+            );
+
+            if (selectedClass) {
+                userData.gaming_platforms = selectedClass;
+                console.log(`🎮 Вибрано платформу: ${selectedClass}`);
+            }
         });
 
-        console.log("✅ Логіка вибору платформи ігор ініціалізована");
+        console.log("✅ Логіка вибору платформи ігор через делегування ініціалізована");
     }
     function initBonusSelection() {
         const bonusTabs = document.querySelectorAll(".finances-tab-gd-2.white.bonus");
