@@ -2089,7 +2089,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Лог вибору
                 const selectedText = tab.textContent.trim();
-                userData.salary_review_last_6_months = key;
+                userData.salary_review_last_6_months = selectedText;
                 console.log(`📝 Вибрано опцію перегляду зарплати: ${selectedText}`);
             });
         });
