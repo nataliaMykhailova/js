@@ -1044,9 +1044,6 @@ document.addEventListener("DOMContentLoaded", function () {
         initWorkArrangementSelection();
         initContractSelection();
         renderBosses();
-        requestAnimationFrame(() => {
-            initBossClickSelection();
-        });
 
 
         initRangeGd({
@@ -1792,16 +1789,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         const targetSection = sectionMap[btnClass];
                         if (targetSection) {
 
-                            if (userData.points?.total >= 15 && bossesData?.Burnout) {
-                                bossesData.Burnout.damage = 3;
-                                console.log("🔥 Вигорання стає сильнішим! Damage = 3");
-                            }
+                            if (btnClass === "is--bosses") {
+                                if (userData.points?.total >= 15 && bossesData?.Burnout) {
+                                    bossesData.Burnout.damage = 3;
+                                    console.log("🔥 Вигорання стає сильнішим! Damage = 3");
+                                }
 
-                            if (Object.keys(userData.artefacts || {}).length >= 7 && !userData.points.artefactBonusePoints) {
-                                addUserPoints("artefactBonusePoints", 1);
-                                console.log("🧩 Бонус за артефакти нараховано: +1 бал");
+                                if (Object.keys(userData.artefacts || {}).length >= 7 && !userData.points.artefactBonusePoints) {
+                                    addUserPoints("artefactBonusePoints", 1);
+                                    console.log("🧩 Бонус за артефакти нараховано: +1 бал");
+                                }
+
+                                // ✅ Перевіряємо готовність тільки при переході до 'Боси'
+                                checkIfUserIsReady();
                             }
-                            checkIfUserIsReady();
                             targetSection.style.display = "block";
 
                             console.log(userData);
@@ -2378,7 +2379,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function checkIfUserIsReady() {
         const noReadyText = document.querySelector(".p-16-gd.is-no-ready-text");
-        if (!noReadyText) return;
+        const toFightButton = document.querySelector(".nav-btn-gd.to-fight");
+
+        if (!noReadyText || !toFightButton) return;
 
         const clone = { ...userData };
         delete clone.gender;
@@ -2387,7 +2390,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const hasData = Object.entries(clone).some(([key, val]) => {
             if (key === "points") {
-                // Ігноруємо, якщо тільки total = 0
                 const keys = Object.keys(val || {});
                 return keys.length > 1 || (keys.length === 1 && val.total > 0);
             }
@@ -2399,9 +2401,23 @@ document.addEventListener("DOMContentLoaded", function () {
             return val !== "" && val !== 0;
         });
 
+        // Показ/приховування тексту
         noReadyText.style.display = hasData ? "none" : "block";
-    }
 
+        // Кнопка "до бою" активна лише якщо є дані
+        if (hasData) {
+            toFightButton.classList.remove("disable");
+            toFightButton.style.pointerEvents = "auto";
+            toFightButton.style.opacity = "1";
+
+            // Ініціалізуємо вибір боса
+            initBossClickSelection();
+        } else {
+            toFightButton.classList.add("disable");
+            toFightButton.style.pointerEvents = "none";
+            toFightButton.style.opacity = "0.5";
+        }
+    }
     function initBossClickSelection() {
         const bossBlocks = document.querySelectorAll(".boss-block-gd");
         const activeBtn = document.querySelector(".active-state_btn-gd");
