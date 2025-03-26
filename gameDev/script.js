@@ -1044,7 +1044,9 @@ document.addEventListener("DOMContentLoaded", function () {
         initWorkArrangementSelection();
         initContractSelection();
         renderBosses();
-        initBossClickSelection();
+        requestAnimationFrame(() => {
+            initBossClickSelection();
+        });
 
 
         initRangeGd({
@@ -2371,6 +2373,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
+        console.log("✅ Bosses added:", document.querySelectorAll(".boss-block-gd").length);
+
     }
 
     function checkIfUserIsReady() {
@@ -2422,6 +2426,9 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         console.log("✅ Ініціалізовано вибір босів");
+
+        console.log("🎯 Bosses found:", document.querySelectorAll(".boss-block-gd").length);
+
     }
 
 
