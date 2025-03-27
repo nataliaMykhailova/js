@@ -2636,7 +2636,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function startBossBattle() {
+    function startBattle() {
         if (!userData || !userData.selectedBoss || !userData.points) {
             console.error("❌ Дані користувача або боса не знайдені.");
             return;
