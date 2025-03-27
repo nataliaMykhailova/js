@@ -2678,12 +2678,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Початкове зміщення
         if (userCard) {
-            userCard.style.transition = "left 0.3s";
+            userCard.style.transition = "left 0.5s";
             userCard.style.left = "25%";
         }
 
         if (bossCard) {
-            bossCard.style.transition = "right 0.3s";
+            bossCard.style.transition = "right 0.5s";
             bossCard.style.right = "25%";
         }
 
@@ -2692,8 +2692,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!userCard || !bossCard) return;
 
                 // Атака: обертання (із збереженням translateY)
-                userCard.style.transition = "transform 0.3s";
-                bossCard.style.transition = "transform 0.3s";
+                userCard.style.transition = "transform 0.5s";
+                bossCard.style.transition = "transform 0.5s";
                 userCard.style.transform = "translateY(-50%) rotate(35deg)";
                 bossCard.style.transform = "translateY(-50%) rotate(-35deg)";
 
@@ -2709,20 +2709,29 @@ document.addEventListener("DOMContentLoaded", function () {
                     updateUI();
 
                     if (bossPoints <= 0) {
-                        if (winText) winText.style.display = "block";
-                        addBossDamagePoints(bossInitialPoints);
+                        setTimeout(() => {
+                            if (winText) winText.style.display = "block";
+                            addBossDamagePoints(bossInitialPoints);
 
-                        userCard.style.left = "50%";
-                        userCard.style.transform = "translate(-50%, -50%)";
-                        bossCard.style.display = "none";
+                            const bossKey = userData.selectedBoss.key;
+                            userData.defeated_bosses = {
+                                ...userData.defeated_bosses,
+                                [bossKey]: userData.selectedBoss.img
+                            };
+                            console.log(`✅ Бос "${bossKey}" доданий до переможених.`);
 
-                        if (chooseAnotherBtn) {
-                            chooseAnotherBtn.style.display = "flex";
-                            chooseAnotherBtn.style.opacity = "0";
-                            setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
-                        }
+                            userCard.style.left = "50%";
+                            userCard.style.transform = "translate(-50%, -50%)";
+                            bossCard.style.display = "none";
 
-                        return;
+                            if (chooseAnotherBtn) {
+                                chooseAnotherBtn.style.display = "flex";
+                                chooseAnotherBtn.style.opacity = "0";
+                                setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
+                            }
+
+                            return;
+                        }, 500)
                     }
 
                     // 💥 Удар боса
@@ -2732,24 +2741,26 @@ document.addEventListener("DOMContentLoaded", function () {
                     updateUI();
 
                     if (userPoints <= 0) {
-                        if (loseText) loseText.style.display = "block";
+                       setTimeout(()=>{
+                           if (loseText) loseText.style.display = "block";
 
-                        userCard.style.left = "50%";
-                        userCard.style.transform = "translate(-50%, -50%)";
-                        bossCard.style.display = "none";
+                           userCard.style.left = "50%";
+                           userCard.style.transform = "translate(-50%, -50%)";
+                           bossCard.style.display = "none";
 
-                        if (playAgainBtn) {
-                            playAgainBtn.style.display = "flex";
-                            playAgainBtn.style.opacity = "0";
-                            setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
-                        }
+                           if (playAgainBtn) {
+                               playAgainBtn.style.display = "flex";
+                               playAgainBtn.style.opacity = "0";
+                               setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
+                           }
 
-                        return;
+                           return;
+                       }, 500)
                     }
 
                     // Наступний раунд
                     setTimeout(battleTurn, 500); // 🔁 500мс між раундами
-                }, 300); // Час обертання
+                }, 500); // Час обертання
             }
 
             battleTurn();
