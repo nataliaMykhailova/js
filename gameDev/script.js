@@ -550,48 +550,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
-    chooseAnotherBossBtn.addEventListener("click", () => {
-        fightSection.classList.remove("visible");
-
-        setTimeout(() => {
-            fightSection.style.display = "none";
-            bossesSection.style.display = "block";
-
-            setTimeout(() => {
-                bossesSection.classList.add("visible");
-            }, 0);
-        }, 0);
-    });
-
-
-    playAgainBtn.addEventListener("click", () => {
-        // Сховати секцію бою
-        if (fightSection) {
-            fightSection.classList.remove("visible");
-            setTimeout(() => {
-                fightSection.style.display = "none";
-            }, 0);
-        }
-
-        // Показати секцію з босами
-        if (bossesSection) {
-            bossesSection.style.display = "block";
-            setTimeout(() => bossesSection.classList.add("visible"), 0);
-        }
-
-        // 🔁 Очистити переможених босів
-        userData.defeated_bosses = {};
-
-        // 🔁 Обнулити bossDaagePoints
-        if (userData.points) {
-            userData.points.bossDaagePoints = 0;
-        }
-
-        // 🔄 Перерендерити босів
-        renderBosses();
-
-        console.log("🔁 Перезапуск бою: переможені боси скинуті, бали обнулено");
-    });
 
 
     // Повернення до вибору професії
@@ -2509,6 +2467,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
+
+        selectedBossKey = null;
     }
 
 
@@ -2844,6 +2804,52 @@ document.addEventListener("DOMContentLoaded", function () {
             battleTurn();
         }, 300); // Затримка після зміщення
     }
+
+
+    chooseAnotherBossBtn.addEventListener("click", () => {
+        fightSection.classList.remove("visible");
+
+        setTimeout(() => {
+            fightSection.style.display = "none";
+            bossesSection.style.display = "block";
+
+            setTimeout(() => {
+                bossesSection.classList.add("visible");
+            }, 0);
+        }, 0);
+    });
+
+
+    playAgainBtn.addEventListener("click", () => {
+        // Сховати секцію бою
+        if (fightSection) {
+            fightSection.classList.remove("visible");
+            setTimeout(() => {
+                fightSection.style.display = "none";
+            }, 0);
+        }
+
+        // Показати секцію з босами
+        if (bossesSection) {
+            bossesSection.style.display = "block";
+            setTimeout(() => bossesSection.classList.add("visible"), 0);
+        }
+
+        // 🔁 Очистити переможених босів
+        userData.defeated_bosses = {};
+
+        // 🔁 Обнулити bossDaagePoints через addUserPoints
+        if (userData.points && typeof userData.points.bossDaagePoints === "number") {
+            const negate = -userData.points.bossDaagePoints;
+            addUserPoints("bossDaagePoints", negate);
+        }
+
+        // 🔄 Перерендерити босів
+        renderBosses();
+
+        console.log("🔁 Перезапуск бою: переможені боси скинуті, бали обнулено");
+    });
+
 
 
 });
