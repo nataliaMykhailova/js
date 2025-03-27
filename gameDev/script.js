@@ -2648,74 +2648,115 @@ document.addEventListener("DOMContentLoaded", function () {
         const winText = document.querySelector(".win-text.victory");
         const loseText = document.querySelector(".win-text.you-loose");
 
+        const userCard = document.querySelector(".profile-block-gd.fight");
+        const bossCard = document.querySelector(".boss-profile_block-gd");
+        const chooseAnotherBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
+        const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
+
         const boss = userData.selectedBoss;
         let bossPoints = boss.totalPoints;
         let userPoints = userData.points.total;
-
         const bossInitialPoints = bossPoints;
 
-        // Скидаємо фінальні тексти
         if (winText) winText.style.display = "none";
         if (loseText) loseText.style.display = "none";
-
-        console.log(`🎯 Старт бою з босом: ${boss.name}`);
-        console.log(`🧑‍💻 Початкові бали гравця: ${userPoints}`);
-        console.log(`👹 Початкові бали боса: ${bossPoints}`);
+        if (chooseAnotherBtn) chooseAnotherBtn.style.display = "none";
+        if (playAgainBtn) playAgainBtn.style.display = "none";
 
         function updateUI() {
             if (bossPointsEl) bossPointsEl.textContent = bossPoints;
             if (userPointsEl) userPointsEl.textContent = userPoints;
-            console.log(`📊 Бали оновлено — Гравець: ${userPoints}, Бос: ${bossPoints}`);
         }
 
         function addBossDamagePoints(value) {
             if (!userData.points.bossDaagePoints) {
                 userData.points.bossDaagePoints = 0;
             }
-
             const newTotal = userData.points.bossDaagePoints + value;
-            console.log(`➕ Запис у bossDaagePoints: ${userData.points.bossDaagePoints} + (${value}) = ${newTotal}`);
             addUserPoints("bossDaagePoints", newTotal);
         }
 
-        function battleTurn() {
-            console.log("🗡️ Гравець б'є босса (-2)");
-            bossPoints -= 2;
-            userPoints -= 2;
-            addBossDamagePoints(-2);
-            updateUI();
-
-            if (bossPoints <= 0) {
-                console.log("🏆 Гравець переміг!");
-                if (winText) winText.style.display = "block";
-                console.log(`🎁 Додаємо ${bossInitialPoints} бал(ів) за перемогу`);
-                addBossDamagePoints(bossInitialPoints); // додаємо бали за боса
-                updateUI();
-                return;
-            }
-
-            const bossDamage = boss.damage || 2;
-            console.log(`🔥 Бос атакує гравця (-${bossDamage})`);
-            userPoints -= bossDamage;
-            addBossDamagePoints(-bossDamage);
-            updateUI();
-
-            if (userPoints <= 0) {
-                console.log("💀 Гравець програв.");
-                if (loseText) loseText.style.display = "block";
-                return;
-            }
-
-            // Повтор ходу
-            setTimeout(battleTurn, 2000);
+        // Анімація початку бою
+        if (userCard) {
+            userCard.style.transition = "left 0.5s";
+            userCard.style.left = "25%";
         }
 
-        // Почати бій з затримкою
+        if (bossCard) {
+            bossCard.style.transition = "right 0.5s";
+            bossCard.style.right = "25%";
+        }
+
         setTimeout(() => {
-            console.log("⚔️ Бій розпочато!");
+            function battleTurn() {
+                if (!userCard || !bossCard) return;
+
+                // Атака: обертання
+                userCard.style.transition = "transform 0.5s";
+                bossCard.style.transition = "transform 0.5s";
+                userCard.style.transform = "rotate(45deg)";
+                bossCard.style.transform = "rotate(-45deg)";
+
+                setTimeout(() => {
+                    // Повернення до початкового стану
+                    userCard.style.transform = "rotate(0deg)";
+                    bossCard.style.transform = "rotate(0deg)";
+
+                    // Логіка бою
+                    bossPoints -= 2;
+                    userPoints -= 2;
+                    addBossDamagePoints(-2);
+                    updateUI();
+
+                    if (bossPoints <= 0) {
+                        if (winText) winText.style.display = "block";
+                        addBossDamagePoints(bossInitialPoints);
+
+                        // Анімація завершення перемоги
+                        userCard.style.left = "50%";
+                        userCard.style.transform = "translateX(-50%)";
+                        bossCard.style.display = "none";
+
+                        if (chooseAnotherBtn) {
+                            chooseAnotherBtn.style.display = "flex";
+                            chooseAnotherBtn.style.opacity = "0";
+                            setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
+                        }
+
+                        return;
+                    }
+
+                    const bossDamage = boss.damage || 2;
+                    userPoints -= bossDamage;
+                    addBossDamagePoints(-bossDamage);
+                    updateUI();
+
+                    if (userPoints <= 0) {
+                        if (loseText) loseText.style.display = "block";
+
+                        // Анімація завершення поразки
+                        userCard.style.left = "50%";
+                        userCard.style.transform = "translateX(-50%)";
+                        bossCard.style.display = "none";
+
+                        if (playAgainBtn) {
+                            playAgainBtn.style.display = "flex";
+                            playAgainBtn.style.opacity = "0";
+                            setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
+                        }
+
+                        return;
+                    }
+
+                    // Наступний хід
+                    setTimeout(battleTurn, 2000);
+                }, 500); // Час для анімації удару
+            }
+
             battleTurn();
-        }, 1000);
+        }, 500); // Початкова затримка після зміщення
     }
+
 
 
 
