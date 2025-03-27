@@ -2676,14 +2676,14 @@ document.addEventListener("DOMContentLoaded", function () {
             addUserPoints("bossDaagePoints", newTotal);
         }
 
-        // Анімація початку бою
+        // Початкове зміщення
         if (userCard) {
-            userCard.style.transition = "left 0.5s";
+            userCard.style.transition = "left 0.3s";
             userCard.style.left = "25%";
         }
 
         if (bossCard) {
-            bossCard.style.transition = "right 0.5s";
+            bossCard.style.transition = "right 0.3s";
             bossCard.style.right = "25%";
         }
 
@@ -2691,18 +2691,18 @@ document.addEventListener("DOMContentLoaded", function () {
             function battleTurn() {
                 if (!userCard || !bossCard) return;
 
-                // Атака: обертання
-                userCard.style.transition = "transform 0.5s";
-                bossCard.style.transition = "transform 0.5s";
-                userCard.style.transform = "rotate(45deg)";
-                bossCard.style.transform = "rotate(-45deg)";
+                // Атака: обертання (із збереженням translateY)
+                userCard.style.transition = "transform 0.3s";
+                bossCard.style.transition = "transform 0.3s";
+                userCard.style.transform = "translateY(-50%) rotate(35deg)";
+                bossCard.style.transform = "translateY(-50%) rotate(-35deg)";
 
                 setTimeout(() => {
-                    // Повернення до початкового стану
-                    userCard.style.transform = "rotate(0deg)";
-                    bossCard.style.transform = "rotate(0deg)";
+                    // Повернення до нейтральної позиції
+                    userCard.style.transform = "translateY(-50%) rotate(0deg)";
+                    bossCard.style.transform = "translateY(-50%) rotate(0deg)";
 
-                    // Логіка бою
+                    // 🗡️ Удар гравця
                     bossPoints -= 2;
                     userPoints -= 2;
                     addBossDamagePoints(-2);
@@ -2712,9 +2712,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (winText) winText.style.display = "block";
                         addBossDamagePoints(bossInitialPoints);
 
-                        // Анімація завершення перемоги
                         userCard.style.left = "50%";
-                        userCard.style.transform = "translateX(-50%)";
+                        userCard.style.transform = "translate(-50%, -50%)";
                         bossCard.style.display = "none";
 
                         if (chooseAnotherBtn) {
@@ -2726,6 +2725,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                     }
 
+                    // 💥 Удар боса
                     const bossDamage = boss.damage || 2;
                     userPoints -= bossDamage;
                     addBossDamagePoints(-bossDamage);
@@ -2734,9 +2734,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (userPoints <= 0) {
                         if (loseText) loseText.style.display = "block";
 
-                        // Анімація завершення поразки
                         userCard.style.left = "50%";
-                        userCard.style.transform = "translateX(-50%)";
+                        userCard.style.transform = "translate(-50%, -50%)";
                         bossCard.style.display = "none";
 
                         if (playAgainBtn) {
@@ -2748,13 +2747,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                     }
 
-                    // Наступний хід
-                    setTimeout(battleTurn, 2000);
-                }, 500); // Час для анімації удару
+                    // Наступний раунд
+                    setTimeout(battleTurn, 500); // 🔁 500мс між раундами
+                }, 300); // Час обертання
             }
 
             battleTurn();
-        }, 500); // Початкова затримка після зміщення
+        }, 300); // Затримка після зміщення
     }
 
 
