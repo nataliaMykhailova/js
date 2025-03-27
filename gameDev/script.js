@@ -75,6 +75,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const finishSection = document.querySelector(".finish-section-gd");
     const mapBtnFromFight = document.querySelector(".nav-btn-gd.is--map.fight-section");
     const finishBtnFromFight = document.querySelector(".nav-btn-gd.is--map.finish-btn.fight-section");
+    const chooseAnotherBossBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
+    const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
+
 
 
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
@@ -547,6 +550,49 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
+    chooseAnotherBossBtn.addEventListener("click", () => {
+        fightSection.classList.remove("visible");
+
+        setTimeout(() => {
+            fightSection.style.display = "none";
+            bossesSection.style.display = "block";
+
+            setTimeout(() => {
+                bossesSection.classList.add("visible");
+            }, 0);
+        }, 0);
+    });
+
+
+    playAgainBtn.addEventListener("click", () => {
+        // Сховати секцію бою
+        if (fightSection) {
+            fightSection.classList.remove("visible");
+            setTimeout(() => {
+                fightSection.style.display = "none";
+            }, 0);
+        }
+
+        // Показати секцію з босами
+        if (bossesSection) {
+            bossesSection.style.display = "block";
+            setTimeout(() => bossesSection.classList.add("visible"), 0);
+        }
+
+        // 🔁 Очистити переможених босів
+        userData.defeated_bosses = {};
+
+        // 🔁 Обнулити bossDaagePoints
+        if (userData.points) {
+            userData.points.bossDaagePoints = 0;
+        }
+
+        // 🔄 Перерендерити босів
+        renderBosses();
+
+        console.log("🔁 Перезапуск бою: переможені боси скинуті, бали обнулено");
+    });
+
 
     // Повернення до вибору професії
     backButton.addEventListener("click", function () {
@@ -618,8 +664,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("🎯 userData.points:", userData.points);
                 console.log("📌 Total Points:", userData.points?.total);
 
+
                 pointsElement.textContent = (userData.points && typeof userData.points.total === "number")
-                    ? userData.points.total
+                    ? (userData.points.total >= 0 ? userData.points.total : 0)
                     : "0";
             }
 
@@ -2413,54 +2460,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function renderBosses() {
         const bossWrapper = document.querySelector(".boss-wrapper-gd");
-        const bossTemplate = bossWrapper.querySelector(".boss-block-gd");
+        const bossTemplateEl = bossWrapper.querySelector(".boss-block-gd");
 
-        if (!bossWrapper || !bossTemplate) {
+        if (!bossWrapper || !bossTemplateEl) {
             console.error("❌ Контейнер або шаблон .boss-block-gd не знайдено");
             return;
         }
 
-        // Очистити, лишивши тільки перший шаблон
+        // ❗ Зберігаємо клон шаблону ДО очищення wrapper
+        const bossTemplate = bossTemplateEl.cloneNode(true);
+
+        // Очищуємо
         bossWrapper.innerHTML = "";
 
         Object.entries(bossesData).forEach(([key, boss]) => {
             const clonedBoss = bossTemplate.cloneNode(true);
 
-            // Заповнюємо totalPoints
+            // Очистити всі класи, які могли бути збережені
+            clonedBoss.classList.remove("active", "defeated-boss");
+            clonedBoss.style.filter = "";
+            clonedBoss.style.pointerEvents = "";
+
+            // Заповнення контенту
             const pointsEl = clonedBoss.querySelector(".boss-points-count");
             if (pointsEl) pointsEl.textContent = boss.totalPoints;
 
-            // Задаємо ширину для .boss-fill-gd
             const fillEl = clonedBoss.querySelector(".boss-fill-gd");
             if (fillEl) fillEl.style.height = `${(boss.totalPoints * 100) / 6}%`;
 
-            // Зображення
             const imgEl = clonedBoss.querySelector(".boss-img-gd");
             if (imgEl) imgEl.src = boss.img;
 
-            // Назва
             const nameEl = clonedBoss.querySelector(".boss-name");
             if (nameEl) nameEl.textContent = boss.name;
 
-            // Опис
             const descEl = clonedBoss.querySelector(".boss-desc-gd");
             if (descEl) descEl.textContent = boss.description;
 
-            // 🔒 Якщо бос переможений — додаємо клас і стилі
+            // 🔒 Перевірка на переможених
             const isDefeated = userData.defeated_bosses && userData.defeated_bosses[key];
             if (isDefeated) {
                 clonedBoss.classList.add("defeated-boss");
-
-                // Можна через inline-style (або краще в CSS)
                 clonedBoss.style.filter = "blur(3px)";
                 clonedBoss.style.pointerEvents = "none";
             }
 
             bossWrapper.appendChild(clonedBoss);
         });
-        console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
 
+        console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
     }
+
 
     function checkIfUserIsReady() {
         const noReadyText = document.querySelector(".p-16-gd.is-no-ready-text");
@@ -2635,8 +2685,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (bossImgEl) bossImgEl.src = selectedBoss.img;
         if (bossImgEl) bossImgEl.alt = selectedBoss.name;
         if (bossNameEl) bossNameEl.textContent = selectedBoss.name;
-        if (bossPointsEl) bossPointsEl.textContent = selectedBoss.totalPoints;
-
+        if (bossPointsEl) {
+            const bossPoints = selectedBoss.totalPoints;
+            bossPointsEl.textContent = bossPoints >= 0 ? bossPoints : 0;
+        }
         console.log("📦 Дані боса оновлено:", selectedBoss);
     }
 
@@ -2647,19 +2699,18 @@ document.addEventListener("DOMContentLoaded", function () {
         if (userCard) {
             userCard.style.transition = "none"; // без анімації
             userCard.style.left = "0";
-            userCard.style.transform = "translateX(-50%) translateY(0)";
+            userCard.style.transform = "translateX(0) translateY(-50%)";
         }
 
         if (bossCard) {
             bossCard.style.transition = "none"; // без анімації
             bossCard.style.right = "0";
-            bossCard.style.transform = "translateX(-50%) translateY(0)";
+            bossCard.style.transform = "translateX(0) translateY(-50%)";
             bossCard.style.display = "flex"; // робимо видимим перед боєм
         }
 
         console.log("🎯 Картки бою скинуті до початкового стану");
     }
-    fightBtn
 
 
     function startBattle() {
