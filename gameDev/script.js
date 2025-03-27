@@ -2645,10 +2645,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (bossImgEl) bossImgEl.src = selectedBoss.img;
         if (bossImgEl) bossImgEl.alt = selectedBoss.name;
         if (bossNameEl) bossNameEl.textContent = selectedBoss.name;
-        if (bossPointsEl) {
-            const bossPoints = selectedBoss.totalPoints;
-            bossPointsEl.textContent = bossPoints >= 0 ? bossPoints : 0;
-        }
+        if (bossPointsEl) bossPointsEl.textContent = selectedBoss.totalPoints;
+
         console.log("📦 Дані боса оновлено:", selectedBoss);
     }
 
@@ -2745,6 +2743,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     updateUI();
 
                     if (bossPoints <= 0) {
+                        bossPoints = 0;
                         setTimeout(() => {
                             if (winText) winText.style.display = "block";
                             addBossDamagePoints(bossInitialPoints);
@@ -2778,6 +2777,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     updateUI();
 
                     if (userPoints <= 0) {
+                        userPoints = 0;
                         setTimeout(() => {
                             if (loseText) loseText.style.display = "block";
 
@@ -2817,6 +2817,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 bossesSection.classList.add("visible");
             }, 0);
         }, 0);
+        renderBosses();
+
     });
 
 
@@ -2839,10 +2841,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userData.defeated_bosses = {};
 
         // 🔁 Обнулити bossDaagePoints через addUserPoints
-        if (userData.points && typeof userData.points.bossDaagePoints === "number") {
-            const negate = -userData.points.bossDaagePoints;
-            addUserPoints("bossDaagePoints", negate);
-        }
+        addUserPoints("bossDaagePoints", 0);
 
         // 🔄 Перерендерити босів
         renderBosses();
