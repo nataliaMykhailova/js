@@ -504,6 +504,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const chooseAnotherBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
         const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
 
+        const defaultFightText = document.querySelector(".p-28_calipso-gd.dafault-fight-text");
+        const winText = document.querySelector(".win-text.victory");
+        const loseText = document.querySelector(".win-text.you-loose");
+
+        if (defaultFightText) defaultFightText.style.display = "block";
+        if (winText) winText.style.display = "none";
+        if (loseText) loseText.style.display = "none";
+
         if (toMapBtn) toMapBtn.style.display = "none";
         if (finishGameBtn) finishGameBtn.style.display = "none";
         if (chooseAnotherBtn) chooseAnotherBtn.style.display = "none";
@@ -517,6 +525,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
                 fightSection.classList.add("visible");
+
+
 
                 setTimeout(() => {
                     startBattle();
@@ -2721,6 +2731,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const userPointsEl = document.querySelector(".profile-point-gd");
         const winText = document.querySelector(".win-text.victory");
         const loseText = document.querySelector(".win-text.you-loose");
+        const defaultFightText = document.querySelector(".p-28_calipso-gd.default-fight-text");
+
 
         const userCard = document.querySelector(".profile-block-gd.fight");
         const bossCard = document.querySelector(".boss-profile_block-gd");
@@ -2782,8 +2794,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (bossPoints <= 0) {
                         bossPoints = 0;
+
                         setTimeout(() => {
-                            if (winText) winText.style.display = "block";
+                            if (defaultFightText) defaultFightText.style.display = "none";
+                            if (winText) {
+                                winText.style.display = "flex";
+                                winText.style.opacity = "0";
+                                setTimeout(() => (winText.style.opacity = "1"), 10);
+                            }
                             addBossDamagePoints(bossInitialPoints);
 
                             const bossKey = userData.selectedBoss.key;
@@ -2829,8 +2847,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (userPoints <= 0) {
                         userPoints = 0;
                         setTimeout(() => {
-                            if (loseText) loseText.style.display = "block";
-
+                            if (defaultFightText) defaultFightText.style.display = "none";
+                            if (loseText) {
+                                loseText.style.display = "flex";
+                                loseText.style.opacity = "0";
+                                setTimeout(() => (loseText.style.opacity = "1"), 10);
+                            }
                             userCard.style.left = "50%";
                             userCard.style.transform = "translate(-50%, -50%)";
                             bossCard.style.display = "none";
