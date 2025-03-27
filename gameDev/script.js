@@ -789,6 +789,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         updateTotalUserPoints();
         updateProfileBlocks();
+
     }
 
     function updateTotalUserPoints() {
@@ -2657,41 +2658,50 @@ document.addEventListener("DOMContentLoaded", function () {
         if (winText) winText.style.display = "none";
         if (loseText) loseText.style.display = "none";
 
+        console.log(`🎯 Старт бою з босом: ${boss.name}`);
+        console.log(`🧑‍💻 Початкові бали гравця: ${userPoints}`);
+        console.log(`👹 Початкові бали боса: ${bossPoints}`);
+
         function updateUI() {
             if (bossPointsEl) bossPointsEl.textContent = bossPoints;
             if (userPointsEl) userPointsEl.textContent = userPoints;
+            console.log(`📊 Бали оновлено — Гравець: ${userPoints}, Бос: ${bossPoints}`);
         }
 
         function addBossDamagePoints(value) {
             if (!userData.points.bossDaagePoints) {
                 userData.points.bossDaagePoints = 0;
             }
-            userData.points.bossDaagePoints += value;
+
+            const newTotal = userData.points.bossDaagePoints + value;
+            console.log(`➕ Запис у bossDaagePoints: ${userData.points.bossDaagePoints} + (${value}) = ${newTotal}`);
+            addUserPoints("bossDaagePoints", newTotal);
         }
 
         function battleTurn() {
-            // Удар користувача
+            console.log("🗡️ Гравець б'є босса (-2)");
             bossPoints -= 2;
             userPoints -= 2;
             addBossDamagePoints(-2);
             updateUI();
 
             if (bossPoints <= 0) {
-                // Користувач переміг
+                console.log("🏆 Гравець переміг!");
                 if (winText) winText.style.display = "block";
+                console.log(`🎁 Додаємо ${bossInitialPoints} бал(ів) за перемогу`);
                 addBossDamagePoints(bossInitialPoints); // додаємо бали за боса
                 updateUI();
                 return;
             }
 
-            // Удар боса
             const bossDamage = boss.damage || 2;
+            console.log(`🔥 Бос атакує гравця (-${bossDamage})`);
             userPoints -= bossDamage;
             addBossDamagePoints(-bossDamage);
             updateUI();
 
             if (userPoints <= 0) {
-                // Користувач програв
+                console.log("💀 Гравець програв.");
                 if (loseText) loseText.style.display = "block";
                 return;
             }
@@ -2700,11 +2710,13 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(battleTurn, 2000);
         }
 
-        // Почати бій
+        // Почати бій з затримкою
         setTimeout(() => {
+            console.log("⚔️ Бій розпочато!");
             battleTurn();
         }, 1000);
     }
+
 
 
 
