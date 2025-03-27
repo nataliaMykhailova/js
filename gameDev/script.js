@@ -2430,7 +2430,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Очистити, лишивши тільки перший шаблон
         bossWrapper.innerHTML = "";
 
-        Object.values(bossesData).forEach(boss => {
+        Object.entries(bossesData).forEach(([key, boss]) => {
             const clonedBoss = bossTemplate.cloneNode(true);
 
             // Заповнюємо totalPoints
@@ -2445,7 +2445,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const imgEl = clonedBoss.querySelector(".boss-img-gd");
             if (imgEl) imgEl.src = boss.img;
 
-            // Назва боса
+            // Назва
             const nameEl = clonedBoss.querySelector(".boss-name");
             if (nameEl) nameEl.textContent = boss.name;
 
@@ -2453,9 +2453,18 @@ document.addEventListener("DOMContentLoaded", function () {
             const descEl = clonedBoss.querySelector(".boss-desc-gd");
             if (descEl) descEl.textContent = boss.description;
 
+            // 🔒 Якщо бос переможений — додаємо клас і стилі
+            const isDefeated = userData.defeated_bosses && userData.defeated_bosses[key];
+            if (isDefeated) {
+                clonedBoss.classList.add("defeated-boss");
+
+                // Можна через inline-style (або краще в CSS)
+                clonedBoss.style.filter = "blur(3px)";
+                clonedBoss.style.pointerEvents = "none";
+            }
+
             bossWrapper.appendChild(clonedBoss);
         });
-
         console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
 
     }
@@ -2512,23 +2521,25 @@ document.addEventListener("DOMContentLoaded", function () {
             if (!img) return;
 
             img.addEventListener("click", () => {
-                // Зняти клас active з усіх блоків і скинути opacity
+                if (block.classList.contains("defeated-boss")) return; // 🚫 Не обробляти клік
+
+                // Зняти active, задати новий active, приглушити інші
                 bossBlocks.forEach(b => {
                     b.classList.remove("active");
-                    b.style.opacity = "1";
+                    if (!b.classList.contains("defeated-boss")) {
+                        b.style.opacity = "1";
+                    }
                 });
 
-                // Додати active до поточного блоку
                 block.classList.add("active");
 
-                // Приглушити інші
                 bossBlocks.forEach(b => {
-                    if (!b.classList.contains("active")) {
+                    if (!b.classList.contains("active") && !b.classList.contains("defeated-boss")) {
                         b.style.opacity = "0.5";
                     }
                 });
 
-                // Зберегти обраного боса (по назві з h2)
+                // Зберегти ключ
                 const name = block.querySelector(".boss-name")?.textContent?.trim();
                 if (name) {
                     const key = Object.keys(bossesData).find(k => bossesData[k].name === name);
@@ -2538,7 +2549,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
 
-                // Показати кнопку "В бій"
                 activeBtn.style.opacity = "1";
             });
         });
@@ -2730,8 +2740,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                 setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
                             }
 
-                            return;
                         }, 500)
+                        return;
+
                     }
 
                     // 💥 Удар боса
@@ -2754,8 +2765,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
                            }
 
-                           return;
+
                        }, 500)
+                        return;
                     }
 
                     // Наступний раунд
