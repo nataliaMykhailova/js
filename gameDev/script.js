@@ -2623,8 +2623,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const userProfessionData = professionsData?.[gender]?.[profession];
 
         if (positionEl) positionEl.textContent = userData.profession || "Невідома професія";
-        if (pointsEl) pointsEl.textContent = userData.points?.total || "0";
         if (photoEl) photoEl.src = userData.avatar || "https://via.placeholder.com/150";
+
+        let personalPoints = 0;
+
+        if (userData.points) {
+            Object.entries(userData.points).forEach(([key, val]) => {
+                if (key !== "bossDaagePoints" && key !== "total" && typeof val === "number") {
+                    personalPoints += val;
+                }
+            });
+        }
+
+        if (pointsEl) pointsEl.textContent = personalPoints.toString();
 
         // 🧩 Артефакти
         if (artefactContainer) {
