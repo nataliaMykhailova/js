@@ -2636,79 +2636,75 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function startBattle() {
-        const boss = userData.selectedBoss;
-        if (!boss || !boss.totalPoints || !userData.points || userData.points.total <= 0) return;
+    function startBossBattle() {
+        if (!userData || !userData.selectedBoss || !userData.points) {
+            console.error("❌ Дані користувача або боса не знайдені.");
+            return;
+        }
 
-        const userPointsDisplay = document.querySelector(".profile-point-gd");
-        const bossPointsDisplay = document.querySelector(".boss-point-gd");
+        const bossPointsEl = document.querySelector(".boss-point-gd.is-no-margine");
+        const userPointsEl = document.querySelector(".profile-point-gd");
         const winText = document.querySelector(".win-text.victory");
         const loseText = document.querySelector(".win-text.you-loose");
 
-        let bossCurrentPoints = boss.totalPoints;
-        let userCurrentPoints = userData.points.total;
-        const bossStartPoints = boss.totalPoints;
-        const bossDamage = boss.damage || 2;
+        const boss = userData.selectedBoss;
+        let bossPoints = boss.totalPoints;
+        let userPoints = userData.points.total;
 
-        // Ініціалізація, якщо масиву ще нема
-        if (!Array.isArray(userData.points.bossDaagePoints)) {
-            userData.points.bossDaagePoints = [];
+        const bossInitialPoints = bossPoints;
+
+        // Скидаємо фінальні тексти
+        if (winText) winText.style.display = "none";
+        if (loseText) loseText.style.display = "none";
+
+        function updateUI() {
+            if (bossPointsEl) bossPointsEl.textContent = bossPoints;
+            if (userPointsEl) userPointsEl.textContent = userPoints;
         }
 
-        winText.style.display = "none";
-        loseText.style.display = "none";
+        function addBossDamagePoints(value) {
+            if (!userData.points.bossDaagePoints) {
+                userData.points.bossDaagePoints = 0;
+            }
+            userData.points.bossDaagePoints += value;
+        }
 
-        const updateUI = () => {
-            if (userPointsDisplay) userPointsDisplay.textContent = userCurrentPoints;
-            if (bossPointsDisplay) bossPointsDisplay.textContent = bossCurrentPoints;
-        };
+        function battleTurn() {
+            // Удар користувача
+            bossPoints -= 2;
+            userPoints -= 2;
+            addBossDamagePoints(-2);
+            updateUI();
 
-        const interval = setInterval(() => {
-            // Хід гравця
-            if (bossCurrentPoints > 0 && userCurrentPoints > 0) {
-                bossCurrentPoints -= 2;
-                userCurrentPoints -= 2;
-
-                userData.points.bossDaagePoints.push(-2); // гравець втратив за атаку
-
+            if (bossPoints <= 0) {
+                // Користувач переміг
+                if (winText) winText.style.display = "block";
+                addBossDamagePoints(bossInitialPoints); // додаємо бали за боса
                 updateUI();
-
-                if (bossCurrentPoints <= 0) {
-                    clearInterval(interval);
-
-                    // Перемога гравця: додаємо бали боса
-                    userData.points.bossDaagePoints.push(bossStartPoints);
-                    winText.style.display = "block";
-                    console.log("🎉 Гравець переміг");
-
-                    // Підрахунок підсумкових балів
-                    const total = userData.points.bossDaagePoints.reduce((acc, val) => acc + val, 0);
-                    userData.points.total = total;
-                    updateUI();
-                    return;
-                }
+                return;
             }
 
-            // Хід боса
-            if (bossCurrentPoints > 0 && userCurrentPoints > 0) {
-                userCurrentPoints -= bossDamage;
-                userData.points.bossDaagePoints.push(-bossDamage); // гравець втратив від атаки боса
-                updateUI();
+            // Удар боса
+            const bossDamage = boss.damage || 2;
+            userPoints -= bossDamage;
+            addBossDamagePoints(-bossDamage);
+            updateUI();
 
-                if (userCurrentPoints <= 0) {
-                    clearInterval(interval);
-                    loseText.style.display = "block";
-                    console.log("💀 Гравець програв");
-
-                    const total = userData.points.bossDaagePoints.reduce((acc, val) => acc + val, 0);
-                    userData.points.total = total;
-                    updateUI();
-                    return;
-                }
+            if (userPoints <= 0) {
+                // Користувач програв
+                if (loseText) loseText.style.display = "block";
+                return;
             }
-        }, 2000); // 2 секунди між діями
+
+            // Повтор ходу
+            setTimeout(battleTurn, 2000);
+        }
+
+        // Почати бій
+        setTimeout(() => {
+            battleTurn();
+        }, 1000);
     }
-
 
 
 
