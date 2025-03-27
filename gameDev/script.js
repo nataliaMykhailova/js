@@ -499,8 +499,18 @@ document.addEventListener("DOMContentLoaded", function () {
         fillBossFightInfo();
         resetBattleCardsPosition();
 
+        const toMapBtn = document.querySelector(".nav-btn-gd.is--map.fight-section");
+        const finishGameBtn = document.querySelector(".nav-btn-gd.is--map.finish-btn.fight-section");
+        const chooseAnotherBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
+        const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
+
+        if (toMapBtn) toMapBtn.style.display = "none";
+        if (finishGameBtn) finishGameBtn.style.display = "none";
+        if (chooseAnotherBtn) chooseAnotherBtn.style.display = "none";
+        if (playAgainBtn) playAgainBtn.style.display = "none";
 
         bossesSection.classList.remove("visible");
+
         setTimeout(() => {
             bossesSection.style.display = "none";
             fightSection.style.display = "block";
@@ -508,14 +518,14 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 fightSection.classList.add("visible");
 
-                // ✅ Запускаємо бій з затримкою 2 секунди після появи секції
                 setTimeout(() => {
                     startBattle();
-                }, 2000);
+                }, 1000);
 
             }, 0);
         }, 0);
     });
+
 
 
     finishBtn.addEventListener("click", () => {
@@ -1888,7 +1898,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             targetSection.style.display = "block";
 
                             console.log(userData);
-                            setTimeout(() => targetSection.classList.add("visible"), 0);
+                            setTimeout(() => {
+                                targetSection.classList.add("visible");
+                                if (btnClass === "is--bosses") {
+                                    initBossClickSelection();
+                                }
+                            }, 0);
                         }
                     }, 0);
                 }
@@ -2425,21 +2440,20 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // ❗ Зберігаємо клон шаблону ДО очищення wrapper
         const bossTemplate = bossTemplateEl.cloneNode(true);
-
-        // Очищуємо
         bossWrapper.innerHTML = "";
 
         Object.entries(bossesData).forEach(([key, boss]) => {
             const clonedBoss = bossTemplate.cloneNode(true);
 
-            // Очистити всі класи, які могли бути збережені
-            clonedBoss.classList.remove("active", "defeated-boss");
-            clonedBoss.style.filter = "";
-            clonedBoss.style.pointerEvents = "";
+            // ❌ Видаляємо ці — більше не потрібні
+            // clonedBoss.classList.remove("active", "defeated-boss");
+            // clonedBoss.style.filter = "";
+            // clonedBoss.style.pointerEvents = "";
 
-            // Заповнення контенту
+            // ✅ Лишаємо тільки скидання active
+            clonedBoss.classList.remove("active");
+
             const pointsEl = clonedBoss.querySelector(".boss-points-count");
             if (pointsEl) pointsEl.textContent = boss.totalPoints;
 
@@ -2455,21 +2469,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const descEl = clonedBoss.querySelector(".boss-desc-gd");
             if (descEl) descEl.textContent = boss.description;
 
-            // 🔒 Перевірка на переможених
-            const isDefeated = userData.defeated_bosses && userData.defeated_bosses[key];
-            if (isDefeated) {
-                clonedBoss.classList.add("defeated-boss");
-                clonedBoss.style.filter = "blur(3px)";
-                clonedBoss.style.pointerEvents = "none";
-            }
-
             bossWrapper.appendChild(clonedBoss);
         });
 
         console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
-
         selectedBossKey = null;
     }
+
 
 
     function checkIfUserIsReady() {
@@ -2520,12 +2526,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!bossBlocks.length || !activeBtn) return;
 
+        let hasActive = false;
+
+        bossBlocks.forEach(block => {
+            const name = block.querySelector(".boss-name")?.textContent?.trim();
+            const key = Object.keys(bossesData).find(k => bossesData[k].name === name);
+            const isDefeated = key && userData.defeated_bosses?.[key];
+            const line = block.querySelector(".boss-line-gd");
+
+            // 🔄 Виставлення стилів для переможених босів
+            if (isDefeated) {
+                block.classList.add("defeated-boss");
+                block.style.filter = "blur(5px)";
+                block.style.pointerEvents = "none";
+                if (line) line.style.display = "none";
+            } else {
+                block.classList.remove("defeated-boss");
+                block.style.filter = "";
+                block.style.pointerEvents = "auto";
+                if (line) line.style.display = "flex";
+            }
+
+            // Перевірка на активного
+            if (block.classList.contains("active") && !isDefeated) {
+                block.style.opacity = "1";
+                hasActive = true;
+            } else if (!isDefeated) {
+                block.style.opacity = "1"; // за замовчуванням — видимий
+            }
+        });
+
+        // Встановлюємо стан кнопки "в бій"
+        activeBtn.style.opacity = hasActive ? "1" : "0";
+
+        // 👉 Слухачі кліків
         bossBlocks.forEach(block => {
             const img = block.querySelector(".boss-img-gd");
             if (!img) return;
 
             img.addEventListener("click", () => {
-                if (block.classList.contains("defeated-boss")) return; // 🚫 Не обробляти клік
+                if (block.classList.contains("defeated-boss")) return;
 
                 // Зняти active, задати новий active, приглушити інші
                 bossBlocks.forEach(b => {
@@ -2557,7 +2597,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        console.log("✅ Ініціалізовано вибір босів з приглушенням інших");
+        console.log("✅ Ініціалізовано вибір босів та оновлення стилів переможених");
     }
 
 
@@ -2686,16 +2726,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const bossCard = document.querySelector(".boss-profile_block-gd");
         const chooseAnotherBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
         const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
+        const toMapBtn = document.querySelector(".nav-btn-gd.is--map.fight-section");
+        const finishGameBtn = document.querySelector(".nav-btn-gd.is--map.finish-btn.fight-section");
+
 
         const boss = userData.selectedBoss;
         let bossPoints = boss.totalPoints;
         let userPoints = userData.points.total;
         const bossInitialPoints = bossPoints;
-
-        if (winText) winText.style.display = "none";
-        if (loseText) loseText.style.display = "none";
-        if (chooseAnotherBtn) chooseAnotherBtn.style.display = "none";
-        if (playAgainBtn) playAgainBtn.style.display = "none";
 
         function updateUI() {
             if (bossPointsEl) bossPointsEl.textContent = bossPoints;
@@ -2759,11 +2797,23 @@ document.addEventListener("DOMContentLoaded", function () {
                             userCard.style.transform = "translate(-50%, -50%)";
                             bossCard.style.display = "none";
 
+                            // Показати кнопки після перемоги
                             if (chooseAnotherBtn) {
                                 chooseAnotherBtn.style.display = "flex";
                                 chooseAnotherBtn.style.opacity = "0";
                                 setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
                             }
+                            if (toMapBtn) {
+                                toMapBtn.style.display = "flex";
+                                toMapBtn.style.opacity = "0";
+                                setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
+                            }
+                            if (finishGameBtn) {
+                                finishGameBtn.style.display = "flex";
+                                finishGameBtn.style.opacity = "0";
+                                setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
+                            }
+
                             renderBosses();
                         }, 500)
                         return;
@@ -2790,6 +2840,16 @@ document.addEventListener("DOMContentLoaded", function () {
                                 playAgainBtn.style.opacity = "0";
                                 setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
                             }
+                            if (toMapBtn) {
+                                toMapBtn.style.display = "flex";
+                                toMapBtn.style.opacity = "0";
+                                setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
+                            }
+                            if (finishGameBtn) {
+                                finishGameBtn.style.display = "flex";
+                                finishGameBtn.style.opacity = "0";
+                                setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
+                            }
 
 
                         }, 500)
@@ -2809,9 +2869,11 @@ document.addEventListener("DOMContentLoaded", function () {
     chooseAnotherBossBtn.addEventListener("click", () => {
         fightSection.classList.remove("visible");
 
+
         setTimeout(() => {
             fightSection.style.display = "none";
             bossesSection.style.display = "block";
+            initBossClickSelection();
 
             setTimeout(() => {
                 bossesSection.classList.add("visible");
@@ -2834,6 +2896,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Показати секцію з босами
         if (bossesSection) {
             bossesSection.style.display = "block";
+            initBossClickSelection();
             setTimeout(() => bossesSection.classList.add("visible"), 0);
         }
 
