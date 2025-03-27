@@ -2731,7 +2731,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const userPointsEl = document.querySelector(".profile-point-gd");
         const winText = document.querySelector(".win-text.victory");
         const loseText = document.querySelector(".win-text.you-loose");
-        const defaultFightText = document.querySelector(".p-28_calipso-gd.default-fight-text");
+        const defaultFightText = document.querySelector(".p-28_calipso-gd.dafault-fight-text");
 
 
         const userCard = document.querySelector(".profile-block-gd.fight");
