@@ -342,6 +342,7 @@ document.addEventListener("DOMContentLoaded", function () {
             choiceSection.style.display = "block";
             setTimeout(() => {
                 choiceSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     }, 3000);
@@ -378,6 +379,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 firstPartSection.classList.add("visible");
                 updateTotalUserPoints();
                 updateProfileBlocks();
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -389,6 +391,7 @@ document.addEventListener("DOMContentLoaded", function () {
             secondPartSection.style.display = "block";
             setTimeout(() => {
                 secondPartSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -402,6 +405,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
                 armorySection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -415,6 +419,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
                 mapSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -430,6 +435,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Додаємо видимість мапі
             setTimeout(() => {
                 mapSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -445,6 +451,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Додаємо видимість мапі
             setTimeout(() => {
                 mapSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -460,6 +467,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Додаємо видимість мапі
             setTimeout(() => {
                 mapSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -475,6 +483,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
                 mapSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     }
@@ -525,6 +534,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
                 fightSection.classList.add("visible");
+                window.scrollTo(0, 0);
 
 
 
@@ -547,6 +557,7 @@ document.addEventListener("DOMContentLoaded", function () {
             finishSection.style.display = "block";
             fillFinishBlock();
             setTimeout(() => finishSection.classList.add("visible"), 0);
+            window.scrollTo(0, 0);
         }, 0);
     });
 
@@ -556,6 +567,7 @@ document.addEventListener("DOMContentLoaded", function () {
             fightSection.style.display = "none";
             mapSection.style.display = "block";
             setTimeout(() => mapSection.classList.add("visible"), 0);
+            window.scrollTo(0, 0);
         }, 0);
     });
 
@@ -567,6 +579,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             fillFinishBlock();
             setTimeout(() => finishSection.classList.add("visible"), 0);
+            window.scrollTo(0, 0);
         }, 0);
     });
 
@@ -581,6 +594,7 @@ document.addEventListener("DOMContentLoaded", function () {
             choiceSection.style.display = "block";
             setTimeout(() => {
                 choiceSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -592,6 +606,7 @@ document.addEventListener("DOMContentLoaded", function () {
             firstPartSection.style.display = "block";
             setTimeout(() => {
                 firstPartSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -605,6 +620,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
                 secondPartSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -618,6 +634,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
                 armorySection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -675,6 +692,7 @@ document.addEventListener("DOMContentLoaded", function () {
             charactersSection.style.display = "block";
             setTimeout(() => {
                 charactersSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
     });
@@ -1913,6 +1931,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 if (btnClass === "is--bosses") {
                                     initBossClickSelection();
                                 }
+                                window.scrollTo(0, 0);
                             }, 0);
                         }
                     }, 0);
@@ -2902,7 +2921,6 @@ document.addEventListener("DOMContentLoaded", function () {
     chooseAnotherBossBtn.addEventListener("click", () => {
         fightSection.classList.remove("visible");
 
-
         setTimeout(() => {
             fightSection.style.display = "none";
             bossesSection.style.display = "block";
@@ -2910,6 +2928,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             setTimeout(() => {
                 bossesSection.classList.add("visible");
+                window.scrollTo(0, 0);
             }, 0);
         }, 0);
         renderBosses();
@@ -2931,6 +2950,7 @@ document.addEventListener("DOMContentLoaded", function () {
             bossesSection.style.display = "block";
             initBossClickSelection();
             setTimeout(() => bossesSection.classList.add("visible"), 0);
+            window.scrollTo(0, 0);
         }
 
         // 🔁 Очистити переможених босів
