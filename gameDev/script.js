@@ -4,34 +4,33 @@ let userData = {
     avatar: "",
     points: {},
     artefacts: {},
-    killedBosses:{},
+    killedBosses: {},
     salary: 0,
     age: 0,
     workHours: 0,
     finStatus: "",
     family: "",
     kids: "",
-    it_entry_age:"",
-    it_experience:"",
-    specialty_experience:"",
-    job_title:"",
-    english_proficiency:"",
-    primary_programming_language:"",
-    game_engines:"",
-    settlement_type:"",
-    contract_with:"",
-    employment_type:"",
-    work_arrangement:"",
-    monetary_bonuses:"",
-    salary_review_last_6_months:"",
-    overtime_payment:"",
-    salary_satisfaction:"",
-    gaming_habits:"",
-    gaming_platforms:"",
-    defeated_bosses:{},
+    it_entry_age: "",
+    it_experience: "",
+    specialty_experience: "",
+    job_title: "",
+    english_proficiency: "",
+    primary_programming_language: "",
+    game_engines: "",
+    settlement_type: "",
+    contract_with: "",
+    employment_type: "",
+    work_arrangement: "",
+    monetary_bonuses: "",
+    salary_review_last_6_months: "",
+    overtime_payment: "",
+    salary_satisfaction: "",
+    gaming_habits: "",
+    gaming_platforms: "",
+    defeated_bosses: {},
 
 };
-
 
 
 const visited = new Set();
@@ -76,8 +75,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const finishSection = document.querySelector(".finish-section-gd");
     const mapBtnFromFight = document.querySelector(".nav-btn-gd.is--map.fight-section");
     const finishBtnFromFight = document.querySelector(".nav-btn-gd.is--map.finish-btn.fight-section");
-
-
 
 
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
@@ -197,24 +194,24 @@ document.addEventListener("DOMContentLoaded", function () {
         userData.finStatus = "";
         userData.family = "";
         userData.kids = "";
-        userData.it_entry_age ="";
-        userData.it_experience ="";
-        userData.specialty_experience ="";
-        userData.job_title ="";
-        userData.english_proficiency ="";
-        userData. primary_programming_language ="";
+        userData.it_entry_age = "";
+        userData.it_experience = "";
+        userData.specialty_experience = "";
+        userData.job_title = "";
+        userData.english_proficiency = "";
+        userData.primary_programming_language = "";
         userData.game_engines = "";
         userData.settlement_type = "";
-        userData.contract_with ="";
-        userData.employment_type ="";
-        userData.work_arrangement ="";
-        userData.monetary_bonuses ="";
-        userData.salary_review_last_6_months ="";
-        userData.overtime_payment ="";
-        userData.salary_satisfaction ="";
-        userData.gaming_habits ="";
-        userData.gaming_platforms ="";
-        userData.defeated_bosses ={};
+        userData.contract_with = "";
+        userData.employment_type = "";
+        userData.work_arrangement = "";
+        userData.monetary_bonuses = "";
+        userData.salary_review_last_6_months = "";
+        userData.overtime_payment = "";
+        userData.salary_satisfaction = "";
+        userData.gaming_habits = "";
+        userData.gaming_platforms = "";
+        userData.defeated_bosses = {};
 
         console.log("Дані користувача скинуто", userData);
 
@@ -483,7 +480,6 @@ document.addEventListener("DOMContentLoaded", function () {
     bossMapButton?.addEventListener("click", showMapFromBosses);
 
 
-
     fightBtn.addEventListener("click", () => {
         if (!bossesSection || !fightSection) return;
 
@@ -498,6 +494,8 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         fillBossFightInfo();
+        resetBattleCardsPosition();
+
 
         bossesSection.classList.remove("visible");
         setTimeout(() => {
@@ -897,7 +895,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".lang-fact-text").textContent = professionData.english_proficiency["comment"];
 
 
-
         document.querySelector(".p-10-gilroy.title-junior").textContent = professionData.job_title["junior"] + "%";
         document.querySelector(".p-10-gilroy.title-middle").textContent = professionData.job_title["middle"] + "%";
         document.querySelector(".p-10-gilroy.title-senior").textContent = professionData.job_title["senior"] + "%";
@@ -977,8 +974,8 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".settlement-item-gd.big_city .p-20-gilroy-gd").textContent = professionData.settlement_type["big_city"] + "%";
 
 
-        document.querySelector(".yes-answer-gd").textContent =  professionData.gaming_habits["play_games"] ;
-        document.querySelector(".no-answer-gd").textContent =  professionData.gaming_habits["do_not_play"] ;
+        document.querySelector(".yes-answer-gd").textContent = professionData.gaming_habits["play_games"];
+        document.querySelector(".no-answer-gd").textContent = professionData.gaming_habits["do_not_play"];
         document.querySelector(".yes-line-gd").style.width = professionData.gaming_habits["play_games"] + "%";
         document.querySelector(".no-line-gd").style.width = professionData.gaming_habits["do_not_play"] + "%";
 
@@ -1101,8 +1098,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-
-
         console.log("✅ Оновлено всі дані персонажа:", professionData);
 
 
@@ -1155,7 +1150,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 mid2: 3,
                 max: 4
             },
-            satisfaction:{
+            satisfaction: {
                 min: 1,
                 mid: 2,
                 max: 3
@@ -1566,9 +1561,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Додаємо обробники подій
     thumb.addEventListener("mousedown", startDrag);
-    thumb.addEventListener("touchstart", startDrag, { passive: false });
+    thumb.addEventListener("touchstart", startDrag, {passive: false});
     document.addEventListener("mousemove", dragMove);
-    document.addEventListener("touchmove", dragMove, { passive: false });
+    document.addEventListener("touchmove", dragMove, {passive: false});
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchend", stopDrag);
 
@@ -1623,7 +1618,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log('v-1')
 
     initLanguageSelection();
-
 
 
     function handleEngineBlockVisibility() {
@@ -1710,9 +1704,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         thumb.addEventListener("mousedown", startDrag);
-        thumb.addEventListener("touchstart", startDrag, { passive: false });
+        thumb.addEventListener("touchstart", startDrag, {passive: false});
         document.addEventListener("mousemove", dragMove);
-        document.addEventListener("touchmove", dragMove, { passive: false });
+        document.addEventListener("touchmove", dragMove, {passive: false});
         document.addEventListener("mouseup", stopDrag);
         document.addEventListener("touchend", stopDrag);
     }
@@ -1831,7 +1825,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (userData.gender === "female") {
             if (langFactBlock) {
-                langFactBlock.style.display='none';
+                langFactBlock.style.display = 'none';
                 console.log("🚫 Блок з фактом про англійську приховано для female");
             }
         }
@@ -2004,6 +1998,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Логіка вибору платформи ігор через делегування ініціалізована");
     }
+
     function initBonusSelection() {
         const bonusTabs = document.querySelectorAll(".finances-tab-gd-2.white.bonus");
 
@@ -2051,7 +2046,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Логіка вибору бонусів ініціалізована");
     }
-
 
 
     function initOvertimeSelection() {
@@ -2252,9 +2246,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         thumb.addEventListener("mousedown", startDrag);
-        thumb.addEventListener("touchstart", startDrag, { passive: false });
+        thumb.addEventListener("touchstart", startDrag, {passive: false});
         document.addEventListener("mousemove", dragMove);
-        document.addEventListener("touchmove", dragMove, { passive: false });
+        document.addEventListener("touchmove", dragMove, {passive: false});
         document.addEventListener("mouseup", stopDrag);
         document.addEventListener("touchend", stopDrag);
     }
@@ -2318,7 +2312,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Логіка вибору типу працевлаштування ініціалізована");
     }
-
 
 
     function initWorkArrangementSelection() {
@@ -2475,7 +2468,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!noReadyText || !toFightButton) return;
 
-        const clone = { ...userData };
+        const clone = {...userData};
         delete clone.gender;
         delete clone.avatar;
         delete clone.profession;
@@ -2510,6 +2503,7 @@ document.addEventListener("DOMContentLoaded", function () {
             toFightButton.style.opacity = "0.5";
         }
     }
+
     function initBossClickSelection() {
         const bossBlocks = document.querySelectorAll(".boss-block-gd");
         const activeBtn = document.querySelector(".active-state_btn-gd");
@@ -2555,7 +2549,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Ініціалізовано вибір босів з приглушенням інших");
     }
-
 
 
     function fillFinishBlock() {
@@ -2625,6 +2618,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (descriptionEl) descriptionEl.textContent = finalText;
     }
+
     function fillBossFightInfo() {
         if (!selectedBossKey || !bossesData[selectedBossKey]) {
             console.warn("❌ Не знайдено обраного боса для заповнення");
@@ -2645,6 +2639,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("📦 Дані боса оновлено:", selectedBoss);
     }
+
+    function resetBattleCardsPosition() {
+        const userCard = document.querySelector(".profile-block-gd.fight");
+        const bossCard = document.querySelector(".boss-profile_block-gd");
+
+        if (userCard) {
+            userCard.style.transition = "none"; // без анімації
+            userCard.style.left = "0";
+            userCard.style.transform = "translateX(-50%) translateY(0)";
+        }
+
+        if (bossCard) {
+            bossCard.style.transition = "none"; // без анімації
+            bossCard.style.right = "0";
+            bossCard.style.transform = "translateX(-50%) translateY(0)";
+            bossCard.style.display = "flex"; // робимо видимим перед боєм
+        }
+
+        console.log("🎯 Картки бою скинуті до початкового стану");
+    }
+    fightBtn
 
 
     function startBattle() {
@@ -2739,7 +2754,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 chooseAnotherBtn.style.opacity = "0";
                                 setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
                             }
-
+                            renderBosses();
                         }, 500)
                         return;
 
@@ -2752,21 +2767,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     updateUI();
 
                     if (userPoints <= 0) {
-                       setTimeout(()=>{
-                           if (loseText) loseText.style.display = "block";
+                        setTimeout(() => {
+                            if (loseText) loseText.style.display = "block";
 
-                           userCard.style.left = "50%";
-                           userCard.style.transform = "translate(-50%, -50%)";
-                           bossCard.style.display = "none";
+                            userCard.style.left = "50%";
+                            userCard.style.transform = "translate(-50%, -50%)";
+                            bossCard.style.display = "none";
 
-                           if (playAgainBtn) {
-                               playAgainBtn.style.display = "flex";
-                               playAgainBtn.style.opacity = "0";
-                               setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
-                           }
+                            if (playAgainBtn) {
+                                playAgainBtn.style.display = "flex";
+                                playAgainBtn.style.opacity = "0";
+                                setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
+                            }
 
 
-                       }, 500)
+                        }, 500)
                         return;
                     }
 
@@ -2778,9 +2793,6 @@ document.addEventListener("DOMContentLoaded", function () {
             battleTurn();
         }, 300); // Затримка після зміщення
     }
-
-
-
 
 
 });
