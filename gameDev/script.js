@@ -556,7 +556,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             bossesSection.style.display = "none";
             finishSection.style.display = "block";
-            addUserPoints(bossDaagePoints, 0);
+            addUserPoints("bossDaagePoints", 0);
             fillFinishBlock();
             setTimeout(() => finishSection.classList.add("visible"), 0);
             window.scrollTo(0, 0);
