@@ -365,6 +365,34 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
+    gsap.registerPlugin(ScrollTrigger);
+
+    function animateFactsOnScroll() {
+        const factBlocks = document.querySelectorAll('.fact-block-gd');
+
+        factBlocks.forEach((block) => {
+            gsap.fromTo(
+                block,
+                { opacity: 0, y: '20' },
+                {
+                    opacity: 1,
+                    yPercent: 0,
+                    duration: 0.6,
+                    ease: 'power2.out',
+                    scrollTrigger: {
+                        trigger: block,
+                        start: 'top 90%',
+                        toggleActions: 'play none none none',
+                    },
+                }
+            );
+        });
+
+        console.log('📌 Анімація факт-блоків активована');
+    }
+
+    animateFactsOnScroll();
+
     function runFirstPartAnimation() {
         const section = document.querySelector('.first-part_section-gd');
         if (!section) return;
@@ -425,7 +453,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, "<");
 
         // 🔸 8. Клік-клік на кнопці
-        tl.to(tutorialBtn, { scale: 1, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
         tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
@@ -470,6 +498,41 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
+
+    function runSecondPartAnimation() {
+
+
+        const section = document.querySelector('.second-part_section-gd');
+
+        if (!section) return;
+
+        const baseElems = section.querySelectorAll(
+            '.profile-wrapper-gd, .block-title_wrapper-gd, .second-part_right-gd, .range-salary-gd.age_it, .exp-block-gd.exp_spec'
+        );
+        const tutorialBtn = section.querySelector('.exp-tutorial_icon-gd');
+
+        const tl = gsap.timeline({ delay: 0.5 });
+
+        // 🔸 1. Початкове затемнення всіх блоків
+        tl.to(baseElems, { opacity: 0.2, duration: 0.5, stagger: 0.03 }, 0);
+
+        // 🔸 2. Анімація кліків
+        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+        tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+        tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+
+        // 🔸 3. Зникнення
+        tl.to(tutorialBtn, { y: '100%', opacity: 0, duration: 0.5 }, "+=0.4");
+
+        tl.to(baseElems, { opacity: 1, duration: 0.5 }, "+=0.5");
+
+        console.log("🎬 Second part animation launched");
+    }
+
+    let hasRunSecondPartAnimation = true;
+
+
     continueButtonFirstPart.addEventListener("click", function () {
         firstPartSection.classList.remove("visible");
         setTimeout(() => {
@@ -478,6 +541,10 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 secondPartSection.classList.add("visible");
                 window.scrollTo(0, 0);
+                if (hasRunSecondPartAnimation) {
+                    hasRunSecondPartAnimation = false
+                    setTimeout(() => runSecondPartAnimation(), 500);
+                }
             }, 0);
         }, 0);
     });
