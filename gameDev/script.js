@@ -306,7 +306,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-// Виклик функції для блоку `exp_it`
 
 
     // Функція для перемикання активної кнопки
@@ -2968,6 +2967,49 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("🔁 Перезапуск бою: переможені боси скинуті, бали обнулено");
     });
+
+
+    function animateGameIcons() {
+        const gameBlocks = document.querySelectorAll('.game-block-gd');
+
+        gameBlocks.forEach(block => {
+            const icons = Array.from(block.querySelectorAll('.game-icon-gd'));
+            if (!icons.length) return;
+
+            let index = 0;
+
+            function loop() {
+                // 🛑 Якщо будь-який блок має .active — зупиняємо
+                const anyActive = document.querySelector('.game-block-gd.active');
+                if (anyActive) return;
+
+                // Зняти анімацію з усіх
+                icons.forEach(icon => icon.classList.remove('animate-glow'));
+
+                const current = icons[index];
+                if (current) {
+                    current.classList.add('animate-glow');
+
+                    setTimeout(() => {
+                        current.classList.remove('animate-glow');
+                    }, 1000);
+                }
+
+                index = (index + 1) % icons.length;
+                setTimeout(loop, 1200);
+            }
+
+            loop();
+        });
+    }
+
+    document.querySelectorAll('.game-block-gd').forEach(block => {
+        block.addEventListener('click', () => {
+            block.classList.add('active');
+        });
+    });
+
+    animateGameIcons();
 
 
 
