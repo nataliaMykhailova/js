@@ -365,6 +365,80 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
+    function runFirstPartAnimation() {
+        const section = document.querySelector('.first-part_section-gd');
+        if (!section) return;
+
+        const baseElems = section.querySelectorAll(
+            '.profile-wrapper-gd, .block-title_wrapper-gd, .range-age-gd, .range-hours-gd, .static-hours-gd, .family-block, .finances-block-gd > *, .range-title-gd, .finances-tabs-gd, .finance-static_block-gd'
+        );
+
+        const tutorialIcon = section.querySelector('.range-tutorial_icon-gd');
+        const salaryBlock = section.querySelector('.range-salary-gd');
+        const financesTabs = section.querySelector('.finances-tabs-gd');
+        const tutorialBtn = section.querySelector('.btn-tutorial_icon-gd');
+
+        const tl = gsap.timeline({ delay: 0.5 });
+
+        // 🔸 1. Початкове затемнення
+        tl.to(baseElems, { opacity: 0.5, duration: 0.5, stagger: 0.03 }, 0);
+
+        // 🔸 2. Анімація tutorial icon вправо
+        tl.to(tutorialIcon, {
+            y: "200%",
+            duration: 0.8,
+            ease: "power2.out"
+        }, "+=0.5");
+
+        // 🔸 3. Повернення назад
+        tl.to(tutorialIcon, {
+            y: '0%',
+            duration: 0.3,
+            ease: "power1.inOut"
+        });
+
+        // 🔸 4. Ще раз вправо
+        tl.to(tutorialIcon, {
+            y: '200%',
+            duration: 0.8,
+            ease: "power2.out"
+        });
+
+        // 🔸 5. Вниз + зникнення
+        tl.to(tutorialIcon, {
+            y: '150%',
+            opacity: 0,
+            duration: 0.5,
+            ease: "power1.out"
+        });
+
+        // 🔸 6. З'являється блок зарплати
+        tl.to(salaryBlock, {
+            opacity: 0.5,
+            duration: 0.5
+        }, "+=0.5");
+
+        // 🔸 7. Таблиця фінансів 100%
+        tl.to(financesTabs, {
+            opacity: 1,
+            duration: 0.5
+        }, "<");
+
+        // 🔸 8. Клік-клік на кнопці
+        tl.to(tutorialBtn, { scale: 0.9, duration: 0.15, yoyo: true, repeat: 1 }, "+=0.5");
+        tl.to(tutorialBtn, { scale: 0.9, duration: 0.15, yoyo: true, repeat: 1 }, "+=0.5");
+
+        // 🔸 9. Зникнення кнопки вниз
+        tl.to(tutorialBtn, {
+            y: '100%',
+            opacity: 0,
+            duration: 0.5
+        }, "+=0.3");
+
+        // 🔸 10. Усі блоки знову 100% opacity
+        tl.to(baseElems, { opacity: 1, duration: 0.5 });
+    }
+
 
 // кнопка continue в секції з персонажами
     continueButton.addEventListener("click", function () {
@@ -379,6 +453,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 updateTotalUserPoints();
                 updateProfileBlocks();
                 window.scrollTo(0, 0);
+                setTimeout(() => runFirstPartAnimation(), 500);
             }, 0);
         }, 0);
     });
@@ -2820,7 +2895,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     ? "translateY(0) rotate(25deg)"
                     : "translateY(-50%) rotate(35deg)";
                 bossCard.style.transform = isMobile
-                    ? "translateY(0) rotate(25deg)"
+                    ? "translateY(0) rotate(-25deg)"
                     : "translateY(-50%) rotate(-35deg)";
 
                 setTimeout(() => {
