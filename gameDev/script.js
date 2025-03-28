@@ -426,7 +426,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 🔸 8. Клік-клік на кнопці
         tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
         tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
         // 🔸 9. Зникнення кнопки вниз
         tl.to(tutorialBtn, {
@@ -445,6 +447,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // кнопка continue в секції з персонажами
+    let hasFirstPartAnimationPlayed = true;
+
     continueButton.addEventListener("click", function () {
         if (!userData.profession) return;
 
@@ -457,7 +461,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 updateTotalUserPoints();
                 updateProfileBlocks();
                 window.scrollTo(0, 0);
-                setTimeout(() => runFirstPartAnimation(), 500);
+
+                if (hasFirstPartAnimationPlayed) {
+                    hasFirstPartAnimationPlayed = false;
+                    setTimeout(() => runFirstPartAnimation(), 500);
+                }
             }, 0);
         }, 0);
     });
