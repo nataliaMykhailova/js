@@ -2560,6 +2560,9 @@ document.addEventListener("DOMContentLoaded", function () {
         let hasActive = false;
 
         bossBlocks.forEach(block => {
+
+            block.classList.remove("active");
+
             const name = block.querySelector(".boss-name")?.textContent?.trim();
             const key = Object.keys(bossesData).find(k => bossesData[k].name === name);
             const isDefeated = key && userData.defeated_bosses?.[key];
@@ -2780,8 +2783,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const bossInitialPoints = bossPoints;
 
         function updateUI() {
-            if (bossPointsEl) bossPointsEl.textContent = bossPoints;
-            if (userPointsEl) userPointsEl.textContent = userPoints;
+            if (bossPointsEl) bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
+            if (userPointsEl) userPointsEl.textContent = userPoints < 0 ? 0 : userPoints;
         }
 
         function addBossDamagePoints(value) {
