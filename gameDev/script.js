@@ -425,7 +425,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, "<");
 
         // 🔸 8. Клік-клік на кнопці
-        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+        tl.to(tutorialBtn, { scale: 1, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
         tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
