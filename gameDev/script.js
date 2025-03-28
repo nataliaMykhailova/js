@@ -173,6 +173,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     updateContinueButton();
                     updateTotalUserPoints();
                     updateProfileBlocks()
+
+                    continueButton.scrollIntoView({ behavior: "smooth", block: "center" });
                 });
 
                 charactersList.appendChild(professionItem);
