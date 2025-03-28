@@ -365,6 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
+
     gsap.registerPlugin(ScrollTrigger);
 
     function animateFactsOnScroll() {
@@ -373,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
         factBlocks.forEach((block) => {
             gsap.fromTo(
                 block,
-                { opacity: 0, y: '20' },
+                { opacity: 0, yPercent: 20 },
                 {
                     opacity: 1,
                     yPercent: 0,
@@ -391,7 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log('📌 Анімація факт-блоків активована');
     }
 
-    animateFactsOnScroll();
+
 
     function runFirstPartAnimation() {
         const section = document.querySelector('.first-part_section-gd');
@@ -544,6 +545,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (hasRunSecondPartAnimation) {
                     hasRunSecondPartAnimation = false
                     setTimeout(() => runSecondPartAnimation(), 500);
+                    animateFactsOnScroll();
                 }
             }, 0);
         }, 0);
@@ -559,6 +561,7 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 armorySection.classList.add("visible");
                 window.scrollTo(0, 0);
+                setTimeout(() => animateFactsOnScroll(), 500);
             }, 0);
         }, 0);
     });
@@ -2083,6 +2086,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                     initBossClickSelection();
                                 }
                                 window.scrollTo(0, 0);
+
+                                setTimeout(() => animateFactsOnScroll(), 500);
                             }, 0);
                         }
                     }, 0);
