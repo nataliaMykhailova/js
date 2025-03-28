@@ -378,28 +378,28 @@ document.addEventListener("DOMContentLoaded", function () {
         const financesTabs = section.querySelector('.finances-tabs-gd');
         const tutorialBtn = section.querySelector('.btn-tutorial_icon-gd');
 
-        const tl = gsap.timeline({ delay: 0.5 });
+        const tl = gsap.timeline();
 
         // 🔸 1. Початкове затемнення
-        tl.to(baseElems, { opacity: 0.5, duration: 0.5, stagger: 0.03 }, 0);
+        tl.to(baseElems, { opacity: 0.4, duration: 0.5 }, 0);
 
         // 🔸 2. Анімація tutorial icon вправо
         tl.to(tutorialIcon, {
-            y: "200%",
+            x: "150%",
             duration: 0.8,
             ease: "power2.out"
         }, "+=0.5");
 
         // 🔸 3. Повернення назад
         tl.to(tutorialIcon, {
-            y: '0%',
-            duration: 0.3,
+            x: '0%',
+            duration: 0.4,
             ease: "power1.inOut"
         });
 
         // 🔸 4. Ще раз вправо
         tl.to(tutorialIcon, {
-            y: '200%',
+            x: '150%',
             duration: 0.8,
             ease: "power2.out"
         });
@@ -425,15 +425,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }, "<");
 
         // 🔸 8. Клік-клік на кнопці
-        tl.to(tutorialBtn, { scale: 0.9, duration: 0.15, yoyo: true, repeat: 1 }, "+=0.5");
-        tl.to(tutorialBtn, { scale: 0.9, duration: 0.15, yoyo: true, repeat: 1 }, "+=0.5");
+        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 1 }, "+=0.5");
+        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 1 }, "+=0.5");
 
         // 🔸 9. Зникнення кнопки вниз
         tl.to(tutorialBtn, {
             y: '100%',
             opacity: 0,
             duration: 0.5
-        }, "+=0.3");
+        }, "+=0.4");
 
         // 🔸 10. Усі блоки знову 100% opacity
         tl.to(baseElems, { opacity: 1, duration: 0.5 });
