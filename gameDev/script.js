@@ -374,11 +374,11 @@ document.addEventListener("DOMContentLoaded", function () {
         factBlocks.forEach((block) => {
             gsap.fromTo(
                 block,
-                { opacity: 0, yPercent: 20 },
+                { opacity: 0, yPercent: 30 },
                 {
                     opacity: 1,
                     yPercent: 0,
-                    duration: 0.6,
+                    duration: 1.2,
                     ease: 'power2.out',
                     scrollTrigger: {
                         trigger: block,
@@ -545,7 +545,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (hasRunSecondPartAnimation) {
                     hasRunSecondPartAnimation = false
                     setTimeout(() => runSecondPartAnimation(), 500);
-                    animateFactsOnScroll();
+                    setTimeout(() => animateFactsOnScroll(), 1000);
+
                 }
             }, 0);
         }, 0);
@@ -561,7 +562,7 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 armorySection.classList.add("visible");
                 window.scrollTo(0, 0);
-                setTimeout(() => animateFactsOnScroll(), 500);
+                setTimeout(() => animateFactsOnScroll(), 1000);
             }, 0);
         }, 0);
     });
@@ -2087,7 +2088,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 }
                                 window.scrollTo(0, 0);
 
-                                setTimeout(() => animateFactsOnScroll(), 500);
+                                setTimeout(() => animateFactsOnScroll(), 1000);
                             }, 0);
                         }
                     }, 0);
