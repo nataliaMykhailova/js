@@ -80,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
 
 
-
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
         console.error("Помилка: один або більше елементів не знайдено!");
         return;
@@ -174,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     updateTotalUserPoints();
                     updateProfileBlocks()
 
-                    continueButton.scrollIntoView({ behavior: "smooth", block: "center" });
+                    continueButton.scrollIntoView({behavior: "smooth", block: "center"});
                 });
 
                 charactersList.appendChild(professionItem);
@@ -307,7 +306,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     // Функція для перемикання активної кнопки
     function toggleActiveGender(activeButton, inactiveButton) {
         activeButton.style.background = "#FFD7A2";
@@ -334,7 +332,6 @@ document.addEventListener("DOMContentLoaded", function () {
         displayProfessions(professionsData.female);
 
     });
-
 
 
     // Переходи між секціями при виборі професії
@@ -539,7 +536,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.scrollTo(0, 0);
 
 
-
                 setTimeout(() => {
                     startBattle();
                 }, 1000);
@@ -547,7 +543,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 0);
         }, 0);
     });
-
 
 
     finishBtn.addEventListener("click", () => {
@@ -585,7 +580,6 @@ document.addEventListener("DOMContentLoaded", function () {
             window.scrollTo(0, 0);
         }, 0);
     });
-
 
 
     // Повернення до вибору професії
@@ -2509,7 +2503,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     function checkIfUserIsReady() {
         const noReadyText = document.querySelector(".p-16-gd.is-no-ready-text");
         const toFightButton = document.querySelector(".nav-btn-gd.to-fight");
@@ -2740,20 +2733,26 @@ document.addEventListener("DOMContentLoaded", function () {
         const userCard = document.querySelector(".profile-block-gd.fight");
         const bossCard = document.querySelector(".boss-profile_block-gd");
 
+        const isMobile = window.innerWidth <= 478;
+
         if (userCard) {
-            userCard.style.transition = "none"; // без анімації
-            userCard.style.left = "0";
-            userCard.style.transform = "translateX(0) translateY(-50%)";
+            userCard.style.transition = "none";
+            userCard.style.left = isMobile ? "-40%" : "0";
+            userCard.style.transform = isMobile
+                ? "translateX(0) translateY(0)"
+                : "translateX(0) translateY(-50%)";
         }
 
         if (bossCard) {
-            bossCard.style.transition = "none"; // без анімації
-            bossCard.style.right = "0";
-            bossCard.style.transform = "translateX(0) translateY(-50%)";
-            bossCard.style.display = "flex"; // робимо видимим перед боєм
+            bossCard.style.transition = "none";
+            bossCard.style.right = isMobile ? "-40%" : "0";
+            bossCard.style.transform = isMobile
+                ? "translateX(0) translateY(0)"
+                : "translateX(0) translateY(-50%)";
+            bossCard.style.display = "flex";
         }
 
-        console.log("🎯 Картки бою скинуті до початкового стану");
+        console.log("🎯 Картки бою скинуті до початкового стану", isMobile ? "(мобільна версія)" : "(десктоп)");
     }
 
 
@@ -2783,6 +2782,9 @@ document.addEventListener("DOMContentLoaded", function () {
         let userPoints = userData.points.total;
         const bossInitialPoints = bossPoints;
 
+        const isMobile = window.innerWidth <= 478;
+
+
         function updateUI() {
             if (bossPointsEl) bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
             if (userPointsEl) userPointsEl.textContent = userPoints < 0 ? 0 : userPoints;
@@ -2799,12 +2801,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // Початкове зміщення
         if (userCard) {
             userCard.style.transition = "left 0.5s";
-            userCard.style.left = "25%";
+            userCard.style.left = isMobile ? "-20%" : "15%";
         }
 
         if (bossCard) {
             bossCard.style.transition = "right 0.5s";
-            bossCard.style.right = "25%";
+            bossCard.style.right = isMobile ? "-20%" : "15%";
         }
 
         setTimeout(() => {
@@ -2814,13 +2816,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Атака: обертання (із збереженням translateY)
                 userCard.style.transition = "transform 0.5s";
                 bossCard.style.transition = "transform 0.5s";
-                userCard.style.transform = "translateY(-50%) rotate(35deg)";
-                bossCard.style.transform = "translateY(-50%) rotate(-35deg)";
+                userCard.style.transform = isMobile
+                    ? "translateY(0) rotate(25deg)"
+                    : "translateY(-50%) rotate(35deg)";
+                bossCard.style.transform = isMobile
+                    ? "translateY(0) rotate(25deg)"
+                    : "translateY(-50%) rotate(-35deg)";
 
                 setTimeout(() => {
-                    // Повернення до нейтральної позиції
-                    userCard.style.transform = "translateY(-50%) rotate(0deg)";
-                    bossCard.style.transform = "translateY(-50%) rotate(0deg)";
+                    userCard.style.transform = isMobile
+                        ? "translateY(0) rotate(0)"
+                        : "translateY(-50%) rotate(0deg)";
+                    bossCard.style.transform = isMobile
+                        ? "translateY(0) rotate(0)"
+                        : "translateY(-50%) rotate(0deg)";
 
                     // 🗡️ Удар гравця
                     bossPoints -= 2;
@@ -2848,7 +2857,9 @@ document.addEventListener("DOMContentLoaded", function () {
                             console.log(`✅ Бос "${bossKey}" доданий до переможених.`);
 
                             userCard.style.left = "50%";
-                            userCard.style.transform = "translate(-50%, -50%)";
+                            userCard.style.transform = isMobile
+                                ? "translate(-50%, 0)"
+                                : "translate(-50%, -50%)";
                             bossCard.style.display = "none";
 
                             // Показати кнопки після перемоги
@@ -2890,7 +2901,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                 setTimeout(() => (loseText.style.opacity = "1"), 10);
                             }
                             userCard.style.left = "50%";
-                            userCard.style.transform = "translate(-50%, -50%)";
+                            userCard.style.transform = isMobile
+                                ? "translate(-50%, 0)"
+                                : "translate(-50%, -50%)";
                             bossCard.style.display = "none";
 
                             if (playAgainBtn) {
@@ -3010,7 +3023,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     animateGameIcons();
-
 
 
 });
