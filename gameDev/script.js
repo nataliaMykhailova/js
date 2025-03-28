@@ -41,6 +41,7 @@ let selectedBossKey = null;
 document.addEventListener("DOMContentLoaded", function () {
 
     const heroSection = document.querySelector(".hero-section-gd");
+    const heroBtnContinue = document.querySelector('.hero-btn-gd.is--hero');
     const choiceSection = document.querySelector(".choice-section-gd");
     const charactersSection = document.querySelector(".characters-section-gd");
     const choiceItems = document.querySelectorAll(".choice-item-gd.choise-spec");
@@ -334,19 +335,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    // Початкова анімація переходів між секціями
-    setTimeout(() => {
-        heroSection.classList.remove("visible");
-        setTimeout(() => {
-            heroSection.style.display = "none";
-            choiceSection.style.display = "block";
-            setTimeout(() => {
-                choiceSection.classList.add("visible");
-                window.scrollTo(0, 0);
-            }, 0);
-        }, 0);
-    }, 3000);
-
 
     // Переходи між секціями при виборі професії
     choiceItems.forEach(item => {
@@ -364,6 +352,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 0);
             }, 0);
         });
+    });
+
+
+    heroBtnContinue.addEventListener("click", function () {
+        heroSection.classList.remove("visible");
+        setTimeout(() => {
+            heroSection.style.display = "none";
+            choiceSection.style.display = "block";
+            setTimeout(() => {
+                choiceSection.classList.add("visible");
+                window.scrollTo(0, 0);
+            }, 0);
+        }, 0);
     });
 
 
