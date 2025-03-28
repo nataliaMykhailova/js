@@ -2933,7 +2933,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.scrollTo(0, 0);
             }, 0);
         }, 0);
-        renderBosses();
 
     });
 
@@ -2950,7 +2949,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Показати секцію з босами
         if (bossesSection) {
             bossesSection.style.display = "block";
-            initBossClickSelection();
+
             setTimeout(() => bossesSection.classList.add("visible"), 0);
             window.scrollTo(0, 0);
         }
@@ -2960,9 +2959,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 🔁 Обнулити bossDaagePoints через addUserPoints
         addUserPoints("bossDaagePoints", 0);
-
-        // 🔄 Перерендерити босів
-        renderBosses();
+        initBossClickSelection();
 
         console.log("🔁 Перезапуск бою: переможені боси скинуті, бали обнулено");
     });
