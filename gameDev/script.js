@@ -381,7 +381,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const tl = gsap.timeline();
 
         // 🔸 1. Початкове затемнення
-        tl.to(baseElems, { opacity: 0.4, duration: 0.5 }, 0);
+        tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
 
         // 🔸 2. Анімація tutorial icon вправо
         tl.to(tutorialIcon, {
@@ -414,7 +414,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 🔸 6. З'являється блок зарплати
         tl.to(salaryBlock, {
-            opacity: 0.5,
+            opacity: 0.2,
             duration: 0.5
         }, "+=0.5");
 
@@ -425,8 +425,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }, "<");
 
         // 🔸 8. Клік-клік на кнопці
-        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 1 }, "+=0.5");
-        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 1 }, "+=0.5");
+        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
 
         // 🔸 9. Зникнення кнопки вниз
         tl.to(tutorialBtn, {
@@ -437,6 +437,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 🔸 10. Усі блоки знову 100% opacity
         tl.to(baseElems, { opacity: 1, duration: 0.5 });
+        tl.to(salaryBlock, {
+            opacity: 1,
+            duration: 0.5
+        }, "<");
     }
 
 
