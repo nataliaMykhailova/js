@@ -3100,6 +3100,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? "translateX(0) translateY(0)"
                 : "translateX(0) translateY(-50%)";
             bossCard.style.display = "flex";
+            bossCard.style.opacity = "1";
         }
 
         console.log("🎯 Картки бою скинуті до початкового стану", isMobile ? "(мобільна версія)" : "(десктоп)");
@@ -3174,18 +3175,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 bossCard.style.transition = "transform 0.5s";
                 userCard.style.transform = isMobile
                     ? "translateY(0) rotate(25deg)"
-                    : "translateY(-50%) rotate(35deg)";
+                    : "translate(-110%, -50%) rotate(35deg)";
                 bossCard.style.transform = isMobile
                     ? "translateY(0) rotate(-25deg)"
-                    : "translateY(-50%) rotate(-35deg)";
+                    : "translate(110%, -50%) rotate(-35deg)";
 
                 setTimeout(() => {
                     userCard.style.transform = isMobile
                         ? "translateY(0) rotate(0)"
-                        : "translateY(-50%) rotate(0deg)";
+                        : "translate(-110%, -50%) rotate(0deg)";
                     bossCard.style.transform = isMobile
                         ? "translateY(0) rotate(0)"
-                        : "translateY(-50%) rotate(0deg)";
+                        : "translate(110%, -50%) rotate(0deg)";
 
                     // 🗡️ Удар гравця
                     bossPoints -= 2;
