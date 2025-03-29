@@ -466,16 +466,16 @@ document.addEventListener("DOMContentLoaded", function () {
         factBlocks.forEach((block) => {
             gsap.fromTo(
                 block,
-                {opacity: 0, y: "100%"},
+                {opacity: 0, y: "20%"},
                 {
                     opacity: 1,
                     y: 0,
-                    duration: 1.2,
+                    duration: 1.5,
                     delay: 0.5,
                     ease: 'power2.out',
                     scrollTrigger: {
                         trigger: block,
-                        start: 'top 90%',
+                        start: 'top 85%',
                     },
                 }
             );
