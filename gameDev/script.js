@@ -900,55 +900,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            // function updatePosition(e) {
-            //     if (!dragging) return;
-            //
-            //     const rect = track.getBoundingClientRect();
-            //     let x;
-            //
-            //     if (e.type === "touchmove") {
-            //         x = e.touches[0].clientX - rect.left;
-            //     } else {
-            //         x = e.clientX - rect.left;
-            //     }
-            //
-            //     x = Math.max(0, Math.min(x, rect.width));
-            //     const percentage = (x / rect.width) * 100;
-            //     thumb.style.left = percentage + '%';
-            //
-            //     if (popup) popup.style.left = percentage + '%';
-            //
-            //     let value;
-            //     if (percentage <= 50) {
-            //         value = minVal + ((midVal - minVal) * (percentage / 50));
-            //     } else {
-            //         value = midVal + ((maxVal - midVal) * ((percentage - 50) / 50));
-            //     }
-            //
-            //     value = Math.round(value);
-            //
-            //     logValue(value);
-            //
-            //     if (sliderType === "salery") {
-            //         userData.salary = value;
-            //         assignSalaryArtefact(value, minVal, midVal, maxVal);
-            //     }
-            //
-            //     if (popupText) popupText.textContent = formatValue(value, sliderType);
-            //
-            //     if (sliderType === "age") {
-            //         userData.age = value;
-            //     }
-            //
-            //     if (sliderType === "age-it") {
-            //         userData.age = value;
-            //     }
-            //
-            //     if (sliderType === "hour") {
-            //         updateHourPoints(value);
-            //     }
-            // }
-
             function updatePosition(e, force = false) {
                 if (!dragging && !force) return;
 
@@ -974,9 +925,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 value = Math.round(value);
+
                 logValue(value);
 
                 if (sliderType === "salery") {
+                    value = Math.round(value / 10) * 10;
                     userData.salary = value;
                     assignSalaryArtefact(value, minVal, midVal, maxVal);
                 }
