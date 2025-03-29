@@ -374,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
         factBlocks.forEach((block) => {
             gsap.fromTo(
                 block,
-                { opacity: 0, y: "100%" },
+                {opacity: 0, y: "100%"},
                 {
                     opacity: 1,
                     yPercent: 0,
@@ -393,7 +393,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
     function runFirstPartAnimation() {
         const section = document.querySelector('.first-part_section-gd');
         if (!section) return;
@@ -410,7 +409,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const tl = gsap.timeline();
 
         // 🔸 1. Початкове затемнення
-        tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
+        tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
 
         // 🔸 2. Анімація tutorial icon вправо
         tl.to(tutorialIcon, {
@@ -454,9 +453,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }, "<");
 
         // 🔸 8. Клік-клік на кнопці
-        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
-        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
         // 🔸 9. Зникнення кнопки вниз
@@ -467,7 +466,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }, "+=0.4");
 
         // 🔸 10. Усі блоки знову 100% opacity
-        tl.to(baseElems, { opacity: 1, duration: 0.5 });
+        tl.to(baseElems, {opacity: 1, duration: 0.5});
         tl.to(salaryBlock, {
             opacity: 1,
             duration: 0.5
@@ -512,21 +511,21 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         const tutorialBtn = section.querySelector('.exp-tutorial_icon-gd');
 
-        const tl = gsap.timeline({ delay: 0.5 });
+        const tl = gsap.timeline({delay: 0.5});
 
         // 🔸 1. Початкове затемнення всіх блоків
-        tl.to(baseElems, { opacity: 0.2, duration: 0.5, stagger: 0.03 }, 0);
+        tl.to(baseElems, {opacity: 0.2, duration: 0.5, stagger: 0.03}, 0);
 
         // 🔸 2. Анімація кліків
-        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
-        tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
-        tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
-        tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
+        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
+        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
+        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
         // 🔸 3. Зникнення
-        tl.to(tutorialBtn, { y: '100%', opacity: 0, duration: 0.5 }, "+=0.4");
+        tl.to(tutorialBtn, {y: '100%', opacity: 0, duration: 0.5}, "+=0.4");
 
-        tl.to(baseElems, { opacity: 1, duration: 0.5 }, "+=0.5");
+        tl.to(baseElems, {opacity: 1, duration: 0.5}, "+=0.5");
 
         console.log("🎬 Second part animation launched");
     }
@@ -901,14 +900,62 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
+            // function updatePosition(e) {
+            //     if (!dragging) return;
+            //
+            //     const rect = track.getBoundingClientRect();
+            //     let x;
+            //
+            //     if (e.type === "touchmove") {
+            //         x = e.touches[0].clientX - rect.left;
+            //     } else {
+            //         x = e.clientX - rect.left;
+            //     }
+            //
+            //     x = Math.max(0, Math.min(x, rect.width));
+            //     const percentage = (x / rect.width) * 100;
+            //     thumb.style.left = percentage + '%';
+            //
+            //     if (popup) popup.style.left = percentage + '%';
+            //
+            //     let value;
+            //     if (percentage <= 50) {
+            //         value = minVal + ((midVal - minVal) * (percentage / 50));
+            //     } else {
+            //         value = midVal + ((maxVal - midVal) * ((percentage - 50) / 50));
+            //     }
+            //
+            //     value = Math.round(value);
+            //
+            //     logValue(value);
+            //
+            //     if (sliderType === "salery") {
+            //         userData.salary = value;
+            //         assignSalaryArtefact(value, minVal, midVal, maxVal);
+            //     }
+            //
+            //     if (popupText) popupText.textContent = formatValue(value, sliderType);
+            //
+            //     if (sliderType === "age") {
+            //         userData.age = value;
+            //     }
+            //
+            //     if (sliderType === "age-it") {
+            //         userData.age = value;
+            //     }
+            //
+            //     if (sliderType === "hour") {
+            //         updateHourPoints(value);
+            //     }
+            // }
 
-            function updatePosition(e) {
-                if (!dragging) return;
+            function updatePosition(e, force = false) {
+                if (!dragging && !force) return;
 
                 const rect = track.getBoundingClientRect();
                 let x;
 
-                if (e.type === "touchmove") {
+                if (e.type === "touchmove" || e.type === "touchstart") {
                     x = e.touches[0].clientX - rect.left;
                 } else {
                     x = e.clientX - rect.left;
@@ -917,7 +964,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 x = Math.max(0, Math.min(x, rect.width));
                 const percentage = (x / rect.width) * 100;
                 thumb.style.left = percentage + '%';
-
                 if (popup) popup.style.left = percentage + '%';
 
                 let value;
@@ -928,7 +974,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 value = Math.round(value);
-
                 logValue(value);
 
                 if (sliderType === "salery") {
@@ -938,11 +983,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (popupText) popupText.textContent = formatValue(value, sliderType);
 
-                if (sliderType === "age") {
-                    userData.age = value;
-                }
-
-                if (sliderType === "age-it") {
+                if (sliderType === "age" || sliderType === "age-it") {
                     userData.age = value;
                 }
 
@@ -953,6 +994,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             thumb.addEventListener('mousedown', startDrag);
             thumb.addEventListener('touchstart', startDrag, {passive: true});
+            track.addEventListener('click', (e) => {
+                updatePosition(e, true);
+            });
 
             document.addEventListener('mousemove', updatePosition);
             document.addEventListener('touchmove', updatePosition, {passive: false});
