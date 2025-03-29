@@ -2239,6 +2239,54 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("🔁 Навігаційні кліки скинуто, 'Боси' знову заблоковано");
     }
 
+    let allowGameAnimation = true;
+
+    function animateGameIcons() {
+        if (!allowGameAnimation) return; // 🔒 Не запускати, якщо відключено
+
+        const gameBlocks = document.querySelectorAll('.game-block-gd');
+
+        gameBlocks.forEach(block => {
+            const icons = Array.from(block.querySelectorAll('.game-icon-gd'));
+            if (!icons.length) return;
+
+            let index = 0;
+
+            function loop() {
+                // 🔒 Якщо користувач передумав (відключив анімацію)
+                if (!allowGameAnimation) return;
+
+                const anyActive = document.querySelector('.game-block-gd.active');
+                if (anyActive) return;
+
+                // Зняти анімацію з усіх
+                icons.forEach(icon => icon.classList.remove('animate-glow'));
+
+                const current = icons[index];
+                if (current) {
+                    current.classList.add('animate-glow');
+
+                    setTimeout(() => {
+                        current.classList.remove('animate-glow');
+                    }, 1000);
+                }
+
+                index = (index + 1) % icons.length;
+                setTimeout(loop, 1200);
+            }
+
+            loop();
+        });
+    }
+
+    document.querySelectorAll('.game-block-gd').forEach(block => {
+        block.addEventListener('click', () => {
+            block.classList.add('active');
+        });
+    });
+
+    animateGameIcons();
+
     function initGamingHabits() {
         const playButtons = document.querySelectorAll(".play-button-gd");
         const gamesBlock = document.querySelector(".games-block-gd");
@@ -2254,22 +2302,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (button.classList.contains("btn-yes-gd")) {
                     points = 1;
                     answer = "yes";
+                    allowGameAnimation = true;
 
                     if (gamesBlock) {
                         gamesBlock.style.opacity = "1";
                         gamesBlock.style.pointerEvents = "auto";
                     }
 
-                    animateGameIcons();
+                    animateGameIcons(); // ✅ запуск
                 } else if (button.classList.contains("btn-no-gd")) {
                     points = 0;
                     answer = "no";
+                    allowGameAnimation = false;
 
                     if (gamesBlock) {
                         gamesBlock.style.opacity = "0.2";
                         gamesBlock.style.pointerEvents = "none";
                     }
 
+                    // 🔥 очищення ефектів
                     document.querySelectorAll('.game-icon-gd').forEach(icon => {
                         icon.classList.remove('animate-glow');
                     });
@@ -2284,6 +2335,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Логіка вибору ігрових звичок ініціалізована");
     }
+
 
 
     function initGamingPlatformSelection() {
@@ -3269,46 +3321,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    function animateGameIcons() {
-        const gameBlocks = document.querySelectorAll('.game-block-gd');
 
-        gameBlocks.forEach(block => {
-            const icons = Array.from(block.querySelectorAll('.game-icon-gd'));
-            if (!icons.length) return;
 
-            let index = 0;
 
-            function loop() {
-                const anyActive = document.querySelector('.game-block-gd.active');
-                if (anyActive) return;
-
-                // Зняти анімацію з усіх
-                icons.forEach(icon => icon.classList.remove('animate-glow'));
-
-                const current = icons[index];
-                if (current) {
-                    current.classList.add('animate-glow');
-
-                    setTimeout(() => {
-                        current.classList.remove('animate-glow');
-                    }, 1000);
-                }
-
-                index = (index + 1) % icons.length;
-                setTimeout(loop, 1200);
-            }
-
-            loop();
-        });
-    }
-
-    document.querySelectorAll('.game-block-gd').forEach(block => {
-        block.addEventListener('click', () => {
-            block.classList.add('active');
-        });
-    });
-
-    animateGameIcons();
 
 
 });
