@@ -2292,6 +2292,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function initGamingHabits() {
         const playButtons = document.querySelectorAll(".play-button-gd");
         const gamesBlock = document.querySelector(".games-block-gd");
+        const playLine = document.querySelector(".play-line-gd"); // ⬅️ Отримуємо окремий блок із лініями
 
         playButtons.forEach(button => {
             button.addEventListener("click", () => {
@@ -2301,6 +2302,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 let points = 0;
                 let answer = "";
 
+                // 🟡 Знайти всі лінії в окремому блоці
+                if (playLine) {
+                    const lines = playLine.querySelectorAll(".static-line_fill-gd");
+                    lines.forEach(line => line.classList.remove("active"));
+
+                    // ✅ Додати active залежно від кнопки
+                    if (button.classList.contains("btn-yes-gd") && lines[0]) {
+                        lines[0].classList.add("active");
+                    } else if (button.classList.contains("btn-no-gd") && lines[1]) {
+                        lines[1].classList.add("active");
+                    }
+                }
+
+                // 🔁 Вся інша логіка — як раніше
                 if (button.classList.contains("btn-yes-gd")) {
                     points = 1;
                     answer = "yes";
@@ -2311,7 +2326,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         gamesBlock.style.pointerEvents = "auto";
                     }
 
-                    animateGameIcons(); // ✅ запуск
+                    animateGameIcons();
                 } else if (button.classList.contains("btn-no-gd")) {
                     points = 0;
                     answer = "no";
@@ -2322,7 +2337,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         gamesBlock.style.pointerEvents = "none";
                     }
 
-                    // 🔥 очищення ефектів
                     document.querySelectorAll('.game-icon-gd').forEach(icon => {
                         icon.classList.remove('animate-glow');
                     });
@@ -2337,6 +2351,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Логіка вибору ігрових звичок ініціалізована");
     }
+
 
 
 
@@ -3209,12 +3224,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                     chooseAnotherBtn.style.display = "flex";
                                     chooseAnotherBtn.style.opacity = "0";
                                     setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
-                                }
-
-                                if (playAgainBtn) {
-                                    playAgainBtn.style.display = "flex";
-                                    playAgainBtn.style.opacity = "0";
-                                    setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
                                 }
                             }
 
