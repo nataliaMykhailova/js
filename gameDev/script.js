@@ -2199,8 +2199,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 // ✅ Відмічаємо, що користувач натиснув на одну з трьох потрібних кнопок
                 if (["is--taverna", "is--skarbnitsia", "is--port"].includes(btnClass)) {
                     visited.add(btnClass);
+                    button.classList.add("active");
 
-                    // 🔓 Якщо всі натиснуті – розблоковуємо кнопку 'Боси'
+                    const stars = button.querySelectorAll(".star-icon-gd-2");
+                    stars.forEach(star => star.classList.add("active"));
                     if (
                         visited.has("is--taverna") &&
                         visited.has("is--skarbnitsia") &&
@@ -2802,12 +2804,6 @@ document.addEventListener("DOMContentLoaded", function () {
         Object.entries(bossesData).forEach(([key, boss]) => {
             const clonedBoss = bossTemplate.cloneNode(true);
 
-            // ❌ Видаляємо ці — більше не потрібні
-            // clonedBoss.classList.remove("active", "defeated-boss");
-            // clonedBoss.style.filter = "";
-            // clonedBoss.style.pointerEvents = "";
-
-            // ✅ Лишаємо тільки скидання active
             clonedBoss.classList.remove("active");
 
             const pointsEl = clonedBoss.querySelector(".boss-points-count");
@@ -3104,6 +3100,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const bossPointsEl = document.querySelector(".boss-point-gd.is-no-margine");
         const userPointsEl = document.querySelector(".profile-point-gd");
         const winText = document.querySelector(".win-text.victory");
+        const fullWinText = document.querySelector(".win-text.full-victore");
         const loseText = document.querySelector(".win-text.you-loose");
         const defaultFightText = document.querySelector(".p-28_calipso-gd.dafault-fight-text");
 
@@ -3181,13 +3178,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         setTimeout(() => {
                             if (defaultFightText) defaultFightText.style.display = "none";
-                            if (winText) {
-                                winText.style.display = "flex";
-                                winText.style.opacity = "0";
-                                setTimeout(() => (winText.style.opacity = "1"), 10);
-                            }
-                            addBossDamagePoints(bossInitialPoints);
 
+                            // Зберегти переможеного боса
                             const bossKey = userData.selectedBoss.key;
                             userData.defeated_bosses = {
                                 ...userData.defeated_bosses,
@@ -3195,34 +3187,63 @@ document.addEventListener("DOMContentLoaded", function () {
                             };
                             console.log(`✅ Бос "${bossKey}" доданий до переможених.`);
 
+                            const defeatedCount = Object.keys(userData.defeated_bosses).length;
+                            const totalBosses = Object.keys(bossesData).length;
+
+                            // Якщо переможені всі
+                            if (defeatedCount === totalBosses) {
+                                const fullWinText = document.querySelector(".win-text.full-victore");
+                                if (fullWinText) {
+                                    fullWinText.style.display = "flex";
+                                    fullWinText.style.opacity = "0";
+                                    setTimeout(() => (fullWinText.style.opacity = "1"), 10);
+                                }
+                            } else {
+                                if (winText) {
+                                    winText.style.display = "flex";
+                                    winText.style.opacity = "0";
+                                    setTimeout(() => (winText.style.opacity = "1"), 10);
+                                }
+
+                                if (chooseAnotherBtn) {
+                                    chooseAnotherBtn.style.display = "flex";
+                                    chooseAnotherBtn.style.opacity = "0";
+                                    setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
+                                }
+
+                                if (playAgainBtn) {
+                                    playAgainBtn.style.display = "flex";
+                                    playAgainBtn.style.opacity = "0";
+                                    setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
+                                }
+                            }
+
+                            addBossDamagePoints(bossInitialPoints);
+
                             userCard.style.left = "50%";
                             userCard.style.transform = isMobile
                                 ? "translate(-50%, 0)"
                                 : "translate(-50%, -50%)";
                             bossCard.style.display = "none";
 
-                            // Показати кнопки після перемоги
-                            if (chooseAnotherBtn) {
-                                chooseAnotherBtn.style.display = "flex";
-                                chooseAnotherBtn.style.opacity = "0";
-                                setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
-                            }
                             if (toMapBtn) {
                                 toMapBtn.style.display = "flex";
                                 toMapBtn.style.opacity = "0";
                                 setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
                             }
+
                             if (finishGameBtn) {
                                 finishGameBtn.style.display = "flex";
                                 finishGameBtn.style.opacity = "0";
                                 setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
                             }
 
-                            renderBosses();
-                        }, 500)
-                        return;
+                            // renderBosses();
+                        }, 500);
 
+                        return;
                     }
+
 
                     // 💥 Удар боса
                     const bossDamage = boss.damage || 2;
@@ -3231,7 +3252,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     updateUI();
 
                     if (userPoints <= 0) {
-                        userPoints = 0;
                         setTimeout(() => {
                             if (defaultFightText) defaultFightText.style.display = "none";
                             if (loseText) {
@@ -3266,13 +3286,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                     }
 
-                    // Наступний раунд
-                    setTimeout(battleTurn, 500); // 🔁 500мс між раундами
-                }, 500); // Час обертання
+                    setTimeout(battleTurn, 500);
+                }, 500);
             }
 
             battleTurn();
-        }, 300); // Затримка після зміщення
+        }, 300);
     }
 
 
@@ -3294,7 +3313,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     playAgainBtn.addEventListener("click", () => {
-        // Сховати секцію бою
         if (fightSection) {
             fightSection.classList.remove("visible");
             setTimeout(() => {
@@ -3302,7 +3320,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 0);
         }
 
-        // Показати секцію з босами
         if (bossesSection) {
             bossesSection.style.display = "block";
 
@@ -3310,21 +3327,12 @@ document.addEventListener("DOMContentLoaded", function () {
             window.scrollTo(0, 0);
         }
 
-        // 🔁 Очистити переможених босів
         userData.defeated_bosses = {};
 
-        // 🔁 Обнулити bossDaagePoints через addUserPoints
         addUserPoints("bossDaagePoints", 0);
         initBossClickSelection();
 
-        console.log("🔁 Перезапуск бою: переможені боси скинуті, бали обнулено");
     });
-
-
-
-
-
-
 
 });
 
