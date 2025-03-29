@@ -469,7 +469,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 {opacity: 0, y: "100%"},
                 {
                     opacity: 1,
-                    yPercent: 0,
+                    y: 0,
                     duration: 1.2,
                     delay: 0.5,
                     ease: 'power2.out',
