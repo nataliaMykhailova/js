@@ -2015,6 +2015,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 addUserPoints("settlementPoints", points);
                 console.log(`✅ Вибрано тип населеного пункту: ${selectedSettlement}, Бали: ${points}`);
+
+                const target = document.querySelector(".nav-btn-gd.is--taverna");
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
             });
         });
 
@@ -2144,12 +2149,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function initGamingHabits() {
         const playButtons = document.querySelectorAll(".play-button-gd");
+        const gamesBlock = document.querySelector(".games-block-gd");
 
         playButtons.forEach(button => {
             button.addEventListener("click", () => {
-
                 playButtons.forEach(btn => btn.classList.remove("active"));
-
                 button.classList.add("active");
 
                 let points = 0;
@@ -2158,9 +2162,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (button.classList.contains("btn-yes-gd")) {
                     points = 1;
                     answer = "yes";
+
+                    if (gamesBlock) {
+                        gamesBlock.style.opacity = "1";
+                        gamesBlock.style.pointerEvents = "auto";
+                    }
+
+                    animateGameIcons();
                 } else if (button.classList.contains("btn-no-gd")) {
                     points = 0;
                     answer = "no";
+
+                    if (gamesBlock) {
+                        gamesBlock.style.opacity = "0.2";
+                        gamesBlock.style.pointerEvents = "none";
+                    }
+
+                    document.querySelectorAll('.game-icon-gd').forEach(icon => {
+                        icon.classList.remove('animate-glow');
+                    });
                 }
 
                 userData.gamingHabits = answer;
@@ -2172,6 +2192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Логіка вибору ігрових звичок ініціалізована");
     }
+
 
     function initGamingPlatformSelection() {
         const container = document.querySelector(".games-wrapper-gd");
@@ -2747,6 +2768,8 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (!isDefeated) {
                 block.style.opacity = "1"; // за замовчуванням — видимий
             }
+
+
         });
 
         // Встановлюємо стан кнопки "в бій"
@@ -2787,6 +2810,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 activeBtn.style.opacity = "1";
+
+                if (window.innerWidth < 479) {
+                    const scrollTarget = document.querySelector(".nav-btn-gd.to-fight");
+                    if (scrollTarget) {
+                        scrollTarget.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
+                }
             });
         });
 
@@ -2966,12 +2996,12 @@ document.addEventListener("DOMContentLoaded", function () {
         // Початкове зміщення
         if (userCard) {
             userCard.style.transition = "left 0.5s";
-            userCard.style.left = isMobile ? "-20%" : "15%";
+            userCard.style.left = isMobile ? "-5%" : "15%";
         }
 
         if (bossCard) {
             bossCard.style.transition = "right 0.5s";
-            bossCard.style.right = isMobile ? "-20%" : "15%";
+            bossCard.style.right = isMobile ? "-5%" : "15%";
         }
 
         setTimeout(() => {
