@@ -873,7 +873,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const track = range.querySelector('.range-track-gd');
             const thumb = range.querySelector('.range-thumb-gd');
-            const popup = range.closest('.range-wrapper-gd')?.querySelector('.range-popup-gd');
+            const popup = range.querySelector('.range-popup-gd');
             const popupText = popup?.querySelector('.range-popup_text-gd');
 
 
