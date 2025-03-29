@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const heroBtnContinue = document.querySelector('.hero-btn-gd.is--hero');
     const choiceSection = document.querySelector(".choice-section-gd");
     const charactersSection = document.querySelector(".characters-section-gd");
-    const choiceItems = document.querySelectorAll(".choice-item-gd.choise-spec");
+    const choiceItems = document.querySelector(".choice-item-gd.choise-spec");
     const backButton = document.querySelector(".nav-back_btn-gd");
     const maleButton = document.querySelector(".male-btn-gd");
     const femaleButton = document.querySelector(".female-btn-gd");
