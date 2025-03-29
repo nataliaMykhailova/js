@@ -333,13 +333,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+
     const canHover = window.matchMedia('(hover: hover)').matches;
 
-    const cardSpec = document.querySelector('.choice-item-gd.choise-spec');
     const cardOther = document.querySelector('.choice-item-gd.is-margin');
 
-    if (cardSpec && cardOther && choiceItems.length) {
-        cardSpec.style.transition = 'margin-right 0.4s ease, filter 0.5s ease';
+    if (choiceItems && cardOther) {
+        choiceItems.style.transition = 'margin-right 0.4s ease, filter 0.5s ease';
         cardOther.style.transition = 'filter 0.5s ease';
         let isAnimating = false;
 
@@ -353,8 +353,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (isAnimating) return;
             isAnimating = true;
 
-            const currentMargin = getComputedStyle(cardSpec).marginRight;
-            cardSpec.style.marginRight = '5vw';
+            const currentMargin = getComputedStyle(choiceItems).marginRight;
+            choiceItems.style.marginRight = '5vw';
 
             setGlow(cardToRaise, true);
             setGlow(cardToLower, false);
@@ -362,163 +362,87 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 cardToRaise.style.zIndex = '10';
                 cardToLower.style.zIndex = '5';
-                cardSpec.style.marginRight = currentMargin;
+                choiceItems.style.marginRight = currentMargin;
 
                 setTimeout(() => isAnimating = false, 400);
             }, 400);
         }
 
         if (canHover) {
-            cardSpec.addEventListener('mouseenter', () => {
-                if (parseInt(getComputedStyle(cardSpec).zIndex) < parseInt(getComputedStyle(cardOther).zIndex)) {
-                    animateTo(cardSpec, cardOther);
+            // Hover анімація
+            choiceItems.addEventListener('mouseenter', () => {
+                if (parseInt(getComputedStyle(choiceItems).zIndex) < parseInt(getComputedStyle(cardOther).zIndex)) {
+                    animateTo(choiceItems, cardOther);
                 }
             });
 
             cardOther.addEventListener('mouseenter', () => {
-                if (parseInt(getComputedStyle(cardOther).zIndex) < parseInt(getComputedStyle(cardSpec).zIndex)) {
-                    animateTo(cardOther, cardSpec);
+                if (parseInt(getComputedStyle(cardOther).zIndex) < parseInt(getComputedStyle(choiceItems).zIndex)) {
+                    animateTo(cardOther, choiceItems);
                 }
             });
+
+            // Перехід при кліку (на hover-пристроях)
+            choiceItems.addEventListener("click", () => {
+                choiceSection.classList.remove("visible");
+                setTimeout(() => {
+                    choiceSection.style.display = "none";
+                    charactersSection.style.display = "block";
+                    setTimeout(() => {
+                        charactersSection.classList.add("visible");
+
+                        if (userData.gender && professionsData[userData.gender]) {
+                            displayProfessions(professionsData[userData.gender]);
+                        }
+                    }, 0);
+                }, 0);
+            });
+
         } else {
-            choiceItems.forEach(card => {
+            [choiceItems, cardOther].forEach(card => {
                 card.addEventListener('click', () => {
                     const isActive = card.classList.contains('active-mobile');
+
                     if (!isActive) {
-                        // Активувати картку
-                        choiceItems.forEach(c => {
-                            c.classList.remove('active-mobile');
-                            setGlow(c, false);
-                        });
+                        setGlow(choiceItems, false);
+                        setGlow(cardOther, false);
+                        choiceItems.classList.remove('active-mobile');
+                        cardOther.classList.remove('active-mobile');
+
                         card.classList.add('active-mobile');
                         setGlow(card, true);
 
-                        if (card === cardSpec) {
-                            animateTo(cardSpec, cardOther);
+                        if (card === choiceItems) {
+                            animateTo(choiceItems, cardOther);
                         } else {
-                            animateTo(cardOther, cardSpec);
+                            animateTo(cardOther, choiceItems);
                         }
-                    } else {
-                        // Якщо натиснуто повторно — переходимо до наступної секції
-                        choiceSection.classList.remove("visible");
-                        setTimeout(() => {
-                            choiceSection.style.display = "none";
-                            charactersSection.style.display = "block";
-                            setTimeout(() => {
-                                charactersSection.classList.add("visible");
 
-                                if (userData.gender && professionsData[userData.gender]) {
-                                    displayProfessions(professionsData[userData.gender]);
-                                }
+                    } else {
+                        if (card === choiceItems) {
+                            choiceSection.classList.remove("visible");
+                            setTimeout(() => {
+                                choiceSection.style.display = "none";
+                                charactersSection.style.display = "block";
+                                setTimeout(() => {
+                                    charactersSection.classList.add("visible");
+
+                                    if (userData.gender && professionsData[userData.gender]) {
+                                        displayProfessions(professionsData[userData.gender]);
+                                    }
+                                }, 0);
                             }, 0);
-                        }, 0);
+                        }
                     }
                 });
             });
         }
 
-        // Початковий стан
-        setGlow(cardSpec, true);
-        cardSpec.classList.add('active-mobile');
-        cardSpec.style.zIndex = '10';
+        setGlow(choiceItems, true);
+        choiceItems.style.zIndex = '10';
         cardOther.style.zIndex = '5';
     }
 
-
-    // const canHover = window.matchMedia('(hover: hover)').matches;
-    //
-    // const cardSpec = document.querySelector('.choice-item-gd.choise-spec');
-    // const cardOther = document.querySelector('.choice-item-gd.is-margin');
-    //
-    // if (cardSpec && cardOther) {
-    //     cardSpec.style.transition = 'margin-right 0.4s ease, filter 0.5s ease';
-    //     cardOther.style.transition = 'filter 0.5s ease';
-    //     let isAnimating = false;
-    //
-    //     function setGlow(card, enable) {
-    //         card.style.filter = enable
-    //             ? 'drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))'
-    //             : 'none';
-    //     }
-    //
-    //     function animateTo(cardToRaise, cardToLower) {
-    //         if (isAnimating) return;
-    //         isAnimating = true;
-    //
-    //         const currentMargin = getComputedStyle(cardSpec).marginRight;
-    //         cardSpec.style.marginRight = '5vw';
-    //
-    //         setGlow(cardToRaise, true);
-    //         setGlow(cardToLower, false);
-    //
-    //         setTimeout(() => {
-    //             cardToRaise.style.zIndex = '10';
-    //             cardToLower.style.zIndex = '5';
-    //             cardSpec.style.marginRight = currentMargin;
-    //
-    //             setTimeout(() => isAnimating = false, 400);
-    //         }, 400);
-    //     }
-    //
-    //     if (canHover) {
-    //         cardSpec.addEventListener('mouseenter', () => {
-    //             if (parseInt(getComputedStyle(cardSpec).zIndex) < parseInt(getComputedStyle(cardOther).zIndex)) {
-    //                 animateTo(cardSpec, cardOther);
-    //             }
-    //         });
-    //
-    //         cardOther.addEventListener('mouseenter', () => {
-    //             if (parseInt(getComputedStyle(cardOther).zIndex) < parseInt(getComputedStyle(cardSpec).zIndex)) {
-    //                 animateTo(cardOther, cardSpec);
-    //             }
-    //         });
-    //     } else {
-    //         [cardSpec, cardOther].forEach(card => {
-    //             card.addEventListener('click', () => {
-    //                 const isActive = card.classList.contains('active-mobile');
-    //                 if (!isActive) {
-    //                     setGlow(cardSpec, false);
-    //                     setGlow(cardOther, false);
-    //                     cardSpec.classList.remove('active-mobile');
-    //                     cardOther.classList.remove('active-mobile');
-    //
-    //                     card.classList.add('active-mobile');
-    //                     setGlow(card, true);
-    //
-    //                     if (card === cardSpec) {
-    //                         animateTo(cardSpec, cardOther);
-    //                     } else {
-    //                         animateTo(cardOther, cardSpec);
-    //                     }
-    //                 } else {
-    //                     console.log("🔸 Активна картка натиснута повторно — інша логіка");
-    //                 }
-    //             });
-    //         });
-    //     }
-    //
-    //     setGlow(cardSpec, true);
-    //     cardSpec.style.zIndex = '10';
-    //     cardOther.style.zIndex = '5';
-    // }
-    //
-    // // Переходи між секціями при виборі професії
-    // choiceItems.forEach(item => {
-    //     item.addEventListener("click", function () {
-    //         choiceSection.classList.remove("visible");
-    //         setTimeout(() => {
-    //             choiceSection.style.display = "none";
-    //             charactersSection.style.display = "block";
-    //             setTimeout(() => {
-    //                 charactersSection.classList.add("visible");
-    //
-    //                 if (userData.gender && professionsData[userData.gender]) {
-    //                     displayProfessions(professionsData[userData.gender]);
-    //                 }
-    //             }, 0);
-    //         }, 0);
-    //     });
-    // });
 
 
     heroBtnContinue.addEventListener("click", function () {
