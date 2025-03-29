@@ -936,7 +936,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     assignSalaryArtefact(value, minVal, midVal, maxVal);
                 }
 
-                if (popupText) popupText.textContent = value + "р.";
+                // if (popupText) popupText.textContent = value + "р.";
 
                 if (sliderType === "age") {
                     userData.age = value;
