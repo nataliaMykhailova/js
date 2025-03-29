@@ -3150,14 +3150,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // Початкове зміщення
-        if (userCard) {
-            userCard.style.transition = "left 0.5s";
-            userCard.style.left = isMobile ? "-5%" : "15%";
-        }
+        if (userCard && bossCard) {
+            userCard.style.transition = "left 0.5s, transform 0.5s";
+            bossCard.style.transition = "right 0.5s, transform 0.5s";
 
-        if (bossCard) {
-            bossCard.style.transition = "right 0.5s";
-            bossCard.style.right = isMobile ? "-5%" : "15%";
+            if (isMobile) {
+                userCard.style.left = "-5%";
+                bossCard.style.right = "-5%";
+            } else {
+                userCard.style.left = "50%";
+                userCard.style.transform = "translate(-110%, -50%)";
+                bossCard.style.right = "50%";
+                bossCard.style.transform = "translate(110%, -50%)";
+            }
         }
 
         setTimeout(() => {
@@ -3230,10 +3235,16 @@ document.addEventListener("DOMContentLoaded", function () {
                             addBossDamagePoints(bossInitialPoints);
 
                             userCard.style.left = "50%";
+                            userCard.style.transition = "transform 0.5s ease, left 0.5s ease";
                             userCard.style.transform = isMobile
                                 ? "translate(-50%, 0)"
                                 : "translate(-50%, -50%)";
-                            bossCard.style.display = "none";
+
+                            bossCard.style.transition = "opacity 0.5s";
+                            bossCard.style.opacity = "0";
+                            setTimeout(() => {
+                                bossCard.style.display = "none";
+                            }, 300);
 
                             if (toMapBtn) {
                                 toMapBtn.style.display = "flex";
@@ -3268,11 +3279,18 @@ document.addEventListener("DOMContentLoaded", function () {
                                 loseText.style.opacity = "0";
                                 setTimeout(() => (loseText.style.opacity = "1"), 10);
                             }
+
                             userCard.style.left = "50%";
+                            userCard.style.transition = "transform 0.5s ease, left 0.5s ease";
                             userCard.style.transform = isMobile
                                 ? "translate(-50%, 0)"
                                 : "translate(-50%, -50%)";
-                            bossCard.style.display = "none";
+
+                            bossCard.style.transition = "opacity 0.5s";
+                            bossCard.style.opacity = "0";
+                            setTimeout(() => {
+                                bossCard.style.display = "none";
+                            }, 300);
 
                             if (playAgainBtn) {
                                 playAgainBtn.style.display = "flex";
