@@ -374,16 +374,16 @@ document.addEventListener("DOMContentLoaded", function () {
         factBlocks.forEach((block) => {
             gsap.fromTo(
                 block,
-                { opacity: 0, yPercent: 30 },
+                { opacity: 0, y: "100%" },
                 {
                     opacity: 1,
                     yPercent: 0,
                     duration: 1.2,
+                    delay: 0.5,
                     ease: 'power2.out',
                     scrollTrigger: {
                         trigger: block,
                         start: 'top 90%',
-                        toggleActions: 'play none none none',
                     },
                 }
             );
@@ -875,11 +875,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const thumb = range.querySelector('.range-thumb-gd');
             const popup = range.closest('.range-wrapper-gd')?.querySelector('.range-popup-gd');
             const popupText = popup?.querySelector('.range-popup_text-gd');
-            let dragging = false;
 
+
+            let dragging = false;
             thumb.style.left = '0%';
             if (popup) popup.style.left = '0%';
-            if (popupText) popupText.textContent = minVal + "р.";
+            if (popupText) popupText.textContent = formatValue(minVal, sliderType);
+
 
             function logValue(value) {
                 console.log(`Значення (${sliderType || "default"}): ${value}`);
@@ -889,8 +891,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 dragging = true;
             }
 
-            thumb.addEventListener('mousedown', startDrag);
-            thumb.addEventListener('touchstart', startDrag, {passive: true});
+            function stopDrag() {
+                dragging = false;
+            }
+
+            function formatValue(val, type) {
+                if (type === 'salery') return `$${val}`;
+                return `${val}р.`;
+            }
+
+
 
             function updatePosition(e) {
                 if (!dragging) return;
@@ -941,13 +951,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
 
+            thumb.addEventListener('mousedown', startDrag);
+            thumb.addEventListener('touchstart', startDrag, {passive: true});
+
             document.addEventListener('mousemove', updatePosition);
             document.addEventListener('touchmove', updatePosition, {passive: false});
-
-            function stopDrag() {
-                dragging = false;
-            }
-
             document.addEventListener('mouseup', stopDrag);
             document.addEventListener('touchend', stopDrag);
         });
@@ -3152,7 +3160,6 @@ document.addEventListener("DOMContentLoaded", function () {
             let index = 0;
 
             function loop() {
-                // 🛑 Якщо будь-який блок має .active — зупиняємо
                 const anyActive = document.querySelector('.game-block-gd.active');
                 if (anyActive) return;
 
