@@ -3160,9 +3160,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 bossCard.style.right = "-5%";
             } else {
                 userCard.style.left = "50%";
-                userCard.style.transform = "translate(-110%, -50%)";
+                userCard.style.transform = "translate(-105%, -50%)";
                 bossCard.style.right = "50%";
-                bossCard.style.transform = "translate(110%, -50%)";
+                bossCard.style.transform = "translate(105%, -50%)";
             }
         }
 
@@ -3175,18 +3175,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 bossCard.style.transition = "transform 0.5s";
                 userCard.style.transform = isMobile
                     ? "translateY(0) rotate(25deg)"
-                    : "translate(-110%, -50%) rotate(35deg)";
+                    : "translate(-105%, -50%) rotate(35deg)";
                 bossCard.style.transform = isMobile
                     ? "translateY(0) rotate(-25deg)"
-                    : "translate(110%, -50%) rotate(-35deg)";
+                    : "translate(105%, -50%) rotate(-35deg)";
 
                 setTimeout(() => {
                     userCard.style.transform = isMobile
                         ? "translateY(0) rotate(0)"
-                        : "translate(-110%, -50%) rotate(0deg)";
+                        : "translate(-105%, -50%) rotate(0deg)";
                     bossCard.style.transform = isMobile
                         ? "translateY(0) rotate(0)"
-                        : "translate(110%, -50%) rotate(0deg)";
+                        : "translate(105%, -50%) rotate(0deg)";
 
                     // 🗡️ Удар гравця
                     bossPoints -= 2;
