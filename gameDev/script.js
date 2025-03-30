@@ -984,11 +984,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 maxVal = overrides[sliderType].max || 100;
             }
 
-            let fixedPositions = null;
-            if (sliderType && overrides[sliderType]?.fixed) {
-                fixedPositions = overrides[sliderType].fixed;
-            }
-
             const track = range.querySelector('.range-track-gd');
             const thumb = range.querySelector('.range-thumb-gd');
             const popup = range.querySelector('.range-popup-gd');
@@ -1032,15 +1027,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 x = Math.max(0, Math.min(x, rect.width));
-                let percentage = (x / rect.width) * 100;
-
-                if (sliderType === "hour" && fixedPositions) {
-                    const closest = fixedPositions.reduce((prev, curr) =>
-                        Math.abs(curr - percentage) < Math.abs(prev - percentage) ? curr : prev
-                    );
-                    percentage = closest;
-                }
-
+                const percentage = (x / rect.width) * 100;
                 thumb.style.left = percentage + '%';
                 if (popup) popup.style.left = percentage + '%';
 
@@ -1053,27 +1040,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 value = Math.round(value);
 
-                logValue(value); // лог тільки 1 раз
+                logValue(value);
 
-                // 💰 Зарплата
                 if (sliderType === "salery") {
                     value = Math.round(value / 10) * 10;
                     userData.salary = value;
                     assignSalaryArtefact(value, minVal, midVal, maxVal);
                 }
 
-                // 📆 Вік
+                if (popupText) popupText.textContent = formatValue(value, sliderType);
+
                 if (sliderType === "age" || sliderType === "age-it") {
                     userData.age = value;
                 }
 
-                // ⏱ Робочі години
                 if (sliderType === "hour") {
                     updateHourPoints(value);
                 }
-
-                // ❌ Текст не оновлюємо, якщо не потрібен
-                if (popupText) popupText.textContent = formatValue(value, sliderType);
             }
 
             thumb.addEventListener('mousedown', startDrag);
@@ -1470,8 +1453,7 @@ document.addEventListener("DOMContentLoaded", function () {
             hour: {
                 min: 1,
                 mid: 2,
-                max: 3,
-                fixed: [0, 50, 100]
+                max: 3
             },
             age_it: {
                 min: professionData.it_entry_age.youngest,
