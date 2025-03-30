@@ -2455,65 +2455,156 @@
   },
   "artefacts": {
     "children": {
-      "have_children": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba753103049a3a0e29_have-children.webp",
-      "no_children": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb0870da9f538371fe_no-children.webp"
+      "have_children": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba753103049a3a0e29_have-children.webp",
+        "description": "Є діти"
+      },
+      "no_children": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb0870da9f538371fe_no-children.webp",
+        "description": "Немає дітей"
+      }
     },
     "salary": {
-      "lowest": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb753103049a3a0e33_lowest.webp",
-      "median": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba98f0bd6903f2b9d6_median.webp",
-      "highest": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092baae40707c0ac77c41_highest.webp"
+      "lowest": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb753103049a3a0e33_lowest.webp",
+        "description": "Заробляю менше середнього"
+      },
+      "median": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba98f0bd6903f2b9d6_median.webp",
+        "description": "Заробляю близько до медіани"
+      },
+      "highest": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092baae40707c0ac77c41_highest.webp",
+        "description": "Заробляю більше середнього"
+      }
     },
     "marital_status": {
-      "single": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb1a111b8e3f33f846_single.webp",
-      "in_relationship": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba26203a5a4ff2ef0b_in_relationship.webp",
-      "married": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb68cf943d2900aa68_married.webp",
-      "cohabiting": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bcf5dcb7ca5543bbff_cohabiting.webp"
+      "single": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb1a111b8e3f33f846_single.webp",
+        "description": "Вільний"
+      },
+      "in_relationship": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092ba26203a5a4ff2ef0b_in_relationship.webp",
+        "description": "У стосунках"
+      },
+      "married": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb68cf943d2900aa68_married.webp",
+        "description": "У шлюбі"
+      },
+      "cohabiting": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bcf5dcb7ca5543bbff_cohabiting.webp",
+        "description": "Співжиття"
+      }
     },
     "salary_satisfaction": {
-      "satisfied": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb54f21dfa7f7c10eb_satisfied.webp",
-      "mostly_satisfied": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbe99a8d0d209710c1_mostly_satisfied.webp",
-      "not_satisfied": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbd8bc3deb1064a258_not_satisfied.webp"
+      "satisfied": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb54f21dfa7f7c10eb_satisfied.webp",
+        "description": "Задоволений зарплатою"
+      },
+      "mostly_satisfied": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbe99a8d0d209710c1_mostly_satisfied.webp",
+        "description": "Скоріше задоволений зарплатою"
+      },
+      "not_satisfied": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbd8bc3deb1064a258_not_satisfied.webp",
+        "description": "Незадоволений зарплатою"
+      }
     },
     "it_experience": {
-      "1-2_years": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bba19c9ba3ed1e8207_1-2_years.webp",
-      "3-5_years": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bc121a3b79ca8651dc_3-5_years.webp",
-      "6-9_years": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb092972a3b0185328_6-9_years.webp",
-      "10+_years": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbb1682cc3d6cad48d_10%2B_years.webp"
+      "1-2_years": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bba19c9ba3ed1e8207_1-2_years.webp",
+        "description": "1-2 роки в IT"
+      },
+      "3-5_years": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bc121a3b79ca8651dc_3-5_years.webp",
+        "description": "3-5 років в IT"
+      },
+      "6-9_years": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb092972a3b0185328_6-9_years.webp",
+        "description": "6-9 років в IT"
+      },
+      "10+_years": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbb1682cc3d6cad48d_10%2B_years.webp",
+        "description": "10+ років в IT"
+      }
     },
     "monetary_bonuses": {
-      "do_not_receive": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bae99a8d0d20970fe5_do_not_receive.webp",
-      "receive": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbbf10a104fd9dac2d_receive.webp",
-      "received_before": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb268d8da9e9c8dee9_received_before.webp"
+      "do_not_receive": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bae99a8d0d20970fe5_do_not_receive.webp",
+        "description": "Не отримую грошові бонуси"
+      },
+      "receive": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bbbf10a104fd9dac2d_receive.webp",
+        "description": "Отримую грошові бонуси"
+      },
+      "received_before": {
+        "image": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d092bb268d8da9e9c8dee9_received_before.webp",
+        "description": "Раніше отримував грошові бонуси, а зараз ні"
+      }
     },
     "programming_language": {
-      "csharp_dotnet": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd3850644931b8e9c8020f_%D1%81ch.webp",
-      "cpp": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384fe8da95b6469b4ac5_c.webp",
-      "java": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f8348c1c7eb164dce_j.webp",
-      "javascript": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd3850bd7e331b593d3455_js.webp",
-      "python": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd385022d7e236c632176f_p.webp",
-      "typescript": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f44c9d3431033af47_ts.webp",
-      "other": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd385094151b894c980fd7_other.webp"
+      "csharp_dotnet": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd3850644931b8e9c8020f_%D1%81ch.webp",
+        "description": "Знаю C#"
+      },
+      "cpp": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384fe8da95b6469b4ac5_c.webp",
+        "description": "Знаю C++"
+      },
+      "java": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f8348c1c7eb164dce_j.webp",
+        "description": "Знаю Java"
+      },
+      "javascript": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd3850bd7e331b593d3455_js.webp",
+        "description": "Знаю JavaScript"
+      },
+      "python": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd385022d7e236c632176f_p.webp",
+        "description": "Знаю Python"
+      },
+      "typescript": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f44c9d3431033af47_ts.webp",
+        "description": "Знаю TypeScript"
+      },
+      "other": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd385094151b894c980fd7_other.webp",
+        "description": "Знаю інші мови програмування"
+      }
     },
     "engine_experience": {
-      "unity": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f9074b1cb430051bb_59555.webp",
-      "unreal_engine": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384fa3a811e0795f663d_5955.webp",
-      "other_engine": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384faf37e34bf14db4e4_46558.webp",
-      "no_engine": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f81cf91a721de009d_564455.webp"
+      "unity": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f9074b1cb430051bb_59555.webp",
+        "description": "Мій основний рушій Unreal Engine"
+      },
+      "unreal_engine": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384fa3a811e0795f663d_5955.webp",
+        "description": "Мій основний рушій Unity"
+      },
+      "other_engine": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384faf37e34bf14db4e4_46558.webp",
+        "description": "Працюю з пропрієтарними або менш відомими рушіями"
+      },
+      "no_engine": {
+        "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f81cf91a721de009d_564455.webp",
+        "description": "Не працюю з рушіями"
+      }
     }
   },
+
   "bosses": {
     "Deadline": {
       "name": "Дедлайн",
       "description": "Ті, хто не стежив за пісками часу, пізнають його кару",
       "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d191657167eb0d6d350e97_dedline.webp",
-      "points": "2",
+      "points": "3",
       "damage": "2"
     },
     "Burnout": {
       "name": "Вигорання",
       "description": "Колись він палав жагою творити, а тепер лише тліє",
       "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d19165d92373a7f0e66d3c_burnOut.webp",
-      "points": "3",
+      "points": "5",
       "damage": "2"
     },
     "Overtime": {
@@ -2527,7 +2618,7 @@
       "name": "Скорочення",
       "description": "Список складено. Він прийде без попередження і лише обрані уникнуть його вироку",
       "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d1947ff1e0820b428718a2_layOff.webp",
-      "points": "6",
+      "points": "7",
       "damage": "2"
     }
   }

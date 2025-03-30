@@ -915,7 +915,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (artifactsContainer) {
                 artifactsContainer.innerHTML = "";
 
-                Object.values(userData.artefacts || {}).forEach(artifact => {
+                Object.values(userData.artefacts).forEach(artifact => {
                     if (artifact && artifact.image) {
                         const wrapper = document.createElement("div");
                         wrapper.className = "artefact-wrapper-gd";
@@ -923,7 +923,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         const img = document.createElement("img");
                         img.src = artifact.image;
                         img.alt = "Артефакт";
-                        img.className = "aftifact-img-gd";
+                        img.className = "artifact-img-gd";
 
                         const popup = document.createElement("div");
                         popup.className = "artefact-popap-gd";
@@ -938,7 +938,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         wrapper.appendChild(popup);
                         artifactsContainer.appendChild(wrapper);
 
-                        // Додати хов ефекти
+                        // Ховер-логіка
                         wrapper.addEventListener("mouseenter", () => {
                             popup.style.opacity = "1";
                         });
@@ -948,6 +948,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
             }
+
         });
     }
 
