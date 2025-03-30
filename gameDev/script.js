@@ -915,15 +915,36 @@ document.addEventListener("DOMContentLoaded", function () {
             if (artifactsContainer) {
                 artifactsContainer.innerHTML = "";
 
-                artifactsContainer.innerHTML = "";
+                Object.values(userData.artefacts || {}).forEach(artifact => {
+                    if (artifact && artifact.image) {
+                        const wrapper = document.createElement("div");
+                        wrapper.className = "artefact-wrapper-gd";
 
-                Object.values(userData.artefacts).forEach(artifactSrc => {
-                    if (artifactSrc) {
-                        const artifactImg = document.createElement("img");
-                        artifactImg.src = artifactSrc;
-                        artifactImg.alt = "Артефакт";
-                        artifactImg.classList.add("artifact-img-gd");
-                        artifactsContainer.appendChild(artifactImg);
+                        const img = document.createElement("img");
+                        img.src = artifact.image;
+                        img.alt = "Артефакт";
+                        img.className = "aftifact-img-gd";
+
+                        const popup = document.createElement("div");
+                        popup.className = "artefact-popap-gd";
+                        popup.style.opacity = "0";
+
+                        const text = document.createElement("p");
+                        text.className = "artefact-descr-gd";
+                        text.textContent = artifact.description || "";
+
+                        popup.appendChild(text);
+                        wrapper.appendChild(img);
+                        wrapper.appendChild(popup);
+                        artifactsContainer.appendChild(wrapper);
+
+                        // Додати хов ефекти
+                        wrapper.addEventListener("mouseenter", () => {
+                            popup.style.opacity = "1";
+                        });
+                        wrapper.addEventListener("mouseleave", () => {
+                            popup.style.opacity = "0";
+                        });
                     }
                 });
             }
@@ -1485,23 +1506,19 @@ document.addEventListener("DOMContentLoaded", function () {
             artefactKey = salary < (mid + max) / 2 ? "median" : "highest";
         }
 
-        if (!userData.artefacts) {
-            userData.artefacts = {};
-        }
+        if (!userData.artefacts) userData.artefacts = {};
 
-        if (professionsData.artefacts && professionsData.artefacts.salary) {
-            let artefactUrl = professionsData.artefacts.salary[artefactKey];
+        const artefactData = professionsData.artefacts?.salary?.[artefactKey];
 
-            if (artefactUrl) {
-                if (userData.artefacts.salaryArtefact !== artefactUrl) {
-                    userData.artefacts.salaryArtefact = artefactUrl;
-                    updateProfileBlocks();
-                }
-                console.log(`🎖 Призначено артефакт: ${artefactKey}, URL: ${artefactUrl}`);
-            }
+        if (artefactData && artefactData.image && artefactData.description) {
+            userData.artefacts.salaryArtefact = {
+                image: artefactData.image,
+                description: artefactData.description
+            };
+            console.log(`🎖 Призначено артефакт: ${artefactKey}`, artefactData);
+            updateProfileBlocks(); // оновлення профілю
         }
     }
-
 
 // add boss points
     function addBossPoints(bossName, points, reason) {
@@ -2825,7 +2842,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (pointsEl) pointsEl.textContent = boss.totalPoints;
 
             const fillEl = clonedBoss.querySelector(".boss-fill-gd");
-            if (fillEl) fillEl.style.height = `${(boss.totalPoints * 100) / 6}%`;
+            if (fillEl) fillEl.style.height = `${(boss.totalPoints * 100) / 7}%`;
 
             const imgEl = clonedBoss.querySelector(".boss-img-gd");
             if (imgEl) imgEl.src = boss.img;
@@ -3007,14 +3024,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 🧩 Артефакти
         if (artefactContainer) {
-            artefactContainer.innerHTML = ""; // очистити
-            Object.values(userData.artefacts || {}).forEach(src => {
-                if (src) {
+            artefactContainer.innerHTML = ""; // Очистити
+
+            Object.values(userData.artefacts || {}).forEach(artifact => {
+                if (artifact && artifact.image) {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "artefact-wrapper-gd";
+
                     const img = document.createElement("img");
-                    img.src = src;
+                    img.src = artifact.image;
                     img.alt = "Артефакт";
                     img.className = "aftifact-img-gd is--finish";
-                    artefactContainer.appendChild(img);
+
+                    const popup = document.createElement("div");
+                    popup.className = "artefact-popap-gd";
+                    popup.style.opacity = "0";
+
+                    const text = document.createElement("p");
+                    text.className = "artefact-descr-gd";
+                    text.textContent = artifact.description || "";
+
+                    popup.appendChild(text);
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(popup);
+                    artefactContainer.appendChild(wrapper);
+
+                    // Hover ефекти
+                    wrapper.addEventListener("mouseenter", () => {
+                        popup.style.opacity = "1";
+                    });
+                    wrapper.addEventListener("mouseleave", () => {
+                        popup.style.opacity = "0";
+                    });
                 }
             });
         }
