@@ -1410,7 +1410,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initFinanceTabs();
         initFamilyTabs();
         initChildrenTabs();
-        initEngineRangeSelector();
+        // initEngineRangeSelector();
         handleEngineBlockVisibility();
         initProgrammingLanguageSelection();
         toggleLanguageBlockVisibility();
@@ -1421,11 +1421,45 @@ document.addEventListener("DOMContentLoaded", function () {
         initBonusSelection();
         initOvertimeSelection();
         initRevisionSelection();
-        initSalarySatisfactionSelector();
+        // initSalarySatisfactionSelector();
         initEmploymentSelection();
         initWorkArrangementSelection();
         initContractSelection();
         renderBosses();
+
+        initUniversalRangeSelector({
+            containerSelector: ".title-block-gd.title",
+            trackSelector: ".title-truck_gd",
+            thumbSelector: ".title-trumb-gd",
+            blockSelector: ".title-block_item-gd-2",
+            positions: [0, 33, 66, 98],
+            keys: ["junior", "middle", "senior", "team_tech_lead"],
+            userDataKey: "jobTitle",
+            artefactCategory: null,
+            onSelect: (index, key) => addUserPoints("titlePoints", index + 1)
+        });
+
+
+        initUniversalRangeSelector({
+            containerSelector: ".title-block-gd.engines",
+            trackSelector: ".title-truck_gd",
+            thumbSelector: ".title-trumb-gd",
+            blockSelector: ".title-block_item-gd",
+            positions: [0, 33, 66, 98],
+            keys: ["unity", "unreal_engine", "no_engine", "other_engine"],
+            userDataKey: "engineExperience",
+            artefactCategory: "engine_experience"
+        });
+        initUniversalRangeSelector({
+            containerSelector: ".title-block-gd.satisfaction",
+            trackSelector: ".title-truck_gd",
+            thumbSelector: ".title-trumb-gd",
+            blockSelector: ".title-block_item-gd",
+            positions: [0, 49, 98],
+            keys: ["satisfied", "mostly_satisfied", "not_satisfied"],
+            userDataKey: "salarySatisfaction",
+            artefactCategory: "salary_satisfaction"
+        });
 
 
         initRangeGd({
@@ -1815,39 +1849,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    initUniversalRangeSelector({
-        containerSelector: ".title-block-gd.title",
-        trackSelector: ".title-truck_gd",
-        thumbSelector: ".title-trumb-gd",
-        blockSelector: ".title-block_item-gd-2",
-        positions: [0, 33, 66, 98],
-        keys: ["junior", "middle", "senior", "team_tech_lead"],
-        userDataKey: "jobTitle",
-        artefactCategory: null,
-        onSelect: (index, key) => addUserPoints("titlePoints", index + 1)
-    });
 
-
-    initUniversalRangeSelector({
-        containerSelector: ".title-block-gd.engines",
-        trackSelector: ".title-truck_gd",
-        thumbSelector: ".title-trumb-gd",
-        blockSelector: ".title-block_item-gd",
-        positions: [0, 33, 66, 98],
-        keys: ["unity", "unreal_engine", "no_engine", "other_engine"],
-        userDataKey: "engineExperience",
-        artefactCategory: "engine_experience"
-    });
-    initUniversalRangeSelector({
-        containerSelector: ".title-block-gd.satisfaction",
-        trackSelector: ".title-truck_gd",
-        thumbSelector: ".title-trumb-gd",
-        blockSelector: ".title-block_item-gd",
-        positions: [0, 49, 98],
-        keys: ["satisfied", "mostly_satisfied", "not_satisfied"],
-        userDataKey: "salarySatisfaction",
-        artefactCategory: "salary_satisfaction"
-    });
 
 
 //вибір досвіду
