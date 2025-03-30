@@ -1694,6 +1694,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function initUniversalRangeSelector({
+                                            containerSelector,
                                             trackSelector,
                                             thumbSelector,
                                             blockSelector,
@@ -1703,12 +1704,18 @@ document.addEventListener("DOMContentLoaded", function () {
                                             artefactCategory,
                                             onSelect = () => {}
                                         }) {
-        const track = document.querySelector(trackSelector);
-        const thumb = document.querySelector(thumbSelector);
-        const blocks = document.querySelectorAll(blockSelector);
+        const container = document.querySelector(containerSelector);
+        if (!container) {
+            console.error("❌ Контейнер не знайдено:", containerSelector);
+            return;
+        }
+
+        const track = container.querySelector(trackSelector);
+        const thumb = container.querySelector(thumbSelector);
+        const blocks = container.querySelectorAll(blockSelector);
 
         if (!track || !thumb || blocks.length === 0) {
-            console.error("❌ Не знайдено елементи для", trackSelector);
+            console.error("❌ Не знайдено елементи для", containerSelector);
             return;
         }
 
@@ -1809,6 +1816,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     initUniversalRangeSelector({
+        containerSelector: ".title-block-gd.title",
         trackSelector: ".title-truck_gd",
         thumbSelector: ".title-trumb-gd",
         blockSelector: ".title-block_item-gd-2",
@@ -1821,18 +1829,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     initUniversalRangeSelector({
-        trackSelector: ".title-truck_gd.engines",
-        thumbSelector: ".title-trumb-gd.engines",
-        blockSelector: ".title-block_item-gd.engines",
+        containerSelector: ".title-block-gd.engines",
+        trackSelector: ".title-truck_gd",
+        thumbSelector: ".title-trumb-gd",
+        blockSelector: ".title-block_item-gd",
         positions: [0, 33, 66, 98],
         keys: ["unity", "unreal_engine", "no_engine", "other_engine"],
         userDataKey: "engineExperience",
         artefactCategory: "engine_experience"
     });
     initUniversalRangeSelector({
-        trackSelector: ".title-truck_gd.satisfaction",
-        thumbSelector: ".title-trumb-gd.satisfaction",
-        blockSelector: ".title-block_item-gd.satisfaction",
+        containerSelector: ".title-block-gd.satisfaction",
+        trackSelector: ".title-truck_gd",
+        thumbSelector: ".title-trumb-gd",
+        blockSelector: ".title-block_item-gd",
         positions: [0, 49, 98],
         keys: ["satisfied", "mostly_satisfied", "not_satisfied"],
         userDataKey: "salarySatisfaction",
