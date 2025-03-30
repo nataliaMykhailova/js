@@ -984,6 +984,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 maxVal = overrides[sliderType].max || 100;
             }
 
+            let fixedPositions = null;
+            if (sliderType && overrides[sliderType]?.fixed) {
+                fixedPositions = overrides[sliderType].fixed;
+            }
+
             const track = range.querySelector('.range-track-gd');
             const thumb = range.querySelector('.range-thumb-gd');
             const popup = range.querySelector('.range-popup-gd');
@@ -1027,7 +1032,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 x = Math.max(0, Math.min(x, rect.width));
-                const percentage = (x / rect.width) * 100;
+                let percentage = (x / rect.width) * 100;
                 thumb.style.left = percentage + '%';
                 if (popup) popup.style.left = percentage + '%';
 
@@ -1054,8 +1059,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     userData.age = value;
                 }
 
-                if (sliderType === "hour") {
+                if (sliderType === "hour" && fixedPositions) {
+                    const closest = fixedPositions.reduce((prev, curr) =>
+                        Math.abs(curr - percentage) < Math.abs(prev - percentage) ? curr : prev
+                    );
+
+                    thumb.style.left = closest + '%';
+                    if (popup) popup.style.left = closest + '%';
+
+                    percentage = closest;
                     updateHourPoints(value);
+                } else {
+                    thumb.style.left = percentage + '%';
+                    if (popup) popup.style.left = percentage + '%';
                 }
             }
 
@@ -1453,7 +1469,8 @@ document.addEventListener("DOMContentLoaded", function () {
             hour: {
                 min: 1,
                 mid: 2,
-                max: 3
+                max: 3,
+                fixed: [0, 50, 100]
             },
             age_it: {
                 min: professionData.it_entry_age.youngest,
