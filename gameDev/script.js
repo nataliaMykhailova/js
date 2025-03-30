@@ -965,24 +965,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 maxVal = overrides[sliderType].max || 100;
             }
 
+            const fixedPositions = overrides[sliderType]?.fixed || null;
+
             const track = range.querySelector('.range-track-gd');
             const thumb = range.querySelector('.range-thumb-gd');
             const popup = range.querySelector('.range-popup-gd');
             const popupText = popup?.querySelector('.range-popup_text-gd');
 
-
             let dragging = false;
+            let ticking = false;
+
             thumb.style.left = '0%';
             if (popup) popup.style.left = '0%';
             if (popupText) popupText.textContent = formatValue(minVal, sliderType);
 
-
-            function logValue(value) {
-                // console.log(`Значення (${sliderType || "default"}): ${value}`);
-            }
-
             function startDrag() {
                 dragging = true;
+                // ⛔ При перетягуванні — вимикаємо transition
+                thumb.style.transition = 'none';
+                if (popup) popup.style.transition = 'none';
             }
 
             function stopDrag() {
@@ -993,7 +994,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (type === 'salery') return `$${val}`;
                 return `${val}р.`;
             }
-
 
             function updatePosition(e, force = false) {
                 if (!dragging && !force) return;
@@ -1029,8 +1029,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 value = Math.round(value);
 
-                logValue(value);
-
                 if (sliderType === "salery") {
                     value = Math.round(value / 10) * 10;
                     userData.salary = value;
@@ -1048,19 +1046,44 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (popupText) popupText.textContent = formatValue(value, sliderType);
             }
 
-
-            thumb.addEventListener('mousedown', startDrag);
-            thumb.addEventListener('touchstart', startDrag, {passive: true});
+            // 🖱️ Клік по треку
             track.addEventListener('click', (e) => {
+                // ✅ Додаємо клас активності
+                thumb.classList.add('active');
+                thumb.classList.remove('animate');
+
+                // ✅ Активуємо плавний transition тільки на клік
+                thumb.style.transition = 'left 0.1s ease';
+                if (popup) popup.style.transition = 'left 0.1s ease';
+
                 updatePosition(e, true);
             });
 
-            document.addEventListener('mousemove', updatePosition);
-            document.addEventListener('touchmove', updatePosition, {passive: false});
+            // 🖱️ Старт drag — скидаємо transition
+            thumb.addEventListener('mousedown', startDrag);
+            thumb.addEventListener('touchstart', startDrag, { passive: true });
+
+            // 🖱️ Зупинка drag
             document.addEventListener('mouseup', stopDrag);
             document.addEventListener('touchend', stopDrag);
+
+            // 🌀 Оптимізований move через rAF
+            function onMove(e) {
+                if (!dragging) return;
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        updatePosition(e);
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }
+
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('touchmove', onMove, { passive: false });
         });
     }
+
 
     function updateHourPoints(value) {
         let points = 0;
@@ -1904,215 +1927,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-//вибір досвіду
-//     document.querySelector(".exp-flex-gd.exp_it").addEventListener("click", function (event) {
-//         const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
-//
-//         allColumns.forEach(column => {
-//             const rect = column.getBoundingClientRect();
-//             const centerX = rect.left + rect.width / 2;
-//             const topY = rect.top;
-//             const clickX = event.clientX;
-//             const clickY = event.clientY;
-//
-//             const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
-//             const vwToPx = window.innerWidth * 0.03;
-//
-//             if (distance < vwToPx) {
-//                 document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(thumb => {
-//                     thumb.style.opacity = "0";
-//                 });
-//
-//                 const classList = Array.from(column.classList);
-//                 const selectedComboClass = classList.find(cls => cls.startsWith("exp-it-line-"));
-//
-//                 if (selectedComboClass) {
-//                     // console.log("✅ Вибрано:", selectedComboClass);
-//                     userData.itExperience = selectedComboClass;
-//
-//                     const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_it");
-//                     if (thumb) {
-//                         thumb.style.opacity = "1";
-//                     }
-//                 }
-//
-//                 if (professionsData.artefacts && professionsData.artefacts.it_experience) {
-//                     let expKey = selectedComboClass.replace("exp-it-line-", "") + "_years";
-//                     if (selectedComboClass === "exp-it-line-10") {
-//                         expKey = "10+_years";
-//                     }
-//
-//                     const artefactData = professionsData.artefacts.it_experience[expKey];
-//
-//                     if (artefactData && artefactData.image && artefactData.description) {
-//                         if (!userData.artefacts) {
-//                             userData.artefacts = {};
-//                         }
-//
-//                         userData.artefacts["exp-it"] = {
-//                             image: artefactData.image,
-//                             description: artefactData.description
-//                         };
-//
-//                         // console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}`, artefactData);
-//                         updateProfileBlocks();
-//                     } else {
-//                         console.warn(`⚠️ Не знайдено артефакт для: ${expKey}`);
-//                     }
-//                 } else {
-//                     console.error("❌ Дані про артефакти IT досвіду відсутні!");
-//                 }
-//             }
-//         });
-//     });
-//
-//
-//     document.querySelector(".exp-flex-gd.exp_spec").addEventListener("click", function (event) {
-//         const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
-//
-//         allColumns.forEach(column => {
-//             const rect = column.getBoundingClientRect();
-//             const centerX = rect.left + rect.width / 2;
-//             const topY = rect.top;
-//             const clickX = event.clientX;
-//             const clickY = event.clientY;
-//
-//             const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
-//             const vwToPx = window.innerWidth * 0.03;
-//
-//             if (distance < vwToPx) {
-//                 document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_spec").forEach(thumb => {
-//                     thumb.style.opacity = "0";
-//                 });
-//
-//                 const classList = Array.from(column.classList);
-//                 const selectedComboClass = classList.find(cls => cls.startsWith("exp-spec-line-"));
-//
-//                 if (selectedComboClass) {
-//                     console.log("✅ Вибрано:", selectedComboClass);
-//                     userData.specialtyExperience = selectedComboClass;
-//
-//                     const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_spec");
-//                     if (thumb) {
-//                         thumb.style.opacity = "1";
-//                     }
-//
-//                     addUserPoints("specialtyExperience", 0);
-//
-//                     let points = 0;
-//                     switch (selectedComboClass) {
-//                         case "exp-spec-line-1-2":
-//                             points = 1;
-//                             break;
-//                         case "exp-spec-line-3-5":
-//                             points = 2;
-//                             break;
-//                         case "exp-spec-line-6-9":
-//                             points = 3;
-//                             break;
-//                         case "exp-spec-line-10":
-//                             points = 4;
-//                             break;
-//                     }
-//                     addUserPoints("specialtyExperience", points);
-//                 }
-//             }
-//         });
-//     });
-//
-//     const track = document.querySelector(".title-truck_gd");
-//     const thumb = document.querySelector(".title-trumb-gd");
-//     const titleBlocks = document.querySelectorAll(".title-block_item-gd-2");
-//
-//     let isDragging = false;
-//     let positions = [0, 33, 66, 98];
-//     let selectedIndex = null;
-//
-//     function setActiveTitle(index) {
-//         titleBlocks.forEach(block => block.classList.remove("active"));
-//
-//         if (index !== null) {
-//             titleBlocks[index].classList.add("active");
-//
-//             let jobTitle = ["junior", "middle", "senior", "team_tech_lead"][index];
-//             let points = index + 1;
-//
-//             addUserPoints("titlePoints", points);
-//             console.log(`📌 Вибрано: ${jobTitle} (Бали: ${points})`);
-//             userData.jobTitle = jobTitle;
-//
-//             moveThumb(positions[index]);
-//
-//             track.addEventListener("click", (event) => {
-//                 const rect = track.getBoundingClientRect();
-//                 const clickX = event.clientX - rect.left;
-//                 const percent = (clickX / rect.width) * 100;
-//
-//                 // Знаходимо найближчу позицію
-//                 let closestIndex = positions.reduce((prev, curr, idx) =>
-//                     Math.abs(curr - percent) < Math.abs(positions[prev] - percent) ? idx : prev, 0
-//                 );
-//
-//                 selectedIndex = closestIndex;
-//                 setActiveTitle(closestIndex);
-//                 titleBlocks.forEach((block, index) => {
-//                     block.addEventListener("click", () => {
-//                         selectedIndex = index;
-//                         setActiveTitle(index);
-//                     });
-//                 });
-//             });
-//         }
-//     }
-//
-//     function moveThumb(value) {
-//         thumb.style.left = `${value}%`;
-//     }
-//
-//     function startDrag(event) {
-//         isDragging = true;
-//         event.preventDefault();
-//     }
-//
-//     function stopDrag() {
-//         if (!isDragging) return;
-//         isDragging = false;
-//
-//         let rect, thumbLeft;
-//
-//         requestAnimationFrame(() => {
-//             rect = track.getBoundingClientRect();
-//             thumbLeft = thumb.getBoundingClientRect().left;
-//
-//             let x = ((thumbLeft - rect.left) / rect.width) * 100;
-//
-//             let closestIndex = positions.reduce((prev, curr, idx) =>
-//                 Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
-//             );
-//
-//             selectedIndex = closestIndex;
-//             setActiveTitle(closestIndex);
-//         });
-//     }
-//
-//     function dragMove(event) {
-//         if (!isDragging) return;
-//
-//         let clientX = event.touches ? event.touches[0].clientX : event.clientX;
-//         let rect = track.getBoundingClientRect();
-//         let x = ((clientX - rect.left) / rect.width) * 100;
-//         x = Math.max(0, Math.min(x, 98));
-//
-//         moveThumb(x);
-//     }
-//
-// // Додаємо обробники подій
-//     thumb.addEventListener("mousedown", startDrag);
-//     thumb.addEventListener("touchstart", startDrag, {passive: false});
-//     document.addEventListener("mousemove", dragMove);
-//     document.addEventListener("touchmove", dragMove, {passive: false});
-//     document.addEventListener("mouseup", stopDrag);
-//     document.addEventListener("touchend", stopDrag);
+
 
 
     // ======== Вибір рівня англійської мови ======== //
@@ -2172,86 +1987,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // function initEngineRangeSelector() {
-    //     const track = document.querySelector(".title-truck_gd.engines");
-    //     const thumb = track?.querySelector(".title-trumb-gd");
-    //     const engineBlocks = document.querySelectorAll(".title-block_item-gd");
-    //
-    //     if (!track || !thumb || engineBlocks.length === 0) {
-    //         console.error("❌ Блоки або елементи для вибору рушія не знайдені.");
-    //         return;
-    //     }
-    //
-    //     const positions = [0, 33, 66, 98];
-    //     const engineKeys = ["unity", "unreal_engine", "no_engine", "other_engine"];
-    //     let isDragging = false;
-    //     let selectedIndex = null;
-    //
-    //     function moveThumb(value) {
-    //         thumb.style.left = `${value}%`;
-    //     }
-    //
-    //     function setActiveEngine(index) {
-    //         engineBlocks.forEach(block => block.classList.remove("active"));
-    //         if (index !== null) {
-    //             engineBlocks[index].classList.add("active");
-    //
-    //             const engineKey = engineKeys[index];
-    //             userData.engineExperience = engineKey;
-    //
-    //             const artefactData = professionsData.artefacts?.engine_experience?.[engineKey];
-    //             if (artefactData && artefactData.image && artefactData.description) {
-    //                 userData.artefacts.engineExperience = {
-    //                     image: artefactData.image,
-    //                     description: artefactData.description
-    //                 };
-    //                 updateProfileBlocks();
-    //                 console.log(`🧩 Призначено артефакт рушія: ${engineKey}`, artefactData);
-    //             }
-    //
-    //             moveThumb(positions[index]);
-    //         }
-    //     }
-    //
-    //     function startDrag(e) {
-    //         isDragging = true;
-    //         e.preventDefault();
-    //     }
-    //
-    //     function stopDrag() {
-    //         if (!isDragging) return;
-    //         isDragging = false;
-    //
-    //         const rect = track.getBoundingClientRect();
-    //         const thumbX = thumb.getBoundingClientRect().left - rect.left;
-    //         const thumbPercent = (thumbX / rect.width) * 100;
-    //
-    //         let closestIndex = positions.reduce((prev, curr, idx) =>
-    //             Math.abs(curr - thumbPercent) < Math.abs(positions[prev] - thumbPercent) ? idx : prev, 0
-    //         );
-    //
-    //         selectedIndex = closestIndex;
-    //         setActiveEngine(selectedIndex);
-    //     }
-    //
-    //     function dragMove(e) {
-    //         if (!isDragging) return;
-    //
-    //         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    //         const rect = track.getBoundingClientRect();
-    //         let x = ((clientX - rect.left) / rect.width) * 100;
-    //         x = Math.max(0, Math.min(x, 98));
-    //
-    //         moveThumb(x);
-    //     }
-    //
-    //     thumb.addEventListener("mousedown", startDrag);
-    //     thumb.addEventListener("touchstart", startDrag, {passive: false});
-    //     document.addEventListener("mousemove", dragMove);
-    //     document.addEventListener("touchmove", dragMove, {passive: false});
-    //     document.addEventListener("mouseup", stopDrag);
-    //     document.addEventListener("touchend", stopDrag);
-    // }
+
 
     function toggleLanguageBlockVisibility() {
         const langBlock = document.querySelector(".three-part_right-gd.language");
@@ -2790,89 +2526,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // function initSalarySatisfactionSelector() {
-    //     const track = document.querySelector(".title-truck_gd.satisfaction");
-    //     const thumb = track?.querySelector(".title-trumb-gd");
-    //     const blocks = document.querySelectorAll(".title-block_item-gd.satisfaction");
-    //
-    //     if (!track || !thumb || blocks.length === 0) {
-    //         console.error("❌ Блоки для вибору задоволеності не знайдені.");
-    //         return;
-    //     }
-    //
-    //     const positions = [0, 49, 98]; // для 3-х блоків
-    //     const keys = ["satisfied", "mostly_satisfied", "not_satisfied"];
-    //     let isDragging = false;
-    //     let selectedIndex = null;
-    //
-    //     function moveThumb(value) {
-    //         thumb.style.left = `${value}%`;
-    //     }
-    //
-    //     function setActiveBlock(index) {
-    //         blocks.forEach(b => b.classList.remove("active"));
-    //         if (index !== null) {
-    //             blocks[index].classList.add("active");
-    //
-    //             const key = keys[index];
-    //             userData.salarySatisfaction = key;
-    //
-    //             // призначити артефакт
-    //             const artefactData = professionsData.artefacts?.salary_satisfaction?.[key];
-    //             if (artefactData && artefactData.image && artefactData.description) {
-    //                 userData.artefacts.salarySatisfaction = {
-    //                     image: artefactData.image,
-    //                     description: artefactData.description
-    //                 };
-    //                 updateProfileBlocks();
-    //                 console.log(`💰 Обрана задоволеність: ${key}, артефакт:`, artefactData);
-    //             } else {
-    //                 console.warn(`❌ Артефакт не знайдено для: ${key}`);
-    //             }
-    //
-    //             moveThumb(positions[index]);
-    //         }
-    //     }
-    //
-    //     function startDrag(e) {
-    //         isDragging = true;
-    //         e.preventDefault();
-    //     }
-    //
-    //     function stopDrag() {
-    //         if (!isDragging) return;
-    //         isDragging = false;
-    //
-    //         const rect = track.getBoundingClientRect();
-    //         const thumbX = thumb.getBoundingClientRect().left - rect.left;
-    //         const thumbPercent = (thumbX / rect.width) * 100;
-    //
-    //         let closestIndex = positions.reduce((prev, curr, idx) =>
-    //             Math.abs(curr - thumbPercent) < Math.abs(positions[prev] - thumbPercent) ? idx : prev, 0
-    //         );
-    //
-    //         selectedIndex = closestIndex;
-    //         setActiveBlock(selectedIndex);
-    //     }
-    //
-    //     function dragMove(e) {
-    //         if (!isDragging) return;
-    //
-    //         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    //         const rect = track.getBoundingClientRect();
-    //         let x = ((clientX - rect.left) / rect.width) * 100;
-    //         x = Math.max(0, Math.min(x, 98));
-    //
-    //         moveThumb(x);
-    //     }
-    //
-    //     thumb.addEventListener("mousedown", startDrag);
-    //     thumb.addEventListener("touchstart", startDrag, {passive: false});
-    //     document.addEventListener("mousemove", dragMove);
-    //     document.addEventListener("touchmove", dragMove, {passive: false});
-    //     document.addEventListener("mouseup", stopDrag);
-    //     document.addEventListener("touchend", stopDrag);
-    // }
+
 
     function initEmploymentSelection() {
         const tabs = document.querySelectorAll(".finances-tab-gd-2.employment");
