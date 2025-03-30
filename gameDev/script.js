@@ -339,8 +339,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const cardOther = document.querySelector('.choice-item-gd.is-margin');
 
     if (choiceItems && cardOther) {
+        setGlow(choiceItems, true);
+        setGlow(cardOther, false);
+        choiceItems.style.zIndex = '10';
+        cardOther.style.zIndex = '5';
         choiceItems.style.transition = 'margin-right 0.4s ease, filter 0.5s ease';
         cardOther.style.transition = 'filter 0.5s ease';
+
         let isAnimating = false;
 
         function setGlow(card, enable) {
