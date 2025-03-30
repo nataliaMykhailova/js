@@ -1735,7 +1735,8 @@ document.addEventListener("DOMContentLoaded", function () {
             let index = 0;
 
             function loop() {
-                if (block.classList.contains('active')) return;
+                const isAnyThumbActive = thumbs.some(thumb => thumb.classList.contains('active'));
+                if (isAnyThumbActive) return;
 
                 thumbs.forEach(thumb => {
                     if (!thumb.classList.contains('active')) {
