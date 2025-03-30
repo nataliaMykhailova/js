@@ -485,7 +485,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         });
 
-        console.log('📌 Анімація факт-блоків активована');
+        // console.log('📌 Анімація факт-блоків активована');
     }
 
 
@@ -610,7 +610,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tl.to(baseElems, {opacity: 1, duration: 0.5}, "+=0.5");
 
-        console.log("🎬 Second part animation launched");
+        // console.log("🎬 Second part animation launched");
     }
 
     let hasRunSecondPartAnimation = true;
@@ -978,7 +978,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             function logValue(value) {
-                console.log(`Значення (${sliderType || "default"}): ${value}`);
+                // console.log(`Значення (${sliderType || "default"}): ${value}`);
             }
 
             function startDrag() {
@@ -1089,7 +1089,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         userData.points[category] = points;
 
-        console.log(`✅ Користувач отримав ${points} бал(ів) за ${category}`);
+        // console.log(`✅ Користувач отримав ${points} бал(ів) за ${category}`);
 
         updateTotalUserPoints();
         updateProfileBlocks();
@@ -1375,7 +1375,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const fillEl = document.querySelector(`.game-fill-gd.${key}`);
                 const textEl = document.querySelector(`.p-13_gilroy-gd.gold.${key}`);
 
-                console.log(`🔍 Перевірка платформи: ${key}`);
+                // console.log(`🔍 Перевірка платформи: ${key}`);
                 if (!fillEl) {
                     console.warn(`❌ Не знайдено .game-fill-gd.${key}`);
                     return;
@@ -1388,7 +1388,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const cssHeight = parseFloat(getComputedStyle(fillEl).height);
 
-                console.log(`📏 Висота з getComputedStyle: ${cssHeight}px`);
+                // console.log(`📏 Висота з getComputedStyle: ${cssHeight}px`);
 
                 if (cssHeight === 0) {
                     console.warn(`⚠️ CSS height = 0 для .game-fill-gd.${key}. Елемент може бути прихований.`);
@@ -1397,7 +1397,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 const pixelHeight = (cssHeight * percent) / 100;
-                console.log(`📐 Обчислено висоту: ${pixelHeight}px (${percent}%)`);
+                // console.log(`📐 Обчислено висоту: ${pixelHeight}px (${percent}%)`);
 
                 fillEl.style.height = pixelHeight + "px";
             });
@@ -1727,6 +1727,55 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    function animateThumbsInBlocksLoop() {
+        const blocks = document.querySelectorAll('.exp-block-gd');
+
+        blocks.forEach(block => {
+            const thumbs = Array.from(block.querySelectorAll('.range-thumb-gd.exp-trumb'));
+            let index = 0;
+
+            function loop() {
+                if (block.classList.contains('active')) return;
+
+                thumbs.forEach(thumb => {
+                    if (!thumb.classList.contains('active')) {
+                        thumb.classList.remove('animate');
+                    }
+                });
+
+                const current = thumbs[index];
+                if (current && !current.classList.contains('active')) {
+                    current.classList.add('animate');
+                    setTimeout(() => {
+                        current.classList.remove('animate');
+                    }, 500);
+                }
+
+                index = (index + 1) % thumbs.length;
+                setTimeout(loop, 1000);
+            }
+
+            loop();
+        });
+    }
+
+    function initThumbClicks() {
+        document.querySelectorAll('.range-thumb-gd, .range-trumb_gold-gd').forEach(svg => {
+            const removeAnimateClass = () => {
+                svg.classList.remove('animate');
+                svg.classList.add('active');
+            };
+
+            svg.addEventListener('mousedown', removeAnimateClass);
+            svg.addEventListener('touchstart', removeAnimateClass, { passive: true });
+        });
+    }
+
+    setTimeout(()=> {
+        initThumbClicks();
+        animateThumbsInBlocksLoop();
+    }, 1000)
+
     function initUniversalRangeSelector({
                                             containerSelector,
                                             trackSelector,
@@ -1776,14 +1825,19 @@ document.addEventListener("DOMContentLoaded", function () {
                             description: artefactData.description
                         };
                         updateProfileBlocks();
-                        console.log(`🎖 Артефакт [${artefactCategory}]: ${key}`, artefactData);
+                        // console.log(`🎖 Артефакт [${artefactCategory}]: ${key}`, artefactData);
                     }
                 }
 
                 moveThumb(positions[index]);
+
+                thumb.classList.add('active');
+                thumb.classList.remove('animate');
+
                 onSelect(index, key);
             }
         }
+
 
         function startDrag(e) {
             isDragging = true;
@@ -1817,7 +1871,6 @@ document.addEventListener("DOMContentLoaded", function () {
             moveThumb(x);
         }
 
-        // 🎯 Клік по треку
         track.addEventListener("click", (event) => {
             const rect = track.getBoundingClientRect();
             const clickX = event.clientX - rect.left;
@@ -1831,7 +1884,6 @@ document.addEventListener("DOMContentLoaded", function () {
             setActive(closestIndex);
         });
 
-        // 🖱️ Клік по блоках
         blocks.forEach((block, index) => {
             block.addEventListener("click", () => {
                 selectedIndex = index;
@@ -1839,7 +1891,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // 🎮 Drag events
         thumb.addEventListener("mousedown", startDrag);
         thumb.addEventListener("touchstart", startDrag, { passive: false });
         document.addEventListener("mousemove", dragMove);
