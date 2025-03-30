@@ -1844,6 +1844,26 @@ document.addEventListener("DOMContentLoaded", function () {
             userData.jobTitle = jobTitle;
 
             moveThumb(positions[index]);
+
+            track.addEventListener("click", (event) => {
+                const rect = track.getBoundingClientRect();
+                const clickX = event.clientX - rect.left;
+                const percent = (clickX / rect.width) * 100;
+
+                // Знаходимо найближчу позицію
+                let closestIndex = positions.reduce((prev, curr, idx) =>
+                    Math.abs(curr - percent) < Math.abs(positions[prev] - percent) ? idx : prev, 0
+                );
+
+                selectedIndex = closestIndex;
+                setActiveTitle(closestIndex);
+                titleBlocks.forEach((block, index) => {
+                    block.addEventListener("click", () => {
+                        selectedIndex = index;
+                        setActiveTitle(index);
+                    });
+                });
+            });
         }
     }
 
