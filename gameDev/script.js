@@ -1034,7 +1034,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 x = Math.max(0, Math.min(x, rect.width));
                 let percentage = (x / rect.width) * 100;
 
-                // 🟡 Якщо слайдер типу hour з фіксованими позиціями
                 if (sliderType === "hour" && fixedPositions) {
                     const closest = fixedPositions.reduce((prev, curr) =>
                         Math.abs(curr - percentage) < Math.abs(prev - percentage) ? curr : prev
@@ -1042,11 +1041,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     percentage = closest;
                 }
 
-                // 🔁 Синхронізовано переміщення thumb і popup
                 thumb.style.left = percentage + '%';
                 if (popup) popup.style.left = percentage + '%';
 
-                // 🧠 Обчислення значення
                 let value;
                 if (percentage <= 50) {
                     value = minVal + ((midVal - minVal) * (percentage / 50));
