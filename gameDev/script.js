@@ -1027,10 +1027,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 x = Math.max(0, Math.min(x, rect.width));
-                const percentage = (x / rect.width) * 100;
+                let percentage = (x / rect.width) * 100;
+
+                // 🟡 Якщо слайдер типу hour з фіксованими позиціями
+                if (sliderType === "hour" && fixedPositions) {
+                    const closest = fixedPositions.reduce((prev, curr) =>
+                        Math.abs(curr - percentage) < Math.abs(prev - percentage) ? curr : prev
+                    );
+                    percentage = closest;
+                }
+
+                // 🔁 Синхронізовано переміщення thumb і popup
                 thumb.style.left = percentage + '%';
                 if (popup) popup.style.left = percentage + '%';
 
+                // 🧠 Обчислення значення
                 let value;
                 if (percentage <= 50) {
                     value = minVal + ((midVal - minVal) * (percentage / 50));
@@ -1040,24 +1051,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 value = Math.round(value);
 
-                logValue(value);
+                logValue(value); // лог тільки 1 раз
 
+                // 💰 Зарплата
                 if (sliderType === "salery") {
                     value = Math.round(value / 10) * 10;
                     userData.salary = value;
                     assignSalaryArtefact(value, minVal, midVal, maxVal);
                 }
 
-                if (popupText) popupText.textContent = formatValue(value, sliderType);
-
+                // 📆 Вік
                 if (sliderType === "age" || sliderType === "age-it") {
                     userData.age = value;
                 }
 
+                // ⏱ Робочі години
                 if (sliderType === "hour") {
                     updateHourPoints(value);
                 }
+
+                // ❌ Текст не оновлюємо, якщо не потрібен
+                if (popupText) popupText.textContent = formatValue(value, sliderType);
             }
+
 
             thumb.addEventListener('mousedown', startDrag);
             thumb.addEventListener('touchstart', startDrag, {passive: true});
@@ -1453,7 +1469,8 @@ document.addEventListener("DOMContentLoaded", function () {
             hour: {
                 min: 1,
                 mid: 2,
-                max: 3
+                max: 3,
+                fixed: [0, 50, 100]
             },
             age_it: {
                 min: professionData.it_entry_age.youngest,
@@ -1830,11 +1847,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let positions = [0, 33, 66, 98];
     let selectedIndex = null;
 
-// 🔧 Встановити активний title-блок
     function setActiveTitle(index) {
         titleBlocks.forEach(block => block.classList.remove("active"));
 
-        if (index !== null && titleBlocks[index]) {
+        if (index !== null) {
             titleBlocks[index].classList.add("active");
 
             let jobTitle = ["junior", "middle", "senior", "team_tech_lead"][index];
@@ -1845,77 +1861,79 @@ document.addEventListener("DOMContentLoaded", function () {
             userData.jobTitle = jobTitle;
 
             moveThumb(positions[index]);
+
+            track.addEventListener("click", (event) => {
+                const rect = track.getBoundingClientRect();
+                const clickX = event.clientX - rect.left;
+                const percent = (clickX / rect.width) * 100;
+
+                // Знаходимо найближчу позицію
+                let closestIndex = positions.reduce((prev, curr, idx) =>
+                    Math.abs(curr - percent) < Math.abs(positions[prev] - percent) ? idx : prev, 0
+                );
+
+                selectedIndex = closestIndex;
+                setActiveTitle(closestIndex);
+                titleBlocks.forEach((block, index) => {
+                    block.addEventListener("click", () => {
+                        selectedIndex = index;
+                        setActiveTitle(index);
+                    });
+                });
+            });
         }
     }
 
-// 🔄 Перемістити повзунок
     function moveThumb(value) {
         thumb.style.left = `${value}%`;
     }
 
-// 🖱 Початок перетягування
     function startDrag(event) {
         isDragging = true;
         event.preventDefault();
     }
 
-// 🛑 Завершення перетягування
     function stopDrag() {
         if (!isDragging) return;
         isDragging = false;
 
-        const rect = track.getBoundingClientRect();
-        const x = ((thumb.getBoundingClientRect().left - rect.left) / rect.width) * 100;
+        let rect, thumbLeft;
 
-        const closestIndex = positions.reduce((prev, curr, idx) =>
-            Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
-        );
+        requestAnimationFrame(() => {
+            rect = track.getBoundingClientRect();
+            thumbLeft = thumb.getBoundingClientRect().left;
 
-        selectedIndex = closestIndex;
-        setActiveTitle(closestIndex);
+            let x = ((thumbLeft - rect.left) / rect.width) * 100;
+
+            let closestIndex = positions.reduce((prev, curr, idx) =>
+                Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
+            );
+
+            selectedIndex = closestIndex;
+            setActiveTitle(closestIndex);
+        });
     }
 
-// 🟡 Переміщення під час перетягування
     function dragMove(event) {
         if (!isDragging) return;
 
-        const clientX = event.touches ? event.touches[0].clientX : event.clientX;
-        const rect = track.getBoundingClientRect();
+        let clientX = event.touches ? event.touches[0].clientX : event.clientX;
+        let rect = track.getBoundingClientRect();
         let x = ((clientX - rect.left) / rect.width) * 100;
         x = Math.max(0, Math.min(x, 98));
 
         moveThumb(x);
     }
 
-// 📌 Додати обробники подій:
+// Додаємо обробники подій
     thumb.addEventListener("mousedown", startDrag);
-    thumb.addEventListener("touchstart", startDrag, { passive: false });
+    thumb.addEventListener("touchstart", startDrag, {passive: false});
     document.addEventListener("mousemove", dragMove);
-    document.addEventListener("touchmove", dragMove, { passive: false });
+    document.addEventListener("touchmove", dragMove, {passive: false});
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchend", stopDrag);
 
-// ✅ Додати клік по рейнджу (track)
-    track.addEventListener("click", (event) => {
-        const rect = track.getBoundingClientRect();
-        const clickX = event.clientX - rect.left;
-        const percent = (clickX / rect.width) * 100;
 
-        const closestIndex = positions.reduce((prev, curr, idx) =>
-            Math.abs(curr - percent) < Math.abs(positions[prev] - percent) ? idx : prev, 0
-        );
-
-        selectedIndex = closestIndex;
-        setActiveTitle(closestIndex);
-    });
-
-// ✅ Додати клік по блоках title
-    titleBlocks.forEach((block, index) => {
-        block.addEventListener("click", () => {
-            selectedIndex = index;
-            setActiveTitle(index);
-        });
-    });
     // ======== Вибір рівня англійської мови ======== //
     function initLanguageSelection() {
         const langContainers = document.querySelectorAll(".lang-row_wrapper-gd.lang");
