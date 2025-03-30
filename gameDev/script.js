@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
             };
         });
 
-        console.log("🛡 Боси ініціалізовані:", bossesData);
+        // console.log("🛡 Боси ініціалізовані:", bossesData);
     }
 
     // Функція для створення елемента професії
@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // скидання даних користувача
+// скидання даних користувача
 
     function resetUserData(keepGender = false) {
         if (!keepGender) {
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
         userData.gaming_platforms = "";
         userData.defeated_bosses = {};
 
-        console.log("Дані користувача скинуто", userData);
+        // console.log("Дані користувача скинуто", userData);
 
         document.querySelectorAll(".character-item_wrapper-gd").forEach(item => {
             item.style.opacity = "1";
@@ -243,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
             toggleLanguageBlockVisibility()
         });
 
-        console.log("🔄 Боси очищені після вибору нової професії:", bossesData);
+        // console.log("🔄 Боси очищені після вибору нової професії:", bossesData);
 
         userData.artefacts = {};
         document.querySelectorAll(".active").forEach(activeBlock => {
@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         userData.profession = selectedItem.querySelector(".character-name-gd").textContent.trim();
         userData.avatar = selectedItem.querySelector(".character-img-gd").src;
-        console.log("Вибрана професія:", userData.profession);
+        // console.log("Вибрана професія:", userData.profession);
         updateContinueButton();
         filterAndUpdateData();
         updateTotalUserPoints();
@@ -306,7 +306,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // Функція для перемикання активної кнопки
     function toggleActiveGender(activeButton, inactiveButton) {
         activeButton.style.background = "#FFD7A2";
         activeButton.style.color = "#000";
@@ -333,122 +332,122 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+    //перехід гра/статистика
+    function hoverEffectCard () {
+        const canHover = window.matchMedia('(hover: hover)').matches;
 
-    const canHover = window.matchMedia('(hover: hover)').matches;
+        const cardOther = document.querySelector('.choice-item-gd.is-margin');
 
-    const cardOther = document.querySelector('.choice-item-gd.is-margin');
+        if (choiceItems && cardOther) {
+            setGlow(choiceItems, true);
+            setGlow(cardOther, false);
+            choiceItems.style.zIndex = '10';
+            cardOther.style.zIndex = '5';
+            if (!canHover) {
+                choiceItems.classList.add('active-mobile');
+            }
 
-    if (choiceItems && cardOther) {
-        setGlow(choiceItems, true);
-        setGlow(cardOther, false);
-        choiceItems.style.zIndex = '10';
-        cardOther.style.zIndex = '5';
-        choiceItems.style.transition = 'margin-right 0.4s ease, filter 0.5s ease';
-        cardOther.style.transition = 'filter 0.5s ease';
+            choiceItems.style.transition = 'margin-right 0.4s ease, filter 0.5s ease';
+            cardOther.style.transition = 'filter 0.5s ease';
 
-        let isAnimating = false;
+            let isAnimating = false;
 
-        function setGlow(card, enable) {
-            card.style.filter = enable
-                ? 'drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))'
-                : 'none';
-        }
+            function setGlow(card, enable) {
+                card.style.filter = enable
+                    ? 'drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))'
+                    : 'none';
+            }
 
-        function animateTo(cardToRaise, cardToLower) {
-            if (isAnimating) return;
-            isAnimating = true;
+            function animateTo(cardToRaise, cardToLower) {
+                if (isAnimating) return;
+                isAnimating = true;
 
-            const currentMargin = getComputedStyle(choiceItems).marginRight;
-            choiceItems.style.marginRight = '5vw';
+                const currentMargin = getComputedStyle(choiceItems).marginRight;
+                choiceItems.style.marginRight = '5vw';
 
-            setGlow(cardToRaise, true);
-            setGlow(cardToLower, false);
+                setGlow(cardToRaise, true);
+                setGlow(cardToLower, false);
 
-            setTimeout(() => {
-                cardToRaise.style.zIndex = '10';
-                cardToLower.style.zIndex = '5';
-                choiceItems.style.marginRight = currentMargin;
-
-                setTimeout(() => isAnimating = false, 400);
-            }, 400);
-        }
-
-        if (canHover) {
-            // Hover анімація
-            choiceItems.addEventListener('mouseenter', () => {
-                if (parseInt(getComputedStyle(choiceItems).zIndex) < parseInt(getComputedStyle(cardOther).zIndex)) {
-                    animateTo(choiceItems, cardOther);
-                }
-            });
-
-            cardOther.addEventListener('mouseenter', () => {
-                if (parseInt(getComputedStyle(cardOther).zIndex) < parseInt(getComputedStyle(choiceItems).zIndex)) {
-                    animateTo(cardOther, choiceItems);
-                }
-            });
-
-            // Перехід при кліку (на hover-пристроях)
-            choiceItems.addEventListener("click", () => {
-                choiceSection.classList.remove("visible");
                 setTimeout(() => {
-                    choiceSection.style.display = "none";
-                    charactersSection.style.display = "block";
-                    setTimeout(() => {
-                        charactersSection.classList.add("visible");
+                    cardToRaise.style.zIndex = '10';
+                    cardToLower.style.zIndex = '5';
+                    choiceItems.style.marginRight = currentMargin;
 
-                        if (userData.gender && professionsData[userData.gender]) {
-                            displayProfessions(professionsData[userData.gender]);
-                        }
-                    }, 0);
-                }, 0);
-            });
+                    setTimeout(() => isAnimating = false, 400);
+                }, 400);
+            }
 
-        } else {
-            [choiceItems, cardOther].forEach(card => {
-                card.addEventListener('click', () => {
-                    const isActive = card.classList.contains('active-mobile');
-
-                    if (!isActive) {
-                        setGlow(choiceItems, false);
-                        setGlow(cardOther, false);
-                        choiceItems.classList.remove('active-mobile');
-                        cardOther.classList.remove('active-mobile');
-
-                        card.classList.add('active-mobile');
-                        setGlow(card, true);
-
-                        if (card === choiceItems) {
-                            animateTo(choiceItems, cardOther);
-                        } else {
-                            animateTo(cardOther, choiceItems);
-                        }
-
-                    } else {
-                        if (card === choiceItems) {
-                            choiceSection.classList.remove("visible");
-                            setTimeout(() => {
-                                choiceSection.style.display = "none";
-                                charactersSection.style.display = "block";
-                                setTimeout(() => {
-                                    charactersSection.classList.add("visible");
-
-                                    if (userData.gender && professionsData[userData.gender]) {
-                                        displayProfessions(professionsData[userData.gender]);
-                                    }
-                                }, 0);
-                            }, 0);
-                        }
+            if (canHover) {
+                choiceItems.addEventListener('mouseenter', () => {
+                    if (parseInt(getComputedStyle(choiceItems).zIndex) < parseInt(getComputedStyle(cardOther).zIndex)) {
+                        animateTo(choiceItems, cardOther);
                     }
                 });
-            });
-        }
 
-        setGlow(choiceItems, true);
-        choiceItems.style.zIndex = '10';
-        cardOther.style.zIndex = '5';
+                cardOther.addEventListener('mouseenter', () => {
+                    if (parseInt(getComputedStyle(cardOther).zIndex) < parseInt(getComputedStyle(choiceItems).zIndex)) {
+                        animateTo(cardOther, choiceItems);
+                    }
+                });
+
+                choiceItems.addEventListener("click", () => {
+                    choiceSection.classList.remove("visible");
+                    setTimeout(() => {
+                        choiceSection.style.display = "none";
+                        charactersSection.style.display = "block";
+                        setTimeout(() => {
+                            charactersSection.classList.add("visible");
+
+                            if (userData.gender && professionsData[userData.gender]) {
+                                displayProfessions(professionsData[userData.gender]);
+                            }
+                        }, 0);
+                    }, 0);
+                });
+
+            } else {
+                [choiceItems, cardOther].forEach(card => {
+                    card.addEventListener('click', () => {
+                        const isActive = card.classList.contains('active-mobile');
+
+                        if (!isActive) {
+                            setGlow(choiceItems, false);
+                            setGlow(cardOther, false);
+                            choiceItems.classList.remove('active-mobile');
+                            cardOther.classList.remove('active-mobile');
+
+                            card.classList.add('active-mobile');
+                            setGlow(card, true);
+
+                            if (card === choiceItems) {
+                                animateTo(choiceItems, cardOther);
+                            } else {
+                                animateTo(cardOther, choiceItems);
+                            }
+
+                        } else {
+                            if (card === choiceItems) {
+                                choiceSection.classList.remove("visible");
+                                setTimeout(() => {
+                                    choiceSection.style.display = "none";
+                                    charactersSection.style.display = "block";
+                                    setTimeout(() => {
+                                        charactersSection.classList.add("visible");
+
+                                        if (userData.gender && professionsData[userData.gender]) {
+                                            displayProfessions(professionsData[userData.gender]);
+                                        }
+                                    }, 0);
+                                }, 0);
+                            }
+                        }
+                    });
+                });
+            }
+        }
     }
 
-
+    hoverEffectCard();
 
     heroBtnContinue.addEventListener("click", function () {
         heroSection.classList.remove("visible");
@@ -505,31 +504,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const tl = gsap.timeline();
 
-        // 🔸 1. Початкове затемнення
         tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
 
-        // 🔸 2. Анімація tutorial icon вправо
         tl.to(tutorialIcon, {
             x: "150%",
             duration: 0.8,
             ease: "power2.out"
         }, "+=0.5");
 
-        // 🔸 3. Повернення назад
         tl.to(tutorialIcon, {
             x: '0%',
             duration: 0.4,
             ease: "power1.inOut"
         });
 
-        // 🔸 4. Ще раз вправо
         tl.to(tutorialIcon, {
             x: '150%',
             duration: 0.8,
             ease: "power2.out"
         });
 
-        // 🔸 5. Вниз + зникнення
         tl.to(tutorialIcon, {
             y: '150%',
             opacity: 0,
@@ -537,32 +531,27 @@ document.addEventListener("DOMContentLoaded", function () {
             ease: "power1.out"
         });
 
-        // 🔸 6. З'являється блок зарплати
         tl.to(salaryBlock, {
             opacity: 0.2,
             duration: 0.5
         }, "+=0.5");
 
-        // 🔸 7. Таблиця фінансів 100%
         tl.to(financesTabs, {
             opacity: 1,
             duration: 0.5
         }, "<");
 
-        // 🔸 8. Клік-клік на кнопці
         tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
         tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
-        // 🔸 9. Зникнення кнопки вниз
         tl.to(tutorialBtn, {
             y: '100%',
             opacity: 0,
             duration: 0.5
         }, "+=0.4");
 
-        // 🔸 10. Усі блоки знову 100% opacity
         tl.to(baseElems, {opacity: 1, duration: 0.5});
         tl.to(salaryBlock, {
             opacity: 1,
@@ -610,16 +599,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const tl = gsap.timeline({delay: 0.5});
 
-        // 🔸 1. Початкове затемнення всіх блоків
         tl.to(baseElems, {opacity: 0.2, duration: 0.5, stagger: 0.03}, 0);
 
-        // 🔸 2. Анімація кліків
         tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
         tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
-        // 🔸 3. Зникнення
         tl.to(tutorialBtn, {y: '100%', opacity: 0, duration: 0.5}, "+=0.4");
 
         tl.to(baseElems, {opacity: 1, duration: 0.5}, "+=0.5");
@@ -678,14 +664,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     tavernaMapButton.addEventListener("click", function () {
-        // Приховуємо таверну
         tavernSection.classList.remove("visible");
 
         setTimeout(() => {
             tavernSection.style.display = "none";
             mapSection.style.display = "block";
 
-            // Додаємо видимість мапі
             setTimeout(() => {
                 mapSection.classList.add("visible");
                 window.scrollTo(0, 0);
@@ -694,7 +678,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     skarbnitsiaMapButton.addEventListener("click", function () {
-        // Приховуємо скарбницю
         treasurySection.classList.remove("visible");
 
         setTimeout(() => {
@@ -710,14 +693,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     portMapButton.addEventListener("click", function () {
-        // Приховуємо порт
         portSection.classList.remove("visible");
 
         setTimeout(() => {
             portSection.style.display = "none";
             mapSection.style.display = "block";
 
-            // Додаємо видимість мапі
             setTimeout(() => {
                 mapSection.classList.add("visible");
                 window.scrollTo(0, 0);
@@ -835,8 +816,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
-
-    // Повернення до вибору професії
     backButton.addEventListener("click", function () {
         resetUserData(true);
         charactersSection.classList.remove("visible");
@@ -902,14 +881,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const photoElement = profileBlock.querySelector(".profile-photo-gd");
             if (photoElement) {
-                photoElement.src = userData.avatar || "https://via.placeholder.com/150"; // Заглушка, якщо немає фото
+                photoElement.src = userData.avatar || "https://via.placeholder.com/150";
             }
 
             const pointsElement = profileBlock.querySelector(".profile-point-gd");
             if (pointsElement) {
-                console.log("🎯 userData.points:", userData.points);
-                console.log("📌 Total Points:", userData.points?.total);
-
+                // console.log("🎯 userData.points:", userData.points);
+                // console.log("📌 Total Points:", userData.points?.total);
 
                 pointsElement.textContent = (userData.points && typeof userData.points.total === "number")
                     ? (userData.points.total >= 0 ? userData.points.total : 0)
@@ -943,7 +921,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         wrapper.appendChild(popup);
                         artifactsContainer.appendChild(wrapper);
 
-                        // Ховер-логіка
                         wrapper.addEventListener("mouseenter", () => {
                             popup.style.opacity = "1";
                         });
@@ -957,7 +934,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-// повернення назад у парт 1 секції
     backButtonPartOne.addEventListener("click", function () {
         firstPartSection.classList.remove("visible");
         setTimeout(() => {
@@ -1034,7 +1010,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 x = Math.max(0, Math.min(x, rect.width));
                 let percentage = (x / rect.width) * 100;
 
-                // 🟡 Якщо слайдер типу hour з фіксованими позиціями
                 if (sliderType === "hour" && fixedPositions) {
                     const closest = fixedPositions.reduce((prev, curr) =>
                         Math.abs(curr - percentage) < Math.abs(prev - percentage) ? curr : prev
@@ -1042,11 +1017,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     percentage = closest;
                 }
 
-                // 🔁 Синхронізовано переміщення thumb і popup
                 thumb.style.left = percentage + '%';
                 if (popup) popup.style.left = percentage + '%';
 
-                // 🧠 Обчислення значення
                 let value;
                 if (percentage <= 50) {
                     value = minVal + ((midVal - minVal) * (percentage / 50));
@@ -1056,26 +1029,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 value = Math.round(value);
 
-                logValue(value); // лог тільки 1 раз
+                logValue(value);
 
-                // 💰 Зарплата
                 if (sliderType === "salery") {
                     value = Math.round(value / 10) * 10;
                     userData.salary = value;
                     assignSalaryArtefact(value, minVal, midVal, maxVal);
                 }
 
-                // 📆 Вік
                 if (sliderType === "age" || sliderType === "age-it") {
                     userData.age = value;
                 }
 
-                // ⏱ Робочі години
                 if (sliderType === "hour") {
                     updateHourPoints(value);
                 }
 
-                // ❌ Текст не оновлюємо, якщо не потрібен
                 if (popupText) popupText.textContent = formatValue(value, sliderType);
             }
 
@@ -1092,7 +1061,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.addEventListener('touchend', stopDrag);
         });
     }
-
 
     function updateHourPoints(value) {
         let points = 0;
@@ -1436,7 +1404,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-        console.log("✅ Оновлено всі дані персонажа:", professionData);
+        // console.log("✅ Оновлено всі дані персонажа:", professionData);
 
 
         initFinanceTabs();
@@ -1538,12 +1506,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 image: artefactData.image,
                 description: artefactData.description
             };
-            console.log(`🎖 Призначено артефакт: ${artefactKey}`, artefactData);
-            updateProfileBlocks(); // оновлення профілю
+            // console.log(`🎖 Призначено артефакт: ${artefactKey}`, artefactData);
+            updateProfileBlocks();
         }
     }
 
-// add boss points
+// призначення очків боссам
     function addBossPoints(bossName, points, reason) {
         if (!bossesData[bossName]) return;
 
@@ -1559,8 +1527,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-// total boos points
     function updateTotalBossPoints() {
         Object.keys(bossesData).forEach(boss => {
             let total = 0;
@@ -1576,7 +1542,7 @@ document.addEventListener("DOMContentLoaded", function () {
             bossesData[boss].totalPoints = total;
         });
 
-        console.log("📊 Оновлено загальні бали босів:", bossesData);
+        // console.log("📊 Оновлено загальні бали босів:", bossesData);
     }
 
 
@@ -1606,7 +1572,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         break;
                 }
 
-                console.log("💰 Вибрано фінансовий статус:", userData.finStatus);
+                // console.log("💰 Вибрано фінансовий статус:", userData.finStatus);
             });
         });
     }
@@ -1662,7 +1628,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (artefactData && artefactData.image && artefactData.description) {
             const current = userData.artefacts.familyArtefact;
 
-            // Перевірка на зміну
             if (!current || current.image !== artefactData.image) {
                 userData.artefacts.familyArtefact = {
                     image: artefactData.image,
@@ -1670,7 +1635,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
 
                 updateProfileBlocks();
-                console.log(`💍 Призначено артефакт сімейного стану: ${familyStatus}`, artefactData);
+                // console.log(`💍 Призначено артефакт сімейного стану: ${familyStatus}`, artefactData);
             }
         }
     }
@@ -1680,13 +1645,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const childrenTabs = childrenBlock.querySelectorAll(".finances-tab-gd.children");
             const childrenBlocks = childrenBlock.querySelectorAll(".static-line_block-gd.children");
 
-            console.log("🔍 Виявлені вкладки дітей:", document.querySelectorAll(".finances-tab-gd.children"));
+            // console.log("🔍 Виявлені вкладки дітей:", document.querySelectorAll(".finances-tab-gd.children"));
 
             childrenTabs.forEach((tab, index) => {
                 console.log("🎯 Додаємо обробник для:", tab);
 
                 tab.addEventListener("click", function () {
-                    console.log("✅ Клік спрацював по вкладці дітей:", tab.textContent);
+                    // console.log("✅ Клік спрацював по вкладці дітей:", tab.textContent);
                     childrenTabs.forEach(item => item.classList.remove("active"));
                     childrenBlocks.forEach(block => block.classList.remove("active"));
 
@@ -1695,9 +1660,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     let childrenStatus = index === 0 ? "have_children" : "no_children";
                     userData.kids = childrenStatus;
-                    console.log("👶 Вибрано статус дітей:", childrenStatus);
+                    // console.log("👶 Вибрано статус дітей:", childrenStatus);
 
-                    // Призначаємо артефакт для вибору
                     assignChildrenArtefact(childrenStatus);
                 });
             });
@@ -1723,298 +1687,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
 
                 updateProfileBlocks();
-                console.log(`🍼 Призначено артефакт для дітей: ${childrenStatus}`, artefactData);
+                // console.log(`🍼 Призначено артефакт для дітей: ${childrenStatus}`, artefactData);
             }
         }
     }
 
 
-    document.querySelector(".exp-flex-gd.exp_it").addEventListener("click", function (event) {
-        const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
+    function initUniversalRangeSelector({
+                                            trackSelector,
+                                            thumbSelector,
+                                            blockSelector,
+                                            positions,
+                                            keys,
+                                            userDataKey,
+                                            artefactCategory,
+                                            onSelect = () => {}
+                                        }) {
+        const track = document.querySelector(trackSelector);
+        const thumb = document.querySelector(thumbSelector);
+        const blocks = document.querySelectorAll(blockSelector);
 
-        allColumns.forEach(column => {
-            const rect = column.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const topY = rect.top;
-            const clickX = event.clientX;
-            const clickY = event.clientY;
-
-            const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
-            const vwToPx = window.innerWidth * 0.03;
-
-            if (distance < vwToPx) {
-                document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(thumb => {
-                    thumb.style.opacity = "0";
-                });
-
-                const classList = Array.from(column.classList);
-                const selectedComboClass = classList.find(cls => cls.startsWith("exp-it-line-"));
-
-                if (selectedComboClass) {
-                    console.log("✅ Вибрано:", selectedComboClass);
-                    userData.itExperience = selectedComboClass;
-
-                    const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_it");
-                    if (thumb) {
-                        thumb.style.opacity = "1";
-                    }
-                }
-
-                if (professionsData.artefacts && professionsData.artefacts.it_experience) {
-                    let expKey = selectedComboClass.replace("exp-it-line-", "") + "_years";
-                    if (selectedComboClass === "exp-it-line-10") {
-                        expKey = "10+_years";
-                    }
-
-                    const artefactData = professionsData.artefacts.it_experience[expKey];
-
-                    if (artefactData && artefactData.image && artefactData.description) {
-                        if (!userData.artefacts) {
-                            userData.artefacts = {};
-                        }
-
-                        userData.artefacts["exp-it"] = {
-                            image: artefactData.image,
-                            description: artefactData.description
-                        };
-
-                        console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}`, artefactData);
-                        updateProfileBlocks();
-                    } else {
-                        console.warn(`⚠️ Не знайдено артефакт для: ${expKey}`);
-                    }
-                } else {
-                    console.error("❌ Дані про артефакти IT досвіду відсутні!");
-                }
-            }
-        });
-    });
-
-
-    document.querySelector(".exp-flex-gd.exp_spec").addEventListener("click", function (event) {
-        const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
-
-        allColumns.forEach(column => {
-            const rect = column.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const topY = rect.top;
-            const clickX = event.clientX;
-            const clickY = event.clientY;
-
-            const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
-            const vwToPx = window.innerWidth * 0.03;
-
-            if (distance < vwToPx) {
-                document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_spec").forEach(thumb => {
-                    thumb.style.opacity = "0";
-                });
-
-                const classList = Array.from(column.classList);
-                const selectedComboClass = classList.find(cls => cls.startsWith("exp-spec-line-"));
-
-                if (selectedComboClass) {
-                    console.log("✅ Вибрано:", selectedComboClass);
-                    userData.specialtyExperience = selectedComboClass;
-
-                    const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_spec");
-                    if (thumb) {
-                        thumb.style.opacity = "1";
-                    }
-
-                    addUserPoints("specialtyExperience", 0);
-
-                    let points = 0;
-                    switch (selectedComboClass) {
-                        case "exp-spec-line-1-2":
-                            points = 1;
-                            break;
-                        case "exp-spec-line-3-5":
-                            points = 2;
-                            break;
-                        case "exp-spec-line-6-9":
-                            points = 3;
-                            break;
-                        case "exp-spec-line-10":
-                            points = 4;
-                            break;
-                    }
-                    addUserPoints("specialtyExperience", points);
-                }
-            }
-        });
-    });
-
-    const track = document.querySelector(".title-truck_gd");
-    const thumb = document.querySelector(".title-trumb-gd");
-    const titleBlocks = document.querySelectorAll(".title-block_item-gd-2");
-
-    let isDragging = false;
-    let positions = [0, 33, 66, 98];
-    let selectedIndex = null;
-
-    function setActiveTitle(index) {
-        titleBlocks.forEach(block => block.classList.remove("active"));
-
-        if (index !== null) {
-            titleBlocks[index].classList.add("active");
-
-            let jobTitle = ["junior", "middle", "senior", "team_tech_lead"][index];
-            let points = index + 1;
-
-            addUserPoints("titlePoints", points);
-            console.log(`📌 Вибрано: ${jobTitle} (Бали: ${points})`);
-            userData.jobTitle = jobTitle;
-
-            moveThumb(positions[index]);
-
-            track.addEventListener("click", (event) => {
-                const rect = track.getBoundingClientRect();
-                const clickX = event.clientX - rect.left;
-                const percent = (clickX / rect.width) * 100;
-
-                // Знаходимо найближчу позицію
-                let closestIndex = positions.reduce((prev, curr, idx) =>
-                    Math.abs(curr - percent) < Math.abs(positions[prev] - percent) ? idx : prev, 0
-                );
-
-                selectedIndex = closestIndex;
-                setActiveTitle(closestIndex);
-                titleBlocks.forEach((block, index) => {
-                    block.addEventListener("click", () => {
-                        selectedIndex = index;
-                        setActiveTitle(index);
-                    });
-                });
-            });
-        }
-    }
-
-    function moveThumb(value) {
-        thumb.style.left = `${value}%`;
-    }
-
-    function startDrag(event) {
-        isDragging = true;
-        event.preventDefault();
-    }
-
-    function stopDrag() {
-        if (!isDragging) return;
-        isDragging = false;
-
-        let rect, thumbLeft;
-
-        requestAnimationFrame(() => {
-            rect = track.getBoundingClientRect();
-            thumbLeft = thumb.getBoundingClientRect().left;
-
-            let x = ((thumbLeft - rect.left) / rect.width) * 100;
-
-            let closestIndex = positions.reduce((prev, curr, idx) =>
-                Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
-            );
-
-            selectedIndex = closestIndex;
-            setActiveTitle(closestIndex);
-        });
-    }
-
-    function dragMove(event) {
-        if (!isDragging) return;
-
-        let clientX = event.touches ? event.touches[0].clientX : event.clientX;
-        let rect = track.getBoundingClientRect();
-        let x = ((clientX - rect.left) / rect.width) * 100;
-        x = Math.max(0, Math.min(x, 98));
-
-        moveThumb(x);
-    }
-
-// Додаємо обробники подій
-    thumb.addEventListener("mousedown", startDrag);
-    thumb.addEventListener("touchstart", startDrag, {passive: false});
-    document.addEventListener("mousemove", dragMove);
-    document.addEventListener("touchmove", dragMove, {passive: false});
-    document.addEventListener("mouseup", stopDrag);
-    document.addEventListener("touchend", stopDrag);
-
-
-    // ======== Вибір рівня англійської мови ======== //
-    function initLanguageSelection() {
-        const langContainers = document.querySelectorAll(".lang-row_wrapper-gd.lang");
-        const allLangButtons = document.querySelectorAll(".finances-tab-gd-2");
-        const allLangTextWrappers = document.querySelectorAll(".static-text_wrapper-gd-2");
-
-        langContainers.forEach(langContainer => {
-            const langButtons = langContainer.querySelectorAll(".finances-tab-gd-2");
-
-            langButtons.forEach(langButton => {
-                langButton.addEventListener("click", function () {
-                    // Видаляємо `active` у всіх кнопок та текстових блоків перед додаванням нового активного
-                    allLangButtons.forEach(btn => btn.classList.remove("active"));
-                    allLangTextWrappers.forEach(txt => txt.classList.remove("active"));
-
-                    let selectedLevel = "";
-                    let points = 0;
-
-                    if (langButton.classList.contains("pre-intermediate-btn")) {
-                        selectedLevel = "pre-intermediate";
-                        points = 1;
-                    } else if (langButton.classList.contains("intermediate-btn")) {
-                        selectedLevel = "intermediate";
-                        points = 2;
-                    } else if (langButton.classList.contains("upper-intermediate-btn")) {
-                        selectedLevel = "upper-intermediate";
-                        points = 3;
-                    } else if (langButton.classList.contains("advanced-btn")) {
-                        selectedLevel = "advanced";
-                        points = 4;
-                    }
-
-                    // ✅ Додаємо `active` тільки для вибраного рівня
-                    langButton.classList.add("active");
-                    const selectedTextWrapper = langContainer.querySelector(".static-text_wrapper-gd-2");
-                    if (selectedTextWrapper) selectedTextWrapper.classList.add("active");
-
-                    // ✅ Оновлення балів
-                    addUserPoints("langPoints", points);
-                    console.log(`✅ Вибрано рівень: ${selectedLevel}, Бали: ${points}`);
-                });
-            });
-        });
-
-        console.log("✅ Логіка вибору рівня англійської ініціалізована");
-    }
-
-    console.log('v-1')
-
-    initLanguageSelection();
-
-
-    function handleEngineBlockVisibility() {
-        const engineBlock = document.querySelector(".title-block-gd.engines");
-        if (!engineBlock) return;
-
-        const hiddenProfessions = ["Marketing", "HR"];
-        if (hiddenProfessions.includes(userData.profession)) {
-            engineBlock.style.display = "none";
-        } else {
-            engineBlock.style.display = "block";
-        }
-    }
-
-    function initEngineRangeSelector() {
-        const track = document.querySelector(".title-truck_gd.engines");
-        const thumb = track?.querySelector(".title-trumb-gd");
-        const engineBlocks = document.querySelectorAll(".title-block_item-gd");
-
-        if (!track || !thumb || engineBlocks.length === 0) {
-            console.error("❌ Блоки або елементи для вибору рушія не знайдені.");
+        if (!track || !thumb || blocks.length === 0) {
+            console.error("❌ Не знайдено елементи для", trackSelector);
             return;
         }
 
-        const positions = [0, 33, 66, 98];
-        const engineKeys = ["unity", "unreal_engine", "no_engine", "other_engine"];
         let isDragging = false;
         let selectedIndex = null;
 
@@ -2022,26 +1719,28 @@ document.addEventListener("DOMContentLoaded", function () {
             thumb.style.left = `${value}%`;
         }
 
-        function setActiveEngine(index) {
-            engineBlocks.forEach(block => block.classList.remove("active"));
+        function setActive(index) {
+            blocks.forEach(b => b.classList.remove("active"));
             if (index !== null) {
-                engineBlocks[index].classList.add("active");
+                blocks[index].classList.add("active");
 
-                const engineKey = engineKeys[index];
-                userData.engineExperience = engineKey;
+                const key = keys[index];
+                userData[userDataKey] = key;
 
-                // призначення артефакта
-                const artefactData = professionsData.artefacts?.engine_experience?.[engineKey];
-                if (artefactData && artefactData.image && artefactData.description) {
-                    userData.artefacts.engineExperience = {
-                        image: artefactData.image,
-                        description: artefactData.description
-                    };
-                    updateProfileBlocks();
-                    console.log(`🧩 Призначено артефакт рушія: ${engineKey}`, artefactData);
+                if (artefactCategory) {
+                    const artefactData = professionsData.artefacts?.[artefactCategory]?.[key];
+                    if (artefactData && artefactData.image && artefactData.description) {
+                        userData.artefacts[artefactCategory] = {
+                            image: artefactData.image,
+                            description: artefactData.description
+                        };
+                        updateProfileBlocks();
+                        console.log(`🎖 Артефакт [${artefactCategory}]: ${key}`, artefactData);
+                    }
                 }
 
                 moveThumb(positions[index]);
+                onSelect(index, key);
             }
         }
 
@@ -2063,7 +1762,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
             selectedIndex = closestIndex;
-            setActiveEngine(selectedIndex);
+            setActive(closestIndex);
         }
 
         function dragMove(e) {
@@ -2077,13 +1776,418 @@ document.addEventListener("DOMContentLoaded", function () {
             moveThumb(x);
         }
 
+        // 🎯 Клік по треку
+        track.addEventListener("click", (event) => {
+            const rect = track.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const percent = (clickX / rect.width) * 100;
+
+            let closestIndex = positions.reduce((prev, curr, idx) =>
+                Math.abs(curr - percent) < Math.abs(positions[prev] - percent) ? idx : prev, 0
+            );
+
+            selectedIndex = closestIndex;
+            setActive(closestIndex);
+        });
+
+        // 🖱️ Клік по блоках
+        blocks.forEach((block, index) => {
+            block.addEventListener("click", () => {
+                selectedIndex = index;
+                setActive(index);
+            });
+        });
+
+        // 🎮 Drag events
         thumb.addEventListener("mousedown", startDrag);
-        thumb.addEventListener("touchstart", startDrag, {passive: false});
+        thumb.addEventListener("touchstart", startDrag, { passive: false });
         document.addEventListener("mousemove", dragMove);
-        document.addEventListener("touchmove", dragMove, {passive: false});
+        document.addEventListener("touchmove", dragMove, { passive: false });
         document.addEventListener("mouseup", stopDrag);
         document.addEventListener("touchend", stopDrag);
     }
+
+
+    initUniversalRangeSelector({
+        trackSelector: ".title-truck_gd",
+        thumbSelector: ".title-trumb-gd",
+        blockSelector: ".title-block_item-gd-2",
+        positions: [0, 33, 66, 98],
+        keys: ["junior", "middle", "senior", "team_tech_lead"],
+        userDataKey: "jobTitle",
+        artefactCategory: null,
+        onSelect: (index, key) => addUserPoints("titlePoints", index + 1)
+    });
+
+
+    initUniversalRangeSelector({
+        trackSelector: ".title-truck_gd.engines",
+        thumbSelector: ".title-trumb-gd.engines",
+        blockSelector: ".title-block_item-gd.engines",
+        positions: [0, 33, 66, 98],
+        keys: ["unity", "unreal_engine", "no_engine", "other_engine"],
+        userDataKey: "engineExperience",
+        artefactCategory: "engine_experience"
+    });
+    initUniversalRangeSelector({
+        trackSelector: ".title-truck_gd.satisfaction",
+        thumbSelector: ".title-trumb-gd.satisfaction",
+        blockSelector: ".title-block_item-gd.satisfaction",
+        positions: [0, 49, 98],
+        keys: ["satisfied", "mostly_satisfied", "not_satisfied"],
+        userDataKey: "salarySatisfaction",
+        artefactCategory: "salary_satisfaction"
+    });
+
+
+//вибір досвіду
+//     document.querySelector(".exp-flex-gd.exp_it").addEventListener("click", function (event) {
+//         const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
+//
+//         allColumns.forEach(column => {
+//             const rect = column.getBoundingClientRect();
+//             const centerX = rect.left + rect.width / 2;
+//             const topY = rect.top;
+//             const clickX = event.clientX;
+//             const clickY = event.clientY;
+//
+//             const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
+//             const vwToPx = window.innerWidth * 0.03;
+//
+//             if (distance < vwToPx) {
+//                 document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(thumb => {
+//                     thumb.style.opacity = "0";
+//                 });
+//
+//                 const classList = Array.from(column.classList);
+//                 const selectedComboClass = classList.find(cls => cls.startsWith("exp-it-line-"));
+//
+//                 if (selectedComboClass) {
+//                     // console.log("✅ Вибрано:", selectedComboClass);
+//                     userData.itExperience = selectedComboClass;
+//
+//                     const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_it");
+//                     if (thumb) {
+//                         thumb.style.opacity = "1";
+//                     }
+//                 }
+//
+//                 if (professionsData.artefacts && professionsData.artefacts.it_experience) {
+//                     let expKey = selectedComboClass.replace("exp-it-line-", "") + "_years";
+//                     if (selectedComboClass === "exp-it-line-10") {
+//                         expKey = "10+_years";
+//                     }
+//
+//                     const artefactData = professionsData.artefacts.it_experience[expKey];
+//
+//                     if (artefactData && artefactData.image && artefactData.description) {
+//                         if (!userData.artefacts) {
+//                             userData.artefacts = {};
+//                         }
+//
+//                         userData.artefacts["exp-it"] = {
+//                             image: artefactData.image,
+//                             description: artefactData.description
+//                         };
+//
+//                         // console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}`, artefactData);
+//                         updateProfileBlocks();
+//                     } else {
+//                         console.warn(`⚠️ Не знайдено артефакт для: ${expKey}`);
+//                     }
+//                 } else {
+//                     console.error("❌ Дані про артефакти IT досвіду відсутні!");
+//                 }
+//             }
+//         });
+//     });
+//
+//
+//     document.querySelector(".exp-flex-gd.exp_spec").addEventListener("click", function (event) {
+//         const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
+//
+//         allColumns.forEach(column => {
+//             const rect = column.getBoundingClientRect();
+//             const centerX = rect.left + rect.width / 2;
+//             const topY = rect.top;
+//             const clickX = event.clientX;
+//             const clickY = event.clientY;
+//
+//             const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
+//             const vwToPx = window.innerWidth * 0.03;
+//
+//             if (distance < vwToPx) {
+//                 document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_spec").forEach(thumb => {
+//                     thumb.style.opacity = "0";
+//                 });
+//
+//                 const classList = Array.from(column.classList);
+//                 const selectedComboClass = classList.find(cls => cls.startsWith("exp-spec-line-"));
+//
+//                 if (selectedComboClass) {
+//                     console.log("✅ Вибрано:", selectedComboClass);
+//                     userData.specialtyExperience = selectedComboClass;
+//
+//                     const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_spec");
+//                     if (thumb) {
+//                         thumb.style.opacity = "1";
+//                     }
+//
+//                     addUserPoints("specialtyExperience", 0);
+//
+//                     let points = 0;
+//                     switch (selectedComboClass) {
+//                         case "exp-spec-line-1-2":
+//                             points = 1;
+//                             break;
+//                         case "exp-spec-line-3-5":
+//                             points = 2;
+//                             break;
+//                         case "exp-spec-line-6-9":
+//                             points = 3;
+//                             break;
+//                         case "exp-spec-line-10":
+//                             points = 4;
+//                             break;
+//                     }
+//                     addUserPoints("specialtyExperience", points);
+//                 }
+//             }
+//         });
+//     });
+//
+//     const track = document.querySelector(".title-truck_gd");
+//     const thumb = document.querySelector(".title-trumb-gd");
+//     const titleBlocks = document.querySelectorAll(".title-block_item-gd-2");
+//
+//     let isDragging = false;
+//     let positions = [0, 33, 66, 98];
+//     let selectedIndex = null;
+//
+//     function setActiveTitle(index) {
+//         titleBlocks.forEach(block => block.classList.remove("active"));
+//
+//         if (index !== null) {
+//             titleBlocks[index].classList.add("active");
+//
+//             let jobTitle = ["junior", "middle", "senior", "team_tech_lead"][index];
+//             let points = index + 1;
+//
+//             addUserPoints("titlePoints", points);
+//             console.log(`📌 Вибрано: ${jobTitle} (Бали: ${points})`);
+//             userData.jobTitle = jobTitle;
+//
+//             moveThumb(positions[index]);
+//
+//             track.addEventListener("click", (event) => {
+//                 const rect = track.getBoundingClientRect();
+//                 const clickX = event.clientX - rect.left;
+//                 const percent = (clickX / rect.width) * 100;
+//
+//                 // Знаходимо найближчу позицію
+//                 let closestIndex = positions.reduce((prev, curr, idx) =>
+//                     Math.abs(curr - percent) < Math.abs(positions[prev] - percent) ? idx : prev, 0
+//                 );
+//
+//                 selectedIndex = closestIndex;
+//                 setActiveTitle(closestIndex);
+//                 titleBlocks.forEach((block, index) => {
+//                     block.addEventListener("click", () => {
+//                         selectedIndex = index;
+//                         setActiveTitle(index);
+//                     });
+//                 });
+//             });
+//         }
+//     }
+//
+//     function moveThumb(value) {
+//         thumb.style.left = `${value}%`;
+//     }
+//
+//     function startDrag(event) {
+//         isDragging = true;
+//         event.preventDefault();
+//     }
+//
+//     function stopDrag() {
+//         if (!isDragging) return;
+//         isDragging = false;
+//
+//         let rect, thumbLeft;
+//
+//         requestAnimationFrame(() => {
+//             rect = track.getBoundingClientRect();
+//             thumbLeft = thumb.getBoundingClientRect().left;
+//
+//             let x = ((thumbLeft - rect.left) / rect.width) * 100;
+//
+//             let closestIndex = positions.reduce((prev, curr, idx) =>
+//                 Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
+//             );
+//
+//             selectedIndex = closestIndex;
+//             setActiveTitle(closestIndex);
+//         });
+//     }
+//
+//     function dragMove(event) {
+//         if (!isDragging) return;
+//
+//         let clientX = event.touches ? event.touches[0].clientX : event.clientX;
+//         let rect = track.getBoundingClientRect();
+//         let x = ((clientX - rect.left) / rect.width) * 100;
+//         x = Math.max(0, Math.min(x, 98));
+//
+//         moveThumb(x);
+//     }
+//
+// // Додаємо обробники подій
+//     thumb.addEventListener("mousedown", startDrag);
+//     thumb.addEventListener("touchstart", startDrag, {passive: false});
+//     document.addEventListener("mousemove", dragMove);
+//     document.addEventListener("touchmove", dragMove, {passive: false});
+//     document.addEventListener("mouseup", stopDrag);
+//     document.addEventListener("touchend", stopDrag);
+
+
+    // ======== Вибір рівня англійської мови ======== //
+    function initLanguageSelection() {
+        const langContainers = document.querySelectorAll(".lang-row_wrapper-gd.lang");
+        const allLangButtons = document.querySelectorAll(".finances-tab-gd-2");
+        const allLangTextWrappers = document.querySelectorAll(".static-text_wrapper-gd-2");
+
+        langContainers.forEach(langContainer => {
+            const langButtons = langContainer.querySelectorAll(".finances-tab-gd-2");
+
+            langButtons.forEach(langButton => {
+                langButton.addEventListener("click", function () {
+                    allLangButtons.forEach(btn => btn.classList.remove("active"));
+                    allLangTextWrappers.forEach(txt => txt.classList.remove("active"));
+
+                    let selectedLevel = "";
+                    let points = 0;
+
+                    if (langButton.classList.contains("pre-intermediate-btn")) {
+                        selectedLevel = "pre-intermediate";
+                        points = 1;
+                    } else if (langButton.classList.contains("intermediate-btn")) {
+                        selectedLevel = "intermediate";
+                        points = 2;
+                    } else if (langButton.classList.contains("upper-intermediate-btn")) {
+                        selectedLevel = "upper-intermediate";
+                        points = 3;
+                    } else if (langButton.classList.contains("advanced-btn")) {
+                        selectedLevel = "advanced";
+                        points = 4;
+                    }
+
+                    langButton.classList.add("active");
+                    const selectedTextWrapper = langContainer.querySelector(".static-text_wrapper-gd-2");
+                    if (selectedTextWrapper) selectedTextWrapper.classList.add("active");
+
+                    addUserPoints("langPoints", points);
+                });
+            });
+        });
+
+    }
+
+    initLanguageSelection();
+
+
+    function handleEngineBlockVisibility() {
+        const engineBlock = document.querySelector(".title-block-gd.engines");
+        if (!engineBlock) return;
+
+        const hiddenProfessions = ["Marketing", "HR"];
+        if (hiddenProfessions.includes(userData.profession)) {
+            engineBlock.style.display = "none";
+        } else {
+            engineBlock.style.display = "block";
+        }
+    }
+
+    // function initEngineRangeSelector() {
+    //     const track = document.querySelector(".title-truck_gd.engines");
+    //     const thumb = track?.querySelector(".title-trumb-gd");
+    //     const engineBlocks = document.querySelectorAll(".title-block_item-gd");
+    //
+    //     if (!track || !thumb || engineBlocks.length === 0) {
+    //         console.error("❌ Блоки або елементи для вибору рушія не знайдені.");
+    //         return;
+    //     }
+    //
+    //     const positions = [0, 33, 66, 98];
+    //     const engineKeys = ["unity", "unreal_engine", "no_engine", "other_engine"];
+    //     let isDragging = false;
+    //     let selectedIndex = null;
+    //
+    //     function moveThumb(value) {
+    //         thumb.style.left = `${value}%`;
+    //     }
+    //
+    //     function setActiveEngine(index) {
+    //         engineBlocks.forEach(block => block.classList.remove("active"));
+    //         if (index !== null) {
+    //             engineBlocks[index].classList.add("active");
+    //
+    //             const engineKey = engineKeys[index];
+    //             userData.engineExperience = engineKey;
+    //
+    //             const artefactData = professionsData.artefacts?.engine_experience?.[engineKey];
+    //             if (artefactData && artefactData.image && artefactData.description) {
+    //                 userData.artefacts.engineExperience = {
+    //                     image: artefactData.image,
+    //                     description: artefactData.description
+    //                 };
+    //                 updateProfileBlocks();
+    //                 console.log(`🧩 Призначено артефакт рушія: ${engineKey}`, artefactData);
+    //             }
+    //
+    //             moveThumb(positions[index]);
+    //         }
+    //     }
+    //
+    //     function startDrag(e) {
+    //         isDragging = true;
+    //         e.preventDefault();
+    //     }
+    //
+    //     function stopDrag() {
+    //         if (!isDragging) return;
+    //         isDragging = false;
+    //
+    //         const rect = track.getBoundingClientRect();
+    //         const thumbX = thumb.getBoundingClientRect().left - rect.left;
+    //         const thumbPercent = (thumbX / rect.width) * 100;
+    //
+    //         let closestIndex = positions.reduce((prev, curr, idx) =>
+    //             Math.abs(curr - thumbPercent) < Math.abs(positions[prev] - thumbPercent) ? idx : prev, 0
+    //         );
+    //
+    //         selectedIndex = closestIndex;
+    //         setActiveEngine(selectedIndex);
+    //     }
+    //
+    //     function dragMove(e) {
+    //         if (!isDragging) return;
+    //
+    //         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    //         const rect = track.getBoundingClientRect();
+    //         let x = ((clientX - rect.left) / rect.width) * 100;
+    //         x = Math.max(0, Math.min(x, 98));
+    //
+    //         moveThumb(x);
+    //     }
+    //
+    //     thumb.addEventListener("mousedown", startDrag);
+    //     thumb.addEventListener("touchstart", startDrag, {passive: false});
+    //     document.addEventListener("mousemove", dragMove);
+    //     document.addEventListener("touchmove", dragMove, {passive: false});
+    //     document.addEventListener("mouseup", stopDrag);
+    //     document.addEventListener("touchend", stopDrag);
+    // }
 
     function toggleLanguageBlockVisibility() {
         const langBlock = document.querySelector(".three-part_right-gd.language");
@@ -2101,7 +2205,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const tabs = document.querySelectorAll(".finances-tab-gd-2.language");
         const thumbs = document.querySelectorAll(".trumb-gold-gd");
 
-        // Очистити активні класи
         function resetAllLangSelections() {
             tabs.forEach(tab => tab.classList.remove("active"));
             thumbs.forEach(thumb => thumb.style.opacity = "0");
@@ -2111,7 +2214,6 @@ document.addEventListener("DOMContentLoaded", function () {
             tab.addEventListener("click", () => {
                 const langLabel = tab.textContent.trim().toLowerCase();
 
-                // Мапа для відповідності ключів
                 const labelToKey = {
                     "c#": "csharp_dotnet",
                     "java": "java",
@@ -2134,12 +2236,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 tab.classList.add("active");
 
-                // Показати відповідний thumb
                 const thumbEl = document.querySelector(`.trumb-gold-gd.${fillKey}`) ||
                     document.querySelector(`.programming-fill-gd.${fillKey} .trumb-gold-gd`);
                 if (thumbEl) thumbEl.style.opacity = "1";
 
-                // Призначити користувачу вибір
                 userData.primaryLanguage = key;
 
                 const artefactData = professionsData?.artefacts?.programming_language?.[key];
@@ -2149,7 +2249,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         description: artefactData.description
                     };
                     updateProfileBlocks();
-                    console.log(`👨‍💻 Обрана мова: ${key}, Артефакт:`, artefactData);
+                    // console.log(`👨‍💻 Обрана мова: ${key}, Артефакт:`, artefactData);
                 }
             });
         });
@@ -2160,14 +2260,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         settlementItems.forEach(item => {
             item.addEventListener("click", function () {
-                // Зняти активні класи з усіх блоків і зображень
                 settlementItems.forEach(i => {
                     i.classList.remove("active");
                     const img = i.querySelector(".settlement-img-gd");
                     if (img) img.classList.remove("active");
                 });
 
-                // Додати active до вибраного блоку
                 item.classList.add("active");
 
                 const currentImg = item.querySelector(".settlement-img-gd");
@@ -2188,7 +2286,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 addUserPoints("settlementPoints", points);
-                console.log(`✅ Вибрано тип населеного пункту: ${selectedSettlement}, Бали: ${points}`);
+                // console.log(`✅ Вибрано тип населеного пункту: ${selectedSettlement}, Бали: ${points}`);
 
                 const target = document.querySelector(".nav-btn-gd.is--taverna");
                 if (target) {
@@ -2197,7 +2295,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        console.log("✅ Логіка вибору типу населеного пункту ініціалізована");
+        // console.log("✅ Логіка вибору типу населеного пункту ініціалізована");
     }
 
     initSettlementSelection();
@@ -2208,7 +2306,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (userData.gender === "female") {
             if (langFactBlock) {
                 langFactBlock.style.display = 'none';
-                console.log("🚫 Блок з фактом про англійську приховано для female");
+                // console.log("🚫 Блок з фактом про англійську приховано для female");
             }
         }
 
@@ -2228,7 +2326,6 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
 
-        // 🟢 Клік по кнопках
         navButtons.forEach(button => {
             button.addEventListener("click", () => {
                 const btnClass = Array.from(button.classList).find(cls =>
@@ -2236,10 +2333,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
                 if (!btnClass) return;
 
-                // ❌ Блокуємо клік для .disable кнопок
                 if (button.classList.contains("disable")) return;
 
-                // 🔄 Переходи між секціями
                 if (mapSection) {
                     mapSection.classList.remove("visible");
                     setTimeout(() => {
@@ -2251,15 +2346,14 @@ document.addEventListener("DOMContentLoaded", function () {
                             if (btnClass === "is--bosses") {
                                 if (userData.points?.total >= 15 && bossesData?.Burnout) {
                                     bossesData.Burnout.damage = 3;
-                                    console.log("🔥 Вигорання стає сильнішим! Damage = 3");
+                                    // console.log("🔥 Вигорання стає сильнішим! Damage = 3");
                                 }
 
                                 if (Object.keys(userData.artefacts || {}).length >= 7 && !userData.points.artefactBonusePoints) {
                                     addUserPoints("artefactBonusePoints", 1);
-                                    console.log("🧩 Бонус за артефакти нараховано: +1 бал");
+                                    // console.log("🧩 Бонус за артефакти нараховано: +1 бал");
                                 }
 
-                                // ✅ Перевіряємо готовність тільки при переході до 'Боси'
                                 checkIfUserIsReady();
                             }
                             targetSection.style.display = "block";
@@ -2278,7 +2372,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }, 0);
                 }
 
-                // ✅ Відмічаємо, що користувач натиснув на одну з трьох потрібних кнопок
                 if (["is--taverna", "is--skarbnitsia", "is--port"].includes(btnClass)) {
                     visited.add(btnClass);
                     button.classList.add("active");
@@ -2294,13 +2387,13 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (bossesPopupText) {
                             bossesPopupText.textContent = "Зустрінься з жахами геймдеву!";
                         }
-                        console.log("🔥 'Боси' активовано");
+                        // console.log("🔥 'Боси' активовано");
                     }
                 }
             });
         });
 
-        console.log("✅ Кнопки та попапи ініціалізовано");
+        // console.log("✅ Кнопки та попапи ініціалізовано");
     }
 
     initNavigationButtons()
@@ -2320,13 +2413,13 @@ document.addEventListener("DOMContentLoaded", function () {
             bossesPopupText.textContent = "Ти не готовий до цієї битви. Спочатку досліди решту локацій!";
         }
 
-        console.log("🔁 Навігаційні кліки скинуто, 'Боси' знову заблоковано");
+        // console.log("🔁 Навігаційні кліки скинуто, 'Боси' знову заблоковано");
     }
 
     let allowGameAnimation = true;
 
     function animateGameIcons() {
-        if (!allowGameAnimation) return; // 🔒 Не запускати, якщо відключено
+        if (!allowGameAnimation) return;
 
         const gameBlocks = document.querySelectorAll('.game-block-gd');
 
@@ -2337,13 +2430,11 @@ document.addEventListener("DOMContentLoaded", function () {
             let index = 0;
 
             function loop() {
-                // 🔒 Якщо користувач передумав (відключив анімацію)
                 if (!allowGameAnimation) return;
 
                 const anyActive = document.querySelector('.game-block-gd.active');
                 if (anyActive) return;
 
-                // Зняти анімацію з усіх
                 icons.forEach(icon => icon.classList.remove('animate-glow'));
 
                 const current = icons[index];
@@ -2374,7 +2465,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function initGamingHabits() {
         const playButtons = document.querySelectorAll(".play-button-gd");
         const gamesBlock = document.querySelector(".games-block-gd");
-        const playLine = document.querySelector(".play-line-gd"); // ⬅️ Отримуємо окремий блок із лініями
+        const playLine = document.querySelector(".play-line-gd");
 
         playButtons.forEach(button => {
             button.addEventListener("click", () => {
@@ -2384,12 +2475,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 let points = 0;
                 let answer = "";
 
-                // 🟡 Знайти всі лінії в окремому блоці
                 if (playLine) {
                     const lines = playLine.querySelectorAll(".static-line_fill-gd");
                     lines.forEach(line => line.classList.remove("active"));
 
-                    // ✅ Додати active залежно від кнопки
                     if (button.classList.contains("btn-yes-gd") && lines[0]) {
                         lines[0].classList.add("active");
                     } else if (button.classList.contains("btn-no-gd") && lines[1]) {
@@ -2397,7 +2486,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 }
 
-                // 🔁 Вся інша логіка — як раніше
                 if (button.classList.contains("btn-yes-gd")) {
                     points = 1;
                     answer = "yes";
@@ -2431,7 +2519,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        console.log("✅ Логіка вибору ігрових звичок ініціалізована");
+        // console.log("✅ Логіка вибору ігрових звичок ініціалізована");
     }
 
 
@@ -2467,11 +2555,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (selectedClass) {
                 userData.gaming_platforms = selectedClass;
-                console.log(`🎮 Вибрано платформу: ${selectedClass}`);
+                // console.log(`🎮 Вибрано платформу: ${selectedClass}`);
             }
         });
 
-        console.log("✅ Логіка вибору платформи ігор через делегування ініціалізована");
+        // console.log("✅ Логіка вибору платформи ігор через делегування ініціалізована");
     }
 
     function initBonusSelection() {
@@ -2481,7 +2569,6 @@ document.addEventListener("DOMContentLoaded", function () {
             tab.addEventListener("click", () => {
                 const selectedText = tab.textContent.trim().toLowerCase();
 
-                // Мапа для відповідності ключів
                 const labelToKey = {
                     "отримую": "receive",
                     "не отримую": "do_not_receive",
@@ -2495,11 +2582,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                // Очистити всі активні стани
                 bonusTabs.forEach(btn => btn.classList.remove("active"));
                 document.querySelectorAll(".bonus-fill-gd").forEach(el => el.classList.remove("active"));
 
-                // Додати активний клас до вибраного
                 tab.classList.add("active");
 
                 const selectedFill = document.querySelector(`.bonus-fill-gd.${key}`);
@@ -2507,7 +2592,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     selectedFill.classList.add("active");
                 }
 
-                // Призначити артефакт
                 const artefactData = professionsData?.artefacts?.monetary_bonuses?.[key];
                 if (artefactData && artefactData.image && artefactData.description) {
                     userData.artefacts.bonusesArtefact = {
@@ -2515,14 +2599,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         description: artefactData.description
                     };
                     updateProfileBlocks();
-                    console.log(`💸 Обраний бонус: ${key}, Артефакт:`, artefactData);
+                    // console.log(`💸 Обраний бонус: ${key}, Артефакт:`, artefactData);
                 } else {
                     console.warn(`❌ Артефакт не знайдено для: ${key}`);
                 }
             });
         });
 
-        console.log("✅ Логіка вибору бонусів ініціалізована");
+        // console.log("✅ Логіка вибору бонусів ініціалізована");
     }
 
 
@@ -2532,7 +2616,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tabs.forEach(tab => {
             tab.addEventListener("click", () => {
-                // Очистити всі класи
                 tabs.forEach(t => t.classList.remove("active"));
                 allThumbs.forEach(th => th.style.opacity = "0");
 
@@ -2584,7 +2667,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 userData.overtime_payment = key;
 
-                // Додаємо клас active для вибраного треку
                 const selectedTrack = document.querySelector(`.programming-fill-gd.${key}`);
                 if (selectedTrack) {
                     allThumbs.forEach(th => th.style.opacity = "0"); // прибрати з усіх
@@ -2592,17 +2674,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (thumb) thumb.style.opacity = "1";
                 }
 
-                // Нараховуємо бали
                 addUserPoints("overtimePoints", points);
                 if (bossPoints.Overtime) addBossPoints("Overtime", bossPoints.Overtime, "overtimePoints");
                 if (bossPoints.Burnout) addBossPoints("Burnout", bossPoints.Burnout, "overtimePoints");
                 if (bossPoints.Deadline) addBossPoints("Deadline", bossPoints.Deadline, "overtimePoints");
 
-                console.log(`🕒 Обрано: ${key}, Бали користувача: ${points}`, bossPoints);
+                // console.log(`🕒 Обрано: ${key}, Бали користувача: ${points}`, bossPoints);
             });
         });
 
-        console.log("✅ Логіка вибору овертаймів ініціалізована");
+        // console.log("✅ Логіка вибору овертаймів ініціалізована");
     }
 
 
@@ -2611,130 +2692,123 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tabButtons.forEach(tab => {
             tab.addEventListener("click", () => {
-                // Зняти активні класи з усіх табів і іконок
                 tabButtons.forEach(btn => btn.classList.remove("active"));
                 document.querySelectorAll(".revision-fill_icon-active-gd").forEach(icon => {
                     icon.classList.remove("active");
                 });
 
-                // Показати всі лінії по замовчуванню
                 document.querySelectorAll(".revision-line-gd").forEach(line => {
                     line.style.display = "block";
                 });
 
-                // Активний таб
                 tab.classList.add("active");
 
-                // Отримуємо відповідний wrapper
                 const wrapper = tab.closest(".revision-wrapper-gd");
                 if (!wrapper) return;
 
-                // Активна лінія — показуємо
                 const lineIcon = wrapper.querySelector(".revision-fill_icon-active-gd");
                 if (lineIcon) {
                     lineIcon.classList.add("active");
                 }
 
-                // Сховати revision-line-gd у цьому блоці
                 const lineToHide = wrapper.querySelector(".revision-line-gd");
                 if (lineToHide) {
                     lineToHide.style.display = "none";
                 }
 
-                // Лог вибору
-                const selectedText = tab.textContent.trim();
-                userData.salary_review_last_6_months = selectedText;
-                console.log(`📝 Вибрано опцію перегляду зарплати: ${selectedText}`);
+                const selectedTextRevision = tab.textContent.trim();
+                userData.salary_review_last_6_months = selectedTextRevision;
+                // console.log(`📝 Вибрано опцію перегляду зарплати: ${selectedTextRevision}`);
             });
         });
 
-        console.log("✅ Логіка вибору перегляду зарплати ініціалізована");
+        // console.log("✅ Логіка вибору перегляду зарплати ініціалізована");
     }
 
 
-    function initSalarySatisfactionSelector() {
-        const track = document.querySelector(".title-truck_gd.satisfaction");
-        const thumb = track?.querySelector(".title-trumb-gd");
-        const blocks = document.querySelectorAll(".title-block_item-gd.satisfaction");
-
-        if (!track || !thumb || blocks.length === 0) {
-            console.error("❌ Блоки для вибору задоволеності не знайдені.");
-            return;
-        }
-
-        const positions = [0, 49, 98]; // для 3-х блоків
-        const keys = ["satisfied", "mostly_satisfied", "not_satisfied"];
-        let isDragging = false;
-        let selectedIndex = null;
-
-        function moveThumb(value) {
-            thumb.style.left = `${value}%`;
-        }
-
-        function setActiveBlock(index) {
-            blocks.forEach(b => b.classList.remove("active"));
-            if (index !== null) {
-                blocks[index].classList.add("active");
-
-                const key = keys[index];
-                userData.salarySatisfaction = key;
-
-                // призначити артефакт
-                const artefactData = professionsData.artefacts?.salary_satisfaction?.[key];
-                if (artefactData && artefactData.image && artefactData.description) {
-                    userData.artefacts.salarySatisfaction = {
-                        image: artefactData.image,
-                        description: artefactData.description
-                    };
-                    updateProfileBlocks();
-                    console.log(`💰 Обрана задоволеність: ${key}, артефакт:`, artefactData);
-                } else {
-                    console.warn(`❌ Артефакт не знайдено для: ${key}`);
-                }
-
-                moveThumb(positions[index]);
-            }
-        }
-
-        function startDrag(e) {
-            isDragging = true;
-            e.preventDefault();
-        }
-
-        function stopDrag() {
-            if (!isDragging) return;
-            isDragging = false;
-
-            const rect = track.getBoundingClientRect();
-            const thumbX = thumb.getBoundingClientRect().left - rect.left;
-            const thumbPercent = (thumbX / rect.width) * 100;
-
-            let closestIndex = positions.reduce((prev, curr, idx) =>
-                Math.abs(curr - thumbPercent) < Math.abs(positions[prev] - thumbPercent) ? idx : prev, 0
-            );
-
-            selectedIndex = closestIndex;
-            setActiveBlock(selectedIndex);
-        }
-
-        function dragMove(e) {
-            if (!isDragging) return;
-
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const rect = track.getBoundingClientRect();
-            let x = ((clientX - rect.left) / rect.width) * 100;
-            x = Math.max(0, Math.min(x, 98));
-
-            moveThumb(x);
-        }
-
-        thumb.addEventListener("mousedown", startDrag);
-        thumb.addEventListener("touchstart", startDrag, {passive: false});
-        document.addEventListener("mousemove", dragMove);
-        document.addEventListener("touchmove", dragMove, {passive: false});
-        document.addEventListener("mouseup", stopDrag);
-        document.addEventListener("touchend", stopDrag);
-    }
+    // function initSalarySatisfactionSelector() {
+    //     const track = document.querySelector(".title-truck_gd.satisfaction");
+    //     const thumb = track?.querySelector(".title-trumb-gd");
+    //     const blocks = document.querySelectorAll(".title-block_item-gd.satisfaction");
+    //
+    //     if (!track || !thumb || blocks.length === 0) {
+    //         console.error("❌ Блоки для вибору задоволеності не знайдені.");
+    //         return;
+    //     }
+    //
+    //     const positions = [0, 49, 98]; // для 3-х блоків
+    //     const keys = ["satisfied", "mostly_satisfied", "not_satisfied"];
+    //     let isDragging = false;
+    //     let selectedIndex = null;
+    //
+    //     function moveThumb(value) {
+    //         thumb.style.left = `${value}%`;
+    //     }
+    //
+    //     function setActiveBlock(index) {
+    //         blocks.forEach(b => b.classList.remove("active"));
+    //         if (index !== null) {
+    //             blocks[index].classList.add("active");
+    //
+    //             const key = keys[index];
+    //             userData.salarySatisfaction = key;
+    //
+    //             // призначити артефакт
+    //             const artefactData = professionsData.artefacts?.salary_satisfaction?.[key];
+    //             if (artefactData && artefactData.image && artefactData.description) {
+    //                 userData.artefacts.salarySatisfaction = {
+    //                     image: artefactData.image,
+    //                     description: artefactData.description
+    //                 };
+    //                 updateProfileBlocks();
+    //                 console.log(`💰 Обрана задоволеність: ${key}, артефакт:`, artefactData);
+    //             } else {
+    //                 console.warn(`❌ Артефакт не знайдено для: ${key}`);
+    //             }
+    //
+    //             moveThumb(positions[index]);
+    //         }
+    //     }
+    //
+    //     function startDrag(e) {
+    //         isDragging = true;
+    //         e.preventDefault();
+    //     }
+    //
+    //     function stopDrag() {
+    //         if (!isDragging) return;
+    //         isDragging = false;
+    //
+    //         const rect = track.getBoundingClientRect();
+    //         const thumbX = thumb.getBoundingClientRect().left - rect.left;
+    //         const thumbPercent = (thumbX / rect.width) * 100;
+    //
+    //         let closestIndex = positions.reduce((prev, curr, idx) =>
+    //             Math.abs(curr - thumbPercent) < Math.abs(positions[prev] - thumbPercent) ? idx : prev, 0
+    //         );
+    //
+    //         selectedIndex = closestIndex;
+    //         setActiveBlock(selectedIndex);
+    //     }
+    //
+    //     function dragMove(e) {
+    //         if (!isDragging) return;
+    //
+    //         const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    //         const rect = track.getBoundingClientRect();
+    //         let x = ((clientX - rect.left) / rect.width) * 100;
+    //         x = Math.max(0, Math.min(x, 98));
+    //
+    //         moveThumb(x);
+    //     }
+    //
+    //     thumb.addEventListener("mousedown", startDrag);
+    //     thumb.addEventListener("touchstart", startDrag, {passive: false});
+    //     document.addEventListener("mousemove", dragMove);
+    //     document.addEventListener("touchmove", dragMove, {passive: false});
+    //     document.addEventListener("mouseup", stopDrag);
+    //     document.addEventListener("touchend", stopDrag);
+    // }
 
     function initEmploymentSelection() {
         const tabs = document.querySelectorAll(".finances-tab-gd-2.employment");
@@ -2743,7 +2817,6 @@ document.addEventListener("DOMContentLoaded", function () {
             tab.addEventListener("click", () => {
                 const value = tab.textContent.trim().toLowerCase();
 
-                // Очистити всі активні стани
                 tabs.forEach(t => t.classList.remove("active"));
                 document.querySelectorAll(".employment-text_wrapper-gd-2").forEach(el => el.classList.remove("active"));
                 document.querySelectorAll(".static-line_fill-gd").forEach(el => el.classList.remove("active"));
@@ -2789,11 +2862,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 userData.employmentType = key;
                 addUserPoints("employmentPoints", points);
 
-                console.log(`📌 Обрано тип працевлаштування: ${key}, Бали: ${points}`);
+                // console.log(`📌 Обрано тип працевлаштування: ${key}, Бали: ${points}`);
             });
         });
 
-        console.log("✅ Логіка вибору типу працевлаштування ініціалізована");
+        // console.log("✅ Логіка вибору типу працевлаштування ініціалізована");
     }
 
 
@@ -2803,7 +2876,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tabs.forEach(tab => {
             tab.addEventListener("click", () => {
-                // Зняти класи active з усіх
                 tabs.forEach(t => t.classList.remove("active"));
                 fills.forEach(f => f.classList.remove("active"));
 
@@ -2826,11 +2898,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     return;
                 }
 
-                // Активувати відповідний fill
                 const selectedFill = document.querySelector(`.work-fill-gd.${key}`);
                 if (selectedFill) selectedFill.classList.add("active");
 
-                // Присвоїти бали
                 let points = 0;
                 switch (key) {
                     case "fully_remote":
@@ -2847,11 +2917,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 addUserPoints("workArrangementPoints", points);
-                console.log(`🏠 Обраний тип роботи: ${key}, Бали користувача: ${points}`);
+                // console.log(`🏠 Обраний тип роботи: ${key}, Бали користувача: ${points}`);
             });
         });
 
-        console.log("✅ Логіка вибору типу праці ініціалізована");
+        // console.log("✅ Логіка вибору типу праці ініціалізована");
     }
 
     function initContractSelection() {
@@ -2859,15 +2929,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         contractTabs.forEach(tab => {
             tab.addEventListener("click", () => {
-                // Зняти активні класи з усіх кнопок
                 contractTabs.forEach(t => t.classList.remove("active"));
                 tab.classList.add("active");
 
-                // Зняти active з усіх треків
                 document.querySelectorAll(".contact-line_fill-gd").forEach(f => f.classList.remove("active"));
                 document.querySelectorAll(".contact-text_wrapper-gd").forEach(t => t.classList.remove("active"));
 
-                // Знайти ключ
                 const value = tab.textContent.trim().toLowerCase();
                 let key = "";
 
@@ -2875,7 +2942,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 else if (value.includes("за кордоном")) key = "foreign_legal_entity";
                 else if (value.includes("в конверті")) key = "not_registered_salary_in_cash";
 
-                // Додати активні класи відповідним елементам
                 const track = document.querySelector(`.contact-line_track-wrapper-gd.${key}`);
                 if (track) {
                     const fill = track.querySelector(".contact-line_fill-gd");
@@ -2887,11 +2953,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 userData.contract_with = key;
 
 
-                console.log(`📝 Обраний тип контракту: ${key}`);
+                // console.log(`📝 Обраний тип контракту: ${key}`);
             });
         });
 
-        console.log("✅ Контрактний вибір активовано");
+        // console.log("✅ Контрактний вибір активовано");
     }
 
     function renderBosses() {
@@ -2929,7 +2995,7 @@ document.addEventListener("DOMContentLoaded", function () {
             bossWrapper.appendChild(clonedBoss);
         });
 
-        console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
+        // console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
         selectedBossKey = null;
     }
 
@@ -2958,16 +3024,13 @@ document.addEventListener("DOMContentLoaded", function () {
             return val !== "" && val !== 0;
         });
 
-        // Показ/приховування тексту
         noReadyText.style.display = hasData ? "none" : "block";
 
-        // Кнопка "до бою" активна лише якщо є дані
         if (hasData) {
             toFightButton.classList.remove("disable");
             toFightButton.style.pointerEvents = "auto";
             toFightButton.style.opacity = "1";
 
-            // Ініціалізуємо вибір боса
             initBossClickSelection();
         } else {
             toFightButton.classList.add("disable");
@@ -2993,7 +3056,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const isDefeated = key && userData.defeated_bosses?.[key];
             const line = block.querySelector(".boss-line-gd");
 
-            // 🔄 Виставлення стилів для переможених босів
             if (isDefeated) {
                 block.classList.add("defeated-boss");
                 block.style.filter = "blur(5px)";
@@ -3006,21 +3068,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (line) line.style.display = "flex";
             }
 
-            // Перевірка на активного
             if (block.classList.contains("active") && !isDefeated) {
                 block.style.opacity = "1";
                 hasActive = true;
             } else if (!isDefeated) {
-                block.style.opacity = "1"; // за замовчуванням — видимий
+                block.style.opacity = "1";
             }
 
 
         });
 
-        // Встановлюємо стан кнопки "в бій"
         activeBtn.style.opacity = hasActive ? "1" : "0";
 
-        // 👉 Слухачі кліків
         bossBlocks.forEach(block => {
             const img = block.querySelector(".boss-img-gd");
             if (!img) return;
@@ -3028,7 +3087,6 @@ document.addEventListener("DOMContentLoaded", function () {
             img.addEventListener("click", () => {
                 if (block.classList.contains("defeated-boss")) return;
 
-                // Зняти active, задати новий active, приглушити інші
                 bossBlocks.forEach(b => {
                     b.classList.remove("active");
                     if (!b.classList.contains("defeated-boss")) {
@@ -3044,7 +3102,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
 
-                // Зберегти ключ
                 const name = block.querySelector(".boss-name")?.textContent?.trim();
                 if (name) {
                     const key = Object.keys(bossesData).find(k => bossesData[k].name === name);
@@ -3065,7 +3122,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        console.log("✅ Ініціалізовано вибір босів та оновлення стилів переможених");
+        // console.log("✅ Ініціалізовано вибір босів та оновлення стилів переможених");
     }
 
 
@@ -3097,7 +3154,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 🧩 Артефакти
         if (artefactContainer) {
-            artefactContainer.innerHTML = ""; // Очистити
+            artefactContainer.innerHTML = "";
 
             Object.values(userData.artefacts || {}).forEach(artifact => {
                 if (artifact && artifact.image) {
@@ -3122,7 +3179,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     wrapper.appendChild(popup);
                     artefactContainer.appendChild(wrapper);
 
-                    // Hover ефекти
                     wrapper.addEventListener("mouseenter", () => {
                         popup.style.opacity = "1";
                     });
@@ -3135,7 +3191,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 👹 Вбиті боси
         if (killedBossesContainer) {
-            killedBossesContainer.innerHTML = ""; // очистити
+            killedBossesContainer.innerHTML = "";
             Object.values(userData.defeated_bosses || {}).forEach(src => {
                 if (src) {
                     const img = document.createElement("img");
@@ -3147,7 +3203,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // 🧠 Текст залежно від кількості балів
         const points = userData.points?.total || 0;
         let finalText = "";
 
@@ -3180,7 +3235,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const selectedBoss = bossesData[selectedBossKey];
 
-        // Елементи у секції бою
         const bossImgEl = document.querySelector(".boss-photo-gd");
         const bossNameEl = document.querySelector(".h2-32-calipso.boss-name");
         const bossPointsEl = document.querySelector(".boss-point-gd");
@@ -3190,7 +3244,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (bossNameEl) bossNameEl.textContent = selectedBoss.name;
         if (bossPointsEl) bossPointsEl.textContent = selectedBoss.totalPoints;
 
-        console.log("📦 Дані боса оновлено:", selectedBoss);
+        // console.log("📦 Дані боса оновлено:", selectedBoss);
     }
 
     function resetBattleCardsPosition() {
@@ -3217,8 +3271,51 @@ document.addEventListener("DOMContentLoaded", function () {
             bossCard.style.opacity = "1";
         }
 
-        console.log("🎯 Картки бою скинуті до початкового стану", isMobile ? "(мобільна версія)" : "(десктоп)");
+        // console.log("🎯 Картки бою скинуті до початкового стану", isMobile ? "(мобільна версія)" : "(десктоп)");
     }
+
+
+
+
+
+    chooseAnotherBossBtn.addEventListener("click", () => {
+        fightSection.classList.remove("visible");
+
+        setTimeout(() => {
+            fightSection.style.display = "none";
+            bossesSection.style.display = "block";
+            initBossClickSelection();
+
+            setTimeout(() => {
+                bossesSection.classList.add("visible");
+                window.scrollTo(0, 0);
+            }, 0);
+        }, 0);
+
+    });
+
+
+    playAgainBtn.addEventListener("click", () => {
+        if (fightSection) {
+            fightSection.classList.remove("visible");
+            setTimeout(() => {
+                fightSection.style.display = "none";
+            }, 0);
+        }
+
+        if (bossesSection) {
+            bossesSection.style.display = "block";
+
+            setTimeout(() => bossesSection.classList.add("visible"), 0);
+            window.scrollTo(0, 0);
+        }
+
+        userData.defeated_bosses = {};
+
+        addUserPoints("bossDaagePoints", 0);
+        initBossClickSelection();
+
+    });
 
 
     function startBattle() {
@@ -3284,7 +3381,6 @@ document.addEventListener("DOMContentLoaded", function () {
             function battleTurn() {
                 if (!userCard || !bossCard) return;
 
-                // Атака: обертання (із збереженням translateY)
                 userCard.style.transition = "transform 0.5s";
                 bossCard.style.transition = "transform 0.5s";
                 userCard.style.transform = isMobile
@@ -3302,7 +3398,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         ? "translateY(0) rotate(0)"
                         : "translate(105%, -50%) rotate(0deg)";
 
-                    // 🗡️ Удар гравця
                     bossPoints -= 2;
                     userPoints -= 2;
                     addBossDamagePoints(-2);
@@ -3314,7 +3409,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         setTimeout(() => {
                             if (defaultFightText) defaultFightText.style.display = "none";
 
-                            // Зберегти переможеного боса
                             const bossKey = userData.selectedBoss.key;
                             userData.defeated_bosses = {
                                 ...userData.defeated_bosses,
@@ -3325,7 +3419,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             const defeatedCount = Object.keys(userData.defeated_bosses).length;
                             const totalBosses = Object.keys(bossesData).length;
 
-                            // Якщо переможені всі
                             if (defeatedCount === totalBosses) {
                                 const fullWinText = document.querySelector(".win-text.full-victore");
                                 if (fullWinText) {
@@ -3373,7 +3466,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
                             }
 
-                            // renderBosses();
                         }, 500);
 
                         return;
@@ -3435,46 +3527,6 @@ document.addEventListener("DOMContentLoaded", function () {
             battleTurn();
         }, 300);
     }
-
-
-    chooseAnotherBossBtn.addEventListener("click", () => {
-        fightSection.classList.remove("visible");
-
-        setTimeout(() => {
-            fightSection.style.display = "none";
-            bossesSection.style.display = "block";
-            initBossClickSelection();
-
-            setTimeout(() => {
-                bossesSection.classList.add("visible");
-                window.scrollTo(0, 0);
-            }, 0);
-        }, 0);
-
-    });
-
-
-    playAgainBtn.addEventListener("click", () => {
-        if (fightSection) {
-            fightSection.classList.remove("visible");
-            setTimeout(() => {
-                fightSection.style.display = "none";
-            }, 0);
-        }
-
-        if (bossesSection) {
-            bossesSection.style.display = "block";
-
-            setTimeout(() => bossesSection.classList.add("visible"), 0);
-            window.scrollTo(0, 0);
-        }
-
-        userData.defeated_bosses = {};
-
-        addUserPoints("bossDaagePoints", 0);
-        initBossClickSelection();
-
-    });
 
 });
 
