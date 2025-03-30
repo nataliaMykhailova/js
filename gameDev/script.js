@@ -1033,9 +1033,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 x = Math.max(0, Math.min(x, rect.width));
                 let percentage = (x / rect.width) * 100;
+
+                // 🟡 Якщо слайдер типу hour з фіксованими позиціями
+                if (sliderType === "hour" && fixedPositions) {
+                    const closest = fixedPositions.reduce((prev, curr) =>
+                        Math.abs(curr - percentage) < Math.abs(prev - percentage) ? curr : prev
+                    );
+                    percentage = closest;
+                }
+
+                // 🔁 Синхронізовано переміщення thumb і popup
                 thumb.style.left = percentage + '%';
                 if (popup) popup.style.left = percentage + '%';
 
+                // 🧠 Обчислення значення
                 let value;
                 if (percentage <= 50) {
                     value = minVal + ((midVal - minVal) * (percentage / 50));
@@ -1045,34 +1056,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 value = Math.round(value);
 
-                logValue(value);
+                logValue(value); // лог тільки 1 раз
 
+                // 💰 Зарплата
                 if (sliderType === "salery") {
                     value = Math.round(value / 10) * 10;
                     userData.salary = value;
                     assignSalaryArtefact(value, minVal, midVal, maxVal);
                 }
 
-                if (popupText) popupText.textContent = formatValue(value, sliderType);
-
+                // 📆 Вік
                 if (sliderType === "age" || sliderType === "age-it") {
                     userData.age = value;
                 }
 
-                if (sliderType === "hour" && fixedPositions) {
-                    const closest = fixedPositions.reduce((prev, curr) =>
-                        Math.abs(curr - percentage) < Math.abs(prev - percentage) ? curr : prev
-                    );
-
-                    thumb.style.left = closest + '%';
-                    if (popup) popup.style.left = closest + '%';
-
-                    percentage = closest;
+                // ⏱ Робочі години
+                if (sliderType === "hour") {
                     updateHourPoints(value);
-                } else {
-                    thumb.style.left = percentage + '%';
-                    if (popup) popup.style.left = percentage + '%';
                 }
+
+                // ❌ Текст не оновлюємо, якщо не потрібен
+                if (popupText) popupText.textContent = formatValue(value, sliderType);
             }
 
             thumb.addEventListener('mousedown', startDrag);
