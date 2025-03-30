@@ -1760,14 +1760,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function initThumbClicks() {
-        document.querySelectorAll('.range-thumb-gd, .range-trumb_gold-gd').forEach(svg => {
+        document.querySelectorAll('.title-trumb-gd').forEach(trumb => {
             const removeAnimateClass = () => {
-                svg.classList.remove('animate');
-                svg.classList.add('active');
+                trumb.classList.remove('animate');
+                trumb.classList.add('active');
             };
 
-            svg.addEventListener('mousedown', removeAnimateClass);
-            svg.addEventListener('touchstart', removeAnimateClass, { passive: true });
+            trumb.addEventListener('mousedown', removeAnimateClass);
+            trumb.addEventListener('touchstart', removeAnimateClass, { passive: true });
         });
     }
 
