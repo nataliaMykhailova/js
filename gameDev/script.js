@@ -1635,15 +1635,20 @@ document.addEventListener("DOMContentLoaded", function () {
             userData.artefacts = {};
         }
 
-        if (professionsData.artefacts && professionsData.artefacts.marital_status) {
-            let artefactUrl = professionsData.artefacts.marital_status[familyStatus];
+        const artefactData = professionsData.artefacts?.marital_status?.[familyStatus];
 
-            if (artefactUrl) {
-                if (userData.artefacts.familyArtefact !== artefactUrl) {
-                    userData.artefacts.familyArtefact = artefactUrl;
-                    updateProfileBlocks();
-                }
-                console.log(`💍 Призначено артефакт сімейного стану: ${familyStatus}, URL: ${artefactUrl}`);
+        if (artefactData && artefactData.image && artefactData.description) {
+            const current = userData.artefacts.familyArtefact;
+
+            // Перевірка на зміну
+            if (!current || current.image !== artefactData.image) {
+                userData.artefacts.familyArtefact = {
+                    image: artefactData.image,
+                    description: artefactData.description
+                };
+
+                updateProfileBlocks();
+                console.log(`💍 Призначено артефакт сімейного стану: ${familyStatus}`, artefactData);
             }
         }
     }
@@ -1684,15 +1689,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (!userData.kids) return;
 
-        if (professionsData.artefacts && professionsData.artefacts.children) {
-            let artefactUrl = professionsData.artefacts.children[userData.kids];
+        const artefactData = professionsData.artefacts?.children?.[userData.kids];
 
-            if (artefactUrl) {
-                if (userData.artefacts.childrenArtefact !== artefactUrl) {
-                    userData.artefacts.childrenArtefact = artefactUrl;
-                    updateProfileBlocks();
-                }
-                console.log(`🍼 Призначено артефакт для дітей: ${childrenStatus}, URL: ${artefactUrl}`);
+        if (artefactData && artefactData.image && artefactData.description) {
+            const current = userData.artefacts.childrenArtefact;
+
+            if (!current || current.image !== artefactData.image) {
+                userData.artefacts.childrenArtefact = {
+                    image: artefactData.image,
+                    description: artefactData.description
+                };
+
+                updateProfileBlocks();
+                console.log(`🍼 Призначено артефакт для дітей: ${childrenStatus}`, artefactData);
             }
         }
     }
@@ -1731,21 +1740,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (professionsData.artefacts && professionsData.artefacts.it_experience) {
                     let expKey = selectedComboClass.replace("exp-it-line-", "") + "_years";
-
                     if (selectedComboClass === "exp-it-line-10") {
                         expKey = "10+_years";
                     }
 
-                    let artefactUrl = professionsData.artefacts.it_experience[expKey];
+                    const artefactData = professionsData.artefacts.it_experience[expKey];
 
-                    if (artefactUrl) {
+                    if (artefactData && artefactData.image && artefactData.description) {
                         if (!userData.artefacts) {
                             userData.artefacts = {};
                         }
 
-                        userData.artefacts["exp-it"] = artefactUrl;
-                        console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}, URL: ${artefactUrl}`);
+                        userData.artefacts["exp-it"] = {
+                            image: artefactData.image,
+                            description: artefactData.description
+                        };
 
+                        console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}`, artefactData);
                         updateProfileBlocks();
                     } else {
                         console.warn(`⚠️ Не знайдено артефакт для: ${expKey}`);
@@ -1973,11 +1984,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 userData.engineExperience = engineKey;
 
                 // призначення артефакта
-                const artefactUrl = professionsData.artefacts?.engine_experience?.[engineKey];
-                if (artefactUrl) {
-                    userData.artefacts.engineExperience = artefactUrl;
+                const artefactData = professionsData.artefacts?.engine_experience?.[engineKey];
+                if (artefactData && artefactData.image && artefactData.description) {
+                    userData.artefacts.engineExperience = {
+                        image: artefactData.image,
+                        description: artefactData.description
+                    };
                     updateProfileBlocks();
-                    console.log(`🧩 Призначено артефакт рушія: ${engineKey}, URL: ${artefactUrl}`);
+                    console.log(`🧩 Призначено артефакт рушія: ${engineKey}`, artefactData);
                 }
 
                 moveThumb(positions[index]);
@@ -2081,11 +2095,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Призначити користувачу вибір
                 userData.primaryLanguage = key;
 
-                const artefactUrl = professionsData?.artefacts?.programming_language?.[key];
-                if (artefactUrl) {
-                    userData.artefacts.programmingLanguage = artefactUrl;
+                const artefactData = professionsData?.artefacts?.programming_language?.[key];
+                if (artefactData && artefactData.image && artefactData.description) {
+                    userData.artefacts.programmingLanguage = {
+                        image: artefactData.image,
+                        description: artefactData.description
+                    };
                     updateProfileBlocks();
-                    console.log(`👨‍💻 Обрана мова: ${key}, Артефакт: ${artefactUrl}`);
+                    console.log(`👨‍💻 Обрана мова: ${key}, Артефакт:`, artefactData);
                 }
             });
         });
@@ -2444,11 +2461,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 // Призначити артефакт
-                const artefactUrl = professionsData?.artefacts?.monetary_bonuses?.[key];
-                if (artefactUrl) {
-                    userData.artefacts.bonusesArtefact = artefactUrl;
+                const artefactData = professionsData?.artefacts?.monetary_bonuses?.[key];
+                if (artefactData && artefactData.image && artefactData.description) {
+                    userData.artefacts.bonusesArtefact = {
+                        image: artefactData.image,
+                        description: artefactData.description
+                    };
                     updateProfileBlocks();
-                    console.log(`💸 Обраний бонус: ${key}, Артефакт: ${artefactUrl}`);
+                    console.log(`💸 Обраний бонус: ${key}, Артефакт:`, artefactData);
                 } else {
                     console.warn(`❌ Артефакт не знайдено для: ${key}`);
                 }
@@ -2613,11 +2633,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 userData.salarySatisfaction = key;
 
                 // призначити артефакт
-                const artefactUrl = professionsData.artefacts?.salary_satisfaction?.[key];
-                if (artefactUrl) {
-                    userData.artefacts.salarySatisfaction = artefactUrl;
+                const artefactData = professionsData.artefacts?.salary_satisfaction?.[key];
+                if (artefactData && artefactData.image && artefactData.description) {
+                    userData.artefacts.salarySatisfaction = {
+                        image: artefactData.image,
+                        description: artefactData.description
+                    };
                     updateProfileBlocks();
-                    console.log(`💰 Обрана задоволеність: ${key}, артефакт: ${artefactUrl}`);
+                    console.log(`💰 Обрана задоволеність: ${key}, артефакт:`, artefactData);
+                } else {
+                    console.warn(`❌ Артефакт не знайдено для: ${key}`);
                 }
 
                 moveThumb(positions[index]);
