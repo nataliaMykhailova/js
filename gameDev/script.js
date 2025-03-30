@@ -1880,16 +1880,21 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!isDragging) return;
         isDragging = false;
 
-        let rect = track.getBoundingClientRect();
-        let x = ((thumb.getBoundingClientRect().left - rect.left) / rect.width) * 100;
+        let rect, thumbLeft;
 
-        let closestIndex = positions.reduce((prev, curr, idx) =>
-            Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
-        );
+        requestAnimationFrame(() => {
+            rect = track.getBoundingClientRect();
+            thumbLeft = thumb.getBoundingClientRect().left;
 
-        // ✅ Оновлюємо selectedIndex кожен раз, а не тільки при першому русі
-        selectedIndex = closestIndex;
-        setActiveTitle(closestIndex);
+            let x = ((thumbLeft - rect.left) / rect.width) * 100;
+
+            let closestIndex = positions.reduce((prev, curr, idx) =>
+                Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
+            );
+
+            selectedIndex = closestIndex;
+            setActiveTitle(closestIndex);
+        });
     }
 
     function dragMove(event) {
