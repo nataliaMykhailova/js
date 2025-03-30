@@ -1830,10 +1830,11 @@ document.addEventListener("DOMContentLoaded", function () {
     let positions = [0, 33, 66, 98];
     let selectedIndex = null;
 
+// 🔧 Встановити активний title-блок
     function setActiveTitle(index) {
         titleBlocks.forEach(block => block.classList.remove("active"));
 
-        if (index !== null) {
+        if (index !== null && titleBlocks[index]) {
             titleBlocks[index].classList.add("active");
 
             let jobTitle = ["junior", "middle", "senior", "team_tech_lead"][index];
@@ -1844,79 +1845,77 @@ document.addEventListener("DOMContentLoaded", function () {
             userData.jobTitle = jobTitle;
 
             moveThumb(positions[index]);
-
-            track.addEventListener("click", (event) => {
-                const rect = track.getBoundingClientRect();
-                const clickX = event.clientX - rect.left;
-                const percent = (clickX / rect.width) * 100;
-
-                // Знаходимо найближчу позицію
-                let closestIndex = positions.reduce((prev, curr, idx) =>
-                    Math.abs(curr - percent) < Math.abs(positions[prev] - percent) ? idx : prev, 0
-                );
-
-                selectedIndex = closestIndex;
-                setActiveTitle(closestIndex);
-                titleBlocks.forEach((block, index) => {
-                    block.addEventListener("click", () => {
-                        selectedIndex = index;
-                        setActiveTitle(index);
-                    });
-                });
-            });
         }
     }
 
+// 🔄 Перемістити повзунок
     function moveThumb(value) {
         thumb.style.left = `${value}%`;
     }
 
+// 🖱 Початок перетягування
     function startDrag(event) {
         isDragging = true;
         event.preventDefault();
     }
 
+// 🛑 Завершення перетягування
     function stopDrag() {
         if (!isDragging) return;
         isDragging = false;
 
-        let rect, thumbLeft;
+        const rect = track.getBoundingClientRect();
+        const x = ((thumb.getBoundingClientRect().left - rect.left) / rect.width) * 100;
 
-        requestAnimationFrame(() => {
-            rect = track.getBoundingClientRect();
-            thumbLeft = thumb.getBoundingClientRect().left;
+        const closestIndex = positions.reduce((prev, curr, idx) =>
+            Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
+        );
 
-            let x = ((thumbLeft - rect.left) / rect.width) * 100;
-
-            let closestIndex = positions.reduce((prev, curr, idx) =>
-                Math.abs(curr - x) < Math.abs(positions[prev] - x) ? idx : prev, 0
-            );
-
-            selectedIndex = closestIndex;
-            setActiveTitle(closestIndex);
-        });
+        selectedIndex = closestIndex;
+        setActiveTitle(closestIndex);
     }
 
+// 🟡 Переміщення під час перетягування
     function dragMove(event) {
         if (!isDragging) return;
 
-        let clientX = event.touches ? event.touches[0].clientX : event.clientX;
-        let rect = track.getBoundingClientRect();
+        const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+        const rect = track.getBoundingClientRect();
         let x = ((clientX - rect.left) / rect.width) * 100;
         x = Math.max(0, Math.min(x, 98));
 
         moveThumb(x);
     }
 
-// Додаємо обробники подій
+// 📌 Додати обробники подій:
     thumb.addEventListener("mousedown", startDrag);
-    thumb.addEventListener("touchstart", startDrag, {passive: false});
+    thumb.addEventListener("touchstart", startDrag, { passive: false });
     document.addEventListener("mousemove", dragMove);
-    document.addEventListener("touchmove", dragMove, {passive: false});
+    document.addEventListener("touchmove", dragMove, { passive: false });
     document.addEventListener("mouseup", stopDrag);
     document.addEventListener("touchend", stopDrag);
 
+// ✅ Додати клік по рейнджу (track)
+    track.addEventListener("click", (event) => {
+        const rect = track.getBoundingClientRect();
+        const clickX = event.clientX - rect.left;
+        const percent = (clickX / rect.width) * 100;
 
+        const closestIndex = positions.reduce((prev, curr, idx) =>
+            Math.abs(curr - percent) < Math.abs(positions[prev] - percent) ? idx : prev, 0
+        );
+
+        selectedIndex = closestIndex;
+        setActiveTitle(closestIndex);
+    });
+
+// ✅ Додати клік по блоках title
+    titleBlocks.forEach((block, index) => {
+        block.addEventListener("click", () => {
+            selectedIndex = index;
+            setActiveTitle(index);
+        });
+    });
     // ======== Вибір рівня англійської мови ======== //
     function initLanguageSelection() {
         const langContainers = document.querySelectorAll(".lang-row_wrapper-gd.lang");
