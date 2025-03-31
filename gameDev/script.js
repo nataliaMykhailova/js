@@ -894,39 +894,42 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const artifactsContainer = profileBlock.querySelector(".artifact-block-gd");
-
             if (artifactsContainer) {
-                const template = artifactsContainer.querySelector(".artefact-wrapper-gd");
-                if (!template) return;
-
-                artifactsContainer.innerHTML = ""; // 💥 повністю очищаємо блок
+                artifactsContainer.innerHTML = "";
 
                 Object.values(userData.artefacts).forEach(artifact => {
-                    if (artifact?.image && artifact?.description) {
-                        const clone = template.cloneNode(true);
+                    if (artifact && artifact.image) {
+                        const wrapper = document.createElement("div");
+                        wrapper.className = "artefact-wrapper-gd";
 
-                        const img = clone.querySelector(".aftifact-img-gd");
-                        if (img) img.src = artifact.image;
+                        const img = document.createElement("img");
+                        img.src = artifact.image;
+                        img.alt = "Артефакт";
+                        img.className = "artifact-img-gd";
 
-                        const descrSpan = clone.querySelector(".artefact-desct-gd");
-                        if (descrSpan) descrSpan.textContent = artifact.description;
+                        const popup = document.createElement("div");
+                        popup.className = "artefact-popap-gd";
+                        popup.style.opacity = "0";
 
-                        const popup = clone.querySelector(".artefact-popap-gd");
-                        if (popup) {
+                        const textWrapper = document.createElement("p");
+                        textWrapper.className = "artefact-popup_text-gd";
+                        textWrapper.innerHTML = `Артефакт: <span class="artefact-desct-gd">${artifact.description || ""}</span>`;
+
+
+                        popup.appendChild(textWrapper);
+                        wrapper.appendChild(img);
+                        wrapper.appendChild(popup);
+                        artifactsContainer.appendChild(wrapper);
+
+                        wrapper.addEventListener("mouseenter", () => {
+                            popup.style.opacity = "1";
+                        });
+                        wrapper.addEventListener("mouseleave", () => {
                             popup.style.opacity = "0";
-                            clone.addEventListener("mouseenter", () => {
-                                popup.style.opacity = "1";
-                            });
-                            clone.addEventListener("mouseleave", () => {
-                                popup.style.opacity = "0";
-                            });
-                        }
-
-                        artifactsContainer.appendChild(clone);
+                        });
                     }
                 });
             }
-
 
         });
     }
