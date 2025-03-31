@@ -901,7 +901,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Залишаємо лише перший шаблон
                 const template = wrappers[0];
                 artifactsContainer.innerHTML = "";
-                artifactsContainer.appendChild(template); // вставляємо шаблон назад
 
                 Object.values(userData.artefacts).forEach(artifact => {
                     if (artifact?.image && artifact?.description) {
