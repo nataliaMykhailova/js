@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     //перехід гра/статистика
-    function hoverEffectCard () {
+    function hoverEffectCard() {
         const canHover = window.matchMedia('(hover: hover)').matches;
 
         const cardOther = document.querySelector('.choice-item-gd.is-margin');
@@ -897,35 +897,40 @@ document.addEventListener("DOMContentLoaded", function () {
             if (artifactsContainer) {
                 artifactsContainer.innerHTML = "";
 
+                const template = document.querySelector(".artefact-wrapper-gd");
+                if (!template) {
+                    console.warn("❗️Шаблон артефакту не знайдено в DOM.");
+                    return;
+                }
+
                 Object.values(userData.artefacts).forEach(artifact => {
                     if (artifact && artifact.image) {
-                        const wrapper = document.createElement("div");
-                        wrapper.className = "artefact-wrapper-gd";
+                        const clone = template.cloneNode(true); // повне клонування з усіма елементами
 
-                        const img = document.createElement("img");
-                        img.src = artifact.image;
-                        img.alt = "Артефакт";
-                        img.className = "artifact-img-gd";
+                        const img = clone.querySelector("img.artifact-img-gd");
+                        if (img) {
+                            img.src = artifact.image;
+                        }
 
-                        const popup = document.createElement("div");
-                        popup.className = "artefact-popap-gd";
-                        popup.style.opacity = "0";
+                        const descrEl = clone.querySelector(".artefact-descr-gd");
+                        if (descrEl) {
+                            descrEl.textContent = artifact.description || "";
+                        }
 
-                        const text = document.createElement("p");
-                        text.className = "artefact-descr-gd";
-                        text.textContent = artifact.description || "";
-
-                        popup.appendChild(text);
-                        wrapper.appendChild(img);
-                        wrapper.appendChild(popup);
-                        artifactsContainer.appendChild(wrapper);
-
-                        wrapper.addEventListener("mouseenter", () => {
-                            popup.style.opacity = "1";
-                        });
-                        wrapper.addEventListener("mouseleave", () => {
+                        const popup = clone.querySelector(".artefact-popap-gd");
+                        if (popup) {
                             popup.style.opacity = "0";
-                        });
+
+                            clone.addEventListener("mouseenter", () => {
+                                popup.style.opacity = "1";
+                            });
+                            clone.addEventListener("mouseleave", () => {
+                                popup.style.opacity = "0";
+                            });
+                        }
+
+                        clone.style.display = ""; // якщо шаблон був прихований — розкриваємо
+                        artifactsContainer.appendChild(clone);
                     }
                 });
             }
@@ -1055,7 +1060,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             thumb.addEventListener('mousedown', startDrag);
-            thumb.addEventListener('touchstart', startDrag, { passive: true });
+            thumb.addEventListener('touchstart', startDrag, {passive: true});
 
             document.addEventListener('mouseup', stopDrag);
             document.addEventListener('touchend', stopDrag);
@@ -1072,7 +1077,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             document.addEventListener('mousemove', onMove);
-            document.addEventListener('touchmove', onMove, { passive: false });
+            document.addEventListener('touchmove', onMove, {passive: false});
         });
     }
 
@@ -1776,120 +1781,120 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // вибір досвіду
-        document.querySelector(".exp-flex-gd.exp_it").addEventListener("click", function (event) {
-            const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
+    document.querySelector(".exp-flex-gd.exp_it").addEventListener("click", function (event) {
+        const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
 
-            allColumns.forEach(column => {
-                const rect = column.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const topY = rect.top;
-                const clickX = event.clientX;
-                const clickY = event.clientY;
+        allColumns.forEach(column => {
+            const rect = column.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const topY = rect.top;
+            const clickX = event.clientX;
+            const clickY = event.clientY;
 
-                const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
-                const vwToPx = window.innerWidth * 0.03;
+            const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
+            const vwToPx = window.innerWidth * 0.03;
 
-                if (distance < vwToPx) {
-                    document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(thumb => {
-                        thumb.style.opacity = "0";
-                    });
+            if (distance < vwToPx) {
+                document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(thumb => {
+                    thumb.style.opacity = "0";
+                });
 
-                    const classList = Array.from(column.classList);
-                    const selectedComboClass = classList.find(cls => cls.startsWith("exp-it-line-"));
+                const classList = Array.from(column.classList);
+                const selectedComboClass = classList.find(cls => cls.startsWith("exp-it-line-"));
 
-                    if (selectedComboClass) {
-                        // console.log("✅ Вибрано:", selectedComboClass);
-                        userData.itExperience = selectedComboClass;
+                if (selectedComboClass) {
+                    // console.log("✅ Вибрано:", selectedComboClass);
+                    userData.itExperience = selectedComboClass;
 
-                        const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_it");
-                        if (thumb) {
-                            thumb.style.opacity = "1";
-                        }
+                    const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_it");
+                    if (thumb) {
+                        thumb.style.opacity = "1";
+                    }
+                }
+
+                if (professionsData.artefacts && professionsData.artefacts.it_experience) {
+                    let expKey = selectedComboClass.replace("exp-it-line-", "") + "_years";
+                    if (selectedComboClass === "exp-it-line-10") {
+                        expKey = "10+_years";
                     }
 
-                    if (professionsData.artefacts && professionsData.artefacts.it_experience) {
-                        let expKey = selectedComboClass.replace("exp-it-line-", "") + "_years";
-                        if (selectedComboClass === "exp-it-line-10") {
-                            expKey = "10+_years";
+                    const artefactData = professionsData.artefacts.it_experience[expKey];
+
+                    if (artefactData && artefactData.image && artefactData.description) {
+                        if (!userData.artefacts) {
+                            userData.artefacts = {};
                         }
 
-                        const artefactData = professionsData.artefacts.it_experience[expKey];
+                        userData.artefacts["exp-it"] = {
+                            image: artefactData.image,
+                            description: artefactData.description
+                        };
 
-                        if (artefactData && artefactData.image && artefactData.description) {
-                            if (!userData.artefacts) {
-                                userData.artefacts = {};
-                            }
-
-                            userData.artefacts["exp-it"] = {
-                                image: artefactData.image,
-                                description: artefactData.description
-                            };
-
-                            // console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}`, artefactData);
-                            updateProfileBlocks();
-                        } else {
-                            console.warn(`⚠️ Не знайдено артефакт для: ${expKey}`);
-                        }
+                        // console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}`, artefactData);
+                        updateProfileBlocks();
                     } else {
-                        console.error("❌ Дані про артефакти IT досвіду відсутні!");
+                        console.warn(`⚠️ Не знайдено артефакт для: ${expKey}`);
                     }
+                } else {
+                    console.error("❌ Дані про артефакти IT досвіду відсутні!");
                 }
-            });
+            }
         });
+    });
 
 
-        document.querySelector(".exp-flex-gd.exp_spec").addEventListener("click", function (event) {
-            const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
+    document.querySelector(".exp-flex-gd.exp_spec").addEventListener("click", function (event) {
+        const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
 
-            allColumns.forEach(column => {
-                const rect = column.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const topY = rect.top;
-                const clickX = event.clientX;
-                const clickY = event.clientY;
+        allColumns.forEach(column => {
+            const rect = column.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const topY = rect.top;
+            const clickX = event.clientX;
+            const clickY = event.clientY;
 
-                const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
-                const vwToPx = window.innerWidth * 0.03;
+            const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
+            const vwToPx = window.innerWidth * 0.03;
 
-                if (distance < vwToPx) {
-                    document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_spec").forEach(thumb => {
-                        thumb.style.opacity = "0";
-                    });
+            if (distance < vwToPx) {
+                document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_spec").forEach(thumb => {
+                    thumb.style.opacity = "0";
+                });
 
-                    const classList = Array.from(column.classList);
-                    const selectedComboClass = classList.find(cls => cls.startsWith("exp-spec-line-"));
+                const classList = Array.from(column.classList);
+                const selectedComboClass = classList.find(cls => cls.startsWith("exp-spec-line-"));
 
-                    if (selectedComboClass) {
-                        console.log("✅ Вибрано:", selectedComboClass);
-                        userData.specialtyExperience = selectedComboClass;
+                if (selectedComboClass) {
+                    console.log("✅ Вибрано:", selectedComboClass);
+                    userData.specialtyExperience = selectedComboClass;
 
-                        const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_spec");
-                        if (thumb) {
-                            thumb.style.opacity = "1";
-                        }
-
-                        addUserPoints("specialtyExperience", 0);
-
-                        let points = 0;
-                        switch (selectedComboClass) {
-                            case "exp-spec-line-1-2":
-                                points = 1;
-                                break;
-                            case "exp-spec-line-3-5":
-                                points = 2;
-                                break;
-                            case "exp-spec-line-6-9":
-                                points = 3;
-                                break;
-                            case "exp-spec-line-10":
-                                points = 4;
-                                break;
-                        }
-                        addUserPoints("specialtyExperience", points);
+                    const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_spec");
+                    if (thumb) {
+                        thumb.style.opacity = "1";
                     }
+
+                    addUserPoints("specialtyExperience", 0);
+
+                    let points = 0;
+                    switch (selectedComboClass) {
+                        case "exp-spec-line-1-2":
+                            points = 1;
+                            break;
+                        case "exp-spec-line-3-5":
+                            points = 2;
+                            break;
+                        case "exp-spec-line-6-9":
+                            points = 3;
+                            break;
+                        case "exp-spec-line-10":
+                            points = 4;
+                            break;
+                    }
+                    addUserPoints("specialtyExperience", points);
                 }
-            });
+            }
         });
+    });
 
     function initThumbClicks() {
         document.querySelectorAll('.range-thumb-gd, .range-trumb_gold-gd').forEach(svg => {
@@ -1899,11 +1904,11 @@ document.addEventListener("DOMContentLoaded", function () {
             };
 
             svg.addEventListener('mousedown', removeAnimateClass);
-            svg.addEventListener('touchstart', removeAnimateClass, { passive: true });
+            svg.addEventListener('touchstart', removeAnimateClass, {passive: true});
         });
     }
 
-    setTimeout(()=> {
+    setTimeout(() => {
         initThumbClicks();
         animateThumbsInBlocksLoop();
     }, 1000)
@@ -1917,7 +1922,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                             keys,
                                             userDataKey,
                                             artefactCategory,
-                                            onSelect = () => {}
+                                            onSelect = () => {
+                                            }
                                         }) {
         const container = document.querySelector(containerSelector);
         if (!container) {
@@ -2024,18 +2030,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         thumb.addEventListener("mousedown", startDrag);
-        thumb.addEventListener("touchstart", startDrag, { passive: false });
+        thumb.addEventListener("touchstart", startDrag, {passive: false});
         document.addEventListener("mousemove", dragMove);
-        document.addEventListener("touchmove", dragMove, { passive: false });
+        document.addEventListener("touchmove", dragMove, {passive: false});
         document.addEventListener("mouseup", stopDrag);
         document.addEventListener("touchend", stopDrag);
     }
-
-
-
-
-
-
 
 
     // ======== Вибір рівня англійської мови ======== //
@@ -2094,7 +2094,6 @@ document.addEventListener("DOMContentLoaded", function () {
             engineBlock.style.display = "block";
         }
     }
-
 
 
     function toggleLanguageBlockVisibility() {
@@ -2198,7 +2197,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const target = document.querySelector(".nav-btn-gd.is--taverna");
                 if (target) {
-                    target.scrollIntoView({ behavior: "smooth", block: "center" });
+                    target.scrollIntoView({behavior: "smooth", block: "center"});
                 }
             });
         });
@@ -2431,8 +2430,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
-
     function initGamingPlatformSelection() {
         const container = document.querySelector(".games-wrapper-gd");
 
@@ -2632,8 +2629,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // console.log("✅ Логіка вибору перегляду зарплати ініціалізована");
     }
-
-
 
 
     function initEmploymentSelection() {
@@ -2942,7 +2937,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (window.innerWidth < 479) {
                     const scrollTarget = document.querySelector(".nav-btn-gd.to-fight");
                     if (scrollTarget) {
-                        scrollTarget.scrollIntoView({ behavior: "smooth", block: "center" });
+                        scrollTarget.scrollIntoView({behavior: "smooth", block: "center"});
                     }
                 }
             });
@@ -3099,9 +3094,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // console.log("🎯 Картки бою скинуті до початкового стану", isMobile ? "(мобільна версія)" : "(десктоп)");
     }
-
-
-
 
 
     chooseAnotherBossBtn.addEventListener("click", () => {
