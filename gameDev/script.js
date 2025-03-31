@@ -894,33 +894,28 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const artifactsContainer = profileBlock.querySelector(".artifact-block-gd");
-            if (artifactsContainer) {
-                artifactsContainer.innerHTML = "";
 
-                const template = document.querySelector(".artefact-wrapper-gd");
-                if (!template) {
-                    console.warn("❗️Шаблон артефакту не знайдено в DOM.");
-                    return;
-                }
+            if (artifactsContainer) {
+                const wrappers = artifactsContainer.querySelectorAll(".artefact-wrapper-gd");
+
+                // Залишаємо лише перший шаблон
+                const template = wrappers[0];
+                artifactsContainer.innerHTML = "";
+                artifactsContainer.appendChild(template); // вставляємо шаблон назад
 
                 Object.values(userData.artefacts).forEach(artifact => {
-                    if (artifact && artifact.image) {
-                        const clone = template.cloneNode(true); // повне клонування з усіма елементами
+                    if (artifact?.image && artifact?.description) {
+                        const clone = template.cloneNode(true); // клон повної структури
 
-                        const img = clone.querySelector("img.artifact-img-gd");
-                        if (img) {
-                            img.src = artifact.image;
-                        }
+                        const img = clone.querySelector(".aftifact-img-gd");
+                        if (img) img.src = artifact.image;
 
-                        const descrEl = clone.querySelector(".artefact-descr-gd");
-                        if (descrEl) {
-                            descrEl.textContent = artifact.description || "";
-                        }
+                        const descrSpan = clone.querySelector(".artefact-desct-gd");
+                        if (descrSpan) descrSpan.textContent = artifact.description;
 
                         const popup = clone.querySelector(".artefact-popap-gd");
                         if (popup) {
                             popup.style.opacity = "0";
-
                             clone.addEventListener("mouseenter", () => {
                                 popup.style.opacity = "1";
                             });
@@ -929,7 +924,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             });
                         }
 
-                        clone.style.display = ""; // якщо шаблон був прихований — розкриваємо
                         artifactsContainer.appendChild(clone);
                     }
                 });
