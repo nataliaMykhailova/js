@@ -896,15 +896,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const artifactsContainer = profileBlock.querySelector(".artifact-block-gd");
 
             if (artifactsContainer) {
-                const wrappers = artifactsContainer.querySelectorAll(".artefact-wrapper-gd");
+                const template = artifactsContainer.querySelector(".artefact-wrapper-gd");
+                if (!template) return;
 
-                // Залишаємо лише перший шаблон
-                const template = wrappers[0];
-                artifactsContainer.innerHTML = "";
+                artifactsContainer.innerHTML = ""; // 💥 повністю очищаємо блок
 
                 Object.values(userData.artefacts).forEach(artifact => {
                     if (artifact?.image && artifact?.description) {
-                        const clone = template.cloneNode(true); // клон повної структури
+                        const clone = template.cloneNode(true);
 
                         const img = clone.querySelector(".aftifact-img-gd");
                         if (img) img.src = artifact.image;
@@ -927,6 +926,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                 });
             }
+
 
         });
     }
