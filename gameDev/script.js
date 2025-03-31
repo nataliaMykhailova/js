@@ -610,7 +610,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tl.to(baseElems, {opacity: 1, duration: 0.5}, "+=0.5");
 
-        // console.log("🎬 Second part animation launched");
     }
 
     let hasRunSecondPartAnimation = true;
@@ -981,7 +980,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             function startDrag() {
                 dragging = true;
-                // ⛔ При перетягуванні — вимикаємо transition
                 thumb.style.transition = 'none';
                 if (popup) popup.style.transition = 'none';
             }
@@ -1046,28 +1044,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (popupText) popupText.textContent = formatValue(value, sliderType);
             }
 
-            // 🖱️ Клік по треку
             track.addEventListener('click', (e) => {
-                // ✅ Додаємо клас активності
                 thumb.classList.add('active');
                 thumb.classList.remove('animate');
 
-                // ✅ Активуємо плавний transition тільки на клік
                 thumb.style.transition = 'left 0.1s ease';
                 if (popup) popup.style.transition = 'left 0.1s ease';
 
                 updatePosition(e, true);
             });
 
-            // 🖱️ Старт drag — скидаємо transition
             thumb.addEventListener('mousedown', startDrag);
             thumb.addEventListener('touchstart', startDrag, { passive: true });
 
-            // 🖱️ Зупинка drag
             document.addEventListener('mouseup', stopDrag);
             document.addEventListener('touchend', stopDrag);
 
-            // 🌀 Оптимізований move через rAF
             function onMove(e) {
                 if (!dragging) return;
                 if (!ticking) {
@@ -1782,6 +1774,122 @@ document.addEventListener("DOMContentLoaded", function () {
             loop();
         });
     }
+
+    // вибір досвіду
+        document.querySelector(".exp-flex-gd.exp_it").addEventListener("click", function (event) {
+            const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
+
+            allColumns.forEach(column => {
+                const rect = column.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const topY = rect.top;
+                const clickX = event.clientX;
+                const clickY = event.clientY;
+
+                const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
+                const vwToPx = window.innerWidth * 0.03;
+
+                if (distance < vwToPx) {
+                    document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(thumb => {
+                        thumb.style.opacity = "0";
+                    });
+
+                    const classList = Array.from(column.classList);
+                    const selectedComboClass = classList.find(cls => cls.startsWith("exp-it-line-"));
+
+                    if (selectedComboClass) {
+                        // console.log("✅ Вибрано:", selectedComboClass);
+                        userData.itExperience = selectedComboClass;
+
+                        const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_it");
+                        if (thumb) {
+                            thumb.style.opacity = "1";
+                        }
+                    }
+
+                    if (professionsData.artefacts && professionsData.artefacts.it_experience) {
+                        let expKey = selectedComboClass.replace("exp-it-line-", "") + "_years";
+                        if (selectedComboClass === "exp-it-line-10") {
+                            expKey = "10+_years";
+                        }
+
+                        const artefactData = professionsData.artefacts.it_experience[expKey];
+
+                        if (artefactData && artefactData.image && artefactData.description) {
+                            if (!userData.artefacts) {
+                                userData.artefacts = {};
+                            }
+
+                            userData.artefacts["exp-it"] = {
+                                image: artefactData.image,
+                                description: artefactData.description
+                            };
+
+                            // console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}`, artefactData);
+                            updateProfileBlocks();
+                        } else {
+                            console.warn(`⚠️ Не знайдено артефакт для: ${expKey}`);
+                        }
+                    } else {
+                        console.error("❌ Дані про артефакти IT досвіду відсутні!");
+                    }
+                }
+            });
+        });
+
+
+        document.querySelector(".exp-flex-gd.exp_spec").addEventListener("click", function (event) {
+            const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
+
+            allColumns.forEach(column => {
+                const rect = column.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const topY = rect.top;
+                const clickX = event.clientX;
+                const clickY = event.clientY;
+
+                const distance = Math.sqrt(Math.pow(clickX - centerX, 2) + Math.pow(clickY - topY, 2));
+                const vwToPx = window.innerWidth * 0.03;
+
+                if (distance < vwToPx) {
+                    document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_spec").forEach(thumb => {
+                        thumb.style.opacity = "0";
+                    });
+
+                    const classList = Array.from(column.classList);
+                    const selectedComboClass = classList.find(cls => cls.startsWith("exp-spec-line-"));
+
+                    if (selectedComboClass) {
+                        console.log("✅ Вибрано:", selectedComboClass);
+                        userData.specialtyExperience = selectedComboClass;
+
+                        const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_spec");
+                        if (thumb) {
+                            thumb.style.opacity = "1";
+                        }
+
+                        addUserPoints("specialtyExperience", 0);
+
+                        let points = 0;
+                        switch (selectedComboClass) {
+                            case "exp-spec-line-1-2":
+                                points = 1;
+                                break;
+                            case "exp-spec-line-3-5":
+                                points = 2;
+                                break;
+                            case "exp-spec-line-6-9":
+                                points = 3;
+                                break;
+                            case "exp-spec-line-10":
+                                points = 4;
+                                break;
+                        }
+                        addUserPoints("specialtyExperience", points);
+                    }
+                }
+            });
+        });
 
     function initThumbClicks() {
         document.querySelectorAll('.range-thumb-gd, .range-trumb_gold-gd').forEach(svg => {
