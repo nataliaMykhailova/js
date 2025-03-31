@@ -883,14 +883,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 photoElement.src = userData.avatar || "https://via.placeholder.com/150";
             }
 
-            const pointsElement = profileBlock.querySelector(".profile-point-gd");
-            if (pointsElement) {
-                // console.log("🎯 userData.points:", userData.points);
-                // console.log("📌 Total Points:", userData.points?.total);
 
-                pointsElement.textContent = (userData.points && typeof userData.points.total === "number")
-                    ? (userData.points.total >= 0 ? userData.points.total : 0)
-                    : "0";
+            const pointsElement = profileBlock.querySelector(".profile-point-gd");
+            const fillElement = profileBlock.querySelector(".user-fill-gd");
+            const userPoints = userData.points && typeof userData.points.total === "number"
+                ? Math.max(0, userData.points.total)
+                : 0;
+
+            if (pointsElement) {
+                pointsElement.textContent = userPoints.toString();
+            }
+
+            if (fillElement) {
+                const fillPercent = Math.min((userPoints * 100) / 26, 100);
+                fillElement.style.height = `${fillPercent}%`;
             }
 
             const artifactsContainer = profileBlock.querySelector(".artifact-block-gd");
@@ -921,10 +927,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         wrapper.appendChild(popup);
                         artifactsContainer.appendChild(wrapper);
 
-                        wrapper.addEventListener("mouseenter", () => {
+                        img.addEventListener("mouseenter", () => {
                             popup.style.opacity = "1";
                         });
-                        wrapper.addEventListener("mouseleave", () => {
+                        img.addEventListener("mouseleave", () => {
                             popup.style.opacity = "0";
                         });
                     }
@@ -2987,24 +2993,31 @@ document.addEventListener("DOMContentLoaded", function () {
                     popup.className = "artefact-popap-gd";
                     popup.style.opacity = "0";
 
-                    const text = document.createElement("p");
-                    text.className = "artefact-descr-gd";
-                    text.textContent = artifact.description || "";
+                    const textWrapper = document.createElement("p");
+                    textWrapper.className = "artefact-popup_text-gd";
+                    textWrapper.innerHTML = `Артефакт: <span class="artefact-desct-gd">${artifact.description || ""}</span>`;
 
-                    popup.appendChild(text);
+
+                    popup.appendChild(textWrapper);
                     wrapper.appendChild(img);
                     wrapper.appendChild(popup);
                     artefactContainer.appendChild(wrapper);
 
-                    wrapper.addEventListener("mouseenter", () => {
+                    img.addEventListener("mouseenter", () => {
                         popup.style.opacity = "1";
                     });
-                    wrapper.addEventListener("mouseleave", () => {
+                    img.addEventListener("mouseleave", () => {
                         popup.style.opacity = "0";
                     });
                 }
             });
         }
+
+
+
+
+
+
 
         // 👹 Вбиті боси
         if (killedBossesContainer) {
