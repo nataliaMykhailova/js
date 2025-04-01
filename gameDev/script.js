@@ -3265,19 +3265,14 @@ document.addEventListener("DOMContentLoaded", function () {
         async function animateAttackGif(gifEl, direction = "right") {
             gifEl.style.display = "block";
             gifEl.style.transform = "translateX(0)";
-
-            const shiftX = direction === "right" ? "70vw" : "-70vw";
             await gsap.to(gifEl, {
-                x: shiftX,
+                x: direction === "right" ? "70vw" : "-70vw",
                 duration: 2,
                 ease: "power1.inOut"
             });
-
-            gifEl.style.display = "none";
-            gifEl.style.transform = "translateX(0)";
         }
 
-        function resetAttackGifs() {
+        function resetGifs() {
             const gifs = [
                 chargingPlayer, hitBoss, destroyedBoss,
                 chargingBoss, hitPlayer, destroyedPlayer
@@ -3290,7 +3285,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        async function battleRound() {
+        async function playBattleRound() {
             stopAttackButtonGlow();
             attackBtn.style.pointerEvents = "none";
 
@@ -3346,7 +3341,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 400));
             }
 
-            resetAttackGifs();
+            resetGifs();
             await new Promise(res => setTimeout(res, 500));
             startAttackButtonGlow();
             attackBtn.style.pointerEvents = "auto";
@@ -3355,6 +3350,11 @@ document.addEventListener("DOMContentLoaded", function () {
         function endBattle(whoLost) {
             stopAttackButtonGlow();
             attackBtn.style.display = "none";
+
+            userCard.style.transition = "transform 0.5s, left 0.5s";
+            userCard.style.left = "50%";
+            userCard.style.top = "50%";
+            userCard.style.transform = "translate(-50%, -50%)";
 
             setTimeout(() => {
                 if (whoLost === "boss") {
@@ -3444,15 +3444,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 300);
         }
 
-        // ▶️ Запуск
         updateUI();
         startAttackButtonGlow();
 
         attackBtn.addEventListener("click", () => {
             attackBtn.style.pointerEvents = "none";
-            battleRound();
+            playBattleRound();
         });
     }
+
 
 
 
