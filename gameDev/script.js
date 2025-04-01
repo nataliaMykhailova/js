@@ -3178,7 +3178,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const bossPointsEl = document.querySelector(".boss-point-gd");
+        const bossPointsEl = document.querySelector(".boss-points-gd");
         const userPointsEl = document.querySelector(".profile-point-gd");
         const winText = document.querySelector(".win-text.victory");
         const fullWinText = document.querySelector(".win-text.full-victore");
