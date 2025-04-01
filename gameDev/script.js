@@ -3213,9 +3213,49 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
+    async function animateAttackGif(gifEl, direction = "right") {
+        // Встановлюємо блок, щоб анімація стартувала
+        gifEl.style.display = "block";
+        gifEl.style.transform = "translateX(0)";
+        // Примусове оновлення (setTimeout з 0 мс)
+        await new Promise(res => setTimeout(res, 0));
+
+        const shiftX = direction === "right" ? "70vw" : "-70vw";
+        await gsap.to(gifEl, {
+            x: shiftX,
+            duration: 2,
+            ease: "power1.inOut"
+        });
+        // Скидаємо gif до початкового стану
+        gifEl.style.display = "none";
+        gifEl.style.transform = "translateX(0)";
+    }
+
+// Функція скидання стану gif-елементів (викликається після кожного раунду)
+    function resetAttackGifs() {
+        const gifs = [
+            document.querySelector(".charging-player_img-gd"),
+            document.querySelector(".hit-boss_img-gd"),
+            document.querySelector(".destroyed-boss_img-gd"),
+            document.querySelector(".charging-boss_img-gd"),
+            document.querySelector(".hit-player_img-gd"),
+            document.querySelector(".destroyed-player_img-gd")
+        ];
+        gifs.forEach(gif => {
+            if (gif) {
+                gif.style.display = "none";
+                gif.style.transform = "translateX(0)";
+                // Якщо необхідно, можна також скинути властивість x через GSAP:
+                gsap.set(gif, { x: 0 });
+            }
+        });
+    }
+
+// Головна функція бою
     function startBattle() {
+        // Використовуємо селектор для картки гравця як зазначено: .profile-block-gd.fight
         const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
-        const userCard = document.querySelector(".profile-photo_wrapper-gd");
+        const userCard = document.querySelector(".profile-block-gd.fight");
         const bossCard = document.querySelector(".boss-profile_block-gd");
 
         const chargingPlayer = document.querySelector(".charging-player_img-gd");
@@ -3243,6 +3283,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const bossInitialPoints = bossPoints;
         const boss = userData.selectedBoss;
 
+        // Оновлення UI (бали та шкала)
         function updateUI() {
             bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
             userPointsEl.textContent = userPoints < 0 ? 0 : userPoints;
@@ -3254,49 +3295,21 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        function addBossDamagePoints(value) {
-            if (!userData.points.bossDaagePoints) {
-                userData.points.bossDaagePoints = 0;
-            }
-            const newTotal = userData.points.bossDaagePoints + value;
-            addUserPoints("bossDaagePoints", newTotal);
-        }
-
-        async function animateAttackGif(gifEl, direction = "right") {
-            gifEl.style.display = "block";
-            gifEl.style.transform = "translateX(0)";
-            await gsap.to(gifEl, {
-                x: direction === "right" ? "70vw" : "-70vw",
-                duration: 2,
-                ease: "power1.inOut"
-            });
-        }
-
-        function resetGifs() {
-            const gifs = [
-                chargingPlayer, hitBoss, destroyedBoss,
-                chargingBoss, hitPlayer, destroyedPlayer
-            ];
-            gifs.forEach(gif => {
-                if (gif) {
-                    gif.style.display = "none";
-                    gif.style.transform = "translateX(0)";
-                }
-            });
-        }
-
+        // Функція логіки удару (один раунд)
         async function playBattleRound() {
             stopAttackButtonGlow();
             attackBtn.style.pointerEvents = "none";
 
             // ➤ Удар гравця
             await animateAttackGif(chargingPlayer, "right");
+            // Логіка удару гравця: віднімання балів
             bossPoints -= 2;
             userPoints -= 2;
             addBossDamagePoints(-2);
             updateUI();
 
             if (bossPoints <= 0) {
+                // Якщо бос загинув, анімація удару боса не виконується
                 destroyedBoss.style.display = "block";
                 bossCard.style.filter = "grayscale(1)";
                 await new Promise(res => setTimeout(() => {
@@ -3316,7 +3329,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             await new Promise(res => setTimeout(res, 800));
 
-            // ➤ Удар боса
+            // ➤ Удар боса (виконується тільки якщо гравець ще живий)
             await animateAttackGif(chargingBoss, "left");
             const bossDamage = boss.damage || 2;
             userPoints -= bossDamage;
@@ -3341,19 +3354,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 400));
             }
 
-            resetGifs();
+            // Скидання положення всіх gif-елементів після раунду
+            resetAttackGifs();
             await new Promise(res => setTimeout(res, 500));
+
             startAttackButtonGlow();
             attackBtn.style.pointerEvents = "auto";
         }
 
+        // Функція завершення бою
         function endBattle(whoLost) {
             stopAttackButtonGlow();
             attackBtn.style.display = "none";
 
+            // Центруємо карточку гравця (за умови, що це .profile-block-gd.fight)
             userCard.style.transition = "transform 0.5s, left 0.5s";
             userCard.style.left = "50%";
-            userCard.style.top = "50%";
             userCard.style.transform = "translate(-50%, -50%)";
 
             setTimeout(() => {
@@ -3401,7 +3417,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             toMapBtn.style.opacity = "0";
                             setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
                         }
-
                         if (finishGameBtn) {
                             finishGameBtn.style.display = "flex";
                             finishGameBtn.style.opacity = "0";
@@ -3444,6 +3459,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 300);
         }
 
+        // Початкове оновлення інтерфейсу та запуск glow-ефекту
         updateUI();
         startAttackButtonGlow();
 
