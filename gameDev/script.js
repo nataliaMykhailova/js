@@ -3090,12 +3090,12 @@ document.addEventListener("DOMContentLoaded", function () {
             bossImgEl.alt = selectedBoss.name;
         }
 
-        const bossPointsCountEl = document.querySelector(".boss-points-count");
+        const bossPointsCountEl = document.querySelector(".p-16_calipso-g.boss-points-count.fight");
         if (bossPointsCountEl) {
             bossPointsCountEl.textContent = selectedBoss.totalPoints;
         }
 
-        const bossFillEl = document.querySelector(".boss-fill-gd");
+        const bossFillEl = document.querySelector(".boss-fill-gd.fight");
         if (bossFillEl) {
             const fillPercent = (selectedBoss.totalPoints * 100) / 7;
             bossFillEl.style.height = `${fillPercent}%`;
