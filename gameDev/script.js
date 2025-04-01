@@ -769,12 +769,8 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 fightSection.classList.add("visible");
                 window.scrollTo(0, 0);
-
-
-                setTimeout(() => {
-                    startBattle();
-                }, 1000);
-
+                startAttackButtonGlow();
+                startBattle();
             }, 0);
         }, 0);
     });
@@ -793,7 +789,6 @@ document.addEventListener("DOMContentLoaded", function () {
             window.scrollTo(0, 0);
         }, 0);
     });
-
 
 
     mapBtnFromFight.addEventListener("click", () => {
@@ -3030,11 +3025,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-
-
-
-
-
         // 👹 Вбиті боси
         if (killedBossesContainer) {
             killedBossesContainer.innerHTML = "";
@@ -3102,6 +3092,42 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         // console.log("📦 Дані боса оновлено:", selectedBoss);
+    }
+
+    let glowTween; // глобальна змінна для контролю
+
+    function startAttackButtonGlow() {
+        const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
+
+        if (!attackBtn) return;
+
+        stopAttackButtonGlow();
+
+        // Запускаємо glow-ефект
+        glowTween = gsap.to(attackBtn, {
+            opacity: 1,
+            filter: `drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))`,
+            duration: 1, // повільніше, як ти просив
+            yoyo: true,
+            repeat: -1,
+            ease: "power1.inOut"
+        });
+    }
+
+    function stopAttackButtonGlow() {
+        const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
+
+        if (glowTween) {
+            glowTween.kill();
+            glowTween = null;
+        }
+
+        if (attackBtn) {
+            gsap.set(attackBtn, {
+                opacity: 0.5,
+                filter: "none"
+            });
+        }
     }
 
     function resetBattleCardsPosition() {
@@ -3199,10 +3225,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const userPointsEl = document.querySelector(".profile-point-gd");
         const bossPointsEl = document.querySelector(".p-16_calipso-gd.boss-points-count.fight");
 
-        const bossFillEl = document.querySelector(".boss-fill-gd.fight");
-
         const winText = document.querySelector(".win-text.victory");
-        const fullWinText = document.querySelector(".win-text.full-victore");
         const loseText = document.querySelector(".win-text.you-loose");
         const defaultFightText = document.querySelector(".p-28_calipso-gd.dafault-fight-text");
 
@@ -3211,101 +3234,97 @@ document.addEventListener("DOMContentLoaded", function () {
         const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
         const chooseAnotherBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
 
-        const isMobile = window.innerWidth <= 478;
-
         let bossPoints = userData.selectedBoss.totalPoints;
         let userPoints = userData.points.total;
         const bossInitialPoints = bossPoints;
-
-        let glowTween; // зберігаємо glow-анімацію для зупинки
+        const boss = userData.selectedBoss;
 
         function updateUI() {
-            if (bossPointsEl) bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
-            if (userPointsEl) userPointsEl.textContent = userPoints < 0 ? 0 : userPoints;
+            bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
+            userPointsEl.textContent = userPoints < 0 ? 0 : userPoints;
 
+            const bossFillEl = document.querySelector(".boss-fill-gd.fight");
             if (bossFillEl) {
                 const fillPercent = (bossPoints * 100) / 7;
                 bossFillEl.style.height = `${Math.max(0, fillPercent)}%`;
             }
         }
 
-        function startGlowAnimation() {
-            glowTween = gsap.to(attackBtn, {
+        function addBossDamagePoints(value) {
+            if (!userData.points.bossDaagePoints) {
+                userData.points.bossDaagePoints = 0;
+            }
+            const newTotal = userData.points.bossDaagePoints + value;
+            addUserPoints("bossDaagePoints", newTotal);
+        }
+
+        function startAttackButtonGlow() {
+            gsap.to(attackBtn, {
                 opacity: 1,
-                filter: `drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))`,
-                duration: 0.5,
-                yoyo: true,
+                filter: `drop-shadow(0 0 10px rgba(255, 215, 162, 0.9)) drop-shadow(0 0 8px rgba(255, 215, 162, 0.7))`,
                 repeat: -1,
+                yoyo: true,
+                duration: 0.8,
                 ease: "power1.inOut"
             });
         }
 
-        function stopGlowAnimation() {
-            if (glowTween) glowTween.kill();
-            gsap.set(attackBtn, {
-                opacity: 0.5,
-                filter: "none"
-            });
+        function stopAttackButtonGlow() {
+            gsap.killTweensOf(attackBtn);
+            gsap.set(attackBtn, { opacity: 0.5, filter: "none" });
         }
 
-        function resetGif(gif) {
-            gif.style.display = "none";
-            gif.style.transform = "translate(0, 0)";
-            gif.style.left = "0";
-            gif.style.top = "0";
-        }
-
-        async function animateHit(gifEl, direction = "right") {
-            resetGif(gifEl);
+        async function animateAttackGif(gifEl, direction = "right") {
             gifEl.style.display = "block";
-            gifEl.style.position = "fixed";
-            gifEl.style.zIndex = "10";
+            gifEl.style.position = "absolute";
+            gifEl.style.top = "0";
+            gifEl.style.left = "0";
+            gifEl.style.right = "auto";
+            gifEl.style.transform = "translate(0, 0)";
 
-            // Центруємо по центру екрану
-            gifEl.style.left = "50%";
-            gifEl.style.top = "50%";
-
-            // Початкова поява
+            // Анімація появи
             await gsap.fromTo(gifEl, {
                 opacity: 0,
-                scale: 0.8
+                scale: 0.8,
             }, {
                 opacity: 1,
                 scale: 1,
-                duration: 0.3
+                duration: 2,
+                ease: "power1.out"
             });
 
-            // Анімація зміщення по X
-            const distance = direction === "right" ? "80vw" : "-80vw";
+            // Зміщення тільки по X (±70vw)
+            const shiftX = direction === "right" ? "70vw" : "-70vw";
             await gsap.to(gifEl, {
-                duration: 1,
-                x: distance,
+                x: shiftX,
+                duration: 2,
                 ease: "power1.inOut"
             });
 
-            resetGif(gifEl);
+            gifEl.style.display = "none";
+            gifEl.style.transform = "none";
         }
 
         async function battleTurn() {
-            stopGlowAnimation();
+            stopAttackButtonGlow();
             attackBtn.style.pointerEvents = "none";
 
-            // Удар гравця
-            await new Promise(res => setTimeout(res, 300));
-            await animateHit(chargingPlayer, "right");
-
-            // Відняти бали у боса
+            // ➤ Удар гравця
+            await animateAttackGif(chargingPlayer, "right");
             bossPoints -= 2;
+            userPoints -= 2;
+            addBossDamagePoints(-2);
             updateUI();
 
             if (bossPoints <= 0) {
-                // Бос загинув
                 destroyedBoss.style.display = "block";
                 bossCard.style.filter = "grayscale(1)";
                 await new Promise(res => setTimeout(() => {
                     destroyedBoss.style.display = "none";
                     res();
                 }, 800));
+                bossPoints = 0;
+                updateUI();
                 return endBattle("boss");
             } else {
                 hitBoss.style.display = "block";
@@ -3315,14 +3334,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 400));
             }
 
-            // Пауза
-            await new Promise(res => setTimeout(res, 500));
+            await new Promise(res => setTimeout(res, 800));
 
-            // Атака боса
-            await animateHit(chargingBoss, "left");
-
-            const bossDamage = userData.selectedBoss.damage || 2;
+            // ➤ Удар боса
+            await animateAttackGif(chargingBoss, "left");
+            const bossDamage = boss.damage || 2;
             userPoints -= bossDamage;
+            addBossDamagePoints(-bossDamage);
             updateUI();
 
             if (userPoints <= 0) {
@@ -3332,6 +3350,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     destroyedPlayer.style.display = "none";
                     res();
                 }, 800));
+                userPoints = 0;
+                updateUI();
                 return endBattle("user");
             } else {
                 hitPlayer.style.display = "block";
@@ -3342,73 +3362,111 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             await new Promise(res => setTimeout(res, 500));
+            startAttackButtonGlow();
             attackBtn.style.pointerEvents = "auto";
-            startGlowAnimation();
         }
 
         function endBattle(whoLost) {
+            stopAttackButtonGlow();
             attackBtn.style.display = "none";
-            stopGlowAnimation();
 
             setTimeout(() => {
-                if (defaultFightText) defaultFightText.style.display = "none";
-
                 if (whoLost === "boss") {
                     const bossKey = userData.selectedBoss.key;
                     userData.defeated_bosses = {
                         ...userData.defeated_bosses,
                         [bossKey]: userData.selectedBoss.img
                     };
+                    addBossDamagePoints(bossInitialPoints);
+                    if (defaultFightText) defaultFightText.style.display = "none";
 
                     const defeatedCount = Object.keys(userData.defeated_bosses).length;
                     const totalBosses = Object.keys(bossesData).length;
 
                     if (defeatedCount === totalBosses) {
-                        fullWinText.style.display = "flex";
-                        fullWinText.style.opacity = "0";
-                        setTimeout(() => (fullWinText.style.opacity = "1"), 10);
+                        const fullWinText = document.querySelector(".win-text.full-victore");
+                        if (fullWinText) {
+                            fullWinText.style.display = "flex";
+                            fullWinText.style.opacity = "0";
+                            setTimeout(() => (fullWinText.style.opacity = "1"), 10);
+                        }
                     } else {
-                        winText.style.display = "flex";
-                        winText.style.opacity = "0";
-                        setTimeout(() => (winText.style.opacity = "1"), 10);
-                        chooseAnotherBtn.style.display = "flex";
-                        chooseAnotherBtn.style.opacity = "0";
-                        setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
+                        if (winText) {
+                            winText.style.display = "flex";
+                            winText.style.opacity = "0";
+                            setTimeout(() => (winText.style.opacity = "1"), 10);
+                        }
+                        if (chooseAnotherBtn) {
+                            chooseAnotherBtn.style.display = "flex";
+                            chooseAnotherBtn.style.opacity = "0";
+                            setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
+                        }
                     }
 
-                    toMapBtn.style.display = "flex";
-                    finishGameBtn.style.display = "flex";
                     setTimeout(() => {
-                        toMapBtn.style.opacity = "1";
-                        finishGameBtn.style.opacity = "1";
-                    }, 10);
-                } else {
-                    loseText.style.display = "flex";
-                    loseText.style.opacity = "0";
-                    setTimeout(() => (loseText.style.opacity = "1"), 10);
+                        bossCard.style.transition = "opacity 0.5s";
+                        bossCard.style.opacity = "0";
+                        setTimeout(() => {
+                            bossCard.style.display = "none";
+                        }, 300);
 
-                    playAgainBtn.style.display = "flex";
-                    toMapBtn.style.display = "flex";
-                    finishGameBtn.style.display = "flex";
+                        if (toMapBtn) {
+                            toMapBtn.style.display = "flex";
+                            toMapBtn.style.opacity = "0";
+                            setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
+                        }
+
+                        if (finishGameBtn) {
+                            finishGameBtn.style.display = "flex";
+                            finishGameBtn.style.opacity = "0";
+                            setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
+                        }
+                    }, 500);
+
+                } else if (whoLost === "user") {
+                    if (defaultFightText) defaultFightText.style.display = "none";
+                    if (loseText) {
+                        loseText.style.display = "flex";
+                        loseText.style.opacity = "0";
+                        setTimeout(() => (loseText.style.opacity = "1"), 10);
+                    }
 
                     setTimeout(() => {
-                        playAgainBtn.style.opacity = "1";
-                        toMapBtn.style.opacity = "1";
-                        finishGameBtn.style.opacity = "1";
-                    }, 10);
+                        bossCard.style.transition = "opacity 0.5s";
+                        bossCard.style.opacity = "0";
+                        setTimeout(() => {
+                            bossCard.style.display = "none";
+                        }, 300);
+
+                        if (playAgainBtn) {
+                            playAgainBtn.style.display = "flex";
+                            playAgainBtn.style.opacity = "0";
+                            setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
+                        }
+                        if (toMapBtn) {
+                            toMapBtn.style.display = "flex";
+                            toMapBtn.style.opacity = "0";
+                            setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
+                        }
+                        if (finishGameBtn) {
+                            finishGameBtn.style.display = "flex";
+                            finishGameBtn.style.opacity = "0";
+                            setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
+                        }
+                    }, 500);
                 }
-            }, 500);
+            }, 300);
         }
 
-        // Запуск бою
+        // 🔁 Старт
         updateUI();
-        startGlowAnimation();
+        startAttackButtonGlow();
 
         attackBtn.addEventListener("click", () => {
+            attackBtn.style.pointerEvents = "none";
             battleTurn();
         });
     }
-
 
 
 
