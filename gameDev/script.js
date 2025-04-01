@@ -3140,6 +3140,10 @@ document.addEventListener("DOMContentLoaded", function () {
             userCard.style.filter = "none";
             userCard.style.opacity = "1";
             userCard.style.display = "flex";
+
+            userCard.style.left = "0";
+            userCard.style.top = "50%";
+            userCard.style.transform = "translate(0, -50%)";
         }
 
         if (bossCard) {
@@ -3154,7 +3158,6 @@ document.addEventListener("DOMContentLoaded", function () {
             attackBtn.style.opacity = "1";
             attackBtn.style.pointerEvents = "auto";
 
-            // Можна одразу включити ефект фільтра для підсвічування
             gsap.fromTo(attackBtn, {
                 filter: "none",
                 opacity: 0.5
@@ -3165,8 +3168,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        console.log("🔄 Візуал бою скинуто до початкового стану");
+        console.log("🔄 Візуал бою скинуто до початкового стану (включно з позицією гравця)");
     }
+
 
 
     chooseAnotherBossBtn.addEventListener("click", () => {
@@ -3258,42 +3262,10 @@ document.addEventListener("DOMContentLoaded", function () {
             addUserPoints("bossDaagePoints", newTotal);
         }
 
-        function startAttackButtonGlow() {
-            gsap.to(attackBtn, {
-                opacity: 1,
-                filter: `drop-shadow(0 0 10px rgba(255, 215, 162, 0.9)) drop-shadow(0 0 8px rgba(255, 215, 162, 0.7))`,
-                repeat: -1,
-                yoyo: true,
-                duration: 0.8,
-                ease: "power1.inOut"
-            });
-        }
-
-        function stopAttackButtonGlow() {
-            gsap.killTweensOf(attackBtn);
-            gsap.set(attackBtn, { opacity: 0.5, filter: "none" });
-        }
-
         async function animateAttackGif(gifEl, direction = "right") {
             gifEl.style.display = "block";
-            gifEl.style.position = "absolute";
-            gifEl.style.top = "0";
-            gifEl.style.left = "0";
-            gifEl.style.right = "auto";
-            gifEl.style.transform = "translate(0, 0)";
+            gifEl.style.transform = "translateX(0)";
 
-            // Анімація появи
-            await gsap.fromTo(gifEl, {
-                opacity: 0,
-                scale: 0.8,
-            }, {
-                opacity: 1,
-                scale: 1,
-                duration: 2,
-                ease: "power1.out"
-            });
-
-            // Зміщення тільки по X (±70vw)
             const shiftX = direction === "right" ? "70vw" : "-70vw";
             await gsap.to(gifEl, {
                 x: shiftX,
@@ -3302,10 +3274,23 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             gifEl.style.display = "none";
-            gifEl.style.transform = "none";
+            gifEl.style.transform = "translateX(0)";
         }
 
-        async function battleTurn() {
+        function resetAttackGifs() {
+            const gifs = [
+                chargingPlayer, hitBoss, destroyedBoss,
+                chargingBoss, hitPlayer, destroyedPlayer
+            ];
+            gifs.forEach(gif => {
+                if (gif) {
+                    gif.style.display = "none";
+                    gif.style.transform = "translateX(0)";
+                }
+            });
+        }
+
+        async function battleRound() {
             stopAttackButtonGlow();
             attackBtn.style.pointerEvents = "none";
 
@@ -3361,6 +3346,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 400));
             }
 
+            resetAttackGifs();
             await new Promise(res => setTimeout(res, 500));
             startAttackButtonGlow();
             attackBtn.style.pointerEvents = "auto";
@@ -3458,15 +3444,16 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 300);
         }
 
-        // 🔁 Старт
+        // ▶️ Запуск
         updateUI();
         startAttackButtonGlow();
 
         attackBtn.addEventListener("click", () => {
             attackBtn.style.pointerEvents = "none";
-            battleTurn();
+            battleRound();
         });
     }
+
 
 
 
