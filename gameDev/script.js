@@ -2474,14 +2474,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         bonusTabs.forEach(tab => {
             tab.addEventListener("click", () => {
-                const selectedText = tab.textContent.trim().toLowerCase();
-
                 const labelToKey = {
-                    "Отримують": "receive",
-                    "Не отримують": "do_not_receive",
-                    "Раніше отримували, зараз ні": "received_before"
+                    "отримують": "receive",
+                    "не отримують": "do_not_receive",
+                    "раніше отримували, зараз ні": "received_before"
                 };
 
+                const selectedText = tab.textContent.replace(/\s+/g, " ").trim().toLowerCase();
                 const key = labelToKey[selectedText];
                 userData.monetary_bonuses = key;
                 if (!key) {
