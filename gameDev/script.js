@@ -742,6 +742,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fillBossFightInfo();
         resetBattleCardsPosition();
 
+
         const toMapBtn = document.querySelector(".nav-btn-gd.is--map.fight-section");
         const finishGameBtn = document.querySelector(".nav-btn-gd.is--map.finish-btn.fight-section");
         const chooseAnotherBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
@@ -3259,7 +3260,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 // Головна функція бою
     function startBattle() {
-        // Використовуємо селектор для картки гравця як зазначено: .profile-block-gd.fight
+        // Використовуємо селектор для картки гравця (.profile-block-gd.fight)
         const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
         const userCard = document.querySelector(".profile-block-gd.fight");
         const bossCard = document.querySelector(".boss-profile_block-gd");
@@ -3284,16 +3285,15 @@ document.addEventListener("DOMContentLoaded", function () {
         const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
         const chooseAnotherBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
 
+        // Реініціалізація балів для нового бою
         let bossPoints = userData.selectedBoss.totalPoints;
         let userPoints = userData.points.total;
         const bossInitialPoints = bossPoints;
         const boss = userData.selectedBoss;
 
-        // Оновлення UI (бали та шкала)
         function updateUI() {
             bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
             userPointsEl.textContent = userPoints < 0 ? 0 : userPoints;
-
             const bossFillEl = document.querySelector(".boss-fill-gd.fight");
             if (bossFillEl) {
                 const fillPercent = (bossPoints * 100) / 7;
@@ -3301,21 +3301,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
 
-        // Функція логіки удару (один раунд)
         async function playBattleRound() {
             stopAttackButtonGlow();
             attackBtn.style.pointerEvents = "none";
 
             // ➤ Удар гравця
             await animateAttackGif(chargingPlayer, "right");
-            // Логіка удару гравця: віднімання балів
             bossPoints -= 2;
             userPoints -= 2;
             addBossDamagePoints(-2);
             updateUI();
 
             if (bossPoints <= 0) {
-                // Якщо бос загинув, анімація удару боса не виконується
                 destroyedBoss.style.display = "block";
                 bossCard.style.filter = "grayscale(1)";
                 await new Promise(res => setTimeout(() => {
@@ -3335,7 +3332,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             await new Promise(res => setTimeout(res, 800));
 
-            // ➤ Удар боса (виконується тільки якщо гравець ще живий)
+            // ➤ Удар боса (тільки якщо гравець ще живий)
             await animateAttackGif(chargingBoss, "left");
             const bossDamage = boss.damage || 2;
             userPoints -= bossDamage;
@@ -3360,109 +3357,117 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 400));
             }
 
-            // Скидання положення всіх gif-елементів після раунду
             resetAttackGifs();
             await new Promise(res => setTimeout(res, 500));
-
             startAttackButtonGlow();
             attackBtn.style.pointerEvents = "auto";
         }
 
-        // Функція завершення бою
         function endBattle(whoLost) {
             stopAttackButtonGlow();
             attackBtn.style.display = "none";
 
-            // Центруємо карточку гравця (за умови, що це .profile-block-gd.fight)
-            userCard.style.transition = "transform 0.5s, left 0.5s";
-            userCard.style.left = "50%";
-            userCard.style.transform = "translate(-50%, -50%)";
+            // Першою дією – плавно затемнюємо картку (fade out)
+            gsap.to(userCard, {
+                duration: 0.5,
+                opacity: 0,
+                ease: "power1.inOut",
+                onComplete: () => {
+                    // Після затемнення – центроване переміщення
+                    userCard.style.transition = "transform 0.5s, left 0.5s, opacity 0.5s";
+                    userCard.style.left = "50%";
+                    userCard.style.transform = "translate(-50%, -50%)";
+                    // Потім повертаємо прозорість
+                    gsap.to(userCard, {
+                        duration: 0.5,
+                        opacity: 1,
+                        ease: "power1.inOut"
+                    });
 
-            setTimeout(() => {
-                if (whoLost === "boss") {
-                    const bossKey = userData.selectedBoss.key;
-                    userData.defeated_bosses = {
-                        ...userData.defeated_bosses,
-                        [bossKey]: userData.selectedBoss.img
-                    };
-                    addBossDamagePoints(bossInitialPoints);
-                    if (defaultFightText) defaultFightText.style.display = "none";
-
-                    const defeatedCount = Object.keys(userData.defeated_bosses).length;
-                    const totalBosses = Object.keys(bossesData).length;
-
-                    if (defeatedCount === totalBosses) {
-                        const fullWinText = document.querySelector(".win-text.full-victore");
-                        if (fullWinText) {
-                            fullWinText.style.display = "flex";
-                            fullWinText.style.opacity = "0";
-                            setTimeout(() => (fullWinText.style.opacity = "1"), 10);
-                        }
-                    } else {
-                        if (winText) {
-                            winText.style.display = "flex";
-                            winText.style.opacity = "0";
-                            setTimeout(() => (winText.style.opacity = "1"), 10);
-                        }
-                        if (chooseAnotherBtn) {
-                            chooseAnotherBtn.style.display = "flex";
-                            chooseAnotherBtn.style.opacity = "0";
-                            setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
-                        }
-                    }
-
+                    // Тепер виводимо фінальний результат через невелику затримку
                     setTimeout(() => {
-                        bossCard.style.transition = "opacity 0.5s";
-                        bossCard.style.opacity = "0";
-                        setTimeout(() => {
-                            bossCard.style.display = "none";
-                        }, 300);
+                        if (whoLost === "boss") {
+                            const bossKey = userData.selectedBoss.key;
+                            userData.defeated_bosses = {
+                                ...userData.defeated_bosses,
+                                [bossKey]: userData.selectedBoss.img
+                            };
+                            addBossDamagePoints(bossInitialPoints);
+                            if (defaultFightText) defaultFightText.style.display = "none";
 
-                        if (toMapBtn) {
-                            toMapBtn.style.display = "flex";
-                            toMapBtn.style.opacity = "0";
-                            setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
-                        }
-                        if (finishGameBtn) {
-                            finishGameBtn.style.display = "flex";
-                            finishGameBtn.style.opacity = "0";
-                            setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
-                        }
-                    }, 500);
+                            const defeatedCount = Object.keys(userData.defeated_bosses).length;
+                            const totalBosses = Object.keys(bossesData).length;
+                            if (defeatedCount === totalBosses) {
+                                const fullWinText = document.querySelector(".win-text.full-victore");
+                                if (fullWinText) {
+                                    fullWinText.style.display = "flex";
+                                    fullWinText.style.opacity = "0";
+                                    setTimeout(() => (fullWinText.style.opacity = "1"), 10);
+                                }
+                            } else {
+                                if (winText) {
+                                    winText.style.display = "flex";
+                                    winText.style.opacity = "0";
+                                    setTimeout(() => (winText.style.opacity = "1"), 10);
+                                }
+                                if (chooseAnotherBtn) {
+                                    chooseAnotherBtn.style.display = "flex";
+                                    chooseAnotherBtn.style.opacity = "0";
+                                    setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
+                                }
+                            }
 
-                } else if (whoLost === "user") {
-                    if (defaultFightText) defaultFightText.style.display = "none";
-                    if (loseText) {
-                        loseText.style.display = "flex";
-                        loseText.style.opacity = "0";
-                        setTimeout(() => (loseText.style.opacity = "1"), 10);
-                    }
+                            setTimeout(() => {
+                                bossCard.style.transition = "opacity 0.5s";
+                                bossCard.style.opacity = "0";
+                                setTimeout(() => {
+                                    bossCard.style.display = "none";
+                                }, 300);
+                                if (toMapBtn) {
+                                    toMapBtn.style.display = "flex";
+                                    toMapBtn.style.opacity = "0";
+                                    setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
+                                }
+                                if (finishGameBtn) {
+                                    finishGameBtn.style.display = "flex";
+                                    finishGameBtn.style.opacity = "0";
+                                    setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
+                                }
+                            }, 500);
 
-                    setTimeout(() => {
-                        bossCard.style.transition = "opacity 0.5s";
-                        bossCard.style.opacity = "0";
-                        setTimeout(() => {
-                            bossCard.style.display = "none";
-                        }, 300);
-
-                        if (playAgainBtn) {
-                            playAgainBtn.style.display = "flex";
-                            playAgainBtn.style.opacity = "0";
-                            setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
+                        } else if (whoLost === "user") {
+                            if (defaultFightText) defaultFightText.style.display = "none";
+                            if (loseText) {
+                                loseText.style.display = "flex";
+                                loseText.style.opacity = "0";
+                                setTimeout(() => (loseText.style.opacity = "1"), 10);
+                            }
+                            setTimeout(() => {
+                                bossCard.style.transition = "opacity 0.5s";
+                                bossCard.style.opacity = "0";
+                                setTimeout(() => {
+                                    bossCard.style.display = "none";
+                                }, 300);
+                                if (playAgainBtn) {
+                                    playAgainBtn.style.display = "flex";
+                                    playAgainBtn.style.opacity = "0";
+                                    setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
+                                }
+                                if (toMapBtn) {
+                                    toMapBtn.style.display = "flex";
+                                    toMapBtn.style.opacity = "0";
+                                    setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
+                                }
+                                if (finishGameBtn) {
+                                    finishGameBtn.style.display = "flex";
+                                    finishGameBtn.style.opacity = "0";
+                                    setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
+                                }
+                            }, 500);
                         }
-                        if (toMapBtn) {
-                            toMapBtn.style.display = "flex";
-                            toMapBtn.style.opacity = "0";
-                            setTimeout(() => (toMapBtn.style.opacity = "1"), 10);
-                        }
-                        if (finishGameBtn) {
-                            finishGameBtn.style.display = "flex";
-                            finishGameBtn.style.opacity = "0";
-                            setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
-                        }
-                    }, 500);
+                    }, 300);
                 }
-            }, 300);
+            });
         }
 
         // Початкове оновлення інтерфейсу та запуск glow-ефекту
