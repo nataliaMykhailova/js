@@ -3108,7 +3108,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Запускаємо glow-ефект
         glowTween = gsap.to(attackBtn, {
             opacity: 1,
-            filter: `drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))`,
+            filter: `drop-shadow(0px 0px 10px rgba(255, 215, 162, 1)) drop-shadow(0px 0px 15px rgba(255, 215, 162, 1))`,
             duration: 1, // повільніше, як ти просив
             yoyo: true,
             repeat: -1,
