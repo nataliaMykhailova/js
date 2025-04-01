@@ -3222,11 +3222,7 @@ document.addEventListener("DOMContentLoaded", function () {
         addUserPoints("bossDaagePoints", newTotal);
     }
 
-    const battleRoundHandler = () => {
-        console.log("Натиснуто кнопку атаки");
-        attackBtn.style.pointerEvents = "none";
-        playBattleRound();
-    };
+
 
 // Головна функція бою
     function startBattle() {
@@ -3265,13 +3261,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Вибраний бос:", boss);
 
         console.log("Початкові бали - Бос:", bossPoints, "Гравець:", userPoints);
-        const battleRoundHandler = () => {
 
-            console.log("Натиснуто кнопку атаки");
-            attackBtn.style.pointerEvents = "none";
-            playBattleRound();
-        };
-        attackBtn.removeEventListener("click", battleRoundHandler);
         function updateUI() {
             bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
             userPointsEl.textContent = userPoints < 0 ? 0 : userPoints;
@@ -3501,7 +3491,11 @@ document.addEventListener("DOMContentLoaded", function () {
         updateUI();
         startAttackButtonGlow();
 
-        attackBtn.addEventListener("click", battleRoundHandler);
+        attackBtn.onclick = () => {
+            console.log("Натиснуто кнопку атаки");
+            attackBtn.style.pointerEvents = "none";
+            playBattleRound();
+        };
     }
 
 
