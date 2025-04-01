@@ -3195,8 +3195,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const destroyedPlayer = document.querySelector(".destroyed-player_img-gd");
         const userPointsEl = document.querySelector(".profile-point-gd");
         const bossPointsEl = document.querySelector(".p-16_calipso-gd.boss-points-count.fight");
-        const bossFillEl = document.querySelector(".boss-fill-gd.fight");
-        const userFillEl = document.querySelector(".user-fill-gd");
+
+        const winText = document.querySelector(".win-text.victory");
+        const loseText = document.querySelector(".win-text.you-loose");
+        const defaultFightText = document.querySelector(".p-28_calipso-gd.dafault-fight-text");
+
+        const toMapBtn = document.querySelector(".nav-btn-gd.is--map.fight-section");
+        const finishGameBtn = document.querySelector(".nav-btn-gd.is--map.finish-btn.fight-section");
+        const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
+        const chooseAnotherBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
+
+
 
         let bossPoints = userData.selectedBoss.totalPoints;
         let userPoints = userData.points.total;
@@ -3231,30 +3240,29 @@ document.addEventListener("DOMContentLoaded", function () {
                 duration: 0.5
             });
         }
-
-        function getCenterPosition(fromEl, toEl) {
-            const from = fromEl.getBoundingClientRect();
-            const to = toEl.getBoundingClientRect();
-            return {
-                x: to.left + to.width / 2 - (from.left + from.width / 2),
-                y: to.top + to.height / 2 - (from.top + from.height / 2)
-            };
-        }
-
-        async function animateGif(gifEl, fromEl, toEl) {
+        async function animateGif(gifEl, attackerEl, direction = "right") {
             gifEl.style.display = "block";
-            const offset = getCenterPosition(gifEl, toEl);
-
-            // Центруємо на "from"
-            const fromRect = fromEl.getBoundingClientRect();
             gifEl.style.position = "absolute";
-            gifEl.style.left = `${fromRect.left + fromRect.width / 2 - gifEl.offsetWidth / 2}px`;
-            gifEl.style.top = `${fromRect.top + fromRect.height / 2 - gifEl.offsetHeight / 2}px`;
+            gifEl.style.left = "50%";
+            gifEl.style.top = "50%";
+            gifEl.style.transform = "translate(-50%, -50%)";
+
+            // Початкова поява
+            await gsap.fromTo(gifEl, {
+                opacity: 0,
+                scale: 0.8
+            }, {
+                opacity: 1,
+                scale: 1,
+                duration: 0.3
+            });
+
+            // Зміщення гіфки (по прямій)
+            const distance = direction === "right" ? "80vw" : "-80vw";
 
             await gsap.to(gifEl, {
-                duration: 0.5,
-                x: offset.x,
-                y: offset.y,
+                duration: 1,
+                x: distance,
                 ease: "power1.inOut"
             });
 
@@ -3262,12 +3270,13 @@ document.addEventListener("DOMContentLoaded", function () {
             gifEl.style.transform = "none";
         }
 
+
         async function battleTurn() {
             animateButtonOff();
 
             // 1. Удар гравця
             await new Promise(resolve => setTimeout(resolve, 500));
-            await animateGif(chargingPlayer, userCard, bossCard);
+            await animateGif(chargingPlayer, userCard, "right"); // гравець → вправо
 
             // 2. Удар (або смерть) боса
             if (bossPoints <= 2) {
@@ -3294,7 +3303,7 @@ document.addEventListener("DOMContentLoaded", function () {
             await new Promise(resolve => setTimeout(resolve, 800));
 
             // 4. Атака боса
-            await animateGif(chargingBoss, bossCard, userCard);
+            await animateGif(chargingBoss, bossCard, "left"); // бос → вліво
 
             // 5. Удар (або смерть) гравця
             const bossDamage = userData.selectedBoss.damage || 2;
