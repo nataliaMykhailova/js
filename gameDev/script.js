@@ -3262,16 +3262,16 @@ document.addEventListener("DOMContentLoaded", function () {
         let userPoints = userData.points.total;
         const bossInitialPoints = bossPoints;
 
-        attackBtn.removeEventListener("click", battleRoundHandler);
-
         console.log("Вибраний бос:", boss);
-        console.log("Початкові бали - Бос:", bossPoints, "Гравець:", userPoints);
 
+        console.log("Початкові бали - Бос:", bossPoints, "Гравець:", userPoints);
         const battleRoundHandler = () => {
+
             console.log("Натиснуто кнопку атаки");
             attackBtn.style.pointerEvents = "none";
             playBattleRound();
         };
+        attackBtn.removeEventListener("click", battleRoundHandler);
         function updateUI() {
             bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
             userPointsEl.textContent = userPoints < 0 ? 0 : userPoints;
