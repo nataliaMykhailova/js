@@ -78,6 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const finishBtnFromFight = document.querySelector(".nav-btn-gd.is--map.finish-btn.fight-section");
     const chooseAnotherBossBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
     const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
+    const backToCharactersButton = document.querySelector(".nav-back_btn-gd.is-finish");
 
 
     if (!heroSection || !choiceSection || !charactersSection || !backButton || !maleButton || !femaleButton || !charactersList) {
@@ -793,6 +794,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
+
+
     mapBtnFromFight.addEventListener("click", () => {
         fightSection.classList.remove("visible");
         setTimeout(() => {
@@ -812,6 +815,20 @@ document.addEventListener("DOMContentLoaded", function () {
             fillFinishBlock();
             setTimeout(() => finishSection.classList.add("visible"), 0);
             window.scrollTo(0, 0);
+        }, 0);
+    });
+
+    backToCharactersButton.addEventListener("click", function () {
+        finishSection.classList.remove("visible");
+
+        setTimeout(() => {
+            finishSection.style.display = "none";
+            charactersSection.style.display = "block";
+
+            setTimeout(() => {
+                charactersSection.classList.add("visible");
+                window.scrollTo(0, 0);
+            }, 0);
         }, 0);
     });
 
@@ -3064,14 +3081,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const selectedBoss = bossesData[selectedBossKey];
 
-        const bossImgEl = document.querySelector(".boss-photo-gd");
         const bossNameEl = document.querySelector(".h2-32-calipso.boss-name");
-        const bossPointsEl = document.querySelector(".boss-point-gd");
-
-        if (bossImgEl) bossImgEl.src = selectedBoss.img;
-        if (bossImgEl) bossImgEl.alt = selectedBoss.name;
         if (bossNameEl) bossNameEl.textContent = selectedBoss.name;
-        if (bossPointsEl) bossPointsEl.textContent = selectedBoss.totalPoints;
+
+        const bossImgEl = document.querySelector(".boss-photo-gd");
+        if (bossImgEl) {
+            bossImgEl.src = selectedBoss.img;
+            bossImgEl.alt = selectedBoss.name;
+        }
+
+        const bossPointsCountEl = document.querySelector(".boss-points-count");
+        if (bossPointsCountEl) {
+            bossPointsCountEl.textContent = selectedBoss.totalPoints;
+        }
+
+        const bossFillEl = document.querySelector(".boss-fill-gd");
+        if (bossFillEl) {
+            const fillPercent = (selectedBoss.totalPoints * 100) / 7;
+            bossFillEl.style.height = `${fillPercent}%`;
+        }
 
         // console.log("📦 Дані боса оновлено:", selectedBoss);
     }
