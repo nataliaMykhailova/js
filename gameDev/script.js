@@ -3104,7 +3104,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // console.log("📦 Дані боса оновлено:", selectedBoss);
     }
 
-    function resetBattleCardsVisuals() {
+    function resetBattleCardsPosition() {
         const userCard = document.querySelector(".profile-block-gd.fight");
         const bossCard = document.querySelector(".boss-profile_block-gd");
         const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
