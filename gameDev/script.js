@@ -3090,7 +3090,7 @@ document.addEventListener("DOMContentLoaded", function () {
             bossImgEl.alt = selectedBoss.name;
         }
 
-        const bossPointsCountEl = document.querySelector(".p-16_calipso-g.boss-points-count.fight");
+        const bossPointsCountEl = document.querySelector(".p-16_calipso-gd.boss-points-count.fight");
         if (bossPointsCountEl) {
             bossPointsCountEl.textContent = selectedBoss.totalPoints;
         }
@@ -3178,7 +3178,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const bossPointsEl = document.querySelector(".p-16_calipso-gd.boss-points-gd.fight");
+        const bossPointsEl = document.querySelector(".p-16_calipso-gd.boss-points-count.fight");
         const userPointsEl = document.querySelector(".profile-point-gd");
         const winText = document.querySelector(".win-text.victory");
         const fullWinText = document.querySelector(".win-text.full-victore");
