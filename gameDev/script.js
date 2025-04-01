@@ -2477,9 +2477,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 const selectedText = tab.textContent.trim().toLowerCase();
 
                 const labelToKey = {
-                    "отримую": "receive",
-                    "не отримую": "do_not_receive",
-                    "отримував раніше": "received_before"
+                    "Отримують": "receive",
+                    "Не отримують": "do_not_receive",
+                    "Раніше отримували, зараз ні": "received_before"
                 };
 
                 const key = labelToKey[selectedText];
