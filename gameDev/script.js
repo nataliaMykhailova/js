@@ -3250,7 +3250,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
+    function addBossDamagePoints(value) {
+        if (!userData.points.bossDaagePoints) {
+            userData.points.bossDaagePoints = 0;
+        }
+        const newTotal = userData.points.bossDaagePoints + value;
+        addUserPoints("bossDaagePoints", newTotal);
+    }
 // Головна функція бою
     function startBattle() {
         // Використовуємо селектор для картки гравця як зазначено: .profile-block-gd.fight
