@@ -3178,7 +3178,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        const bossPointsEl = document.querySelector(".boss-points-gd");
+        const bossPointsEl = document.querySelector(".p-16_calipso-gd.boss-points-gd.fight");
         const userPointsEl = document.querySelector(".profile-point-gd");
         const winText = document.querySelector(".win-text.victory");
         const fullWinText = document.querySelector(".win-text.full-victore");
@@ -3205,6 +3205,12 @@ document.addEventListener("DOMContentLoaded", function () {
         function updateUI() {
             if (bossPointsEl) bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
             if (userPointsEl) userPointsEl.textContent = userPoints < 0 ? 0 : userPoints;
+
+            const bossFillEl = document.querySelector(".boss-fill-gd.fight");
+            if (bossFillEl) {
+                const fillPercent = (bossPoints * 100) / 7;
+                bossFillEl.style.height = `${Math.max(0, fillPercent)}%`;
+            }
         }
 
         function addBossDamagePoints(value) {
