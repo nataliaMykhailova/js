@@ -3104,31 +3104,42 @@ document.addEventListener("DOMContentLoaded", function () {
         // console.log("📦 Дані боса оновлено:", selectedBoss);
     }
 
-    function resetBattleCardsPosition() {
+    function resetBattleCardsVisuals() {
         const userCard = document.querySelector(".profile-block-gd.fight");
         const bossCard = document.querySelector(".boss-profile_block-gd");
-
-        const isMobile = window.innerWidth <= 478;
+        const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
 
         if (userCard) {
             userCard.style.transition = "none";
-            userCard.style.left = isMobile ? "-40%" : "0";
-            userCard.style.transform = isMobile
-                ? "translateX(0) translateY(0)"
-                : "translateX(0) translateY(-50%)";
+            userCard.style.filter = "none";
+            userCard.style.opacity = "1";
+            userCard.style.display = "flex";
         }
 
         if (bossCard) {
             bossCard.style.transition = "none";
-            bossCard.style.right = isMobile ? "-40%" : "0";
-            bossCard.style.transform = isMobile
-                ? "translateX(0) translateY(0)"
-                : "translateX(0) translateY(-50%)";
-            bossCard.style.display = "flex";
+            bossCard.style.filter = "none";
             bossCard.style.opacity = "1";
+            bossCard.style.display = "flex";
         }
 
-        // console.log("🎯 Картки бою скинуті до початкового стану", isMobile ? "(мобільна версія)" : "(десктоп)");
+        if (attackBtn) {
+            attackBtn.style.display = "flex";
+            attackBtn.style.opacity = "1";
+            attackBtn.style.pointerEvents = "auto";
+
+            // Можна одразу включити ефект фільтра для підсвічування
+            gsap.fromTo(attackBtn, {
+                filter: "none",
+                opacity: 0.5
+            }, {
+                filter: `drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))`,
+                opacity: 1,
+                duration: 0.5
+            });
+        }
+
+        console.log("🔄 Візуал бою скинуто до початкового стану");
     }
 
 
@@ -3312,6 +3323,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function endBattle(whoLost) {
+            const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
+
+            if (attackBtn) {
+                attackBtn.style.display = "none";
+            }
             setTimeout(() => {
                 if (whoLost === "boss") {
                     // Викликаємо твою логіку перемоги
