@@ -751,10 +751,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const defaultFightText = document.querySelector(".p-28_calipso-gd.dafault-fight-text");
         const winText = document.querySelector(".win-text.victory");
         const loseText = document.querySelector(".win-text.you-loose");
+        const fullWinText = document.querySelector(".win-text.full-victore");
+
 
         if (defaultFightText) defaultFightText.style.display = "block";
         if (winText) winText.style.display = "none";
         if (loseText) loseText.style.display = "none";
+        if (fullWinText) fullWinText.style.display = "none";
 
         if (toMapBtn) toMapBtn.style.display = "none";
         if (finishGameBtn) finishGameBtn.style.display = "none";
@@ -3210,6 +3213,8 @@ document.addEventListener("DOMContentLoaded", function () {
             attackBtn.style.display = "flex";
             attackBtn.style.opacity = "1";
             attackBtn.style.pointerEvents = "auto";
+            attackDescr.style.display = "block";
+
 
             gsap.fromTo(attackBtn, {
                 filter: "none",
