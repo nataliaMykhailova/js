@@ -3302,29 +3302,33 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? (isMobile ? "70vw" : "75vw")
                 : (isMobile ? "-70vw" : "-75vw");
 
-            // Початкові стилі
+            // 1️⃣ Початкові стилі
             gifEl.style.display = "block";
-            gifEl.style.transition = "none"; // Скидання
+            gifEl.style.transition = "none";
             gifEl.style.transform = "translateX(0) translateY(-50%)";
 
-            // ⏱ Лафхак: дати DOM відмалюватись
-            await new Promise(res => setTimeout(res, 0));
+            // 2️⃣ Чекаємо 2 кадри через requestAnimationFrame
+            await new Promise((resolve) => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        // 3️⃣ Застосовуємо transition та анімацію
+                        gifEl.style.transition = "transform 2s ease-in-out";
+                        gifEl.style.transform = `translateX(${shiftX}) translateY(-50%)`;
+                        resolve();
+                    });
+                });
+            });
 
-            // Увімкнення плавного переходу
-            gifEl.style.transition = "transform 2s ease-in-out";
-            gifEl.style.transform = `translateX(${shiftX}) translateY(-50%)`;
-
-            // Очікуємо завершення переходу (2 секунди)
+            // 4️⃣ Очікуємо завершення анімації
             await new Promise(res => setTimeout(res, 2000));
 
-            // Скидаємо
+            // 5️⃣ Скидаємо
             gifEl.style.display = "none";
             gifEl.style.transition = "none";
             gifEl.style.transform = "translateX(0) translateY(-50%)";
 
             console.log("Анімація gif завершена:", gifEl);
         }
-
 
         function resetAttackGifs() {
             const gifs = [
