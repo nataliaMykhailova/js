@@ -3370,17 +3370,19 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Після удару гравця: Бос:", bossPoints, "Гравець:", userPoints);
 
             if (userPoints <= 0 && bossPoints > 0) {
-                gsap.fromTo(userCard,
-                    { x: -10 },
-                    {
-                        x: 10,
-                        duration: 0.1,
-                        repeat: 5,
-                        yoyo: true,
-                        ease: "power1.inOut",
-                        clearProps: "x"
-                    }
-                );
+                if (window.innerWidth > 478) {
+                    gsap.fromTo(userCard,
+                        { x: -10, yPercent: -50 },
+                        {
+                            x: 10,
+                            duration: 0.1,
+                            repeat: 5,
+                            yoyo: true,
+                            ease: "power1.inOut",
+                            clearProps: "x"
+                        }
+                    );
+                }
 
                 destroyedPlayer.style.display = "block";
                 userCard.style.filter = "grayscale(1)";
@@ -3396,17 +3398,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (bossPoints <= 0) {
                 // Анімація смерті боса
-                gsap.fromTo(bossCard,
-                    { x: -10 },
-                    {
-                        x: 10,
-                        duration: 0.1,
-                        repeat: 5,
-                        yoyo: true,
-                        ease: "power1.inOut",
-                        clearProps: "x"
-                    }
-                );
+                if (window.innerWidth > 478) {
+                    gsap.fromTo(bossCard,
+                        { x: -10, yPercent: -50 },
+                        {
+                            x: 10,
+                            duration: 0.1,
+                            repeat: 5,
+                            yoyo: true,
+                            ease: "power1.inOut",
+                            clearProps: "x"
+                        }
+                    );
+                }
                 destroyedBoss.style.display = "block";
                 bossCard.style.filter = "grayscale(1)";
                 await new Promise(res => setTimeout(() => {
@@ -3421,17 +3425,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 hitBoss.style.display = "block";
 
                 // 💥 Тряска картки босса
-                gsap.fromTo(bossCard,
-                    { x: -10 },
-                    {
-                        x: 10,
-                        duration: 0.1,
-                        repeat: 5,
-                        yoyo: true,
-                        ease: "power1.inOut",
-                        clearProps: "x"
-                    }
-                );
+                if (window.innerWidth > 478) {
+                    gsap.fromTo(bossCard,
+                        { x: -10, yPercent: -50 },
+                        {
+                            x: 10,
+                            duration: 0.1,
+                            repeat: 5,
+                            yoyo: true,
+                            ease: "power1.inOut",
+                            clearProps: "x"
+                        }
+                    );
+                }
 
                 await new Promise(res => setTimeout(() => {
                     hitBoss.style.display = "none";
@@ -3450,17 +3456,19 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Після удару боса: Бос:", bossPoints, "Гравець:", userPoints);
 
             if (userPoints <= 0) {
-                gsap.fromTo(bossCard,
-                    { x: -10 },
-                    {
-                        x: 10,
-                        duration: 0.1,
-                        repeat: 5,
-                        yoyo: true,
-                        ease: "power1.inOut",
-                        clearProps: "x"
-                    }
-                );
+                if (window.innerWidth > 478) {
+                    gsap.fromTo(userCard,
+                        { x: -10, yPercent: -50 },
+                        {
+                            x: 10,
+                            duration: 0.1,
+                            repeat: 5,
+                            yoyo: true,
+                            ease: "power1.inOut",
+                            clearProps: "x"
+                        }
+                    );
+                }
                 destroyedPlayer.style.display = "block";
                 userCard.style.filter = "grayscale(1)";
                 await new Promise(res => setTimeout(() => {
@@ -3475,17 +3483,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 hitPlayer.style.display = "block";
 
                 // 💥 Тряска картки гравця
-                gsap.fromTo(userCard,
-                    { x: -10 },
-                    {
-                        x: 10,
-                        duration: 0.1,
-                        repeat: 5,
-                        yoyo: true,
-                        ease: "power1.inOut",
-                        clearProps: "x"
-                    }
-                );
+                if (window.innerWidth > 478) {
+                    gsap.fromTo(userCard,
+                        { x: -10, yPercent: -50 },
+                        {
+                            x: 10,
+                            duration: 0.1,
+                            repeat: 5,
+                            yoyo: true,
+                            ease: "power1.inOut",
+                            clearProps: "x"
+                        }
+                    );
+                }
 
                 await new Promise(res => setTimeout(() => {
                     hitPlayer.style.display = "none";
