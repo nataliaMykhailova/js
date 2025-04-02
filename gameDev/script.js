@@ -3415,7 +3415,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // ➤ Удар гравця
             await animateAttackGif(chargingPlayer, "right");
             userPoints -= 0;
-            bossPoints -= 0;
+            bossPoints -= 4;
             addBossDamagePoints(-0);
             updateUI();
             console.log("Після удару гравця: Бос:", bossPoints, "Гравець:", userPoints);
