@@ -2949,12 +2949,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 activeBtn.style.opacity = "1";
 
-                if (window.innerWidth < 479) {
                     const scrollTarget = document.querySelector(".nav-btn-gd.to-fight");
                     if (scrollTarget) {
                         scrollTarget.scrollIntoView({behavior: "smooth", block: "center"});
                     }
-                }
+
             });
         });
 
@@ -3299,28 +3298,32 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Анімація gif запущена:", gifEl, "на напрям:", direction);
 
             const isMobile = window.innerWidth <= 478;
-
-            gifEl.style.display = "block";
-            gifEl.style.transform = "translateX(0) translateY(-50%)";
-
-            await new Promise(res => setTimeout(res, 50));
-
             const shiftX = direction === "right"
                 ? (isMobile ? "70vw" : "75vw")
                 : (isMobile ? "-70vw" : "-75vw");
 
-            await gsap.to(gifEl, {
-                x: shiftX,
-                duration: 2,
-                ease: "power1.inOut"
-            });
+            // Початкові стилі
+            gifEl.style.display = "block";
+            gifEl.style.transition = "none"; // Скидання
+            gifEl.style.transform = "translateX(0) translateY(-50%)";
 
+            // ⏱ Лафхак: дати DOM відмалюватись
+            await new Promise(res => setTimeout(res, 0));
+
+            // Увімкнення плавного переходу
+            gifEl.style.transition = "transform 2s ease-in-out";
+            gifEl.style.transform = `translateX(${shiftX}) translateY(-50%)`;
+
+            // Очікуємо завершення переходу (2 секунди)
+            await new Promise(res => setTimeout(res, 2000));
+
+            // Скидаємо
             gifEl.style.display = "none";
+            gifEl.style.transition = "none";
             gifEl.style.transform = "translateX(0) translateY(-50%)";
 
             console.log("Анімація gif завершена:", gifEl);
         }
-
 
 
         function resetAttackGifs() {
@@ -3336,8 +3339,8 @@ document.addEventListener("DOMContentLoaded", function () {
             gifs.forEach(gif => {
                 if (gif) {
                     gif.style.display = "none";
+                    gif.style.transition = "none"; // скидаємо, щоб не мигало
                     gif.style.transform = "translateX(0) translateY(-50%)";
-                    gsap.set(gif, { x: 0 });
                 }
             });
 
@@ -3362,8 +3365,44 @@ document.addEventListener("DOMContentLoaded", function () {
             updateUI();
             console.log("Після удару гравця: Бос:", bossPoints, "Гравець:", userPoints);
 
+            if (userPoints <= 0 && bossPoints > 0) {
+                gsap.fromTo(userCard,
+                    { x: -10 },
+                    {
+                        x: 10,
+                        duration: 0.1,
+                        repeat: 5,
+                        yoyo: true,
+                        ease: "power1.inOut",
+                        clearProps: "x"
+                    }
+                );
+
+                destroyedPlayer.style.display = "block";
+                userCard.style.filter = "grayscale(1)";
+                await new Promise(res => setTimeout(() => {
+                    destroyedPlayer.style.display = "none";
+                    res();
+                }, 800));
+                userPoints = 0;
+                updateUI();
+                console.log("⚠️ Гравець програв одразу після атаки.");
+                return endBattle("user");
+            }
+
             if (bossPoints <= 0) {
                 // Анімація смерті боса
+                gsap.fromTo(bossCard,
+                    { x: -10 },
+                    {
+                        x: 10,
+                        duration: 0.1,
+                        repeat: 5,
+                        yoyo: true,
+                        ease: "power1.inOut",
+                        clearProps: "x"
+                    }
+                );
                 destroyedBoss.style.display = "block";
                 bossCard.style.filter = "grayscale(1)";
                 await new Promise(res => setTimeout(() => {
@@ -3407,6 +3446,17 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Після удару боса: Бос:", bossPoints, "Гравець:", userPoints);
 
             if (userPoints <= 0) {
+                gsap.fromTo(bossCard,
+                    { x: -10 },
+                    {
+                        x: 10,
+                        duration: 0.1,
+                        repeat: 5,
+                        yoyo: true,
+                        ease: "power1.inOut",
+                        clearProps: "x"
+                    }
+                );
                 destroyedPlayer.style.display = "block";
                 userCard.style.filter = "grayscale(1)";
                 await new Promise(res => setTimeout(() => {
@@ -3493,11 +3543,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         winText.style.opacity = "0";
                         setTimeout(() => (winText.style.opacity = "1"), 10);
                     }
-                    if (chooseAnotherBtn) {
-                        chooseAnotherBtn.style.display = "flex";
-                        chooseAnotherBtn.style.opacity = "0";
-                        setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
-                    }
+
                 }
 
                 // Зникає тільки картка босса (через 500мс), потім центр гравця і кнопки
@@ -3522,6 +3568,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                 finishGameBtn.style.opacity = "0";
                                 setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
                             }
+                            if (chooseAnotherBtn) {
+                                chooseAnotherBtn.style.display = "flex";
+                                chooseAnotherBtn.style.opacity = "0";
+                                setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
+                            }
                         }, 500);
                     }, 500);
                 }, 500);
@@ -3544,12 +3595,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         // Центруємо гравця через 500мс після зникнення босса
                         setTimeout(() => {
                             centerUserCard();
-
-                            if (playAgainBtn) {
-                                playAgainBtn.style.display = "flex";
-                                playAgainBtn.style.opacity = "0";
-                                setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
-                            }
                             if (toMapBtn) {
                                 toMapBtn.style.display = "flex";
                                 toMapBtn.style.opacity = "0";
@@ -3559,6 +3604,12 @@ document.addEventListener("DOMContentLoaded", function () {
                                 finishGameBtn.style.display = "flex";
                                 finishGameBtn.style.opacity = "0";
                                 setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
+                            }
+
+                            if (playAgainBtn) {
+                                playAgainBtn.style.display = "flex";
+                                playAgainBtn.style.opacity = "0";
+                                setTimeout(() => (playAgainBtn.style.opacity = "1"), 10);
                             }
                         }, 500);
                     }, 500);
