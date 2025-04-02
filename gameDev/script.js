@@ -2299,6 +2299,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     visited.add(btnClass);
                     button.classList.add("active");
 
+                    // ✅ Активувати відповідний індикатор
+                    const indicator = document.querySelector(`.indicator-block-gd.${btnClass}`);
+                    if (indicator) {
+                        indicator.classList.add("active");
+
+                        const star = indicator.querySelector(".ind-star_img-gd");
+                        if (star) {
+                            star.style.opacity = "1";
+                        }
+                    }
+
                     const stars = button.querySelectorAll(".star-icon-gd-2");
                     stars.forEach(star => star.classList.add("active"));
                     if (
