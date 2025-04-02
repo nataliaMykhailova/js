@@ -3136,9 +3136,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startAttackButtonGlow() {
         const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
+        const attackDescr = document.querySelector(".fight-descr-gd");
+
 
         if (!attackBtn) return;
-
+        attackDescr.style.opacity = 0;
         stopAttackButtonGlow();
 
         // Запускаємо glow-ефект
