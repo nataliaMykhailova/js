@@ -2307,10 +2307,33 @@ document.addEventListener("DOMContentLoaded", function () {
                         visited.has("is--port")
                     ) {
                         bossesButton.classList.remove("disable");
+
                         if (bossesPopupText) {
                             bossesPopupText.textContent = "Зустрінься з жахами геймдеву!";
                         }
-                        // console.log("🔥 'Боси' активовано");
+
+                        // Активне зображення індикатора боса
+                        const bossIndicator = document.querySelector(".indicator-block-gd.is--boss");
+                        const bossImg = bossIndicator?.querySelector(".ind-boss_img-gd");
+                        const bossActiveImg = bossIndicator?.querySelector(".ind-boss-active_img-gd");
+
+                        if (bossImg) bossImg.style.display = "none";
+                        if (bossActiveImg) bossActiveImg.style.display = "block";
+
+                        // 🔻 Сховати мобільний текст, якщо всі секції пройдені
+                        const mobileBossDescr = document.querySelector(".p-16-gd.is--gold.is--mobile_boss-descr");
+                        if (window.innerWidth <= 478 && mobileBossDescr) {
+                            mobileBossDescr.style.display = "none";
+                        }
+
+                        if (bossIndicator) {
+                            bossIndicator.classList.add("active");
+
+                            const star = bossIndicator.querySelector(".ind-star_img-gd");
+                            if (star) {
+                                star.style.opacity = "1";
+                            }
+                        }
                     }
                 }
             });
@@ -3521,7 +3544,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const isMobile = window.innerWidth <= 478;
 
             const centerUserCard = () => {
-                userCard.style.transition = "transform 0.5s, left 0.5s";
+                userCard.style.transition = "transform 1s, left 1s";
 
                 userCard.style.left = "50%";
 
