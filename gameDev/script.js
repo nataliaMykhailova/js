@@ -3348,6 +3348,8 @@ document.addEventListener("DOMContentLoaded", function () {
         async function playBattleRound() {
             stopAttackButtonGlow();
             attackBtn.style.pointerEvents = "none";
+            attackBtn.style.transform = "opacity 0.5s";
+            attackBtn.style.opacity = 0;
 
             console.log("=== Розпочато раунд бою ===");
             console.log("Початкові значення: Бос:", bossPoints, "Гравець:", userPoints);
@@ -3442,6 +3444,9 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("=== Рунд завершено ===");
             startAttackButtonGlow();
             attackBtn.style.pointerEvents = "auto";
+            attackBtn.style.transform = "opacity 0.5s";
+            attackBtn.style.opacity = 1;
+
         }
 
         function endBattle(whoLost) {
