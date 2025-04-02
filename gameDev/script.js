@@ -2523,9 +2523,9 @@ document.addEventListener("DOMContentLoaded", function () {
         bonusTabs.forEach(tab => {
             tab.addEventListener("click", () => {
                 const labelToKey = {
-                    "отримують": "receive",
-                    "не отримують": "do_not_receive",
-                    "раніше отримували, зараз ні": "received_before"
+                    "платить": "receive",
+                    "не платить": "do_not_receive",
+                    "раніше платила, зараз ні": "received_before"
                 };
 
                 const selectedText = tab.textContent.replace(/\s+/g, " ").trim().toLowerCase();
@@ -3281,6 +3281,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("=== Запуск startBattle ===");
 
         const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
+        const attackDescr = document.querySelector(".fight-descr-gd");
         const userCard = document.querySelector(".profile-block-gd.fight");
         const bossCard = document.querySelector(".boss-profile_block-gd");
 
@@ -3391,6 +3392,8 @@ document.addEventListener("DOMContentLoaded", function () {
             attackBtn.style.pointerEvents = "none";
             attackBtn.style.transform = "opacity 0.5s";
             attackBtn.style.opacity = 0;
+            attackDescr.style.transform = "opacity 0.5s";
+            attackDescr.style.opacity = 0;
 
             console.log("=== Розпочато раунд бою ===");
             console.log("Початкові значення: Бос:", bossPoints, "Гравець:", userPoints);
@@ -3544,6 +3547,8 @@ document.addEventListener("DOMContentLoaded", function () {
             attackBtn.style.pointerEvents = "auto";
             attackBtn.style.transform = "opacity 0.5s";
             attackBtn.style.opacity = 1;
+            attackDescr.style.transform = "opacity 0.5s";
+            attackDescr.style.opacity = 1;
 
         }
 
@@ -3551,6 +3556,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Завершення бою, хто загинув:", whoLost);
             stopAttackButtonGlow();
             attackBtn.style.display = "none";
+            attackDescr.style.display = "none";
 
             const isMobile = window.innerWidth <= 478;
 
