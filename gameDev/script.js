@@ -1114,6 +1114,7 @@ document.addEventListener("DOMContentLoaded", function () {
             addBossPoints("Overtime", 1, "hourPoints");
         } else if (value === 2) {
             points = 1;
+            addBossPoints("Burnout", 0, "hourPoints");
         } else if (value === 3) {
             points = 2;
             addBossPoints("Burnout", 1, "hourPoints");
