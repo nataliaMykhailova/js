@@ -3140,7 +3140,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         if (!attackBtn) return;
-        attackDescr.style.opacity = 0;
+        attackDescr.style.opacity = 1;
         stopAttackButtonGlow();
 
         // Запускаємо glow-ефект
@@ -3313,6 +3313,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const finishGameBtn = document.querySelector(".nav-btn-gd.is--map.finish-btn.fight-section");
         const playAgainBtn = document.querySelector(".nav-btn-gd.play-again");
         const chooseAnotherBtn = document.querySelector(".nav-btn-gd.schoose-one-more");
+        const userPhoto = userCard.querySelector(".profile-photo_wrapper-gd");
+        const bossPhoto = bossCard.querySelector(".profile-photo_wrapper-gd");
+
+
 
         // Ініціалізація даних нового бою – важливо, щоб вони були оновлені
         const boss = userData.selectedBoss;
@@ -3409,16 +3413,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // ➤ Удар гравця
             await animateAttackGif(chargingPlayer, "right");
-            bossPoints -= 2;
             userPoints -= 2;
+            bossPoints -= 2;
             addBossDamagePoints(-2);
             updateUI();
             console.log("Після удару гравця: Бос:", bossPoints, "Гравець:", userPoints);
 
-            if (userPoints <= 0 && bossPoints > 0) {
+            if (userPoints <= 0) {
                 if (window.innerWidth > 478) {
-                    gsap.fromTo(userCard,
-                        { x: -10, yPercent: -50 },
+                    gsap.fromTo(userPhoto,
+                        { x: -10 },
                         {
                             x: 10,
                             duration: 0.1,
@@ -3429,7 +3433,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     );
                 }
-
                 destroyedPlayer.style.display = "block";
                 userCard.style.filter = "grayscale(1)";
                 await new Promise(res => setTimeout(() => {
@@ -3438,15 +3441,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 800));
                 userPoints = 0;
                 updateUI();
-                console.log("⚠️ Гравець програв одразу після атаки.");
+                console.log("Гравець загинув, остаточні значення: Бос:", bossPoints, "Гравець:", userPoints);
                 return endBattle("user");
-            }
-
-            if (bossPoints <= 0) {
-                // Анімація смерті боса
+            } else if (bossPoints <= 0) {
                 if (window.innerWidth > 478) {
-                    gsap.fromTo(bossCard,
-                        { x: -10, yPercent: -50 },
+                    gsap.fromTo(bossPhoto,
+                        { x: -10 },
                         {
                             x: 10,
                             duration: 0.1,
@@ -3470,10 +3470,9 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 hitBoss.style.display = "block";
 
-                // 💥 Тряска картки босса
                 if (window.innerWidth > 478) {
-                    gsap.fromTo(bossCard,
-                        { x: -10, yPercent: -50 },
+                    gsap.fromTo(bossPhoto,
+                        { x: -10 },
                         {
                             x: 10,
                             duration: 0.1,
@@ -3490,7 +3489,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     res();
                 }, 400));
             }
-
             await new Promise(res => setTimeout(res, 800));
 
             // ➤ Удар боса
@@ -3503,8 +3501,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (userPoints <= 0) {
                 if (window.innerWidth > 478) {
-                    gsap.fromTo(userCard,
-                        { x: -10, yPercent: -50 },
+                    gsap.fromTo(userPhoto,
+                        { x: -10 },
                         {
                             x: 10,
                             duration: 0.1,
@@ -3530,8 +3528,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // 💥 Тряска картки гравця
                 if (window.innerWidth > 478) {
-                    gsap.fromTo(userCard,
-                        { x: -10, yPercent: -50 },
+                    gsap.fromTo(userPhoto,
+                        { x: -10 },
                         {
                             x: 10,
                             duration: 0.1,
