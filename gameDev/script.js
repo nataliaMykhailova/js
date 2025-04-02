@@ -3414,9 +3414,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // ➤ Удар гравця
             await animateAttackGif(chargingPlayer, "right");
-            userPoints -= 2;
-            bossPoints -= 2;
-            addBossDamagePoints(-2);
+            userPoints -= 0;
+            bossPoints -= 0;
+            addBossDamagePoints(-0);
             updateUI();
             console.log("Після удару гравця: Бос:", bossPoints, "Гравець:", userPoints);
 
@@ -3630,7 +3630,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 finishGameBtn.style.opacity = "0";
                                 setTimeout(() => (finishGameBtn.style.opacity = "1"), 10);
                             }
-                            if (chooseAnotherBtn) {
+                            if (chooseAnotherBtn && Object.keys(userData.defeated_bosses).length < 4) {
                                 chooseAnotherBtn.style.display = "flex";
                                 chooseAnotherBtn.style.opacity = "0";
                                 setTimeout(() => (chooseAnotherBtn.style.opacity = "1"), 10);
