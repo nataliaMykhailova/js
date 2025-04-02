@@ -3172,6 +3172,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const userCard = document.querySelector(".profile-block-gd.fight");
         const bossCard = document.querySelector(".boss-profile_block-gd");
         const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
+        const attackDescr = document.querySelector(".fight-descr-gd");
+
 
         const isMobile = window.innerWidth <= 478;
 
