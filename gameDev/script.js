@@ -1105,7 +1105,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let points = 0;
 
         Object.keys(bossesData).forEach(boss => {
-            delete bossesData[boss].hourPoints;
+            bossesData[boss].hourPoints = 0;
         });
 
         if (value === 1) {
