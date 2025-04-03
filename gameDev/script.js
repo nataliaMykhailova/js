@@ -230,8 +230,49 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 // функція вибору персонажа
-    function selectProfession(selectedItem) {
+//     function selectProfession(selectedItem) {
+//
+//         Object.keys(bossesData).forEach(boss => {
+//             Object.keys(bossesData[boss]).forEach(key => {
+//                 if (!["name", "description", "img", "damage", "points", "totalPoints"].includes(key)) {
+//                     delete bossesData[boss][key];
+//                 }
+//             });
+//
+//             updateTotalBossPoints();
+//             handleEngineBlockVisibility();
+//             toggleLanguageBlockVisibility()
+//         });
+//
+//         // console.log("🔄 Боси очищені після вибору нової професії:", bossesData);
+//
+//         userData.artefacts = {};
+//         document.querySelectorAll(".active").forEach(activeBlock => {
+//             activeBlock.classList.remove("active");
+//         });
+//         document.querySelectorAll(".character-item_wrapper-gd").forEach(item => {
+//             item.style.opacity = "0.5";
+//             item.querySelector(".character-img-gd").style.filter = "none";
+//         });
+//
+//         selectedItem.style.opacity = "1";
+//         selectedItem.querySelector(".character-img-gd").style.filter = "drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))";
+//
+//         userData.profession = selectedItem.querySelector(".character-name-gd").textContent.trim();
+//         userData.avatar = selectedItem.querySelector(".character-img-gd").src;
+//         // console.log("Вибрана професія:", userData.profession);
+//         updateContinueButton();
+//         filterAndUpdateData();
+//         updateTotalUserPoints();
+//         updateProfileBlocks();
+//     }
 
+
+    function selectProfession(selectedItem) {
+        // ✨ Скидуємо userData, залишаючи gender
+        resetUserData(true);
+
+        // 🔁 Очищаємо очки у босів
         Object.keys(bossesData).forEach(boss => {
             Object.keys(bossesData[boss]).forEach(key => {
                 if (!["name", "description", "img", "damage", "points", "totalPoints"].includes(key)) {
@@ -241,11 +282,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             updateTotalBossPoints();
             handleEngineBlockVisibility();
-            toggleLanguageBlockVisibility()
+            toggleLanguageBlockVisibility();
         });
 
-        // console.log("🔄 Боси очищені після вибору нової професії:", bossesData);
-
+        // 🎯 Очищаємо артефакти та активні класи
         userData.artefacts = {};
         document.querySelectorAll(".active").forEach(activeBlock => {
             activeBlock.classList.remove("active");
@@ -255,16 +295,49 @@ document.addEventListener("DOMContentLoaded", function () {
             item.querySelector(".character-img-gd").style.filter = "none";
         });
 
+        // ✨ Підсвічуємо обрану професію
         selectedItem.style.opacity = "1";
         selectedItem.querySelector(".character-img-gd").style.filter = "drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))";
 
+        // 🧠 Зберігаємо вибір користувача
         userData.profession = selectedItem.querySelector(".character-name-gd").textContent.trim();
         userData.avatar = selectedItem.querySelector(".character-img-gd").src;
-        // console.log("Вибрана професія:", userData.profession);
+
         updateContinueButton();
         filterAndUpdateData();
         updateTotalUserPoints();
         updateProfileBlocks();
+
+        // 🔧 Скидаємо стилі елементів
+        document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(el => {
+            el.style.opacity = "0";
+        });
+
+        document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_spec").forEach(el => {
+            el.style.opacity = "0";
+        });
+
+        document.querySelectorAll(".trumb-gold-gd.overtime").forEach(el => {
+            el.style.opacity = "0";
+        });
+
+        document.querySelectorAll(".game-icon-gd.checked").forEach(el => {
+            el.style.opacity = "0";
+        });
+
+        document.querySelectorAll(".ind-star_img-gd").forEach(el => {
+            el.style.opacity = "0";
+        });
+
+        document.querySelectorAll(".game-track-gd").forEach(el => {
+            el.style.backgroundColor = "#1c0c03";
+        });
+
+        document.querySelectorAll(".range-thumb_gold-gd").forEach(thumb => {
+            thumb.style.left = "0%";
+            thumb.classList.remove("active");
+            thumb.classList.add("animate");
+        });
     }
 
     function updateContinueButton() {
