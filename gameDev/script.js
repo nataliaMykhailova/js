@@ -1670,6 +1670,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
         }
+        updateGameFillHeights()
 
         // console.log("✅ Оновлено всі дані персонажа:", professionData);
 
