@@ -333,9 +333,8 @@ document.addEventListener("DOMContentLoaded", function () {
             el.style.backgroundColor = "#1c0c03";
         });
 
-        document.querySelectorAll(".range-thumb_gold-gd").forEach(thumb => {
+        document.querySelectorAll(".title-trumb-gd").forEach(thumb => {
             thumb.style.left = "0%";
-            thumb.classList.remove("active");
             thumb.classList.add("animate");
         });
         document.querySelectorAll(".game-fill-gd").forEach(fill => {
