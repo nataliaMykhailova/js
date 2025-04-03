@@ -3987,7 +3987,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        if (!window.professionsData) {
+        if (!userData || !professionsData) {
             console.error("❌ userData або professionsData ще не ініціалізовано");
             return;
         }
