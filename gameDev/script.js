@@ -307,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
         filterAndUpdateData();
         updateTotalUserPoints();
         updateProfileBlocks();
+        filterAndUpdateData();
 
         // 🔧 Скидаємо стилі елементів
         document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(el => {
@@ -1633,42 +1634,42 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".contact-line_track-wrapper-gd.foreign_legal_entity").style.width = professionData.contract_with["foreign_legal_entity"] + "%";
         document.querySelector(".contact-line_track-wrapper-gd.not_registered_salary_in_cash").style.width = professionData.contract_with["not_registered_salary_in_cash"] + "%";
 
+        function updateGameFillHeights() {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    const keys = ["pc_laptop", "playstation", "xbox", "smartphone_tablet", "multiple_platforms"];
 
-        requestAnimationFrame(() => {
-            const keys = ["pc_laptop", "playstation", "xbox", "smartphone_tablet", "multiple_platforms"];
+                    keys.forEach(key => {
+                        const fillEl = document.querySelector(`.game-fill-gd.${key}`);
+                        const textEl = document.querySelector(`.p-13_gilroy-gd.gold.${key}`);
 
-            keys.forEach(key => {
-                const fillEl = document.querySelector(`.game-fill-gd.${key}`);
-                const textEl = document.querySelector(`.p-13_gilroy-gd.gold.${key}`);
+                        if (!fillEl) {
+                            console.warn(`❌ Не знайдено .game-fill-gd.${key}`);
+                            return;
+                        }
 
-                // console.log(`🔍 Перевірка платформи: ${key}`);
-                if (!fillEl) {
-                    console.warn(`❌ Не знайдено .game-fill-gd.${key}`);
-                    return;
-                }
+                        const percent = professionData.gaming_platforms[key];
+                        if (textEl) {
+                            textEl.textContent = percent + "%";
+                        }
 
-                const percent = professionData.gaming_platforms[key];
-                if (textEl) {
-                    textEl.textContent = percent + "%";
-                }
+                        // Беремо трек як батьківський блок
+                        const track = fillEl.closest('.game-track-gd');
+                        if (!track) return;
 
-                const cssHeight = parseFloat(getComputedStyle(fillEl).height);
+                        const cssHeight = track.clientHeight;
 
-                // console.log(`📏 Висота з getComputedStyle: ${cssHeight}px`);
+                        if (cssHeight === 0) {
+                            console.warn(`⚠️ Висота треку 0, .game-fill-gd.${key} може бути прихований.`);
+                            return;
+                        }
 
-                if (cssHeight === 0) {
-                    console.warn(`⚠️ CSS height = 0 для .game-fill-gd.${key}. Елемент може бути прихований.`);
-                    return;
-                }
-
-
-                const pixelHeight = (cssHeight * percent) / 100;
-                // console.log(`📐 Обчислено висоту: ${pixelHeight}px (${percent}%)`);
-
-                fillEl.style.height = pixelHeight + "px";
+                        const pixelHeight = (cssHeight * percent) / 100;
+                        fillEl.style.height = pixelHeight + "px";
+                    });
+                });
             });
-        });
-
+        }
 
         // console.log("✅ Оновлено всі дані персонажа:", professionData);
 
