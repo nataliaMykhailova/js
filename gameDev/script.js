@@ -100,15 +100,15 @@ document.addEventListener("DOMContentLoaded", function () {
             displayProfessions(professionsData.male);
             userData.gender = "male";
             console.log(userData);
-            window.addEventListener("load", () => {
-                const hasParams = window.location.search.length > 0;
-                if (hasParams) {
-                    console.log("✅ Виявлено параметри в URL, запускаємо handleSharedURL");
-                    handleSharedURL();
-                } else {
-                    console.log("ℹ️ Параметри відсутні — звичайний запуск");
-                }
-            });
+
+            const hasParams = window.location.search.length > 0;
+            if (hasParams) {
+                console.log("✅ Виявлено параметри в URL, запускаємо handleSharedURL");
+                handleSharedURL();
+            } else {
+                console.log("ℹ️ Параметри відсутні — звичайний запуск");
+            }
+
 
         })
         .catch(error => {
@@ -352,8 +352,8 @@ document.addEventListener("DOMContentLoaded", function () {
             fill.style.height = "";
         });
 
-            if (bossBackButton) bossBackButton.style.display = "flex";
-            if (bossMapButton) bossMapButton.classList.remove("disable");
+        if (bossBackButton) bossBackButton.style.display = "flex";
+        if (bossMapButton) bossMapButton.classList.remove("disable");
 
     }
 
@@ -755,12 +755,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
-
-
-
-
-
 // кнопка continue в секції з персонажами
     let hasFirstPartAnimationPlayed = true;
 
@@ -822,7 +816,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         repeat: 2
                     }, "+=0.5");
 
-                    tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+                    tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
                     tl.to(tutorialBtn, {
                         scale: 0.8,
@@ -831,7 +825,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         repeat: 2
                     }, "+=0.5");
 
-                    tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+                    tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
                     tl.to(tutorialBtn, {
                         y: '100%',
@@ -3233,10 +3227,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 activeBtn.style.opacity = "1";
 
-                    const scrollTarget = document.querySelector(".nav-btn-gd.to-fight");
-                    if (scrollTarget) {
-                        scrollTarget.scrollIntoView({behavior: "smooth", block: "center"});
-                    }
+                const scrollTarget = document.querySelector(".nav-btn-gd.to-fight");
+                if (scrollTarget) {
+                    scrollTarget.scrollIntoView({behavior: "smooth", block: "center"});
+                }
 
             });
         });
@@ -3481,8 +3475,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
-
     chooseAnotherBossBtn.addEventListener("click", () => {
         fightSection.classList.remove("visible");
         if (Object.keys(userData.defeated_bosses).length >= 1) {
@@ -3535,7 +3527,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
 // Головна функція бою
     function startBattle() {
         console.log("=== Запуск startBattle ===");
@@ -3568,7 +3559,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const bossPhoto = bossCard.querySelector(".profile-photo_wrapper-gd");
 
 
-
         // Ініціалізація даних нового бою – важливо, щоб вони були оновлені
         const boss = userData.selectedBoss;
         let bossPoints = boss.totalPoints;
@@ -3590,7 +3580,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             console.log("UI оновлено: Бос:", bossPoints, "Гравець:", userPoints);
         }
-
 
 
         async function animateAttackGif(gifEl, direction = "right") {
@@ -3673,7 +3662,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (userPoints <= 0) {
                 if (window.innerWidth > 478) {
                     gsap.fromTo(userPhoto,
-                        { x: -10 },
+                        {x: -10},
                         {
                             x: 10,
                             duration: 0.1,
@@ -3697,7 +3686,7 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (bossPoints <= 0) {
                 if (window.innerWidth > 478) {
                     gsap.fromTo(bossPhoto,
-                        { x: -10 },
+                        {x: -10},
                         {
                             x: 10,
                             duration: 0.1,
@@ -3723,7 +3712,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (window.innerWidth > 478) {
                     gsap.fromTo(bossPhoto,
-                        { x: -10 },
+                        {x: -10},
                         {
                             x: 10,
                             duration: 0.1,
@@ -3753,7 +3742,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (userPoints <= 0) {
                 if (window.innerWidth > 478) {
                     gsap.fromTo(userPhoto,
-                        { x: -10 },
+                        {x: -10},
                         {
                             x: 10,
                             duration: 0.1,
@@ -3774,13 +3763,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 updateUI();
                 console.log("Гравець загинув, остаточні значення: Бос:", bossPoints, "Гравець:", userPoints);
                 return endBattle("user");
-            }  else {
+            } else {
                 hitPlayer.style.display = "block";
 
                 // 💥 Тряска картки гравця
                 if (window.innerWidth > 478) {
                     gsap.fromTo(userPhoto,
-                        { x: -10 },
+                        {x: -10},
                         {
                             x: 10,
                             duration: 0.1,
@@ -3941,58 +3930,50 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-   /* function getShareableUserData() {
-        const { gender, profession, points, artefacts = {}, defeated_bosses = {} } = userData;
+    /* function getShareableUserData() {
+         const { gender, profession, points, artefacts = {}, defeated_bosses = {} } = userData;
 
-        const artefactKeys = {};
-        Object.keys(artefacts).forEach(category => {
-            const artefact = artefacts[category];
-            if (artefact?.key) {
-                artefactKeys[category] = artefact.key;
-            }
-        });
+         const artefactKeys = {};
+         Object.keys(artefacts).forEach(category => {
+             const artefact = artefacts[category];
+             if (artefact?.key) {
+                 artefactKeys[category] = artefact.key;
+             }
+         });
 
-        const defeatedBossKeys = Object.keys(defeated_bosses);
+         const defeatedBossKeys = Object.keys(defeated_bosses);
 
-        return {
-            gender,
-            profession,
-            totalPoints: points?.total || 0,
-            artefacts: artefactKeys,
-            bosses: defeatedBossKeys
-        };
-    }
-    function buildShareURL() {
-        const data = getShareableUserData();
-        const params = new URLSearchParams();
+         return {
+             gender,
+             profession,
+             totalPoints: points?.total || 0,
+             artefacts: artefactKeys,
+             bosses: defeatedBossKeys
+         };
+     }
+     function buildShareURL() {
+         const data = getShareableUserData();
+         const params = new URLSearchParams();
 
-        params.set("gender", data.gender);
-        params.set("profession", data.profession);
-        params.set("points", data.totalPoints);
+         params.set("gender", data.gender);
+         params.set("profession", data.profession);
+         params.set("points", data.totalPoints);
 
-        // Артефакти: додаємо кожен у форматі `artefact_{категорія}=ключ`
-        Object.entries(data.artefacts).forEach(([category, key]) => {
-            params.set(`artefact_${category}`, key);
-        });
+         // Артефакти: додаємо кожен у форматі `artefact_{категорія}=ключ`
+         Object.entries(data.artefacts).forEach(([category, key]) => {
+             params.set(`artefact_${category}`, key);
+         });
 
-        // Боси: масив → кома-сепарований рядок
-        if (data.bosses.length > 0) {
-            params.set("bosses", data.bosses.join(","));
-        }
+         // Боси: масив → кома-сепарований рядок
+         if (data.bosses.length > 0) {
+             params.set("bosses", data.bosses.join(","));
+         }
 
-        const baseUrl = window.location.origin + window.location.pathname;
-        const fullUrl = `${baseUrl}?${params.toString()}`;
+         const baseUrl = window.location.origin + window.location.pathname;
+         const fullUrl = `${baseUrl}?${params.toString()}`;
 
-        return fullUrl;
-    }*/
-
-
-
-
-
-
-
-
+         return fullUrl;
+     }*/
 
 
     function handleSharedURL() {
@@ -4016,7 +3997,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Базове
         userData.gender = gender;
         userData.profession = profession;
-        userData.points = { total: parseInt(points, 10) };
+        userData.points = {total: parseInt(points, 10)};
 
         // Артефакти
         params.forEach((val, key) => {
@@ -4073,14 +4054,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("ℹ️ Параметри відсутні — звичайний запуск");
         }
     });
-
-
-
-
-
-
-
-
 
 
     document.getElementById("shareScreenBtn").onclick = async function () {
