@@ -706,6 +706,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
+    if (Object.keys(userData.defeated_bosses).length >= 1) {
+        if (bossBackButton) bossBackButton.style.display = "none";
+        if (bossMapButton) bossMapButton.classList.add("disable");
+    }
+
     function showMapFromBosses() {
         if (!bossesSection || !mapSection) return;
 
@@ -797,10 +802,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     mapBtnFromFight.addEventListener("click", () => {
+        resetUserData(true);
         fightSection.classList.remove("visible");
         setTimeout(() => {
             fightSection.style.display = "none";
-            mapSection.style.display = "block";
+            charactersSection.style.display = "block";
             setTimeout(() => mapSection.classList.add("visible"), 0);
             window.scrollTo(0, 0);
         }, 0);
@@ -819,6 +825,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     backToCharactersButton.addEventListener("click", function () {
+        resetUserData(true);
         finishSection.classList.remove("visible");
 
         setTimeout(() => {
