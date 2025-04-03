@@ -4048,8 +4048,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    document.addEventListener("DOMContentLoaded", handleSharedURL);
-
+    window.addEventListener("load", () => {
+        const hasParams = window.location.search.length > 0;
+        if (hasParams) {
+            console.log("✅ Виявлено параметри в URL, запускаємо handleSharedURL");
+            handleSharedURL();
+        } else {
+            console.log("ℹ️ Параметри відсутні — звичайний запуск");
+        }
+    });
 
 
 
