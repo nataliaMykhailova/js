@@ -307,6 +307,7 @@ document.addEventListener("DOMContentLoaded", function () {
         filterAndUpdateData();
         updateTotalUserPoints();
         updateProfileBlocks();
+        checkIfUserIsReady();
 
         // 🔧 Скидаємо стилі елементів
         document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(el => {
@@ -3594,7 +3595,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
                         // 3️⃣ Застосовуємо transition та анімацію
-                        gifEl.style.transition = "transform 2s ease-in-out";
+                        gifEl.style.transition = "transform 1s ease-in-out";
                         gifEl.style.transform = `translateX(${shiftX}) translateY(-50%)`;
                         resolve();
                     });
