@@ -562,40 +562,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function runFirstPartMobileAnimation() {
         const section = document.querySelector('.first-part_section-gd');
-        if (!section || window.innerWidth >= 478) return;
+        if (!section) return;
 
         const baseElems = section.querySelectorAll(
-            '.profile-wrapper-gd, .block-title_wrapper-gd, .range-age-gd, .range-hours-gd, .static-hours-gd, .family-block, .range-title-gd, .finance-static_block-gd, .range-salary-gd'
+            '.profile-wrapper-gd, .block-title_wrapper-gd, .range-age-gd, .range-hours-gd, .static-hours-gd, .family-block, .range-title-gd, .finance-static_block-gd'
         );
 
-        const tutorialIcon = section.querySelector('.range-tutorial_icon-gd');
         const salaryBlock = section.querySelector('.range-salary-gd');
         const financesTabs = section.querySelector('.finances-tabs-gd');
+        const tutorialIcon = section.querySelector('.range-tutorial_icon-gd');
         const tutorialBtn = section.querySelector('.btn-tutorial_icon-gd');
-        const firstFinancesBlock = section.querySelector('.finances-block-gd');
-        const firstTab = firstFinancesBlock?.querySelector('.finances-tabs-gd');
+        const allTabs = section.querySelectorAll('.finances-tabs-gd');
+        const firstTab = section.querySelector('.finances-block-gd .finances-tabs-gd');
 
-        // ➤ Перша анімація — при скролі до salaryBlock
+        let firstAnimationDone = false;
+
+        // Перша анімація — salaryBlock
         ScrollTrigger.create({
             trigger: salaryBlock,
-            start: 'top 65%',
+            start: "top 65%",
+            once: true,
             onEnter: () => {
-                // 🔒 Блокуємо скрол
-                document.body.style.overflow = 'hidden';
-
-                const allTabs = section.querySelectorAll('.finances-tabs-gd');
-                allTabs.forEach(tab => {
-                    gsap.set(tab, { opacity: 0.2 });
-                });
+                document.body.style.overflow = "hidden"; // Блокуємо скрол
 
                 const tl = gsap.timeline({
                     onComplete: () => {
-                        // 🔓 Повертаємо скрол після анімації
-                        document.body.style.overflow = 'auto';
+                        document.body.style.overflow = ""; // Розблоковуємо скрол
+                        firstAnimationDone = true;
+                        // Встановлюємо ВСІ .finances-tabs-gd на opacity 1
+                        allTabs.forEach(tab => {
+                            gsap.set(tab, {opacity: 1});
+                        });
                     }
                 });
 
-                tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
+                tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
 
                 tl.to(tutorialIcon, {
                     x: "150%",
@@ -622,32 +623,34 @@ document.addEventListener("DOMContentLoaded", function () {
                     ease: "power1.out"
                 });
 
-                tl.to(baseElems, { opacity: 1, duration: 0.5 });
-                tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
-            },
-            once: true
+                tl.to(baseElems, {opacity: 1, duration: 0.5});
+            }
         });
 
-        // ➤ Друга анімація — при скролі до financesTabs
+        // Друга анімація — financesTabs
         ScrollTrigger.create({
             trigger: financesTabs,
-            start: 'top 65%',
+            start: "top 65%",
             onEnter: () => {
-                const allTabs = section.querySelectorAll('.finances-tabs-gd');
-
-                allTabs.forEach(tab => {
-                    gsap.set(tab, { opacity: tab === firstTab ? 1 : 0.2 });
-                });
+                if (!firstAnimationDone) return;
 
                 const tl = gsap.timeline();
 
-                tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
-                tl.to(salaryBlock, { opacity: 0.2, duration: 0.5 }, "<");
+                tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
+                tl.to(salaryBlock, {opacity: 0.2, duration: 0.5}, "<");
 
-                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
-                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
-                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
-                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+                // Усі .finances-tabs-gd — opacity: 0.2, крім першого (йому залишити 1)
+                allTabs.forEach(tab => {
+                    gsap.to(tab, {
+                        opacity: tab === firstTab ? 1 : 0.2,
+                        duration: 0.5
+                    });
+                });
+
+                tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
+                tl.to(tutorialBtn, {scale: 1, duration: 0.2});
+                tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
+                tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
                 tl.to(tutorialBtn, {
                     y: '100%',
@@ -655,12 +658,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     duration: 0.5
                 }, "+=0.4");
 
-                tl.to(baseElems, { opacity: 1, duration: 0.5 });
-                tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
-            },
-            once: true
+                tl.to(baseElems, {opacity: 1, duration: 0.5});
+                tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
+            }
         });
     }
+
 
 
 
