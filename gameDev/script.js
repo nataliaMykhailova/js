@@ -3987,76 +3987,81 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function handleSharedURL() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const gender = urlParams.get("gender");
-        const profession = urlParams.get("profession");
-        const points = parseInt(urlParams.get("points"), 10);
-        const artefactStr = urlParams.get("artefacts");
-        const defeatedStr = urlParams.get("defeated");
+        const params = new URLSearchParams(window.location.search);
+        const gender = params.get("gender");
+        const profession = params.get("profession");
+        const points = params.get("points");
 
-        if (gender && profession && !isNaN(points)) {
-            userData.gender = gender;
-            userData.profession = profession;
-            userData.points = { total: points };
-            userData.avatar = professionsData?.[gender]?.[profession]?.avatar || "";
+        if (!gender || !profession || !points) {
+            console.warn("❌ Обов’язкові параметри відсутні в URL");
+            return;
+        }
 
-            // Артефакти
-            try {
-                userData.artefacts = {};
-                const artefacts = JSON.parse(decodeURIComponent(artefactStr));
-                for (const [category, key] of Object.entries(artefacts)) {
-                    const data = professionsData.artefacts?.[category]?.[key];
-                    if (data) {
-                        userData.artefacts[category] = {
-                            image: data.image,
-                            description: data.description,
-                            key: key
-                        };
-                    }
+        if (!window.userData || !window.professionsData) {
+            console.error("❌ userData або professionsData ще не ініціалізовано");
+            return;
+        }
+
+        console.log("✅ Старт обробки URL з параметрами:", params.toString());
+
+        // Базове
+        userData.gender = gender;
+        userData.profession = profession;
+        userData.points = { total: parseInt(points, 10) };
+
+        // Артефакти
+        params.forEach((val, key) => {
+            if (!["gender", "profession", "points", "bosses"].includes(key)) {
+                const artefactData = professionsData.artefacts?.[key]?.[val];
+                if (artefactData) {
+                    userData.artefacts[key] = {
+                        ...artefactData,
+                        key: val,
+                    };
+                } else {
+                    console.warn(`❗ Артефакт ${key}/${val} не знайдено`);
                 }
-            } catch (e) {
-                console.warn("Не вдалося розпарсити артефакти з URL", e);
             }
+        });
 
-            // Вбиті боси
-            try {
-                const defeatedKeys = JSON.parse(decodeURIComponent(defeatedStr));
-                userData.defeated_bosses = {};
-                defeatedKeys.forEach(key => {
-                    const boss = professionsData.bosses?.[key];
-                    if (boss) {
-                        userData.defeated_bosses[key] = boss.img;
-                    }
-                });
-            } catch (e) {
-                console.warn("Не вдалося розпарсити босів з URL", e);
-            }
-
-            // Показуємо фінальну секцію
-            document.querySelectorAll("section").forEach(sec => {
-                sec.style.display = "none";
-                sec.style.opacity = "0";
+        // Боси
+        const bossList = params.get("bosses");
+        if (bossList) {
+            const bossKeys = bossList.split(",");
+            bossKeys.forEach(key => {
+                const bossData = professionsData.bosses?.[key];
+                if (bossData) {
+                    userData.defeated_bosses[key] = bossData.img;
+                } else {
+                    console.warn(`❗ Боса ${key} не знайдено`);
+                }
             });
+        }
 
-            const finishSection = document.querySelector(".finish-section-gd");
-            if (finishSection) {
-                finishSection.style.display = "block";
-                finishSection.style.opacity = "1";
-            }
+        // Показуємо тільки finish-секцію
+        document.querySelectorAll("section").forEach(sec => {
+            sec.style.opacity = "0";
+            sec.style.display = "none";
+        });
 
+        const finish = document.querySelector(".finish-section-gd");
+        if (finish) {
+            finish.style.display = "block";
+            finish.style.opacity = "1";
             fillFinishBlock();
+            console.log("🎉 Заповнено фінальний блок через URL");
+        } else {
+            console.error("❌ Не знайдено .finish-section-gd");
         }
     }
 
     window.addEventListener("load", () => {
-        const hasParams = window.location.search.length > 0;
-        if (hasParams) {
-            console.log("✅ Виявлено параметри в URL, запускаємо handleSharedURL");
+        if (window.location.search.length > 0) {
+            console.log("🌐 Є параметри в URL – запускаємо handleSharedURL()");
             handleSharedURL();
-        } else {
-            console.log("ℹ️ Параметри відсутні — звичайний запуск");
         }
     });
+
 
 
 
