@@ -307,7 +307,6 @@ document.addEventListener("DOMContentLoaded", function () {
         filterAndUpdateData();
         updateTotalUserPoints();
         updateProfileBlocks();
-        filterAndUpdateData();
 
         // 🔧 Скидаємо стилі елементів
         document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(el => {
