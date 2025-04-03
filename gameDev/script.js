@@ -3977,48 +3977,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }*/
 
 
-    document.getElementById("shareScreenBtn")?.addEventListener("click", () => {
-        const data = {
-            gender: userData.gender,
-            profession: userData.profession,
-            points: userData.points?.total || 0,
-            artefacts: {},
-            bosses: Object.keys(userData.defeated_bosses || {})
-        };
+    function handleShareToTelegram() {
+        const { gender, profession, points = {}, artefacts = {}, defeated_bosses = {} } = userData || {};
+        const artefactKeys = Object.entries(artefacts).map(([category, data]) => `${category}:${data.key || ''}`);
+        const bossKeys = Object.keys(defeated_bosses);
+        const totalPoints = points.total || 0;
 
-        // Додаємо ключі артефактів
-        if (userData.artefacts) {
-            for (const [key, artefact] of Object.entries(userData.artefacts)) {
-                if (artefact?.key) {
-                    data.artefacts[key] = artefact.key;
-                }
-            }
-        }
+        const queryParams = new URLSearchParams();
+        if (gender) queryParams.set('gender', gender);
+        if (profession) queryParams.set('profession', profession);
+        queryParams.set('points', totalPoints);
 
-        // Створюємо query string
-        const query = new URLSearchParams({
-            g: data.gender,
-            p: data.profession,
-            pt: data.points,
-            a: JSON.stringify(data.artefacts),
-            b: JSON.stringify(data.bosses)
-        }).toString();
+        if (artefactKeys.length) queryParams.set('artefacts', artefactKeys.join(','));
+        if (bossKeys.length) queryParams.set('bosses', bossKeys.join(','));
 
-        const shareUrl = `${window.location.origin}${window.location.pathname}?${query}`;
-        const encodedUrl = encodeURIComponent(shareUrl);
+        const fullURL = `${window.location.origin}${window.location.pathname}?${queryParams.toString()}`;
         const shareText = encodeURIComponent("Подивіться на цей GameDev портрет!");
-        const shareTitle = encodeURIComponent("GameDev Портрет геймдев-спеціаліста");
+        const shareURL = encodeURIComponent(fullURL);
+        const tgShareUrl = `https://t.me/share/url?url=${shareURL}&text=${shareText}`;
 
-        // Відкриваємо системне вікно поширення або TG/Facebook тощо
-        if (navigator.share) {
-            navigator.share({
-                title: decodeURIComponent(shareTitle),
-                text: decodeURIComponent(shareText),
-                url: shareUrl
-            }).catch(err => console.warn("❌ Шеринг скасовано або не вдалося", err));
-        } else {
-            // Запасний варіант — копіювати або відкрити нове вікно
-            window.open(`https://t.me/share/url?url=${encodedUrl}&text=${shareText}`, '_blank');
+        const newWindow = window.open(tgShareUrl, '_blank', 'width=600,height=400');
+
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
+            window.location.href = tgShareUrl;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const shareBtn = document.getElementById("shareScreenBtn");
+
+        if (shareBtn) {
+            shareBtn.addEventListener("click", handleShareToTelegram);
         }
     });
 });
