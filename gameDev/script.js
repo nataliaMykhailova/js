@@ -463,7 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
     function animateFactsOnScroll() {
         const factBlocks = document.querySelectorAll('.fact-block-gd');
@@ -565,101 +565,90 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!section) return;
 
         const baseElems = section.querySelectorAll(
-            '.profile-wrapper-gd, .block-title_wrapper-gd, .range-age-gd, .range-hours-gd, .static-hours-gd, .family-block, .finances-block-gd > *, .range-title-gd, .finance-static_block-gd' // без .finances-tabs-gd
+            '.profile-wrapper-gd, .block-title_wrapper-gd, .range-age-gd, .range-hours-gd, .static-hours-gd, .family-block, .range-title-gd, .finance-static_block-gd'
         );
         const tutorialIcon = section.querySelector('.range-tutorial_icon-gd');
         const salaryBlock = section.querySelector('.range-salary-gd');
         const financesTabs = section.querySelector('.finances-tabs-gd');
         const tutorialBtn = section.querySelector('.btn-tutorial_icon-gd');
 
-        let firstAnimationDone = false;
+        let firstAnimationPlayed = false;
 
-        // Анімація 1 — salaryBlock
+        // Анімація 1 — salaryBlock у топ 65%
         ScrollTrigger.create({
             trigger: salaryBlock,
             start: "top 65%",
+            once: true,
             onEnter: () => {
-                gsap.to(window, {
-                    scrollTo: { y: salaryBlock, autoKill: false },
-                    duration: 0.5,
-                    onComplete: () => {
-                        const tl = gsap.timeline();
+                if (firstAnimationPlayed) return;
 
-                        tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
-                        tl.to(financesTabs, {opacity: 0.2, duration: 0.5}, "<");
+                const tl = gsap.timeline();
 
-                        tl.to(tutorialIcon, {
-                            x: "150%",
-                            duration: 0.8,
-                            ease: "power2.out"
-                        }, "+=0.5");
+                tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
 
-                        tl.to(tutorialIcon, {
-                            x: '0%',
-                            duration: 0.4,
-                            ease: "power1.inOut"
-                        });
+                tl.to(tutorialIcon, {
+                    x: "150%",
+                    duration: 0.8,
+                    ease: "power2.out"
+                }, "+=0.5");
 
-                        tl.to(tutorialIcon, {
-                            x: '150%',
-                            duration: 0.8,
-                            ease: "power2.out"
-                        });
-
-                        tl.to(tutorialIcon, {
-                            y: '150%',
-                            opacity: 0,
-                            duration: 0.5,
-                            ease: "power1.out"
-                        });
-
-                        tl.to(baseElems, {opacity: 1, duration: 0.5});
-                        tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
-                        tl.to(financesTabs, {opacity: 1, duration: 0.5}, "<");
-
-                        tl.eventCallback("onComplete", () => {
-                            firstAnimationDone = true;
-                        });
-                    }
+                tl.to(tutorialIcon, {
+                    x: '0%',
+                    duration: 0.4,
+                    ease: "power1.inOut"
                 });
+
+                tl.to(tutorialIcon, {
+                    x: '150%',
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+
+                tl.to(tutorialIcon, {
+                    y: '150%',
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power1.out"
+                });
+
+                tl.to(baseElems, { opacity: 1, duration: 0.5 });
+                tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
+
+                firstAnimationPlayed = true;
             }
         });
 
-        // Анімація 2 — financesTabs
+        // Анімація 2 — financesTabs у топ 65%
         ScrollTrigger.create({
             trigger: financesTabs,
             start: "top 65%",
+            once: true,
             onEnter: () => {
-                if (!firstAnimationDone) return;
+                if (!firstAnimationPlayed) return; // запуститься тільки після першої
 
-                gsap.to(window, {
-                    scrollTo: { y: financesTabs, autoKill: false },
-                    duration: 0.5,
-                    onComplete: () => {
-                        const tl = gsap.timeline();
+                const tl = gsap.timeline();
 
-                        tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
-                        tl.to(salaryBlock, {opacity: 0.2, duration: 0.5}, "<");
-                        tl.set(financesTabs, {opacity: 1}, "<"); // фінанси завжди opacity 1
+                tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
+                tl.to(salaryBlock, { opacity: 0.2, duration: 0.5 }, "<");
+                gsap.set(financesTabs, { opacity: 1 }); // без анімації
 
-                        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
-                        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
-                        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
-                        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
+                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
 
-                        tl.to(tutorialBtn, {
-                            y: '100%',
-                            opacity: 0,
-                            duration: 0.5
-                        }, "+=0.4");
+                tl.to(tutorialBtn, {
+                    y: '100%',
+                    opacity: 0,
+                    duration: 0.5
+                }, "+=0.4");
 
-                        tl.to(baseElems, {opacity: 1, duration: 0.5});
-                        tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
-                    }
-                });
+                tl.to(baseElems, { opacity: 1, duration: 0.5 });
+                tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
             }
         });
     }
+
 
 
 
