@@ -338,6 +338,9 @@ document.addEventListener("DOMContentLoaded", function () {
             thumb.classList.remove("active");
             thumb.classList.add("animate");
         });
+            if (bossBackButton) bossBackButton.style.display = "flex";
+            if (bossMapButton) bossMapButton.classList.remove("disable");
+
     }
 
     function updateContinueButton() {
