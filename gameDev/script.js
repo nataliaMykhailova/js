@@ -3603,7 +3603,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             // 4️⃣ Очікуємо завершення анімації
-            await new Promise(res => setTimeout(res, 2000));
+            await new Promise(res => setTimeout(res, 1000));
 
             // 5️⃣ Скидаємо
             gifEl.style.display = "none";
