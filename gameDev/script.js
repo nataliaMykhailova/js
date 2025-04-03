@@ -567,24 +567,25 @@ document.addEventListener("DOMContentLoaded", function () {
         const baseElems = section.querySelectorAll(
             '.profile-wrapper-gd, .block-title_wrapper-gd, .range-age-gd, .range-hours-gd, .static-hours-gd, .family-block, .range-title-gd, .finance-static_block-gd'
         );
+
+        const allTabs = document.querySelectorAll('.finances-tabs-gd');
         const tutorialIcon = section.querySelector('.range-tutorial_icon-gd');
         const salaryBlock = section.querySelector('.range-salary-gd');
         const financesTabs = section.querySelector('.finances-tabs-gd');
         const tutorialBtn = section.querySelector('.btn-tutorial_icon-gd');
 
-        let firstAnimationPlayed = false;
+        let firstAnimDone = false;
 
-        // Анімація 1 — salaryBlock у топ 65%
+        // Анімація 1 — коли salaryBlock у top 65%
         ScrollTrigger.create({
             trigger: salaryBlock,
             start: "top 65%",
             once: true,
             onEnter: () => {
-                if (firstAnimationPlayed) return;
-
                 const tl = gsap.timeline();
 
-                tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
+                tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
+                tl.to(allTabs, {opacity: 0.2, duration: 0.5}, "<");
 
                 tl.to(tutorialIcon, {
                     x: "150%",
@@ -611,31 +612,37 @@ document.addEventListener("DOMContentLoaded", function () {
                     ease: "power1.out"
                 });
 
-                tl.to(baseElems, { opacity: 1, duration: 0.5 });
-                tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
+                tl.to(baseElems, {opacity: 1, duration: 0.5});
+                tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
 
-                firstAnimationPlayed = true;
+                tl.call(() => {
+                    firstAnimDone = true;
+                });
             }
         });
 
-        // Анімація 2 — financesTabs у топ 65%
+        // Анімація 2 — коли financesTabs у top 65%
         ScrollTrigger.create({
             trigger: financesTabs,
             start: "top 65%",
-            once: true,
             onEnter: () => {
-                if (!firstAnimationPlayed) return; // запуститься тільки після першої
+                if (!firstAnimDone) return;
 
                 const tl = gsap.timeline();
 
-                tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
-                tl.to(salaryBlock, { opacity: 0.2, duration: 0.5 }, "<");
-                gsap.set(financesTabs, { opacity: 1 }); // без анімації
+                tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
+                tl.to(salaryBlock, {opacity: 0.2, duration: 0.5}, "<");
 
-                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
-                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
-                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
-                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+                allTabs.forEach(tab => {
+                    if (!section.contains(tab)) {
+                        gsap.set(tab, {opacity: 1});
+                    }
+                });
+
+                tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
+                tl.to(tutorialBtn, {scale: 1, duration: 0.2});
+                tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
+                tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
                 tl.to(tutorialBtn, {
                     y: '100%',
@@ -643,11 +650,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     duration: 0.5
                 }, "+=0.4");
 
-                tl.to(baseElems, { opacity: 1, duration: 0.5 });
-                tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
+                tl.to(baseElems, {opacity: 1, duration: 0.5});
+                tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
             }
         });
     }
+
 
 
 
