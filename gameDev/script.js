@@ -3931,6 +3931,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+    function getShareableUserData() {
+        const { gender, profession, points, artefacts = {}, defeated_bosses = {} } = userData;
+
+        const artefactKeys = {};
+        Object.keys(artefacts).forEach(category => {
+            const artefact = artefacts[category];
+            if (artefact?.key) {
+                artefactKeys[category] = artefact.key;
+            }
+        });
+
+        const defeatedBossKeys = Object.keys(defeated_bosses);
+
+        return {
+            gender,
+            profession,
+            totalPoints: points?.total || 0,
+            artefacts: artefactKeys,
+            bosses: defeatedBossKeys
+        };
+    }
+
+
+    document.getElementById("shareScreenBtn")?.addEventListener("click", () => {
+        const sharedData = getShareableUserData();
+        console.log("📤 Дані для URL:", sharedData);
+
+        // Тут наступним кроком буде кодування в URL-параметри
+    });
+
+
 });
 
 
