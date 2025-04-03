@@ -38,6 +38,7 @@ const visited = new Set();
 let bossesData = {};
 let professionsData = {};
 let selectedBossKey = null;
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const heroSection = document.querySelector(".hero-section-gd");
@@ -4061,11 +4062,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById("shareScreenBtn").onclick = async function () {
         console.log("👆 Клік по кнопці shareScreenBtn");
-
-        if (!window.userData || !window.professionsData) {
-            console.error("❌ Немає userData або professionsData");
-            return;
-        }
 
         const gender = userData.gender;
         const profession = userData.profession;
