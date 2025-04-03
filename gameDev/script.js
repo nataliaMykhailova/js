@@ -338,6 +338,10 @@ document.addEventListener("DOMContentLoaded", function () {
             thumb.classList.remove("active");
             thumb.classList.add("animate");
         });
+        document.querySelectorAll(".game-fill-gd").forEach(fill => {
+            fill.style.height = "";
+        });
+
             if (bossBackButton) bossBackButton.style.display = "flex";
             if (bossMapButton) bossMapButton.classList.remove("disable");
 
