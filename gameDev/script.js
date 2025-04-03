@@ -1129,6 +1129,10 @@ document.addEventListener("DOMContentLoaded", function () {
             if (photoElement) {
                 photoElement.src = userData.avatar || "https://via.placeholder.com/150";
             }
+            if (Object.keys(userData.artefacts || {}).length >= 7 && !userData.points.artefactBonusePoints) {
+                addUserPoints("artefactBonusePoints", 1);
+                // console.log("🧩 Бонус за артефакти нараховано: +1 бал");
+            }
 
 
             const pointsElement = profileBlock.querySelector(".profile-point-gd");
@@ -2501,14 +2505,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (targetSection) {
 
                             if (btnClass === "is--bosses") {
-                                if (userData.points?.total >= 15 && bossesData?.Burnout) {
+                                if (userData.points?.total >= 20 && bossesData?.Burnout) {
                                     bossesData.Burnout.damage = 3;
                                     // console.log("🔥 Вигорання стає сильнішим! Damage = 3");
-                                }
-
-                                if (Object.keys(userData.artefacts || {}).length >= 7 && !userData.points.artefactBonusePoints) {
-                                    addUserPoints("artefactBonusePoints", 1);
-                                    // console.log("🧩 Бонус за артефакти нараховано: +1 бал");
                                 }
 
                                 checkIfUserIsReady();

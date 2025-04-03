@@ -2604,7 +2604,7 @@
       "name": "Вигорання",
       "description": "Колись він палав жагою творити, а тепер лише тліє",
       "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d19165d92373a7f0e66d3c_burnOut.webp",
-      "points": "5",
+      "points": "4",
       "damage": "2"
     },
     "Overtime": {
