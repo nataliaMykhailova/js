@@ -3931,7 +3931,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    function getShareableUserData() {
+   /* function getShareableUserData() {
         const { gender, profession, points, artefacts = {}, defeated_bosses = {} } = userData;
 
         const artefactKeys = {};
@@ -3952,16 +3952,75 @@ document.addEventListener("DOMContentLoaded", function () {
             bosses: defeatedBossKeys
         };
     }
+    function buildShareURL() {
+        const data = getShareableUserData();
+        const params = new URLSearchParams();
+
+        params.set("gender", data.gender);
+        params.set("profession", data.profession);
+        params.set("points", data.totalPoints);
+
+        // Артефакти: додаємо кожен у форматі `artefact_{категорія}=ключ`
+        Object.entries(data.artefacts).forEach(([category, key]) => {
+            params.set(`artefact_${category}`, key);
+        });
+
+        // Боси: масив → кома-сепарований рядок
+        if (data.bosses.length > 0) {
+            params.set("bosses", data.bosses.join(","));
+        }
+
+        const baseUrl = window.location.origin + window.location.pathname;
+        const fullUrl = `${baseUrl}?${params.toString()}`;
+
+        return fullUrl;
+    }*/
 
 
     document.getElementById("shareScreenBtn")?.addEventListener("click", () => {
-        const sharedData = getShareableUserData();
-        console.log("📤 Дані для URL:", sharedData);
+        const data = {
+            gender: userData.gender,
+            profession: userData.profession,
+            points: userData.points?.total || 0,
+            artefacts: {},
+            bosses: Object.keys(userData.defeated_bosses || {})
+        };
 
-        // Тут наступним кроком буде кодування в URL-параметри
+        // Додаємо ключі артефактів
+        if (userData.artefacts) {
+            for (const [key, artefact] of Object.entries(userData.artefacts)) {
+                if (artefact?.key) {
+                    data.artefacts[key] = artefact.key;
+                }
+            }
+        }
+
+        // Створюємо query string
+        const query = new URLSearchParams({
+            g: data.gender,
+            p: data.profession,
+            pt: data.points,
+            a: JSON.stringify(data.artefacts),
+            b: JSON.stringify(data.bosses)
+        }).toString();
+
+        const shareUrl = `${window.location.origin}${window.location.pathname}?${query}`;
+        const encodedUrl = encodeURIComponent(shareUrl);
+        const shareText = encodeURIComponent("Подивіться на цей GameDev портрет!");
+        const shareTitle = encodeURIComponent("GameDev Портрет геймдев-спеціаліста");
+
+        // Відкриваємо системне вікно поширення або TG/Facebook тощо
+        if (navigator.share) {
+            navigator.share({
+                title: decodeURIComponent(shareTitle),
+                text: decodeURIComponent(shareText),
+                url: shareUrl
+            }).catch(err => console.warn("❌ Шеринг скасовано або не вдалося", err));
+        } else {
+            // Запасний варіант — копіювати або відкрити нове вікно
+            window.open(`https://t.me/share/url?url=${encodedUrl}&text=${shareText}`, '_blank');
+        }
     });
-
-
 });
 
 
