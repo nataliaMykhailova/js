@@ -101,13 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
             userData.gender = "male";
             console.log(userData);
 
-            window.addEventListener("load", () => {
-                if (window.location.search.length > 0) {
-                    console.log("🌐 Є параметри в URL – запускаємо handleSharedURL()");
-                    handleSharedURL();
-                }
-            });
-
         })
         .catch(error => {
             console.error("Помилка завантаження даних:", error);
@@ -131,8 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // console.log("🛡 Боси ініціалізовані:", bossesData);
     }
-
-
 
     // Функція для створення елемента професії
 
@@ -4064,8 +4055,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-
+    window.addEventListener("load", () => {
+        const hasParams = window.location.search.length > 0;
+        if (hasParams) {
+            console.log("✅ Виявлено параметри в URL, запускаємо handleSharedURL");
+            handleSharedURL();
+        } else {
+            console.log("ℹ️ Параметри відсутні — звичайний запуск");
+        }
+    });
 
 
 
