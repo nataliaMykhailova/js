@@ -560,6 +560,98 @@ document.addEventListener("DOMContentLoaded", function () {
         }, "<");
     }
 
+    function runFirstPartMobileAnimation() {
+        const section = document.querySelector('.first-part_section-gd');
+        if (!section) return;
+
+        const baseElems = section.querySelectorAll(
+            '.profile-wrapper-gd, .block-title_wrapper-gd, .range-age-gd, .range-hours-gd, .static-hours-gd, .family-block, .finances-block-gd > *, .range-title-gd, .finances-tabs-gd, .finance-static_block-gd'
+        );
+        const tutorialIcon = section.querySelector('.range-tutorial_icon-gd');
+        const salaryBlock = section.querySelector('.range-salary-gd');
+        const financesTabs = section.querySelector('.finances-tabs-gd');
+        const tutorialBtn = section.querySelector('.btn-tutorial_icon-gd');
+
+        // Анімація 1 — коли salaryBlock у топ 65%
+        ScrollTrigger.create({
+            trigger: salaryBlock,
+            start: "top 65%",
+            onEnter: () => {
+                gsap.to(window, {
+                    scrollTo: salaryBlock,
+                    duration: 0.5,
+                    onComplete: () => {
+                        const tl = gsap.timeline();
+
+                        tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
+
+                        tl.to(tutorialIcon, {
+                            x: "150%",
+                            duration: 0.8,
+                            ease: "power2.out"
+                        }, "+=0.5");
+
+                        tl.to(tutorialIcon, {
+                            x: '0%',
+                            duration: 0.4,
+                            ease: "power1.inOut"
+                        });
+
+                        tl.to(tutorialIcon, {
+                            x: '150%',
+                            duration: 0.8,
+                            ease: "power2.out"
+                        });
+
+                        tl.to(tutorialIcon, {
+                            y: '150%',
+                            opacity: 0,
+                            duration: 0.5,
+                            ease: "power1.out"
+                        });
+
+                        tl.to(baseElems, {opacity: 1, duration: 0.5});
+                        tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
+                    }
+                });
+            }
+        });
+
+        // Анімація 2 — коли financesTabs у топ 65%
+        ScrollTrigger.create({
+            trigger: financesTabs,
+            start: "top 65%",
+            onEnter: () => {
+                gsap.to(window, {
+                    scrollTo: financesTabs,
+                    duration: 0.5,
+                    onComplete: () => {
+                        const tl = gsap.timeline();
+
+                        tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
+                        tl.to(salaryBlock, {opacity: 0.2, duration: 0.5}, "<");
+                        tl.set(financesTabs, {opacity: 1}, "<");
+
+                        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
+                        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
+                        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
+                        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
+
+                        tl.to(tutorialBtn, {
+                            y: '100%',
+                            opacity: 0,
+                            duration: 0.5
+                        }, "+=0.4");
+
+                        tl.to(baseElems, {opacity: 1, duration: 0.5});
+                        tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
+                    }
+                });
+            }
+        });
+    }
+
+
 
 // кнопка continue в секції з персонажами
     let hasFirstPartAnimationPlayed = true;
@@ -579,7 +671,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (hasFirstPartAnimationPlayed) {
                     hasFirstPartAnimationPlayed = false;
-                    setTimeout(() => runFirstPartAnimation(), 500);
+                    setTimeout(() => {
+                        if (window.innerWidth <= 478) {
+                            runFirstPartMobileAnimation();
+                        } else {
+                            runFirstPartAnimation();
+                        }
+                    }, 500);
                 }
             }, 0);
         }, 0);
@@ -587,10 +685,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function runSecondPartAnimation() {
-
-
         const section = document.querySelector('.second-part_section-gd');
-
         if (!section) return;
 
         const baseElems = section.querySelectorAll(
@@ -598,20 +693,55 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         const tutorialBtn = section.querySelector('.exp-tutorial_icon-gd');
 
-        const tl = gsap.timeline({delay: 0.5});
+        ScrollTrigger.create({
+            trigger: section,
+            start: "top 65%",
+            onEnter: () => {
+                section.scrollIntoView({ behavior: "smooth", block: "center" });
 
-        tl.to(baseElems, {opacity: 0.2, duration: 0.5, stagger: 0.03}, 0);
+                setTimeout(() => {
+                    const tl = gsap.timeline();
 
-        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
-        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
-        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
-        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
+                    tl.to(baseElems, {
+                        opacity: 0.2,
+                        duration: 0.5,
+                        stagger: 0.03
+                    });
 
-        tl.to(tutorialBtn, {y: '100%', opacity: 0, duration: 0.5}, "+=0.4");
+                    tl.to(tutorialBtn, {
+                        scale: 0.8,
+                        duration: 0.15,
+                        yoyo: true,
+                        repeat: 2
+                    }, "+=0.5");
 
-        tl.to(baseElems, {opacity: 1, duration: 0.5}, "+=0.5");
+                    tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
 
+                    tl.to(tutorialBtn, {
+                        scale: 0.8,
+                        duration: 0.15,
+                        yoyo: true,
+                        repeat: 2
+                    }, "+=0.5");
+
+                    tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+
+                    tl.to(tutorialBtn, {
+                        y: '100%',
+                        opacity: 0,
+                        duration: 0.5
+                    }, "+=0.4");
+
+                    tl.to(baseElems, {
+                        opacity: 1,
+                        duration: 0.5
+                    }, "+=0.5");
+                }, 600);
+            },
+            once: true
+        });
     }
+
 
     let hasRunSecondPartAnimation = true;
 
