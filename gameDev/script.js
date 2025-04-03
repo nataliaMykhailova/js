@@ -3977,39 +3977,125 @@ document.addEventListener("DOMContentLoaded", function () {
     }*/
 
 
-    function handleShareToTelegram() {
-        const { gender, profession, points = {}, artefacts = {}, defeated_bosses = {} } = userData || {};
-        const artefactKeys = Object.entries(artefacts).map(([category, data]) => `${category}:${data.key || ''}`);
-        const bossKeys = Object.keys(defeated_bosses);
-        const totalPoints = points.total || 0;
 
-        const queryParams = new URLSearchParams();
-        if (gender) queryParams.set('gender', gender);
-        if (profession) queryParams.set('profession', profession);
-        queryParams.set('points', totalPoints);
 
-        if (artefactKeys.length) queryParams.set('artefacts', artefactKeys.join(','));
-        if (bossKeys.length) queryParams.set('bosses', bossKeys.join(','));
 
-        const fullURL = `${window.location.origin}${window.location.pathname}?${queryParams.toString()}`;
-        const shareText = encodeURIComponent("Подивіться на цей GameDev портрет!");
-        const shareURL = encodeURIComponent(fullURL);
-        const tgShareUrl = `https://t.me/share/url?url=${shareURL}&text=${shareText}`;
 
-        const newWindow = window.open(tgShareUrl, '_blank', 'width=600,height=400');
 
-        if (!newWindow || newWindow.closed || typeof newWindow.closed === "undefined") {
-            window.location.href = tgShareUrl;
+
+
+
+    function handleSharedURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const gender = urlParams.get("gender");
+        const profession = urlParams.get("profession");
+        const points = parseInt(urlParams.get("points"), 10);
+        const artefactStr = urlParams.get("artefacts");
+        const defeatedStr = urlParams.get("defeated");
+
+        if (gender && profession && !isNaN(points)) {
+            userData.gender = gender;
+            userData.profession = profession;
+            userData.points = { total: points };
+            userData.avatar = professionsData?.[gender]?.[profession]?.avatar || "";
+
+            // Артефакти
+            try {
+                userData.artefacts = {};
+                const artefacts = JSON.parse(decodeURIComponent(artefactStr));
+                for (const [category, key] of Object.entries(artefacts)) {
+                    const data = professionsData.artefacts?.[category]?.[key];
+                    if (data) {
+                        userData.artefacts[category] = {
+                            image: data.image,
+                            description: data.description,
+                            key: key
+                        };
+                    }
+                }
+            } catch (e) {
+                console.warn("Не вдалося розпарсити артефакти з URL", e);
+            }
+
+            // Вбиті боси
+            try {
+                const defeatedKeys = JSON.parse(decodeURIComponent(defeatedStr));
+                userData.defeated_bosses = {};
+                defeatedKeys.forEach(key => {
+                    const boss = professionsData.bosses?.[key];
+                    if (boss) {
+                        userData.defeated_bosses[key] = boss.img;
+                    }
+                });
+            } catch (e) {
+                console.warn("Не вдалося розпарсити босів з URL", e);
+            }
+
+            // Показуємо фінальну секцію
+            document.querySelectorAll("section").forEach(sec => {
+                sec.style.display = "none";
+                sec.style.opacity = "0";
+            });
+
+            const finishSection = document.querySelector(".finish-section-gd");
+            if (finishSection) {
+                finishSection.style.display = "block";
+                finishSection.style.opacity = "1";
+            }
+
+            fillFinishBlock();
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const shareBtn = document.getElementById("shareScreenBtn");
+    document.addEventListener("DOMContentLoaded", handleSharedURL);
 
-        if (shareBtn) {
-            shareBtn.addEventListener("click", handleShareToTelegram);
+
+
+
+
+
+
+
+
+
+
+    document.getElementById("shareScreenBtn").onclick = async function () {
+        console.log("👆 Клік по кнопці shareScreenBtn");
+
+        if (!window.userData || !window.professionsData) {
+            console.error("❌ Немає userData або professionsData");
+            return;
         }
-    });
+
+        const gender = userData.gender;
+        const profession = userData.profession;
+        const totalPoints = userData.points?.total || 0;
+
+        if (!gender || !profession) {
+            console.warn("⚠️ Немає gender або profession у userData");
+            return;
+        }
+
+        const artefactParams = Object.entries(userData.artefacts || {})
+            .map(([key, val]) => `${key}=${val.key}`)
+            .join("&");
+
+        const bossKeys = Object.keys(userData.defeated_bosses || {}).join(",");
+
+        const query = `gender=${encodeURIComponent(gender)}&profession=${encodeURIComponent(profession)}&points=${totalPoints}&${artefactParams}&bosses=${bossKeys}`;
+        const shareURL = `${window.location.origin}${window.location.pathname}?${query}`;
+
+        console.log("📦 Згенерований URL:", shareURL);
+
+        const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareURL)}&text=${encodeURIComponent("Подивіться на цей GameDev портрет!")}`;
+
+        try {
+            window.open(telegramUrl, '_blank', 'width=600,height=400');
+            console.log("✅ Відкрито вікно Telegram для шерінгу");
+        } catch (e) {
+            console.error("❌ Не вдалося відкрити Telegram", e);
+        }
+    };
 });
 
 
