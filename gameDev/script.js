@@ -3724,7 +3724,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     res();
                 }, 400));
             }
-            await new Promise(res => setTimeout(res, 800));
+            await new Promise(res => setTimeout(res, 400));
 
             // ➤ Удар боса
             await animateAttackGif(chargingBoss, "left");
