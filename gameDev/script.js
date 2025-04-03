@@ -1810,7 +1810,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const artefactData = professionsData.artefacts?.salary?.[artefactKey];
 
         if (artefactData && artefactData.image && artefactData.description) {
-            userData.artefacts.salaryArtefact = {
+            userData.artefacts.salary = {
                 image: artefactData.image,
                 description: artefactData.description,
                 key: artefactKey,
@@ -1935,12 +1935,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const artefactData = professionsData.artefacts?.marital_status?.[familyStatus];
 
         if (artefactData && artefactData.image && artefactData.description) {
-            const current = userData.artefacts.familyArtefact;
+            const current = userData.artefacts.marital_status;
 
             if (!current || current.image !== artefactData.image) {
-                userData.artefacts.familyArtefact = {
+                userData.artefacts.marital_status = {
                     image: artefactData.image,
-                    description: artefactData.description
+                    description: artefactData.description,
+                    key: familyStatus
                 };
 
                 updateProfileBlocks();
@@ -1987,12 +1988,13 @@ document.addEventListener("DOMContentLoaded", function () {
         const artefactData = professionsData.artefacts?.children?.[userData.kids];
 
         if (artefactData && artefactData.image && artefactData.description) {
-            const current = userData.artefacts.childrenArtefact;
+            const current = userData.artefacts.children;
 
             if (!current || current.image !== artefactData.image) {
-                userData.artefacts.childrenArtefact = {
+                userData.artefacts.children = {
                     image: artefactData.image,
-                    description: artefactData.description
+                    description: artefactData.description,
+                    key: childrenStatus
                 };
 
                 updateProfileBlocks();
@@ -2080,9 +2082,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             userData.artefacts = {};
                         }
 
-                        userData.artefacts["exp-it"] = {
+                        userData.artefacts["it_experience"] = {
                             image: artefactData.image,
-                            description: artefactData.description
+                            description: artefactData.description,
+                            key: expKey
                         };
 
                         // console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}`, artefactData);
@@ -2215,7 +2218,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (artefactData && artefactData.image && artefactData.description) {
                         userData.artefacts[artefactCategory] = {
                             image: artefactData.image,
-                            description: artefactData.description
+                            description: artefactData.description,
+                            key: key
                         };
                         updateProfileBlocks();
                         // console.log(`🎖 Артефакт [${artefactCategory}]: ${key}`, artefactData);
@@ -2402,13 +2406,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     document.querySelector(`.programming-fill-gd.${fillKey} .trumb-gold-gd`);
                 if (thumbEl) thumbEl.style.opacity = "1";
 
-                userData.primaryLanguage = key;
+                userData.programming_language = key;
 
                 const artefactData = professionsData?.artefacts?.programming_language?.[key];
                 if (artefactData && artefactData.image && artefactData.description) {
-                    userData.artefacts.programmingLanguage = {
+                    userData.artefacts.programming_language = {
                         image: artefactData.image,
-                        description: artefactData.description
+                        description: artefactData.description,
+                        key: key
                     };
                     updateProfileBlocks();
                     // console.log(`👨‍💻 Обрана мова: ${key}, Артефакт:`, artefactData);
@@ -2782,9 +2787,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const artefactData = professionsData?.artefacts?.monetary_bonuses?.[key];
                 if (artefactData && artefactData.image && artefactData.description) {
-                    userData.artefacts.bonusesArtefact = {
+                    userData.artefacts.monetary_bonuses = {
                         image: artefactData.image,
-                        description: artefactData.description
+                        description: artefactData.description,
+                        key: key,
                     };
                     updateProfileBlocks();
                     // console.log(`💸 Обраний бонус: ${key}, Артефакт:`, artefactData);
