@@ -562,30 +562,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function runFirstPartMobileAnimation() {
         const section = document.querySelector('.first-part_section-gd');
-        if (!section) return;
+        if (!section || window.innerWidth >= 478) return;
 
         const baseElems = section.querySelectorAll(
-            '.profile-wrapper-gd, .block-title_wrapper-gd, .range-age-gd, .range-hours-gd, .static-hours-gd, .family-block, .range-title-gd, .finance-static_block-gd'
+            '.profile-wrapper-gd, .block-title_wrapper-gd, .range-age-gd, .range-hours-gd, .static-hours-gd, .family-block, .range-title-gd, .finance-static_block-gd, .range-salary-gd'
         );
 
-        const allTabs = document.querySelectorAll('.finances-tabs-gd');
         const tutorialIcon = section.querySelector('.range-tutorial_icon-gd');
         const salaryBlock = section.querySelector('.range-salary-gd');
         const financesTabs = section.querySelector('.finances-tabs-gd');
         const tutorialBtn = section.querySelector('.btn-tutorial_icon-gd');
+        const firstFinancesBlock = section.querySelector('.finances-block-gd');
+        const firstTab = firstFinancesBlock?.querySelector('.finances-tabs-gd');
 
-        let firstAnimDone = false;
-
-        // Анімація 1 — коли salaryBlock у top 65%
+        // ➤ Перша анімація — при скролі до salaryBlock
         ScrollTrigger.create({
             trigger: salaryBlock,
-            start: "top 65%",
-            once: true,
+            start: 'top 65%',
             onEnter: () => {
-                const tl = gsap.timeline();
+                // 🔒 Блокуємо скрол
+                document.body.style.overflow = 'hidden';
 
-                tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
-                tl.to(allTabs, {opacity: 0.2, duration: 0.5}, "<");
+                const allTabs = section.querySelectorAll('.finances-tabs-gd');
+                allTabs.forEach(tab => {
+                    gsap.set(tab, { opacity: 0.2 });
+                });
+
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        // 🔓 Повертаємо скрол після анімації
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+
+                tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
 
                 tl.to(tutorialIcon, {
                     x: "150%",
@@ -612,37 +622,32 @@ document.addEventListener("DOMContentLoaded", function () {
                     ease: "power1.out"
                 });
 
-                tl.to(baseElems, {opacity: 1, duration: 0.5});
-                tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
-
-                tl.call(() => {
-                    firstAnimDone = true;
-                });
-            }
+                tl.to(baseElems, { opacity: 1, duration: 0.5 });
+                tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
+            },
+            once: true
         });
 
-        // Анімація 2 — коли financesTabs у top 65%
+        // ➤ Друга анімація — при скролі до financesTabs
         ScrollTrigger.create({
             trigger: financesTabs,
-            start: "top 65%",
+            start: 'top 65%',
             onEnter: () => {
-                if (!firstAnimDone) return;
+                const allTabs = section.querySelectorAll('.finances-tabs-gd');
+
+                allTabs.forEach(tab => {
+                    gsap.set(tab, { opacity: tab === firstTab ? 1 : 0.2 });
+                });
 
                 const tl = gsap.timeline();
 
-                tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
-                tl.to(salaryBlock, {opacity: 0.2, duration: 0.5}, "<");
+                tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
+                tl.to(salaryBlock, { opacity: 0.2, duration: 0.5 }, "<");
 
-                allTabs.forEach(tab => {
-                    if (!section.contains(tab)) {
-                        gsap.set(tab, {opacity: 1});
-                    }
-                });
-
-                tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
-                tl.to(tutorialBtn, {scale: 1, duration: 0.2});
-                tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
-                tl.to(tutorialBtn, {scale: 1, duration: 0.2});
+                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
 
                 tl.to(tutorialBtn, {
                     y: '100%',
@@ -650,11 +655,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     duration: 0.5
                 }, "+=0.4");
 
-                tl.to(baseElems, {opacity: 1, duration: 0.5});
-                tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
-            }
+                tl.to(baseElems, { opacity: 1, duration: 0.5 });
+                tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
+            },
+            once: true
         });
     }
+
 
 
 
