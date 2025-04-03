@@ -950,7 +950,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             fightSection.style.display = "none";
             charactersSection.style.display = "block";
-            setTimeout(() => mapSection.classList.add("visible"), 0);
+            setTimeout(() => charactersSection.classList.add("visible"), 0);
             window.scrollTo(0, 0);
         }, 0);
     });
