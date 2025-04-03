@@ -3980,24 +3980,35 @@ document.addEventListener("DOMContentLoaded", function () {
         const params = new URLSearchParams(window.location.search);
         const gender = params.get("gender");
         const profession = params.get("profession");
-        const points = params.get("points");
+        const points = parseInt(params.get("points"), 10);
 
-        if (!gender || !profession || !points) {
-            console.warn("❌ Обов’язкові параметри відсутні в URL");
+        if (!gender || !profession || isNaN(points)) {
+            console.warn("❌ Обов’язкові параметри відсутні або некоректні");
             return;
         }
 
-        if (!userData || !professionsData) {
+        if (!window.userData || !window.professionsData) {
             console.error("❌ userData або professionsData ще не ініціалізовано");
             return;
         }
 
         console.log("✅ Старт обробки URL з параметрами:", params.toString());
 
-        // Базове
+        // Записуємо основні дані
         userData.gender = gender;
         userData.profession = profession;
-        userData.points = {total: parseInt(points, 10)};
+        userData.points = {
+            shared: points,
+            total: points
+        };
+
+        // Записуємо аватар з professionsData
+        const profData = professionsData?.[gender]?.[profession];
+        if (profData?.avatar) {
+            userData.avatar = profData.avatar;
+        } else {
+            console.warn("❗ Не вдалося знайти аватар для:", gender, profession);
+        }
 
         // Артефакти
         params.forEach((val, key) => {
@@ -4028,7 +4039,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Показуємо тільки finish-секцію
+        // Відображення лише .finish-section-gd
         document.querySelectorAll("section").forEach(sec => {
             sec.style.opacity = "0";
             sec.style.display = "none";
@@ -4045,15 +4056,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    window.addEventListener("load", () => {
-        const hasParams = window.location.search.length > 0;
-        if (hasParams) {
-            console.log("✅ Виявлено параметри в URL, запускаємо handleSharedURL");
-            handleSharedURL();
-        } else {
-            console.log("ℹ️ Параметри відсутні — звичайний запуск");
-        }
-    });
 
 
     document.getElementById("shareScreenBtn").onclick = async function () {
