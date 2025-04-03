@@ -1812,7 +1812,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (artefactData && artefactData.image && artefactData.description) {
             userData.artefacts.salaryArtefact = {
                 image: artefactData.image,
-                description: artefactData.description
+                description: artefactData.description,
+                key: artefactKey,
             };
             // console.log(`🎖 Призначено артефакт: ${artefactKey}`, artefactData);
             updateProfileBlocks();
