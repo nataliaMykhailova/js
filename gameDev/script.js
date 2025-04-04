@@ -4079,38 +4079,62 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    document.getElementById("shareScreenBtn").onclick = async function () {
-        console.log("👆 Клік по кнопці shareScreenBtn");
+    document.addEventListener('DOMContentLoaded', function () {
+        const shareButtons = document.querySelectorAll('.share-item-gd[data-social]');
 
-        const gender = userData.gender;
-        const profession = userData.profession;
-        const totalPoints = userData.points?.total || 0;
+        shareButtons.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
 
-        if (!gender || !profession) {
-            console.warn("⚠️ Немає gender або profession у userData");
-            return;
-        }
+                const social = this.getAttribute('data-social');
 
-        const artefactParams = Object.entries(userData.artefacts || {})
-            .map(([key, val]) => `${key}=${val.key}`)
-            .join("&");
+                const gender = userData.gender;
+                const profession = userData.profession;
+                const totalPoints = userData.points?.total || 0;
 
-        const bossKeys = Object.keys(userData.defeated_bosses || {}).join(",");
+                if (!gender || !profession) {
+                    console.warn("⚠️ Немає gender або profession у userData");
+                    return;
+                }
 
-        const query = `gender=${encodeURIComponent(gender)}&profession=${encodeURIComponent(profession)}&points=${totalPoints}&${artefactParams}&bosses=${bossKeys}`;
-        const shareURL = `${window.location.origin}${window.location.pathname}?${query}`;
+                const artefactParams = Object.entries(userData.artefacts || {})
+                    .map(([key, val]) => `${key}=${val.key}`)
+                    .join("&");
 
-        console.log("📦 Згенерований URL:", shareURL);
+                const bossKeys = Object.keys(userData.defeated_bosses || {}).join(",");
 
-        const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareURL)}&text=${encodeURIComponent("Подивіться на цей GameDev портрет!")}`;
+                const query = `gender=${encodeURIComponent(gender)}&profession=${encodeURIComponent(profession)}&points=${totalPoints}&${artefactParams}&bosses=${bossKeys}`;
+                const shareURL = `${window.location.origin}${window.location.pathname}?${query}`;
 
-        try {
-            window.open(telegramUrl, '_blank', 'width=600,height=400');
-            console.log("✅ Відкрито вікно Telegram для шерінгу");
-        } catch (e) {
-            console.error("❌ Не вдалося відкрити Telegram", e);
-        }
-    };
+                const shareText = encodeURIComponent("Подивіться на цей GameDev портрет!");
+
+                let shareLink = "";
+
+                switch (social) {
+                    case 'fb':
+                        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareURL)}`;
+                        break;
+                    case 'x':
+                        shareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareURL)}&text=${shareText}`;
+                        break;
+                    case 'linkedin':
+                        shareLink = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareURL)}`;
+                        break;
+                    default:
+                        console.warn("❌ Невідома соцмережа:", social);
+                        return;
+                }
+
+                const popup = window.open(shareLink, '_blank', 'width=600,height=400');
+
+                if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+                    window.location.href = shareLink;
+                }
+
+                console.log(`📤 Відкрито шерінг у ${social.toUpperCase()}:`, shareLink);
+            });
+        });
+    });
 });
 
 
