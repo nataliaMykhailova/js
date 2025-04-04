@@ -437,6 +437,10 @@ document.addEventListener("DOMContentLoaded", function () {
             setGlow(cardOther, false);
             choiceItems.style.zIndex = '10';
             cardOther.style.zIndex = '5';
+
+            setDescriptionOpacity(descriptionMain, true);
+            setDescriptionOpacity(descriptionOther, false);
+
             if (!canHover) {
                 choiceItems.classList.add('active-mobile');
             }
