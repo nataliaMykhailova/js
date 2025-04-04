@@ -279,10 +279,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     function selectProfession(selectedItem) {
-        // ✨ Скидуємо userData, залишаючи gender
         resetUserData(true);
 
-        // 🔁 Очищаємо очки у босів
         Object.keys(bossesData).forEach(boss => {
             Object.keys(bossesData[boss]).forEach(key => {
                 if (!["name", "description", "img", "damage", "points", "totalPoints"].includes(key)) {
@@ -295,7 +293,6 @@ document.addEventListener("DOMContentLoaded", function () {
             toggleLanguageBlockVisibility();
         });
 
-        // 🎯 Очищаємо артефакти та активні класи
         userData.artefacts = {};
         document.querySelectorAll(".active").forEach(activeBlock => {
             activeBlock.classList.remove("active");
@@ -305,11 +302,9 @@ document.addEventListener("DOMContentLoaded", function () {
             item.querySelector(".character-img-gd").style.filter = "none";
         });
 
-        // ✨ Підсвічуємо обрану професію
         selectedItem.style.opacity = "1";
         selectedItem.querySelector(".character-img-gd").style.filter = "drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))";
 
-        // 🧠 Зберігаємо вибір користувача
         userData.profession = selectedItem.querySelector(".character-name-gd").textContent.trim();
         userData.avatar = selectedItem.querySelector(".character-img-gd").src;
 
@@ -319,7 +314,6 @@ document.addEventListener("DOMContentLoaded", function () {
         updateProfileBlocks();
         checkIfUserIsReady();
 
-        // 🔧 Скидаємо стилі елементів
         document.querySelectorAll(".range-thumb-gd.exp-trumb.exp_it").forEach(el => {
             el.style.opacity = "0";
         });
@@ -747,10 +741,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const tl = gsap.timeline();
 
-                tl.to(baseElems, {opacity: 0.2, duration: 0.5}, 0);
-                tl.to(salaryBlock, {opacity: 0.2, duration: 0.5}, "<");
+                tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
+                tl.to(salaryBlock, { opacity: 0.2, duration: 0.5 }, "<");
 
-                // Усі .finances-tabs-gd — opacity: 0.2, крім першого (йому залишити 1)
+                // Початкова зміна opacity
                 allTabs.forEach(tab => {
                     gsap.to(tab, {
                         opacity: tab === firstTab ? 1 : 0.2,
@@ -758,19 +752,32 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 });
 
-                tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
-                tl.to(tutorialBtn, {scale: 1, duration: 0.2});
-                tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
-                tl.to(tutorialBtn, {scale: 1, duration: 0.2});
+                // Анімація кнопки
+                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
+                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
+                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
 
+                // Зникнення кнопки
                 tl.to(tutorialBtn, {
                     y: '100%',
                     opacity: 0,
                     duration: 0.5
                 }, "+=0.4");
 
-                tl.to(baseElems, {opacity: 1, duration: 0.5});
-                tl.to(salaryBlock, {opacity: 1, duration: 0.5}, "<");
+                // Повертаємо opacity базовим елементам
+                tl.to(baseElems, { opacity: 1, duration: 0.5 });
+                tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
+
+                // ✅ Всі вкладки повертаємо до opacity: 1
+                tl.add(() => {
+                    allTabs.forEach(tab => {
+                        gsap.to(tab, {
+                            opacity: 1,
+                            duration: 0.5
+                        });
+                    });
+                });
             }
         });
     }
