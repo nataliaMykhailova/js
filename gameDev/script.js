@@ -447,11 +447,12 @@ document.addEventListener("DOMContentLoaded", function () {
             let isAnimating = false;
 
             function setGlow(card, enable) {
-                if (enable) {
-                    card.classList.add('active-glow');
-                } else {
-                    card.classList.remove('active-glow');
-                }
+                const imgWrapper = card.querySelector('.choice-item_img-gd');
+                if (!imgWrapper) return;
+
+                imgWrapper.style.filter = enable
+                    ? 'drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))'
+                    : 'none';
             }
 
             function setDescriptionOpacity(descEl, visible) {
