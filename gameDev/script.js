@@ -424,134 +424,160 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     //перехід гра/статистика
+    // Головна функція ініціалізації
     function hoverEffectCard() {
         const canHover = window.matchMedia('(hover: hover)').matches;
-        const cardOther = document.querySelector('.choice-item-gd.is-margin');
 
-        if (choiceItems && cardOther) {
+        resetCardStates();
 
-            const descriptionMain = choiceItems.querySelector('.p-14-gilroy-gd');
-            const descriptionOther = cardOther.querySelector('.p-14-gilroy-gd');
-
-            setGlow(choiceItems, true);
-            setGlow(cardOther, false);
-            choiceItems.style.zIndex = '10';
-            cardOther.style.zIndex = '5';
-            if (!canHover) {
-                choiceItems.classList.add('active-mobile');
-            }
-
-            choiceItems.style.transition = 'margin-right 0.4s ease, filter 0.5s ease';
-            cardOther.style.transition = 'filter 0.5s ease';
-
-            let isAnimating = false;
-
-            function setGlow(card, enable) {
-                card.style.filter = enable
-                    ? 'drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))'
-                    : 'none';
-            }
-            function setDescriptionOpacity(descEl, visible) {
-                descEl.style.opacity = visible ? '1' : '0';
-                descEl.style.transition = 'opacity 0.4s ease';
-            }
-
-            function animateTo(cardToRaise, cardToLower) {
-                if (isAnimating) return;
-                isAnimating = true;
-
-                const currentMargin = getComputedStyle(choiceItems).marginRight;
-                choiceItems.style.marginRight = '5vw';
-
-                setGlow(cardToRaise, true);
-                setGlow(cardToLower, false);
-
-                setTimeout(() => {
-                    cardToRaise.style.zIndex = '10';
-                    cardToLower.style.zIndex = '5';
-                    choiceItems.style.marginRight = currentMargin;
-                    setDescriptionOpacity(descriptionMain, cardToRaise === choiceItems);
-                    setDescriptionOpacity(descriptionOther, cardToRaise === cardOther);
-
-                    setTimeout(() => isAnimating = false, 400);
-                }, 400);
-            }
-
-            if (canHover) {
-                choiceItems.addEventListener('mouseenter', () => {
-                    if (parseInt(getComputedStyle(choiceItems).zIndex) < parseInt(getComputedStyle(cardOther).zIndex)) {
-                        animateTo(choiceItems, cardOther);
-                    }
-                });
-
-                cardOther.addEventListener('mouseenter', () => {
-                    if (parseInt(getComputedStyle(cardOther).zIndex) < parseInt(getComputedStyle(choiceItems).zIndex)) {
-                        animateTo(cardOther, choiceItems);
-                    }
-                });
-
-                choiceItems.addEventListener("click", () => {
-                    choiceSection.classList.remove("visible");
-                    setTimeout(() => {
-                        choiceSection.style.display = "none";
-                        charactersSection.style.display = "block";
-                        setTimeout(() => {
-                            charactersSection.classList.add("visible");
-
-                            if (userData.gender && professionsData[userData.gender]) {
-                                displayProfessions(professionsData[userData.gender]);
-                            }
-                        }, 0);
-                    }, 0);
-                });
-
-            } else {
-                [choiceItems, cardOther].forEach(card => {
-                    card.addEventListener('click', (event) => {
-                        const isActive = card.classList.contains('active-mobile');
-
-                        if (!isActive) {
-                            event.preventDefault();
-                            setGlow(choiceItems, false);
-                            setGlow(cardOther, false);
-                            choiceItems.classList.remove('active-mobile');
-                            cardOther.classList.remove('active-mobile');
-
-                            card.classList.add('active-mobile');
-                            setGlow(card, true);
-
-                            setDescriptionOpacity(descriptionMain, card === choiceItems);
-                            setDescriptionOpacity(descriptionOther, card === cardOther);
-
-                            if (card === choiceItems) {
-                                animateTo(choiceItems, cardOther);
-                            } else {
-                                animateTo(cardOther, choiceItems);
-                            }
-
-                        } else {
-                            if (card === choiceItems) {
-                                choiceSection.classList.remove("visible");
-                                setTimeout(() => {
-                                    choiceSection.style.display = "none";
-                                    charactersSection.style.display = "block";
-                                    setTimeout(() => {
-                                        charactersSection.classList.add("visible");
-
-                                        if (userData.gender && professionsData[userData.gender]) {
-                                            displayProfessions(professionsData[userData.gender]);
-                                        }
-                                    }, 0);
-                                }, 0);
-                            }
-                        }
-                    });
-                });
-            }
+        if (canHover) {
+            initHoverCardsHover();
+        } else {
+            initHoverCardsTouch();
         }
     }
 
+// Очищення фільтрів, z-index, active-класів
+    function resetCardStates() {
+        const cardOther = document.querySelector('.choice-item-gd.is-margin');
+        if (!choiceItems || !cardOther) return;
+
+        choiceItems.classList.remove('active-mobile');
+        cardOther.classList.remove('active-mobile');
+        choiceItems.style.filter = 'none';
+        cardOther.style.filter = 'none';
+        choiceItems.style.zIndex = '5';
+        cardOther.style.zIndex = '5';
+    }
+
+// Поведінка для hover (десктоп)
+    function initHoverCardsHover() {
+        const cardOther = document.querySelector('.choice-item-gd.is-margin');
+        if (!choiceItems || !cardOther) return;
+
+        const descriptionMain = choiceItems.querySelector('.p-14-gilroy-gd');
+        const descriptionOther = cardOther.querySelector('.p-14-gilroy-gd');
+
+        setGlow(choiceItems, true);
+        setGlow(cardOther, false);
+        choiceItems.style.zIndex = '10';
+        cardOther.style.zIndex = '5';
+
+        let isAnimating = false;
+
+        function animateTo(cardToRaise, cardToLower) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const currentMargin = getComputedStyle(choiceItems).marginRight;
+            choiceItems.style.marginRight = '5vw';
+
+            setGlow(cardToRaise, true);
+            setGlow(cardToLower, false);
+
+            setTimeout(() => {
+                cardToRaise.style.zIndex = '10';
+                cardToLower.style.zIndex = '5';
+                choiceItems.style.marginRight = currentMargin;
+                setDescriptionOpacity(descriptionMain, cardToRaise === choiceItems);
+                setDescriptionOpacity(descriptionOther, cardToRaise === cardOther);
+                setTimeout(() => isAnimating = false, 400);
+            }, 400);
+        }
+
+        choiceItems.addEventListener('mouseenter', () => {
+            if (parseInt(getComputedStyle(choiceItems).zIndex) < parseInt(getComputedStyle(cardOther).zIndex)) {
+                animateTo(choiceItems, cardOther);
+            }
+        });
+
+        cardOther.addEventListener('mouseenter', () => {
+            if (parseInt(getComputedStyle(cardOther).zIndex) < parseInt(getComputedStyle(choiceItems).zIndex)) {
+                animateTo(cardOther, choiceItems);
+            }
+        });
+
+        choiceItems.addEventListener('click', () => {
+            navigateToCharacters();
+        });
+    }
+
+// Поведінка для тач (мобілка)
+    function initHoverCardsTouch() {
+        const cardOther = document.querySelector('.choice-item-gd.is-margin');
+        if (!choiceItems || !cardOther) return;
+
+        const descriptionMain = choiceItems.querySelector('.p-14-gilroy-gd');
+        const descriptionOther = cardOther.querySelector('.p-14-gilroy-gd');
+
+        choiceItems.classList.add('active-mobile');
+        setGlow(choiceItems, true);
+        setGlow(cardOther, false);
+
+        [choiceItems, cardOther].forEach(card => {
+            card.addEventListener('click', (event) => {
+                const isActive = card.classList.contains('active-mobile');
+
+                if (!isActive) {
+                    event.preventDefault();
+                    setGlow(choiceItems, false);
+                    setGlow(cardOther, false);
+                    choiceItems.classList.remove('active-mobile');
+                    cardOther.classList.remove('active-mobile');
+
+                    card.classList.add('active-mobile');
+                    setGlow(card, true);
+
+                    setDescriptionOpacity(descriptionMain, card === choiceItems);
+                    setDescriptionOpacity(descriptionOther, card === cardOther);
+                } else {
+                    if (card === choiceItems) {
+                        navigateToCharacters();
+                    }
+                }
+            });
+        });
+    }
+
+// Допоміжні функції
+    function setGlow(card, enable) {
+        card.style.filter = enable
+            ? 'drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))'
+            : 'none';
+    }
+
+    function setDescriptionOpacity(descEl, visible) {
+        descEl.style.opacity = visible ? '1' : '0';
+        descEl.style.transition = 'opacity 0.4s ease';
+    }
+
+    function navigateToCharacters() {
+        choiceSection.classList.remove("visible");
+        setTimeout(() => {
+            choiceSection.style.display = "none";
+            charactersSection.style.display = "block";
+            setTimeout(() => {
+                charactersSection.classList.add("visible");
+                if (userData.gender && professionsData[userData.gender]) {
+                    displayProfessions(professionsData[userData.gender]);
+                }
+            }, 0);
+        }, 0);
+    }
+
+// Ресайз: оновлюємо при зміні режиму
+    let currentHoverState = window.matchMedia('(hover: hover)').matches;
+    window.addEventListener('resize', () => {
+        const newState = window.matchMedia('(hover: hover)').matches;
+        if (newState !== currentHoverState) {
+            currentHoverState = newState;
+            hoverEffectCard();
+        }
+    });
+
+// 🔁 Перший запуск
     hoverEffectCard();
+
 
     heroBtnContinue.addEventListener("click", function () {
         heroSection.classList.remove("visible");
