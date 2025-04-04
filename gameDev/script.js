@@ -4078,10 +4078,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-
-    document.addEventListener('DOMContentLoaded', function () {
-        console.log("✅ DOMContentLoaded — скрипт запущено");
-
         const shareButtons = document.querySelectorAll('.share-item-gd[data-social]');
         console.log(`🔍 Знайдено кнопок для шерінгу: ${shareButtons.length}`);
 
@@ -4150,7 +4146,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         });
-    });
 
 });
 
