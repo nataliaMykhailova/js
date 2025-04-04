@@ -2597,6 +2597,7 @@
       "name": "Дедлайн",
       "description": "Ті, хто не стежив за пісками часу, пізнають його кару",
       "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d191657167eb0d6d350e97_dedline.webp",
+      "circleImg": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67f010ccc79d3184ae6260bc_circleDedline.webp",
       "points": "3",
       "damage": "2"
     },
@@ -2604,6 +2605,7 @@
       "name": "Вигорання",
       "description": "Колись він палав жагою творити, а тепер лише тліє",
       "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d19165d92373a7f0e66d3c_burnOut.webp",
+      "circleImg": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67f010cc7b5e98fdbba31a31_circleBurnOut.webp",
       "points": "4",
       "damage": "2"
     },
@@ -2611,6 +2613,7 @@
       "name": "Овертайм",
       "description": "Він так довго кував своє світло, що зрештою став його в’язнем",
       "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d191659ccedf84a66e0e51_overtime.webp",
+      "circleImg": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67f010cc1bab371f4e12497b_circleOvertime.webp",
       "points": "3",
       "damage": "2"
     },
@@ -2618,6 +2621,7 @@
       "name": "Скорочення",
       "description": "Список складено. Він прийде без попередження і лише обрані уникнуть його вироку",
       "img": "https://cdn.prod.website-files.com/67d0282f75700afe64762649/67d1947ff1e0820b428718a2_layOff.webp",
+      "circleImg": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67f010cc7b5e98fdbba31a36_circleLayOff.webp",
       "points": "7",
       "damage": "2"
     }
