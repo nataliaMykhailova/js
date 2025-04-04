@@ -3331,18 +3331,20 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
+        if (killedBossesContainer) {
+            killedBossesContainer.innerHTML = "";
 
-        // 👹 Вбиті боси
-        Object.keys(userData.defeated_bosses || {}).forEach(bossKey => {
-            const boss = bossesData?.[bossKey];
-            if (boss?.circleImg) {
-                const img = document.createElement("img");
-                img.src = boss.circleImg;
-                img.alt = "Вбитий бос";
-                img.className = "killed-boss_img-gd";
-                killedBossesContainer.appendChild(img);
-            }
-        });
+            Object.keys(userData.defeated_bosses || {}).forEach(bossKey => {
+                const boss = bossesData?.[bossKey];
+                if (boss?.circleImg) {
+                    const img = document.createElement("img");
+                    img.src = boss.circleImg;
+                    img.alt = "Вбитий бос";
+                    img.className = "killed-boss_img-gd";
+                    killedBossesContainer.appendChild(img);
+                }
+            });
+        }
 
         const points = userData.points?.total || 0;
         let finalText = "";
