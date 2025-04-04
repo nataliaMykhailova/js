@@ -4086,28 +4086,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (goMainBtn) {
         goMainBtn.addEventListener("click", function () {
-            const finishSection = document.querySelector(".finish-section-gd");
-            const heroSection = document.querySelector(".hero-section-gd");
-
-            document.querySelector(".share-btn_wrapper-gd")?.style.setProperty("display", "flex");
-            document.querySelector(".nav-back_btn-gd.is-finish")?.style.setProperty("display", "flex");
-            document.querySelector(".nav-statistic_btn-gd.is--finish")?.style.setProperty("display", "flex");
-
-            goMainBtn.style.setProperty("display", "none");
-
-            if (finishSection) {
-                finishSection.classList.remove("visible");
-                setTimeout(() => {
-                    finishSection.style.display = "none";
-                    if (heroSection) {
-                        heroSection.style.display = "block";
-                        setTimeout(() => {
-                            heroSection.classList.add("visible");
-                            window.scrollTo(0, 0);
-                        }, 0);
-                    }
-                }, 0);
-            }
+            // Перезавантаження без параметрів
+            window.location.href = window.location.pathname;
         });
     }
 
