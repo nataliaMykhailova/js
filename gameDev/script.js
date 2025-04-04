@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         Object.keys(bossesData).forEach(boss => {
             Object.keys(bossesData[boss]).forEach(key => {
-                if (!["name", "description", "img", "damage", "points", "totalPoints"].includes(key)) {
+                if (!["name", "description", "circleImg", "img", "damage", "points", "totalPoints"].includes(key)) {
                     delete bossesData[boss][key];
                 }
             });
@@ -1875,7 +1875,7 @@ document.addEventListener("DOMContentLoaded", function () {
             total = parseInt(bossesData[boss].points) || 0;
 
             Object.keys(bossesData[boss]).forEach(key => {
-                if (!["name", "description", "img", "damage", "points", "totalPoints"].includes(key)) {
+                if (!["name", "description", "circleImg", "img", "damage", "points", "totalPoints"].includes(key)) {
                     total += bossesData[boss][key];
                 }
             });
@@ -3333,18 +3333,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         // 👹 Вбиті боси
-        if (killedBossesContainer) {
-            killedBossesContainer.innerHTML = "";
-            Object.values(userData.defeated_bosses || {}).forEach(src => {
-                if (src) {
-                    const img = document.createElement("img");
-                    img.src = src;
-                    img.alt = "Вбитий бос";
-                    img.className = "killed-boss_img-gd";
-                    killedBossesContainer.appendChild(img);
-                }
-            });
-        }
+        Object.keys(userData.defeated_bosses || {}).forEach(bossKey => {
+            const boss = bossesData?.[bossKey];
+            if (boss?.circleImg) {
+                const img = document.createElement("img");
+                img.src = boss.circleImg;
+                img.alt = "Вбитий бос";
+                img.className = "killed-boss_img-gd";
+                killedBossesContainer.appendChild(img);
+            }
+        });
 
         const points = userData.points?.total || 0;
         let finalText = "";
