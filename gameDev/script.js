@@ -4080,13 +4080,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     document.addEventListener('DOMContentLoaded', function () {
+        console.log("✅ DOMContentLoaded — скрипт запущено");
+
         const shareButtons = document.querySelectorAll('.share-item-gd[data-social]');
+        console.log(`🔍 Знайдено кнопок для шерінгу: ${shareButtons.length}`);
 
         shareButtons.forEach(btn => {
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
 
+                console.log("🖱 Клік по кнопці шерінгу:", this);
+
                 const social = this.getAttribute('data-social');
+                console.log("🌐 Соцмережа:", social);
+
+                if (!social) {
+                    console.warn("❌ Не вказано data-social");
+                    return;
+                }
 
                 const gender = userData.gender;
                 const profession = userData.profession;
@@ -4105,6 +4116,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const query = `gender=${encodeURIComponent(gender)}&profession=${encodeURIComponent(profession)}&points=${totalPoints}&${artefactParams}&bosses=${bossKeys}`;
                 const shareURL = `${window.location.origin}${window.location.pathname}?${query}`;
+
+                console.log("🔗 Згенерований share URL:", shareURL);
 
                 const shareText = encodeURIComponent("Подивіться на цей GameDev портрет!");
 
@@ -4125,16 +4138,20 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                 }
 
+                console.log(`🚀 Відкриваємо вікно для ${social.toUpperCase()}:`, shareLink);
+
                 const popup = window.open(shareLink, '_blank', 'width=600,height=400');
 
                 if (!popup || popup.closed || typeof popup.closed === 'undefined') {
+                    console.warn("⚠️ Не вдалося відкрити вікно, fallback через редірект");
                     window.location.href = shareLink;
+                } else {
+                    console.log("✅ Вікно відкрито");
                 }
-
-                console.log(`📤 Відкрито шерінг у ${social.toUpperCase()}:`, shareLink);
             });
         });
     });
+
 });
 
 
