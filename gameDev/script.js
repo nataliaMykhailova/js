@@ -426,6 +426,8 @@ document.addEventListener("DOMContentLoaded", function () {
     //перехід гра/статистика
     function hoverEffectCard() {
         const canHover = window.matchMedia('(hover: hover)').matches;
+        const descriptionMain = choiceItems.querySelector('.p-14-gilroy-gd');
+        const descriptionOther = cardOther.querySelector('.p-14-gilroy-gd');
 
         const cardOther = document.querySelector('.choice-item-gd.is-margin');
 
@@ -448,6 +450,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     ? 'drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))'
                     : 'none';
             }
+            function setDescriptionOpacity(descEl, visible) {
+                descEl.style.opacity = visible ? '1' : '0';
+                descEl.style.transition = 'opacity 0.4s ease';
+            }
 
             function animateTo(cardToRaise, cardToLower) {
                 if (isAnimating) return;
@@ -463,6 +469,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     cardToRaise.style.zIndex = '10';
                     cardToLower.style.zIndex = '5';
                     choiceItems.style.marginRight = currentMargin;
+                    setDescriptionOpacity(descriptionMain, cardToRaise === choiceItems);
+                    setDescriptionOpacity(descriptionOther, cardToRaise === cardOther);
 
                     setTimeout(() => isAnimating = false, 400);
                 }, 400);
@@ -498,10 +506,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             } else {
                 [choiceItems, cardOther].forEach(card => {
-                    card.addEventListener('click', () => {
+                    card.addEventListener('click', (event) => {
                         const isActive = card.classList.contains('active-mobile');
 
                         if (!isActive) {
+                            event.preventDefault();
                             setGlow(choiceItems, false);
                             setGlow(cardOther, false);
                             choiceItems.classList.remove('active-mobile');
@@ -509,6 +518,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             card.classList.add('active-mobile');
                             setGlow(card, true);
+
+                            setDescriptionOpacity(descriptionMain, card === choiceItems);
+                            setDescriptionOpacity(descriptionOther, card === cardOther);
 
                             if (card === choiceItems) {
                                 animateTo(choiceItems, cardOther);
