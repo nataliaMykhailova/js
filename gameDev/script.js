@@ -426,12 +426,13 @@ document.addEventListener("DOMContentLoaded", function () {
     //перехід гра/статистика
     function hoverEffectCard() {
         const canHover = window.matchMedia('(hover: hover)').matches;
-        const descriptionMain = choiceItems.querySelector('.p-14-gilroy-gd');
-        const descriptionOther = cardOther.querySelector('.p-14-gilroy-gd');
-
         const cardOther = document.querySelector('.choice-item-gd.is-margin');
 
         if (choiceItems && cardOther) {
+
+            const descriptionMain = choiceItems.querySelector('.p-14-gilroy-gd');
+            const descriptionOther = cardOther.querySelector('.p-14-gilroy-gd');
+
             setGlow(choiceItems, true);
             setGlow(cardOther, false);
             choiceItems.style.zIndex = '10';
