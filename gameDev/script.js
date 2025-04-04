@@ -4015,7 +4015,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("✅ Старт обробки URL з параметрами:", params.toString());
 
-        // Записуємо основні дані
         userData.gender = gender;
         userData.profession = profession;
         userData.points = {
@@ -4023,7 +4022,6 @@ document.addEventListener("DOMContentLoaded", function () {
             total: points
         };
 
-        // Записуємо аватар з professionsData
         const profData = professionsData?.[gender]?.[profession];
         if (profData?.avatar) {
             userData.avatar = profData.avatar;
@@ -4031,7 +4029,6 @@ document.addEventListener("DOMContentLoaded", function () {
             console.warn("❗ Не вдалося знайти аватар для:", gender, profession);
         }
 
-        // Артефакти
         params.forEach((val, key) => {
             if (!["gender", "profession", "points", "bosses"].includes(key)) {
                 const artefactData = professionsData.artefacts?.[key]?.[val];
@@ -4046,7 +4043,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Боси
         const bossList = params.get("bosses");
         if (bossList) {
             const bossKeys = bossList.split(",");
@@ -4060,7 +4056,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        // Відображення лише .finish-section-gd
         document.querySelectorAll("section").forEach(sec => {
             sec.style.opacity = "0";
             sec.style.display = "none";
@@ -4072,13 +4067,60 @@ document.addEventListener("DOMContentLoaded", function () {
             finish.style.opacity = "1";
             fillFinishBlock();
             console.log("🎉 Заповнено фінальний блок через URL");
+
+            document.querySelector(".share-btn_wrapper-gd")?.style.setProperty("display", "none");
+            document.querySelector(".nav-back_btn-gd.is-finish")?.style.setProperty("display", "none");
+            document.querySelector(".nav-statistic_btn-gd.is--finish")?.style.setProperty("display", "none");
+
+            document.querySelector(".nav-btn-gd.is--map.go-main-btn")?.style.setProperty("display", "flex");
         } else {
             console.error("❌ Не знайдено .finish-section-gd");
         }
     }
 
 
-        const shareButtons = document.querySelectorAll('.share-item-gd[data-social]');
+
+
+
+    const goMainBtn = document.querySelector(".nav-btn-gd.is--map.go-main-btn");
+
+    if (goMainBtn) {
+        goMainBtn.addEventListener("click", function () {
+            const finishSection = document.querySelector(".finish-section-gd");
+            const heroSection = document.querySelector(".hero-section-gd");
+
+            document.querySelector(".share-btn_wrapper-gd")?.style.setProperty("display", "flex");
+            document.querySelector(".nav-back_btn-gd.is-finish")?.style.setProperty("display", "flex");
+            document.querySelector(".nav-statistic_btn-gd.is--finish")?.style.setProperty("display", "flex");
+
+            goMainBtn.style.setProperty("display", "none");
+
+            if (finishSection) {
+                finishSection.classList.remove("visible");
+                setTimeout(() => {
+                    finishSection.style.display = "none";
+                    if (heroSection) {
+                        heroSection.style.display = "block";
+                        setTimeout(() => {
+                            heroSection.classList.add("visible");
+                            window.scrollTo(0, 0);
+                        }, 0);
+                    }
+                }, 0);
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+    const shareButtons = document.querySelectorAll('.share-item-gd[data-social]');
         console.log(`🔍 Знайдено кнопок для шерінгу: ${shareButtons.length}`);
 
         shareButtons.forEach(btn => {
