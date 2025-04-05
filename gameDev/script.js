@@ -564,17 +564,6 @@ document.addEventListener("DOMContentLoaded", function () {
             ease: "power2.out"
         }, "+=0.5");
 
-        tl.to(tutorialIcon, {
-            x: '0%',
-            duration: 0.4,
-            ease: "power1.inOut"
-        });
-
-        tl.to(tutorialIcon, {
-            x: '150%',
-            duration: 0.8,
-            ease: "power2.out"
-        });
 
         tl.to(tutorialIcon, {
             y: '150%',
@@ -595,9 +584,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
         tl.to(tutorialBtn, {scale: 1, duration: 0.2});
-        tl.to(tutorialBtn, {scale: 0.8, duration: 0.15, yoyo: true, repeat: 2}, "+=0.5");
-        tl.to(tutorialBtn, {scale: 1, duration: 0.2});
-
         tl.to(tutorialBtn, {
             y: '100%',
             opacity: 0,
@@ -653,17 +639,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     ease: "power2.out"
                 }, "+=0.5");
 
-                tl.to(tutorialIcon, {
-                    x: '0%',
-                    duration: 0.4,
-                    ease: "power1.inOut"
-                });
-
-                tl.to(tutorialIcon, {
-                    x: '150%',
-                    duration: 0.8,
-                    ease: "power2.out"
-                });
 
                 tl.to(tutorialIcon, {
                     y: '150%',
@@ -694,8 +669,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 });
 
-                tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
-                tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
                 tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
                 tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
 
@@ -773,15 +746,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         duration: 0.5,
                         stagger: 0.03
                     });
-
-                    tl.to(tutorialBtn, {
-                        scale: 0.8,
-                        duration: 0.15,
-                        yoyo: true,
-                        repeat: 2
-                    }, "+=0.5");
-
-                    tl.to(tutorialBtn, {scale: 1, duration: 0.2});
 
                     tl.to(tutorialBtn, {
                         scale: 0.8,
