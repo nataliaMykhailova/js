@@ -32,6 +32,8 @@ let userData = {
 
 };
 
+const dataUrl = 'https://raw.githubusercontent.com/nataliaMykhailova/js/refs/heads/master/gameDev/gameDev.json';
+
 
 const visited = new Set();
 
@@ -87,11 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    // Завантаження даних з JSON-файлу
-
-    const dataUrl = 'https://raw.githubusercontent.com/nataliaMykhailova/js/refs/heads/master/gameDev/gameDev.json';
-
-
     fetch(dataUrl)
         .then(response => response.json())
         .then(data => {
@@ -99,14 +96,10 @@ document.addEventListener("DOMContentLoaded", function () {
             initializeBosses();
             displayProfessions(professionsData.male);
             userData.gender = "male";
-            console.log(userData);
 
             const hasParams = window.location.search.length > 0;
             if (hasParams) {
-                console.log("✅ Виявлено параметри в URL, запускаємо handleSharedURL");
                 handleSharedURL();
-            } else {
-                console.log("ℹ️ Параметри відсутні — звичайний запуск");
             }
 
 
@@ -131,10 +124,8 @@ document.addEventListener("DOMContentLoaded", function () {
             };
         });
 
-        // console.log("🛡 Боси ініціалізовані:", bossesData);
     }
 
-    // Функція для створення елемента професії
 
     function createProfessionItem(profession) {
         const itemWrapper = document.createElement('div');
@@ -193,8 +184,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-// скидання даних користувача
-
     function resetUserData(keepGender = false) {
         if (!keepGender) {
             userData.gender = "";
@@ -229,7 +218,6 @@ document.addEventListener("DOMContentLoaded", function () {
         userData.gaming_platforms = "";
         userData.defeated_bosses = {};
 
-        // console.log("Дані користувача скинуто", userData);
 
         document.querySelectorAll(".character-item_wrapper-gd").forEach(item => {
             item.style.opacity = "1";
@@ -238,45 +226,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         updateContinueButton();
     }
-
-// функція вибору персонажа
-//     function selectProfession(selectedItem) {
-//
-//         Object.keys(bossesData).forEach(boss => {
-//             Object.keys(bossesData[boss]).forEach(key => {
-//                 if (!["name", "description", "img", "damage", "points", "totalPoints"].includes(key)) {
-//                     delete bossesData[boss][key];
-//                 }
-//             });
-//
-//             updateTotalBossPoints();
-//             handleEngineBlockVisibility();
-//             toggleLanguageBlockVisibility()
-//         });
-//
-//         // console.log("🔄 Боси очищені після вибору нової професії:", bossesData);
-//
-//         userData.artefacts = {};
-//         document.querySelectorAll(".active").forEach(activeBlock => {
-//             activeBlock.classList.remove("active");
-//         });
-//         document.querySelectorAll(".character-item_wrapper-gd").forEach(item => {
-//             item.style.opacity = "0.5";
-//             item.querySelector(".character-img-gd").style.filter = "none";
-//         });
-//
-//         selectedItem.style.opacity = "1";
-//         selectedItem.querySelector(".character-img-gd").style.filter = "drop-shadow(0px 0px 10px rgba(255, 215, 162, 0.9)) drop-shadow(0px 0px 8px rgba(255, 215, 162, 0.7))";
-//
-//         userData.profession = selectedItem.querySelector(".character-name-gd").textContent.trim();
-//         userData.avatar = selectedItem.querySelector(".character-img-gd").src;
-//         // console.log("Вибрана професія:", userData.profession);
-//         updateContinueButton();
-//         filterAndUpdateData();
-//         updateTotalUserPoints();
-//         updateProfileBlocks();
-//     }
-
 
     function selectProfession(selectedItem) {
         resetUserData(true);
@@ -401,7 +350,6 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleActiveGender(maleButton, femaleButton);
 
 
-    // Обробники подій для кнопок male/female
     maleButton.addEventListener("click", function () {
         userData.gender = "male";
         resetUserData(true);
@@ -417,15 +365,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
-    //перехід гра/статистика
     function hoverEffectCard() {
         const canHover = window.matchMedia('(hover: hover)').matches;
         const cardOther = document.querySelector('.choice-item-gd.is-margin');
 
         if (choiceItems && cardOther) {
 
-            const descriptionMain = choiceItems.querySelector('.p-14-gilroy-gd');
-            const descriptionOther = cardOther.querySelector('.p-14-gilroy-gd');
+            const textWrapper = document.querySelector('.text-card_wrapper-gd');
+            const descriptionMain = textWrapper.querySelector('.p-14-gilroy-gd.is--choice-card.main');
+            const descriptionOther = textWrapper.querySelector('.p-14-gilroy-gd.is--choice-card.is--gen');
 
             setGlow(choiceItems, true);
             setGlow(cardOther, false);
@@ -590,8 +538,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             );
         });
-
-        // console.log('📌 Анімація факт-блоків активована');
     }
 
 
@@ -682,19 +628,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         let firstAnimationDone = false;
 
-        // Перша анімація — salaryBlock
         ScrollTrigger.create({
             trigger: salaryBlock,
             start: "top 65%",
             once: true,
             onEnter: () => {
-                document.body.style.overflow = "hidden"; // Блокуємо скрол
+                document.body.style.overflow = "hidden";
 
                 const tl = gsap.timeline({
                     onComplete: () => {
-                        document.body.style.overflow = ""; // Розблоковуємо скрол
+                        document.body.style.overflow = "";
                         firstAnimationDone = true;
-                        // Встановлюємо ВСІ .finances-tabs-gd на opacity 1
                         allTabs.forEach(tab => {
                             gsap.set(tab, {opacity: 1});
                         });
@@ -732,7 +676,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
-        // Друга анімація — financesTabs
         ScrollTrigger.create({
             trigger: financesTabs,
             start: "top 65%",
@@ -744,7 +687,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 tl.to(baseElems, { opacity: 0.2, duration: 0.5 }, 0);
                 tl.to(salaryBlock, { opacity: 0.2, duration: 0.5 }, "<");
 
-                // Початкова зміна opacity
                 allTabs.forEach(tab => {
                     gsap.to(tab, {
                         opacity: tab === firstTab ? 1 : 0.2,
@@ -752,24 +694,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 });
 
-                // Анімація кнопки
                 tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
                 tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
                 tl.to(tutorialBtn, { scale: 0.8, duration: 0.15, yoyo: true, repeat: 2 }, "+=0.5");
                 tl.to(tutorialBtn, { scale: 1, duration: 0.2 });
 
-                // Зникнення кнопки
                 tl.to(tutorialBtn, {
                     y: '100%',
                     opacity: 0,
                     duration: 0.5
                 }, "+=0.4");
 
-                // Повертаємо opacity базовим елементам
                 tl.to(baseElems, { opacity: 1, duration: 0.5 });
                 tl.to(salaryBlock, { opacity: 1, duration: 0.5 }, "<");
 
-                // ✅ Всі вкладки повертаємо до opacity: 1
                 tl.add(() => {
                     allTabs.forEach(tab => {
                         gsap.to(tab, {
@@ -783,7 +721,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-// кнопка continue в секції з персонажами
     let hasFirstPartAnimationPlayed = true;
 
     continueButton.addEventListener("click", function () {
@@ -943,7 +880,6 @@ document.addEventListener("DOMContentLoaded", function () {
             treasurySection.style.display = "none";
             mapSection.style.display = "block";
 
-            // Додаємо видимість мапі
             setTimeout(() => {
                 mapSection.classList.add("visible");
                 window.scrollTo(0, 0);
@@ -1033,7 +969,6 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 fightSection.classList.add("visible");
                 window.scrollTo(0, 0);
-                // Запускаємо glow-ефект та бій
                 startAttackButtonGlow();
                 startBattle();
             }, 0);
@@ -1148,8 +1083,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    // заповнюємо блок профілю
-
     function updateProfileBlocks() {
         document.querySelectorAll(".profile-block-gd").forEach(profileBlock => {
             const positionElement = profileBlock.querySelector(".user-position");
@@ -1163,7 +1096,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             if (Object.keys(userData.artefacts || {}).length >= 7 && !userData.points.artefactBonusePoints) {
                 addUserPoints("artefactBonusePoints", 1);
-                // console.log("🧩 Бонус за артефакти нараховано: +1 бал");
             }
 
 
@@ -1235,8 +1167,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 0);
     });
 
-
-// range
 
     function initRangeGd(overrides = {}) {
         document.querySelectorAll('.range-gd').forEach(range => {
@@ -1395,8 +1325,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         userData.points[category] = points;
 
-        // console.log(`✅ Користувач отримав ${points} бал(ів) за ${category}`);
-
         updateTotalUserPoints();
         updateProfileBlocks();
 
@@ -1412,8 +1340,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
         userData.points.total = total;
-
-        console.log(`📊 Загальна кількість балів користувача: ${userData.points.total}`);
     }
 
 
@@ -1424,7 +1350,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         if (!userData.gender || !userData.profession) {
             console.error("❌ Помилка: Не вибрано гендер або професію.");
-            console.log(userData);
             return;
         }
 
@@ -1681,7 +1606,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const fillEl = document.querySelector(`.game-fill-gd.${key}`);
                 const textEl = document.querySelector(`.p-13_gilroy-gd.gold.${key}`);
 
-                // console.log(`🔍 Перевірка платформи: ${key}`);
                 if (!fillEl) {
                     console.warn(`❌ Не знайдено .game-fill-gd.${key}`);
                     return;
@@ -1694,7 +1618,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const cssHeight = parseFloat(getComputedStyle(fillEl).height);
 
-                // console.log(`📏 Висота з getComputedStyle: ${cssHeight}px`);
 
                 if (cssHeight === 0) {
                     console.warn(`⚠️ CSS height = 0 для .game-fill-gd.${key}. Елемент може бути прихований.`);
@@ -1703,20 +1626,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 const pixelHeight = (cssHeight * percent) / 100;
-                // console.log(`📐 Обчислено висоту: ${pixelHeight}px (${percent}%)`);
 
                 fillEl.style.height = pixelHeight + "px";
             });
         });
 
 
-        // console.log("✅ Оновлено всі дані персонажа:", professionData);
 
 
         initFinanceTabs();
         initFamilyTabs();
         initChildrenTabs();
-        // initEngineRangeSelector();
         handleEngineBlockVisibility();
         initProgrammingLanguageSelection();
         toggleLanguageBlockVisibility();
@@ -1727,7 +1647,6 @@ document.addEventListener("DOMContentLoaded", function () {
         initBonusSelection();
         initOvertimeSelection();
         initRevisionSelection();
-        // initSalarySatisfactionSelector();
         initEmploymentSelection();
         initWorkArrangementSelection();
         initContractSelection();
@@ -1742,7 +1661,7 @@ document.addEventListener("DOMContentLoaded", function () {
             keys: ["junior", "middle", "senior", "team_tech_lead"],
             userDataKey: "jobTitle",
             artefactCategory: null,
-            onSelect: (index, key) => addUserPoints("titlePoints", index + 1)
+            onSelect: (index) => addUserPoints("titlePoints", index + 1)
         });
 
 
@@ -1826,7 +1745,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-// присвоєння артефактів зарплати
 
     function assignSalaryArtefact(salary, min, mid, max) {
         let artefactKey = "";
@@ -1847,12 +1765,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 description: artefactData.description,
                 key: artefactKey,
             };
-            // console.log(`🎖 Призначено артефакт: ${artefactKey}`, artefactData);
             updateProfileBlocks();
         }
     }
 
-// призначення очків боссам
     function addBossPoints(bossName, points, reason) {
         if (!bossesData[bossName]) return;
 
@@ -1862,7 +1778,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         bossesData[bossName][reason] = points;
 
-        console.log(`🔥 ${bossName} отримав ${points} бал(ів) за ${reason}`);
         updateTotalBossPoints();
         renderBosses();
 
@@ -1883,11 +1798,9 @@ document.addEventListener("DOMContentLoaded", function () {
             bossesData[boss].totalPoints = total;
         });
 
-        // console.log("📊 Оновлено загальні бали босів:", bossesData);
     }
 
 
-// Функція вибору фінансового статусу користувача
     function initFinanceTabs() {
         const financeTabs = document.querySelectorAll(".finances-tab-gd.finance");
         const financeBlocks = document.querySelectorAll(".static-line_block-gd.finance");
@@ -1913,7 +1826,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         break;
                 }
 
-                // console.log("💰 Вибрано фінансовий статус:", userData.finStatus);
             });
         });
     }
@@ -1947,7 +1859,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 userData.family = familyStatus;
-                console.log("👨‍👩‍👦 Вибрано сімейний статус:", familyStatus);
 
                 if (typeof assignFamilyArtefact === "function") {
                     assignFamilyArtefact(familyStatus);
@@ -1977,7 +1888,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
 
                 updateProfileBlocks();
-                // console.log(`💍 Призначено артефакт сімейного стану: ${familyStatus}`, artefactData);
             }
         }
     }
@@ -1987,13 +1897,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const childrenTabs = childrenBlock.querySelectorAll(".finances-tab-gd.children");
             const childrenBlocks = childrenBlock.querySelectorAll(".static-line_block-gd.children");
 
-            // console.log("🔍 Виявлені вкладки дітей:", document.querySelectorAll(".finances-tab-gd.children"));
 
             childrenTabs.forEach((tab, index) => {
-                console.log("🎯 Додаємо обробник для:", tab);
 
                 tab.addEventListener("click", function () {
-                    // console.log("✅ Клік спрацював по вкладці дітей:", tab.textContent);
                     childrenTabs.forEach(item => item.classList.remove("active"));
                     childrenBlocks.forEach(block => block.classList.remove("active"));
 
@@ -2002,7 +1909,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     let childrenStatus = index === 0 ? "have_children" : "no_children";
                     userData.kids = childrenStatus;
-                    // console.log("👶 Вибрано статус дітей:", childrenStatus);
 
                     assignChildrenArtefact(childrenStatus);
                 });
@@ -2030,7 +1936,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 };
 
                 updateProfileBlocks();
-                // console.log(`🍼 Призначено артефакт для дітей: ${childrenStatus}`, artefactData);
             }
         }
     }
@@ -2069,7 +1974,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // вибір досвіду
     document.querySelector(".exp-flex-gd.exp_it").addEventListener("click", function (event) {
         const allColumns = document.querySelectorAll(".exp-colum_wrapper-gd");
 
@@ -2092,7 +1996,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const selectedComboClass = classList.find(cls => cls.startsWith("exp-it-line-"));
 
                 if (selectedComboClass) {
-                    // console.log("✅ Вибрано:", selectedComboClass);
                     userData.itExperience = selectedComboClass;
 
                     const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_it");
@@ -2120,7 +2023,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             key: expKey
                         };
 
-                        // console.log(`🖥 Призначено артефакт за ІТ досвід: ${expKey}`, artefactData);
                         updateProfileBlocks();
                     } else {
                         console.warn(`⚠️ Не знайдено артефакт для: ${expKey}`);
@@ -2155,7 +2057,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const selectedComboClass = classList.find(cls => cls.startsWith("exp-spec-line-"));
 
                 if (selectedComboClass) {
-                    console.log("✅ Вибрано:", selectedComboClass);
                     userData.specialtyExperience = selectedComboClass;
 
                     const thumb = column.querySelector(".range-thumb-gd.exp-trumb.exp_spec");
@@ -2254,7 +2155,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             key: key
                         };
                         updateProfileBlocks();
-                        // console.log(`🎖 Артефакт [${artefactCategory}]: ${key}`, artefactData);
                     }
                 }
 
@@ -2329,7 +2229,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    // ======== Вибір рівня англійської мови ======== //
     function initLanguageSelection() {
         const langContainers = document.querySelectorAll(".lang-row_wrapper-gd.lang");
         const allLangButtons = document.querySelectorAll(".finances-tab-gd-2");
@@ -2448,7 +2347,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         key: key
                     };
                     updateProfileBlocks();
-                    // console.log(`👨‍💻 Обрана мова: ${key}, Артефакт:`, artefactData);
                 }
             });
         });
@@ -2485,7 +2383,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 addUserPoints("settlementPoints", points);
-                // console.log(`✅ Вибрано тип населеного пункту: ${selectedSettlement}, Бали: ${points}`);
 
                 const target = document.querySelector(".nav-btn-gd.is--taverna");
                 if (target) {
@@ -2494,7 +2391,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // console.log("✅ Логіка вибору типу населеного пункту ініціалізована");
     }
 
     initSettlementSelection();
@@ -2505,7 +2401,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (userData.gender === "female") {
             if (langFactBlock) {
                 langFactBlock.style.display = 'none';
-                // console.log("🚫 Блок з фактом про англійську приховано для female");
             }
         }
 
@@ -2545,14 +2440,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             if (btnClass === "is--bosses") {
                                 if (userData.points?.total >= 20 && bossesData?.Burnout) {
                                     bossesData.Burnout.damage = 3;
-                                    // console.log("🔥 Вигорання стає сильнішим! Damage = 3");
                                 }
 
                                 checkIfUserIsReady();
                             }
                             targetSection.style.display = "block";
 
-                            console.log(userData);
                             setTimeout(() => {
                                 targetSection.classList.add("visible");
                                 if (btnClass === "is--bosses") {
@@ -2570,7 +2463,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     visited.add(btnClass);
                     button.classList.add("active");
 
-                    // ✅ Активувати відповідний індикатор
                     const indicator = document.querySelector(`.indicator-block-gd.${btnClass}`);
                     if (indicator) {
                         indicator.classList.add("active");
@@ -2594,7 +2486,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             bossesPopupText.textContent = "Зустрінься з жахами геймдеву!";
                         }
 
-                        // Активне зображення індикатора боса
                         const bossIndicator = document.querySelector(".indicator-block-gd.is--boss");
                         const bossImg = bossIndicator?.querySelector(".ind-boss_img-gd");
                         const bossActiveImg = bossIndicator?.querySelector(".ind-boss-active_img-gd");
@@ -2602,7 +2493,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         if (bossImg) bossImg.style.display = "none";
                         if (bossActiveImg) bossActiveImg.style.display = "block";
 
-                        // 🔻 Сховати мобільний текст, якщо всі секції пройдені
                         const mobileBossDescr = document.querySelector(".p-16-gd.is--gold.is--mobile_boss-descr");
                         if (window.innerWidth <= 478 && mobileBossDescr) {
                             mobileBossDescr.style.display = "none";
@@ -2621,12 +2511,10 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // console.log("✅ Кнопки та попапи ініціалізовано");
     }
 
     initNavigationButtons()
 
-// 🔄 Функція для скидання стану
     function resetNavigationProgress() {
         visited.clear();
 
@@ -2641,7 +2529,6 @@ document.addEventListener("DOMContentLoaded", function () {
             bossesPopupText.textContent = "Ти не готовий до цієї битви. Спочатку досліди решту локацій!";
         }
 
-        // console.log("🔁 Навігаційні кліки скинуто, 'Боси' знову заблоковано");
     }
 
     let allowGameAnimation = true;
@@ -2743,11 +2630,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 userData.gamingHabits = answer;
                 addUserPoints("gamingHabitsPoints", points);
 
-                console.log(`🎮 Вибір ігор: ${answer}, Бали: ${points}`);
             });
         });
 
-        // console.log("✅ Логіка вибору ігрових звичок ініціалізована");
     }
 
 
@@ -2781,11 +2666,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (selectedClass) {
                 userData.gaming_platforms = selectedClass;
-                // console.log(`🎮 Вибрано платформу: ${selectedClass}`);
             }
         });
 
-        // console.log("✅ Логіка вибору платформи ігор через делегування ініціалізована");
     }
 
     function initBonusSelection() {
@@ -2825,14 +2708,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         key: key,
                     };
                     updateProfileBlocks();
-                    // console.log(`💸 Обраний бонус: ${key}, Артефакт:`, artefactData);
                 } else {
                     console.warn(`❌ Артефакт не знайдено для: ${key}`);
                 }
             });
         });
 
-        // console.log("✅ Логіка вибору бонусів ініціалізована");
     }
 
 
@@ -2895,7 +2776,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const selectedTrack = document.querySelector(`.programming-fill-gd.${key}`);
                 if (selectedTrack) {
-                    allThumbs.forEach(th => th.style.opacity = "0"); // прибрати з усіх
+                    allThumbs.forEach(th => th.style.opacity = "0");
                     const thumb = selectedTrack.querySelector(".trumb-gold-gd");
                     if (thumb) thumb.style.opacity = "1";
                 }
@@ -2905,11 +2786,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (bossPoints.Burnout) addBossPoints("Burnout", bossPoints.Burnout, "overtimePoints");
                 if (bossPoints.Deadline) addBossPoints("Deadline", bossPoints.Deadline, "overtimePoints");
 
-                // console.log(`🕒 Обрано: ${key}, Бали користувача: ${points}`, bossPoints);
             });
         });
 
-        // console.log("✅ Логіка вибору овертаймів ініціалізована");
     }
 
 
@@ -2944,11 +2823,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const selectedTextRevision = tab.textContent.trim();
                 userData.salary_review_last_6_months = selectedTextRevision;
-                // console.log(`📝 Вибрано опцію перегляду зарплати: ${selectedTextRevision}`);
             });
         });
 
-        // console.log("✅ Логіка вибору перегляду зарплати ініціалізована");
     }
 
 
@@ -3004,11 +2881,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 userData.employmentType = key;
                 addUserPoints("employmentPoints", points);
 
-                // console.log(`📌 Обрано тип працевлаштування: ${key}, Бали: ${points}`);
             });
         });
 
-        // console.log("✅ Логіка вибору типу працевлаштування ініціалізована");
     }
 
 
@@ -3059,11 +2934,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
                 addUserPoints("workArrangementPoints", points);
-                // console.log(`🏠 Обраний тип роботи: ${key}, Бали користувача: ${points}`);
             });
         });
 
-        // console.log("✅ Логіка вибору типу праці ініціалізована");
     }
 
     function initContractSelection() {
@@ -3095,11 +2968,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 userData.contract_with = key;
 
 
-                // console.log(`📝 Обраний тип контракту: ${key}`);
             });
         });
 
-        // console.log("✅ Контрактний вибір активовано");
     }
 
     function renderBosses() {
@@ -3137,7 +3008,6 @@ document.addEventListener("DOMContentLoaded", function () {
             bossWrapper.appendChild(clonedBoss);
         });
 
-        // console.log("👹 Боси відрендерені через клонування шаблону:", bossesData);
         selectedBossKey = null;
     }
 
@@ -3249,7 +3119,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     const key = Object.keys(bossesData).find(k => bossesData[k].name === name);
                     if (key) {
                         selectedBossKey = key;
-                        console.log("🧠 Обраний бос:", key, bossesData[key]);
                     }
                 }
 
@@ -3263,7 +3132,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
 
-        // console.log("✅ Ініціалізовано вибір босів та оновлення стилів переможених");
     }
 
 
@@ -3293,7 +3161,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (pointsEl) pointsEl.textContent = personalPoints.toString();
 
-        // 🧩 Артефакти
         if (artefactContainer) {
             artefactContainer.innerHTML = "";
 
@@ -3398,10 +3265,9 @@ document.addEventListener("DOMContentLoaded", function () {
             bossFillEl.style.height = `${fillPercent}%`;
         }
 
-        // console.log("📦 Дані боса оновлено:", selectedBoss);
     }
 
-    let glowTween; // глобальна змінна для контролю
+    let glowTween;
 
     function startAttackButtonGlow() {
         const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
@@ -3412,11 +3278,10 @@ document.addEventListener("DOMContentLoaded", function () {
         attackDescr.style.opacity = 1;
         stopAttackButtonGlow();
 
-        // Запускаємо glow-ефект
         glowTween = gsap.to(attackBtn, {
             opacity: 1,
             filter: `drop-shadow(0px 0px 10px rgba(255, 215, 162, 1)) drop-shadow(0px 0px 15px rgba(255, 215, 162, 1))`,
-            duration: 1, // повільніше, як ти просив
+            duration: 1,
             yoyo: true,
             repeat: -1,
             ease: "power1.inOut"
@@ -3499,7 +3364,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
 
-        console.log("🔄 Візуал бою скинуто до початкового стану (з адаптацією для мобільного)");
     }
 
 
@@ -3555,9 +3419,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-// Головна функція бою
     function startBattle() {
-        console.log("=== Запуск startBattle ===");
 
         const attackBtn = document.querySelector(".nav-btn-gd.go-fight");
         const attackDescr = document.querySelector(".fight-descr-gd");
@@ -3587,15 +3449,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const bossPhoto = bossCard.querySelector(".profile-photo_wrapper-gd");
 
 
-        // Ініціалізація даних нового бою – важливо, щоб вони були оновлені
         const boss = userData.selectedBoss;
         let bossPoints = boss.totalPoints;
         let userPoints = userData.points.total;
         const bossInitialPoints = bossPoints;
 
-        console.log("Вибраний бос:", boss);
-
-        console.log("Початкові бали - Бос:", bossPoints, "Гравець:", userPoints);
 
         function updateUI() {
             bossPointsEl.textContent = bossPoints < 0 ? 0 : bossPoints;
@@ -3606,28 +3464,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 const fillPercent = (bossPoints * 100) / 7;
                 bossFillEl.style.height = `${Math.max(0, fillPercent)}%`;
             }
-            console.log("UI оновлено: Бос:", bossPoints, "Гравець:", userPoints);
         }
 
 
         async function animateAttackGif(gifEl, direction = "right") {
-            console.log("Анімація gif запущена:", gifEl, "на напрям:", direction);
 
             const isMobile = window.innerWidth <= 478;
             const shiftX = direction === "right"
                 ? (isMobile ? "70vw" : "75vw")
                 : (isMobile ? "-70vw" : "-75vw");
 
-            // 1️⃣ Початкові стилі
             gifEl.style.display = "block";
             gifEl.style.transition = "none";
             gifEl.style.transform = "translateX(0) translateY(-50%)";
 
-            // 2️⃣ Чекаємо 2 кадри через requestAnimationFrame
             await new Promise((resolve) => {
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
-                        // 3️⃣ Застосовуємо transition та анімацію
                         gifEl.style.transition = "transform 1s ease-in-out";
                         gifEl.style.transform = `translateX(${shiftX}) translateY(-50%)`;
                         resolve();
@@ -3635,15 +3488,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
-            // 4️⃣ Очікуємо завершення анімації
             await new Promise(res => setTimeout(res, 1000));
 
-            // 5️⃣ Скидаємо
             gifEl.style.display = "none";
             gifEl.style.transition = "none";
             gifEl.style.transform = "translateX(0) translateY(-50%)";
 
-            console.log("Анімація gif завершена:", gifEl);
         }
 
         function resetAttackGifs() {
@@ -3659,12 +3509,11 @@ document.addEventListener("DOMContentLoaded", function () {
             gifs.forEach(gif => {
                 if (gif) {
                     gif.style.display = "none";
-                    gif.style.transition = "none"; // скидаємо, щоб не мигало
+                    gif.style.transition = "none";
                     gif.style.transform = "translateX(0) translateY(-50%)";
                 }
             });
 
-            console.log("Анімації gif скинуті до початкового стану");
         }
 
 
@@ -3676,16 +3525,12 @@ document.addEventListener("DOMContentLoaded", function () {
             attackDescr.style.transform = "opacity 0.5s";
             attackDescr.style.opacity = 0;
 
-            console.log("=== Розпочато раунд бою ===");
-            console.log("Початкові значення: Бос:", bossPoints, "Гравець:", userPoints);
 
-            // ➤ Удар гравця
             await animateAttackGif(chargingPlayer, "right");
             userPoints -= 2;
             bossPoints -= 2;
             addBossDamagePoints(-2);
             updateUI();
-            console.log("Після удару гравця: Бос:", bossPoints, "Гравець:", userPoints);
 
             if (userPoints <= 0) {
                 if (window.innerWidth > 478) {
@@ -3709,7 +3554,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 800));
                 userPoints = 0;
                 updateUI();
-                console.log("Гравець загинув, остаточні значення: Бос:", bossPoints, "Гравець:", userPoints);
                 return endBattle("user");
             } else if (bossPoints <= 0) {
                 if (window.innerWidth > 478) {
@@ -3733,7 +3577,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 800));
                 bossPoints = 0;
                 updateUI();
-                console.log("Бос загинув, остаточні значення: Бос:", bossPoints, "Гравець:", userPoints);
                 return endBattle("boss");
             } else {
                 hitBoss.style.display = "block";
@@ -3759,13 +3602,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             await new Promise(res => setTimeout(res, 400));
 
-            // ➤ Удар боса
             await animateAttackGif(chargingBoss, "left");
             const bossDamage = boss.damage || 2;
             userPoints -= bossDamage;
             addBossDamagePoints(-bossDamage);
             updateUI();
-            console.log("Після удару боса: Бос:", bossPoints, "Гравець:", userPoints);
 
             if (userPoints <= 0) {
                 if (window.innerWidth > 478) {
@@ -3789,12 +3630,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 800));
                 userPoints = 0;
                 updateUI();
-                console.log("Гравець загинув, остаточні значення: Бос:", bossPoints, "Гравець:", userPoints);
                 return endBattle("user");
             } else {
                 hitPlayer.style.display = "block";
 
-                // 💥 Тряска картки гравця
                 if (window.innerWidth > 478) {
                     gsap.fromTo(userPhoto,
                         {x: -10},
@@ -3817,7 +3656,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             resetAttackGifs();
             await new Promise(res => setTimeout(res, 500));
-            console.log("=== Рунд завершено ===");
             startAttackButtonGlow();
             attackBtn.style.pointerEvents = "auto";
             attackBtn.style.transform = "opacity 0.5s";
@@ -3828,7 +3666,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function endBattle(whoLost) {
-            console.log("Завершення бою, хто загинув:", whoLost);
             stopAttackButtonGlow();
             attackBtn.style.display = "none";
             attackDescr.style.display = "none";
@@ -3844,7 +3681,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     ? "translate(-50%, 0) rotate(0deg)"
                     : "translate(-50%, -50%)";
 
-                console.log("✅ Центрування картки гравця завершено");
             };
 
 
@@ -3875,7 +3711,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 }
 
-                // Зникає тільки картка босса (через 500мс), потім центр гравця і кнопки
                 setTimeout(() => {
                     bossCard.style.transition = "opacity 0.5s";
                     bossCard.style.opacity = "0";
@@ -3883,7 +3718,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     setTimeout(() => {
                         bossCard.style.display = "none";
 
-                        // Центруємо гравця через 500мс після зникнення босса
                         setTimeout(() => {
                             centerUserCard();
 
@@ -3921,7 +3755,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     setTimeout(() => {
                         bossCard.style.display = "none";
 
-                        // Центруємо гравця через 500мс після зникнення босса
                         setTimeout(() => {
                             centerUserCard();
                             if (toMapBtn) {
@@ -3951,7 +3784,6 @@ document.addEventListener("DOMContentLoaded", function () {
         startAttackButtonGlow();
 
         attackBtn.onclick = () => {
-            console.log("Натиснуто кнопку атаки");
             attackBtn.style.pointerEvents = "none";
             playBattleRound();
         };
@@ -3987,12 +3819,10 @@ document.addEventListener("DOMContentLoaded", function () {
          params.set("profession", data.profession);
          params.set("points", data.totalPoints);
 
-         // Артефакти: додаємо кожен у форматі `artefact_{категорія}=ключ`
          Object.entries(data.artefacts).forEach(([category, key]) => {
              params.set(`artefact_${category}`, key);
          });
 
-         // Боси: масив → кома-сепарований рядок
          if (data.bosses.length > 0) {
              params.set("bosses", data.bosses.join(","));
          }
@@ -4020,7 +3850,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        console.log("✅ Старт обробки URL з параметрами:", params.toString());
 
         userData.gender = gender;
         userData.profession = profession;
@@ -4073,7 +3902,6 @@ document.addEventListener("DOMContentLoaded", function () {
             finish.style.display = "block";
             finish.style.opacity = "1";
             fillFinishBlock();
-            console.log("🎉 Заповнено фінальний блок через URL");
 
             document.querySelector(".share-btn_wrapper-gd")?.style.setProperty("display", "none");
             document.querySelector(".nav-back_btn-gd.is-finish")?.style.setProperty("display", "none");
@@ -4093,7 +3921,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (goMainBtn) {
         goMainBtn.addEventListener("click", function () {
-            // Перезавантаження без параметрів
             window.location.href = window.location.pathname;
         });
     }
@@ -4108,16 +3935,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     const shareButtons = document.querySelectorAll('.share-item-gd[data-social]');
-        console.log(`🔍 Знайдено кнопок для шерінгу: ${shareButtons.length}`);
 
         shareButtons.forEach(btn => {
             btn.addEventListener('click', function (e) {
                 e.preventDefault();
 
-                console.log("🖱 Клік по кнопці шерінгу:", this);
-
                 const social = this.getAttribute('data-social');
-                console.log("🌐 Соцмережа:", social);
 
                 if (!social) {
                     console.warn("❌ Не вказано data-social");
@@ -4142,7 +3965,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 const query = `gender=${encodeURIComponent(gender)}&profession=${encodeURIComponent(profession)}&points=${totalPoints}&${artefactParams}&bosses=${bossKeys}`;
                 const shareURL = `${window.location.origin}${window.location.pathname}?${query}`;
 
-                console.log("🔗 Згенерований share URL:", shareURL);
 
                 const shareText = encodeURIComponent("Подивіться на цей GameDev портрет!");
 
@@ -4163,15 +3985,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                 }
 
-                console.log(`🚀 Відкриваємо вікно для ${social.toUpperCase()}:`, shareLink);
 
                 const popup = window.open(shareLink, '_blank', 'width=600,height=400');
 
                 if (!popup || popup.closed || typeof popup.closed === 'undefined') {
                     console.warn("⚠️ Не вдалося відкрити вікно, fallback через редірект");
                     window.location.href = shareLink;
-                } else {
-                    console.log("✅ Вікно відкрито");
                 }
             });
         });
