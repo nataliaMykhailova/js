@@ -2583,11 +2583,11 @@
       },
       "other_engine": {
         "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384faf37e34bf14db4e4_46558.webp",
-        "description": "Не працюю з рушіями"
+        "description": "Працюю з пропрієтарними або менш відомими рушіями"
       },
       "no_engine": {
         "image": "https://cdn.prod.website-files.com/67d70369135c417bf48ed805/67dd384f81cf91a721de009d_564455.webp",
-        "description": "Працюю з пропрієтарними або менш відомими рушіями"
+        "description": "Не працюю з рушіями"
       }
     }
   },
