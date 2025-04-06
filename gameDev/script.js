@@ -3112,13 +3112,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (positionEl) positionEl.textContent = userData.profession || "Невідома професія";
 
-        console.log("fillFinishBlock -> userData:", userData);
-        console.log("photoEl:", photoEl);
-        console.log("userData.avatar:", userData.avatar);
         if (photoEl) {
             photoEl.src = userData.avatar || "https://via.placeholder.com/150";
             photoEl.srcset = userData.avatar;
-            console.log("Avatar set to:", photoEl.src);
         }
         let personalPoints = 0;
 
