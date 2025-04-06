@@ -3105,14 +3105,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const artefactContainer = document.querySelector(".artifact-block-gd.is--finish");
         const killedBossesContainer = document.querySelector(".killed-bosses_block-gd");
         const photoEl = document.querySelector(".profile-photo-gd.is--finish");
-        const descriptionEl = document.querySelector(".p-16-gd.final-description");
+        const descriptionEls = document.querySelectorAll(".p-16-gd.final-description");
         const gender = userData.gender;
         const profession = userData.profession;
         const userProfessionData = professionsData?.[gender]?.[profession];
 
         if (positionEl) positionEl.textContent = userData.profession || "Невідома професія";
-        if (photoEl) photoEl.src = userData.avatar || "https://via.placeholder.com/150";
 
+        console.log("fillFinishBlock -> userData:", userData);
+        console.log("photoEl:", photoEl);
+        console.log("userData.avatar:", userData.avatar);
+        if (photoEl) {
+            photoEl.src = userData.avatar || "https://via.placeholder.com/150";
+            console.log("Avatar set to:", photoEl.src);
+        }
         let personalPoints = 0;
 
         if (userData.points) {
@@ -3198,7 +3204,9 @@ document.addEventListener("DOMContentLoaded", function () {
             finalText = "Дані професії або гендеру відсутні у професійній базі.";
         }
 
-        if (descriptionEl) descriptionEl.textContent = finalText;
+        descriptionEls.forEach(el => {
+            el.textContent = finalText;
+        });
     }
 
     function fillBossFightInfo() {
