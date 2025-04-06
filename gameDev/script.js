@@ -971,6 +971,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             fightSection.style.display = "none";
             finishSection.style.display = "block";
+            addUserPoints("bossDaagePoints", 0);
 
             fillFinishBlock();
             setTimeout(() => finishSection.classList.add("visible"), 0);
