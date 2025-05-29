@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title>3D Slider з анімацією камери</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 200vh;
+        }
+        #canvasWrapper {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #sliderCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .is--slider3d { height: 300vh; }
+        .sticky-block { height: 100vh; }
+    </style>
+</head>
+<body>
+<section class="sticky-wrap is--slider3d">
+    <div class="sticky-block">
+        <div id="canvasWrapper">
+            <canvas id="sliderCanvas"></canvas>
+        </div>
+    </div>
+</section>
+
+<script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js"
+      }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+
+<script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js';
+    gsap.registerPlugin(ScrollTrigger);
+
+    // — Додано: змінні для drag-скролу —
+    let rotationVelocity = 0;
+    let isDragging       = false;
+    let prevX            = 0;
+    const dragSensitivity = 0.0002;
+
+    // — Сцена, камера, рендерер —
+    const scene    = new THREE.Scene();
+    const camera   = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 5);  // тимчасово задаємо "фінальну" відстань
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('sliderCanvas'), antialias: true });
+    renderer.setSize(innerWidth, innerHeight);
+
+    // — Контролі вимкнені —
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enabled = false;
+
+    // — Додано: обробники pointer для drag —
+    const canvas = renderer.domElement;
+    canvas.addEventListener('pointerdown', e => {
+        isDragging = true;
+        prevX = e.clientX;
+    });
+    canvas.addEventListener('pointermove', e => {
+        if (!isDragging) return;
+        // захист від “мертвих” рухів миші
+        if (e.pointerType === 'mouse' && e.buttons === 0) {
+            isDragging = false;
+            return;
+        }
+        const dx = e.clientX - prevX;
+        prevX = e.clientX;
+        rotationVelocity -= dx * dragSensitivity;
+    });
+    canvas.addEventListener('pointerup',   () => isDragging = false);
+    canvas.addEventListener('pointerleave',() => isDragging = false);
+    canvas.addEventListener('pointercancel',() => isDragging = false);
+
+    // — Група слайдів —
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const imageURLs = [
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab67edadef1191321f_466666666.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682dcfba9048864b1e233e21_85678568.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1abaf6a66b93898d5dc_496565255.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab27f747487df5a71e_256611.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1aa03611d731973688f_652326.webp"
+    ];
+    const totalSlides = 12;
+    const radius      = 8.1;
+
+    let finalCamZ, initialCamZ;
+    let slidesVisible = false;
+    let sliderStarted = false;
+
+    const baseFlatGeo   = new THREE.PlaneGeometry(4, 4, 20, 20);
+    const baseCurvedGeo = baseFlatGeo.clone();
+    applyCurvature(baseCurvedGeo, 4, 1.5, false);
+
+    // Обчислимо групу слайдів
+    const loader = new THREE.TextureLoader();
+    Promise.all(imageURLs.map(url => new Promise(res => loader.load(url, tex => {
+        tex.encoding = THREE.sRGBEncoding;
+        res(tex);
+    })))).then(textures => {
+        // — Створюємо меші —
+        const baseGeo = new THREE.PlaneGeometry(4, 4, 20, 20);
+        applyCurvature(baseGeo, 4, 1.5, false);
+
+        for (let i = 0; i < totalSlides; i++) {
+            const geo = baseGeo.clone();
+            geo.userData.flatPositions   = baseFlatGeo.attributes.position.array.slice();
+            geo.userData.curvedPositions = baseCurvedGeo.attributes.position.array.slice();
+
+            const mat = new THREE.MeshBasicMaterial({
+                map: textures[i % textures.length],
+                transparent: true,
+                opacity: (i === 6 ? 1 : 0)
+            });
+            const mesh = new THREE.Mesh(geo, mat);
+            const ang  = (i / totalSlides) * Math.PI * 2;
+            mesh.position.set(Math.sin(ang)*radius, 0, Math.cos(ang)*radius);
+            mesh.lookAt(0,0,0);
+            group.add(mesh);
+        }
+
+        updateOnResize();
+        const scaleSlider = group.scale.x;
+        group.scale.setScalar(scaleSlider);
+
+        // Фіксуємо камеру
+        const DESIRED_FINAL_DISTANCE = 2;
+        finalCamZ   = DESIRED_FINAL_DISTANCE;
+        initialCamZ = finalCamZ * -0.9;
+        camera.position.z = initialCamZ;
+
+        // — Функції show/hide —
+        function showSlides() {
+            if (slidesVisible) return;
+            slidesVisible = true;
+            sliderStarted = true;
+            group.rotation.y = 0;
+
+            const mats = group.children.map(mesh => mesh.material);
+            gsap.timeline()
+                .to(mats, {
+                    opacity: 1,
+                    duration: 1,
+                    stagger: 0.1,
+                    ease: 'power2.out'
+                })
+                .to(camera.position, {
+                    z: finalCamZ,
+                    duration: 1,
+                    ease: 'power1.inOut'
+                }, '<');
+        }
+
+        function hideSlides() {
+            if (!slidesVisible) return;
+            slidesVisible = false;
+            sliderStarted = false;
+
+            const mats = group.children.map(m => m.material);
+            const tl = gsap.timeline();
+            tl.to(mats, {
+                opacity: 0,
+                duration: 0.5,
+                stagger: 0.05,
+                ease: 'power2.in'
+            });
+            tl.add(() => {
+                group.rotation.y = 0;
+                group.children.forEach((mesh, i) => {
+                    mesh.material.opacity = (i === 6 ? 1 : 0);
+                });
+            });
+            tl.to(camera.position, {
+                z: initialCamZ,
+                duration: 1,
+                ease: 'power1.inOut'
+            });
+        }
+
+        // — ScrollTrigger —
+        const section = document.querySelector('.sticky-wrap.is--slider3d');
+        const wrapper = section.querySelector('.sticky-block');
+        ScrollTrigger.create({
+            trigger: section,
+            start:   'top top',
+            end:     'bottom bottom',
+            pin:     wrapper,
+            onUpdate(self) {
+                if (self.progress > 0.5 && !slidesVisible) showSlides();
+                else if (self.progress <= 0.5 && slidesVisible) hideSlides();
+            },
+            onLeaveBack() {
+                if (slidesVisible) hideSlides();
+            }
+        });
+
+        // — Анімація обертання + дісторшину —
+        (function animate() {
+            requestAnimationFrame(animate);
+
+            if (sliderStarted) {
+                // базова обертка + drag-інерція
+                group.rotation.y += 0.002 + rotationVelocity;
+                rotationVelocity *= 0.9;
+                applyDistortion(group, rotationVelocity);
+            }
+            updateCurvatureByCamera();
+
+
+            renderer.render(scene, camera);
+        })();
+    });
+
+    /**
+     * Плавне оновлення «викривленості» слайдів залежно від відстані камери.
+     * Використовує THREE.MathUtils.smoothstep для м’якого ease-in-out.
+     */
+    function updateCurvatureByCamera() {
+        // поточна відстань по z (за модулем)
+        const camDist = Math.abs(camera.position.z);
+
+        // границі «найближче» й «найдальше»
+        const dist1 = Math.abs(finalCamZ);
+        const dist2 = Math.abs(initialCamZ);
+        const near  = Math.min(dist1, dist2);
+        const far   = Math.max(dist1, dist2);
+
+        // лінійний прогрес від 0 до 1
+        let t = (camDist - near) / (far - near);
+        t = THREE.MathUtils.clamp(t, 0, 1);
+
+        // перетворюємо лінійний прогрес у плавний за допомогою smoothstep
+        const te = THREE.MathUtils.smoothstep(t, 0, 1);
+
+        // інтерполюємо Z-координати між плоскою та кривою версіями
+        group.children.forEach(mesh => {
+            const pos    = mesh.geometry.attributes.position;
+            const flat   = mesh.geometry.userData.flatPositions;
+            const curved = mesh.geometry.userData.curvedPositions;
+
+            for (let i = 0; i < pos.count; i++) {
+                const zFlat = flat[i * 3 + 2];
+                const zCur  = curved[i * 3 + 2];
+                pos.setZ(i, THREE.MathUtils.lerp(zFlat, zCur, te));
+            }
+            pos.needsUpdate = true;
+        });
+    }
+
+
+    // — Згладжена «кривизна» —
+    function applyCurvature(geo, w, f, inward) {
+        const pos = geo.attributes.position;
+        const c   = pos.count;
+        const xs  = Array.from({length:c}, (_,i)=>pos.getX(i));
+        const min = Math.min(...xs), max = Math.max(...xs), aw = max-min||1;
+        for (let i=0; i<c; i++){
+            const x = pos.getX(i), u = (x-min)/aw, off = f*Math.pow(u-0.5,2);
+            pos.setZ(i, inward?-off:off);
+        }
+        pos.needsUpdate = true;
+    }
+
+    // — Дісторшин —
+    function applyDistortion(grp, strength){
+        const thr = 0.2;
+        grp.children.forEach(sl=>{
+            const pos  = sl.geometry.attributes.position;
+
+            const orig = sl.geometry.userData.curvedPositions;
+            for(let i=0; i<pos.count; i++){
+                const ox = orig[i*3], oy = orig[i*3+1], cx = pos.getX(i);
+                if(!isDragging && Math.abs(strength)<thr){
+                    pos.setX(i, THREE.MathUtils.lerp(cx,ox,0.15));
+                } else {
+                    const h=6, ny=(oy+h/1.2)/h, wave=Math.sin(ny*Math.PI);
+                    pos.setX(i, ox + wave*strength*5);
+                }
+            }
+            pos.needsUpdate=true;
+        });
+    }
+
+    // — Resize —
+    function updateOnResize() {
+        const w = innerWidth, h = innerHeight;
+        renderer.setSize(w,h);
+        camera.aspect = w/h; camera.updateProjectionMatrix();
+        const vFOV = camera.fov * Math.PI/180;
+        const vh   = 2 * Math.tan(vFOV/2) * camera.position.z;
+        const vw   = vh * camera.aspect;
+        const bbox = new THREE.Box3().setFromObject(group);
+        const size = new THREE.Vector3(); bbox.getSize(size);
+        const sf = Math.min(vw/size.x, vh/size.y);
+        group.scale.setScalar(sf);
+    }
+
+    window.addEventListener('resize', updateOnResize);
+</script>
+</body>
+</html>
