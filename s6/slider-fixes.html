@@ -2,6 +2,7 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>3D Slider з анімацією камери</title>
     <style>
         body {
@@ -21,7 +22,7 @@
             height: 100%;
             display: block;
         }
-        .is--slider3d { height: 300vh; }
+        .is--slider3d { height: 200vh; }
         .sticky-block { height: 100vh; }
     </style>
 </head>
@@ -92,14 +93,19 @@
     scene.add(group);
 
     const imageURLs = [
-        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab67edadef1191321f_466666666.webp",
         "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682dcfba9048864b1e233e21_85678568.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab67edadef1191321f_466666666.webp",
         "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1abaf6a66b93898d5dc_496565255.webp",
         "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab27f747487df5a71e_256611.webp",
-        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1aa03611d731973688f_652326.webp"
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1aa03611d731973688f_652326.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682dcfba9048864b1e233e21_85678568.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab67edadef1191321f_466666666.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1abaf6a66b93898d5dc_496565255.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab27f747487df5a71e_256611.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1aa03611d731973688f_652326.webp",
     ];
-    const totalSlides = 12;
-    const radius      = 8.1;
+    const totalSlides = imageURLs.length;
+    const radius      = 6.7;
 
     let finalCamZ, initialCamZ;
     let slidesVisible = false;
@@ -127,7 +133,7 @@
             const mat = new THREE.MeshBasicMaterial({
                 map: textures[i % textures.length],
                 transparent: true,
-                opacity: (i === 6 ? 1 : 0)
+                opacity: (i === 5 ? 1 : 0)
             });
             const mesh = new THREE.Mesh(geo, mat);
             const ang  = (i / totalSlides) * Math.PI * 2;
@@ -141,9 +147,20 @@
         group.scale.setScalar(scaleSlider);
 
         // Фіксуємо камеру
-        const DESIRED_FINAL_DISTANCE = 2;
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+// значення для десктопа
+        const DESKTOP_FINAL_DIST   = 2;
+        const DESKTOP_INITIAL_MULT =  -1.1;
+
+// значення для мобільних
+        const MOBILE_FINAL_DIST    = 0.5;
+        const MOBILE_INITIAL_MULT  = -1.3;
+
+        const DESIRED_FINAL_DISTANCE = isMobile ? MOBILE_FINAL_DIST : DESKTOP_FINAL_DIST;
         finalCamZ   = DESIRED_FINAL_DISTANCE;
-        initialCamZ = finalCamZ * -0.9;
+        initialCamZ = finalCamZ * (isMobile ? MOBILE_INITIAL_MULT : DESKTOP_INITIAL_MULT);
+
         camera.position.z = initialCamZ;
 
         // — Функції show/hide —
@@ -153,13 +170,13 @@
             sliderStarted = true;
             group.rotation.y = 0;
 
-            const mats = group.children.map(mesh => mesh.material);
+            const mats = group.children.map(mesh => mesh.material).reverse();
             gsap.timeline()
                 .to(mats, {
                     opacity: 1,
                     duration: 1,
-                    stagger: 0.1,
-                    ease: 'power2.out'
+                    stagger: 0.05,
+                    ease: 'power2.in'
                 })
                 .to(camera.position, {
                     z: finalCamZ,
@@ -184,7 +201,7 @@
             tl.add(() => {
                 group.rotation.y = 0;
                 group.children.forEach((mesh, i) => {
-                    mesh.material.opacity = (i === 6 ? 1 : 0);
+                    mesh.material.opacity = (i === 5 ? 1 : 0);
                 });
             });
             tl.to(camera.position, {
@@ -233,23 +250,23 @@
      * Використовує THREE.MathUtils.smoothstep для м’якого ease-in-out.
      */
     function updateCurvatureByCamera() {
-        // поточна відстань по z (за модулем)
+        // поточна відстань (модуль z)
         const camDist = Math.abs(camera.position.z);
 
-        // границі «найближче» й «найдальше»
-        const dist1 = Math.abs(finalCamZ);
-        const dist2 = Math.abs(initialCamZ);
-        const near  = Math.min(dist1, dist2);
-        const far   = Math.max(dist1, dist2);
+        // межі «найближче» й «найдальше»
+        const d1 = Math.abs(finalCamZ);
+        const d2 = Math.abs(initialCamZ);
+        const near = Math.min(d1, d2);
+        const far  = Math.max(d1, d2);
 
-        // лінійний прогрес від 0 до 1
+        // нормалізуємо від 0 до 1
         let t = (camDist - near) / (far - near);
         t = THREE.MathUtils.clamp(t, 0, 1);
 
-        // перетворюємо лінійний прогрес у плавний за допомогою smoothstep
+        // плавний ease-in-out
         const te = THREE.MathUtils.smoothstep(t, 0, 1);
 
-        // інтерполюємо Z-координати між плоскою та кривою версіями
+        // інтерполяція між плоскою й кривою формою
         group.children.forEach(mesh => {
             const pos    = mesh.geometry.attributes.position;
             const flat   = mesh.geometry.userData.flatPositions;
@@ -258,7 +275,10 @@
             for (let i = 0; i < pos.count; i++) {
                 const zFlat = flat[i * 3 + 2];
                 const zCur  = curved[i * 3 + 2];
-                pos.setZ(i, THREE.MathUtils.lerp(zFlat, zCur, te));
+                // <-- Ось тут: плоске → криве, за рахунок te
+                pos.setZ(i,
+                    THREE.MathUtils.lerp(zCur, zFlat, te)
+                );
             }
             pos.needsUpdate = true;
         });
