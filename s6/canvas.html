@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D-ефект із шарами зображення</title>
+  <style>
+      body{
+          background-color: black;
+      }
+      .threejs-slider {
+          position: relative;
+          width: 100%;
+          height: 100vh;
+          overflow: hidden;
+      }
+
+      .threejs-slider__canvas-wrapper {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .threejs-slider__canvas {
+          display: block;
+          width: 100%;
+          height: 100%;
+      }
+  </style>
+</head>
+<body>
+
+<section class="threejs-slider">
+    <div class="threejs-slider__canvas-wrapper">
+        <canvas class="threejs-slider__canvas"></canvas>
+    </div>
+</section>
+
+<script type="module">
+    import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js";
+
+    // ========== 1. Сцена, камера, рендерер ==========
+
+    const wrapper = document.querySelector(".threejs-slider__canvas-wrapper");
+    const canvas = document.querySelector(".threejs-slider__canvas");
+
+    const scene = new THREE.Scene();
+    const fov = 45;
+    const aspect = window.innerWidth / window.innerHeight;
+    const near = 0.1;
+    const far = 1000;
+
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    // Щоб площина висотою = 1 «заповнювала» висоту в’юпорту:
+    const vFOV = THREE.MathUtils.degToRad(fov);
+    const planeHeight = 1;
+    const cameraZ = (planeHeight / 2) / Math.tan(vFOV / 2);
+    camera.position.set(0, 0, cameraZ);
+    scene.add(camera);
+
+    const renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true,
+        alpha: true
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+
+    // ========== 2. Параметри шарів і текстури ==========
+
+    const layerCount = 5;        // кількість накладених шарів
+    const depthSpacing = 0.02;   // відстань між шарами по осі Z
+    const baseScale = 0.8;         // базовий масштаб центрального шару
+    const scaleStep = 0.05;       // скільки «додається» до масштабу кожного шару (± від центру)
+    const textureShift = 0.03;    // наскільки вправо зсуваємо зображення всередині кожного шару (у відносних одиницях UV)
+
+    // URL вашого зображення
+    const IMAGE_URL = "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/683d643db5b1adb7e1ab6611_454455155.webp";
+
+    // Група, до якої додамо всі шари
+    const group = new THREE.Group();
+    scene.add(group);
+
+    // Завантажуємо текстуру
+    const loader = new THREE.TextureLoader();
+    loader.load(IMAGE_URL, (originalTexture) => {
+        // Отримуємо реальні піксельні розміри для коректного aspect
+        const imgWidth = originalTexture.image.width;
+        const imgHeight = originalTexture.image.height;
+        const imgAspect = imgWidth / imgHeight;
+
+        // Усі шари матимуть одну й ту ж геометрію: площина з висотою = 1 і шириною = aspect
+        const planeGeometry = new THREE.PlaneGeometry(imgAspect, 1);
+
+        // Обчислимо центральний індекс, щоб зрозуміти, відносно якого шару рахувати ±
+        const centerIndex = (layerCount - 1) / 2;
+
+        for (let i = 0; i < layerCount; i++) {
+            // 1) Створюємо clone() оригінальної текстури, щоб offset у кожного шару був незалежний
+            const layerTexture = originalTexture.clone();
+            layerTexture.needsUpdate = true;
+            // Щоби зсув UV «обрізав» зображення, встановимо wrapS = ClampToEdge
+            layerTexture.wrapS = THREE.ClampToEdgeWrapping;
+            layerTexture.wrapT = THREE.ClampToEdgeWrapping;
+            layerTexture.repeat.set(1, 1);
+
+            // 2) Обчислюємо, наскільки зрушити картинку вправо всередині шару:
+            //    Якщо центр (i=centerIndex) => offset = 0. Далі вправо кожен наступний шар (i > centerIndex) отримає від’ємний offset,
+            //    щоб зображення явно «потягнулося» вправо (частина зліва «обрізана»).
+            //    Формула: (centerIndex - i) * textureShift
+            const offsetX = (centerIndex - i) * textureShift;
+            layerTexture.offset.set(offsetX, 0);
+
+            // 3) Матеріал: MeshBasicMaterial із цією текстурою, прозорість за бажанням
+            const opacityValue = 1 - (i / (layerCount * 1.2));
+            const material = new THREE.MeshBasicMaterial({
+                map: layerTexture,
+                transparent: true,
+                opacity: opacityValue,
+                depthTest: true,
+                depthWrite: false
+            });
+
+            // 4) Меш із геометрією + матеріалом
+            const mesh = new THREE.Mesh(planeGeometry, material);
+
+            // 5) Розміщуємо кожен шар по Z:
+            const zOffset = (i - centerIndex) * depthSpacing;
+            mesh.position.set(0, 0, zOffset);
+
+            // 6) Масштаб шарів: від центру вниз/вгору додаємо/віднімаємо scaleStep
+            const scaleMultiplier = baseScale + ((i - centerIndex) * scaleStep);
+            mesh.scale.set(scaleMultiplier, scaleMultiplier, 1);
+
+            // DO NOT змінювати mesh.position.x – усі шари геометрично лишаються по центру!
+            // mesh.position.x = 0; // це за замовчуванням
+
+            group.add(mesh);
+        }
+    });
+
+    // ========== 3. Рух миші і анімація групи ==========
+
+    let targetRotX = 0;
+    let targetRotY = 0;
+    const maxRotation = 0.2; // макс. кут обертання (рад)
+
+    function onPointerMove(event) {
+        const rect = wrapper.getBoundingClientRect();
+        const mouseX = event.clientX - rect.left;
+        const mouseY = event.clientY - rect.top;
+        const normX = (mouseX / rect.width - 0.5) * 2;  // від -1 до +1
+        const normY = (mouseY / rect.height - 0.5) * 2; // від -1 до +1
+
+        targetRotY = normX * maxRotation;
+        targetRotX = -normY * maxRotation;
+    }
+
+    wrapper.addEventListener("pointermove", onPointerMove);
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        // Плавно «ліпимо» групу до targetRot
+        group.rotation.x += (targetRotX - group.rotation.x) * 0.1;
+        group.rotation.y += (targetRotY - group.rotation.y) * 0.1;
+
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // ========== 4. Обробка resize ==========
+
+    window.addEventListener("resize", () => {
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+    });
+</script>
+</body>
+</html>
