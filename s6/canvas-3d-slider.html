@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ук">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Slider з 3D-hover прямо на слайді</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            min-height: 200vh;
+        }
+        #canvasWrapper {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #sliderCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .is--slider3d { height: 200vh; }
+        .sticky-block { height: 100vh; }
+    </style>
+</head>
+<body>
+<section class="sticky-wrap is--slider3d">
+    <div class="sticky-block">
+        <div id="canvasWrapper">
+            <canvas id="sliderCanvas"></canvas>
+        </div>
+    </div>
+</section>
+
+<script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js"
+      }
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+
+<script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js';
+    gsap.registerPlugin(ScrollTrigger);
+
+    // --- Глобальні для hover-обертання ---
+    let targetRotX = 0, targetRotY = 0;
+    let rotationVelocity = 0;
+    let isDragging = false;
+    let prevX = 0;
+    const dragSensitivity = 0.0002;
+
+    // --- Сцена, камера, рендерер ---
+    const scene    = new THREE.Scene();
+    const camera   = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 5);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('sliderCanvas'), antialias: true });
+    renderer.setSize(innerWidth, innerHeight);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enabled = false;
+
+    // Обробники перетягування для повертання кругового слайдера:
+    const canvas = renderer.domElement;
+    canvas.addEventListener('pointerdown', e => {
+        isDragging = true;
+        prevX = e.clientX;
+    });
+    canvas.addEventListener('pointermove', e => {
+        if (!isDragging) return;
+        if (e.pointerType === 'mouse' && e.buttons === 0) {
+            isDragging = false;
+            return;
+        }
+        const dx = e.clientX - prevX;
+        prevX = e.clientX;
+        rotationVelocity -= dx * dragSensitivity;
+    });
+    canvas.addEventListener('pointerup',   () => isDragging = false);
+    canvas.addEventListener('pointerleave',() => isDragging = false);
+    canvas.addEventListener('pointercancel',() => isDragging = false);
+
+    // --- Група слайдів ---
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const imageURLs = [
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682dcfba9048864b1e233e21_85678568.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab67edadef1191321f_466666666.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1abaf6a66b93898d5dc_496565255.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab27f747487df5a71e_256611.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1aa03611d731973688f_652326.webp",
+        // 5-й елемент (index = 5) дублює перший, але на ньому зробимо шаровий hover:
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682dcfba9048864b1e233e21_85678568.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab67edadef1191321f_466666666.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1abaf6a66b93898d5dc_496565255.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1ab27f747487df5a71e_256611.webp",
+        "https://cdn.prod.website-files.com/68149a450f1f345dc1e24a2a/682fa1aa03611d731973688f_652326.webp",
+    ];
+    const totalSlides = imageURLs.length;
+    const radius      = 6.7;
+
+    let finalCamZ, initialCamZ;
+    let slidesVisible = false;
+    let sliderStarted = false;
+
+    // Базова геометрія для всіх слайдів (4×4, із сегментами для згину):
+    const baseFlatGeo   = new THREE.PlaneGeometry(4, 4, 20, 20);
+    const baseCurvedGeo = baseFlatGeo.clone();
+    applyCurvature(baseCurvedGeo, 4, 1.5, false);
+
+    const loader = new THREE.TextureLoader();
+    Promise.all(
+        imageURLs.map(url => new Promise(res => loader.load(url, tex => {
+            tex.colorSpace = THREE.SRGBColorSpace;
+            res(tex);
+        })))
+    ).then(textures => {
+        // Створюємо всі слайди у колі так само, як у вас було:
+        for (let i = 0; i < totalSlides; i++) {
+            // Копіюємо вигнуту/плоску геометрію:
+            const geo = baseFlatGeo.clone();
+            geo.userData.flatPositions   = baseFlatGeo.attributes.position.array.slice();
+            geo.userData.curvedPositions = baseCurvedGeo.attributes.position.array.slice();
+
+            // --- Якщо це НЕ 5-й слайд — стандартний підхід (MeshBasicMaterial) ---
+            if (i !== 5) {
+                const mat = new THREE.MeshBasicMaterial({
+                    map: textures[i % textures.length],
+                    transparent: true,
+                    opacity: 0  // початково невидимі (потім gsap задасть opacity=1)
+                });
+                const mesh = new THREE.Mesh(geo, mat);
+                const ang  = (i / totalSlides) * Math.PI * 2;
+                mesh.position.set(Math.sin(ang)*radius, 0, Math.cos(ang)*radius);
+                mesh.lookAt(0,0,0);
+                group.add(mesh);
+            }
+            // --- Якщо це 5-й слайд (index=5) — додаємо «wrapperGroup» з двома варіантами: curvedMesh та layerGroup ---
+            else {
+                const wrapperGroup = new THREE.Group();
+                wrapperGroup.name = 'wrapperSlide5';
+
+                // 1) curvedMesh — як у всіх інших (MeshBasicMaterial)
+                const curvedMat = new THREE.MeshBasicMaterial({
+                    map: textures[5],
+                    transparent: true,
+                    opacity: 0  // також початково невидимий
+                });
+                const curvedMesh = new THREE.Mesh(geo, curvedMat);
+                curvedMesh.name = 'curvedMesh';
+                const ang      = (i / totalSlides) * Math.PI * 2;
+                curvedMesh.position.set(Math.sin(ang)*radius, 0, Math.cos(ang)*radius);
+                curvedMesh.lookAt(0,0,0);
+                wrapperGroup.add(curvedMesh);
+
+                // 2) layerGroup — шаровий hover, але поки що схований
+                const layerGroup = new THREE.Group();
+                layerGroup.name = 'layerGroup';
+                layerGroup.position.copy(curvedMesh.position);
+                layerGroup.quaternion.copy(curvedMesh.quaternion);
+                layerGroup.visible = false; // сховаємо до тих пір, поки слайд не стане плоским
+
+                // --- Параметри шарів для hover (3 шари замість 5) ---
+                const layerCount   = 5;      // лише 3 шари, щоб не було «зайвих полос»
+                const depthSpacing = 0.18;
+                const baseScale    = 1.2;
+                const scaleStep    = 0.05;
+                const textureShift = 0.05;
+                const centerIndex = 5;
+
+                // Геометрія простої площини 4×4
+                const planeGeometry = new THREE.PlaneGeometry(4, 4);
+
+                for (let j = 0; j < layerCount; j++) {
+                    // Клон текстури, щоб мати власний UV-offset
+                    const layerTexture = textures[5].clone();
+                    layerTexture.needsUpdate = true;
+                    layerTexture.wrapS = THREE.ClampToEdgeWrapping;
+                    layerTexture.wrapT = THREE.ClampToEdgeWrapping;
+                    layerTexture.repeat.set(1, 1);
+
+                    // Вираховуємо UV-offset по X:
+                    const offsetX = (centerIndex - j) * textureShift;
+                    layerTexture.offset.set(offsetX, 0);
+
+                    // Прозорість шару: 1 → 1 − j/(layerCount*1.2)
+                    const opacityValue = 1 - (j / (layerCount * 1.1));
+                    const matLayer = new THREE.MeshBasicMaterial({
+                        map: layerTexture,
+                        transparent: true,
+                        opacity: opacityValue,
+                        depthTest: true,
+                        depthWrite: false
+                    });
+
+                    const meshLayer = new THREE.Mesh(planeGeometry, matLayer);
+                    meshLayer.position.set(0, 0, (j - centerIndex) * depthSpacing);
+                    const scaleMultiplier = baseScale + ((j - centerIndex) * scaleStep);
+                    meshLayer.scale.set(scaleMultiplier, scaleMultiplier, 1);
+
+                    layerGroup.add(meshLayer);
+                }
+
+                wrapperGroup.add(layerGroup);
+                group.add(wrapperGroup);
+            }
+        }
+
+        // Після створення: оновлюємо розмір та масштаб
+        updateOnResize();
+        group.scale.setScalar(group.scale.x);
+
+        // --- Hover-рух миші лише для layerGroup (у 5-му слайді) ---
+        const canvasWrap = document.getElementById('canvasWrapper');
+        if (canvasWrap) {
+            canvasWrap.addEventListener('pointermove', e => {
+                const rect = canvasWrap.getBoundingClientRect();
+                const mx = (e.clientX - rect.left) / rect.width;
+                const my = (e.clientY - rect.top) / rect.height;
+                const normX = mx - 0.5;
+                const normY = my - 0.5;
+                const maxRot = 0.3;
+                targetRotY = normX * maxRot;
+                targetRotX = -normY * maxRot;
+            });
+            canvasWrap.addEventListener('pointerleave', () => {
+                targetRotX = 0;
+                targetRotY = 0;
+            });
+        }
+
+        // --- Камера + ScrollTrigger (як у вас було) ---
+        const isMobile = window.matchMedia('(max-width: 768px)').matches;
+        const DESKTOP_FINAL_DIST   = 2;
+        const DESKTOP_INITIAL_MULT = -1.1;
+        const MOBILE_FINAL_DIST    = 0.5;
+        const MOBILE_INITIAL_MULT  = -1.3;
+        const DESIRED_FINAL_DISTANCE = isMobile ? MOBILE_FINAL_DIST : DESKTOP_FINAL_DIST;
+        finalCamZ   = DESIRED_FINAL_DISTANCE;
+        initialCamZ = finalCamZ * (isMobile ? MOBILE_INITIAL_MULT : DESKTOP_INITIAL_MULT);
+        camera.position.z = initialCamZ;
+
+        function showSlides() {
+            if (slidesVisible) return;
+            slidesVisible = true;
+            sliderStarted = true;
+            group.rotation.y = 0;
+
+            // Збираємо усі звичайні матеріали (MeshBasicMaterial) для анімації opacity
+            const mats = [];
+            group.children.forEach(child => {
+                if (child.isMesh) {
+                    mats.push(child.material);
+                } else if (child.name === 'wrapperSlide5') {
+                    const cm = child.getObjectByName('curvedMesh');
+                    if (cm) mats.push(cm.material);
+                }
+            });
+
+            gsap.timeline()
+                .to(mats, {
+                    opacity: 1,
+                    duration: 1,
+                    stagger: 0.05,
+                    ease: 'power2.in'
+                })
+                .to(camera.position, {
+                    z: finalCamZ,
+                    duration: 1,
+                    ease: 'power1.inOut'
+                }, '<');
+        }
+
+        function hideSlides() {
+            if (!slidesVisible) return;
+            slidesVisible = false;
+            sliderStarted = false;
+
+            // Збираємо всі матеріали: звичайні mesh і curvedMesh п’ятого
+            const mats = [];
+            group.children.forEach(child => {
+                if (child.isMesh) {
+                    mats.push(child.material);
+                } else if (child.name === 'wrapperSlide5') {
+                    // додаємо матеріал curvedMesh у список mats, щоб GSAP його анімував теж
+                    const cm = child.getObjectByName('curvedMesh');
+                    if (cm) mats.push(cm.material);
+                    // Поки ховаємо layerGroup без анімації
+                    const lg = child.getObjectByName('layerGroup');
+                    if (lg) {
+                        lg.visible = false;
+                        lg.children.forEach(layer => layer.material.opacity = 0);
+                    }
+                }
+            });
+
+            const tl = gsap.timeline();
+            // 1) плавно опускаємо opacity всіх матеріалів до 0
+            tl.to(mats, {
+                opacity: 0,
+                duration: 0.5,
+                stagger: 0.05,
+                ease: 'power2.in'
+            });
+            // 2) у момент, коли GSAP-таймлайн закінчився, робимо:
+            tl.add(() => {
+                // 2a) повертаємо обертання групи у 0
+                group.rotation.y = 0;
+
+                // 2b) знаходимо wrapperSlide5 і ставимо його curvedMesh.opacity = 1
+                const slide5Group = group.getObjectByName('wrapperSlide5');
+                if (slide5Group) {
+                    const curvedMesh = slide5Group.getObjectByName('curvedMesh');
+                    if (curvedMesh) {
+                        // одразу бачимо плоску текстуру п’ятого
+                        curvedMesh.material.opacity = 1;
+                    }
+                    // шарову групу точно ховаємо
+                    const layerGroup = slide5Group.getObjectByName('layerGroup');
+                    if (layerGroup) {
+                        layerGroup.visible = false;
+                        layerGroup.children.forEach(layer => layer.material.opacity = 0);
+                    }
+                    // і скидаємо флаг, щоб animate() не запускав шари до часу
+                    slide5Group.userData.layersVisible = false;
+                }
+            });
+            // 3) а потім анімуємо камеру назад
+            tl.to(camera.position, {
+                z: initialCamZ,
+                duration: 1,
+                ease: 'power1.inOut'
+            });
+        }
+
+
+        const section = document.querySelector('.sticky-wrap.is--slider3d');
+        const wrapper = section.querySelector('.sticky-block');
+        ScrollTrigger.create({
+            trigger: section,
+            start:   'top top',
+            end:     'bottom bottom',
+            pin:     wrapper,
+            onUpdate(self) {
+                if (self.progress > 0.5 && !slidesVisible) showSlides();
+                else if (self.progress <= 0.5 && slidesVisible) hideSlides();
+            },
+            onLeaveBack() {
+                if (slidesVisible) hideSlides();
+            }
+        });
+
+        // --- animate loop: рух слайдера, distortion, curvature, hover для 5-го слайда ---
+        (function animate() {
+            requestAnimationFrame(animate);
+
+            if (sliderStarted) {
+                group.rotation.y += 0.002 + rotationVelocity;
+                rotationVelocity *= 0.9;
+                applyDistortion(group, rotationVelocity);
+            }
+
+            // Обчислюємо curvatureProgress (0…1) і оновлюємо всі слайди
+            const curvatureProgress = updateCurvatureByCamera();
+
+            // Тепер обробляємо 5-й слайд: переключення між curvedMesh та layerGroup
+            const slide5Group = group.getObjectByName('wrapperSlide5');
+            if (slide5Group) {
+                const curvedMesh = slide5Group.getObjectByName('curvedMesh');
+                const layerGroup = slide5Group.getObjectByName('layerGroup');
+                if (!slide5Group.userData.layersVisible) slide5Group.userData.layersVisible = false;
+
+                // 1. Якщо кривизна ПЛОСКА (переходить поріг)
+                if (curvatureProgress > 0.99) {
+                    if (!slide5Group.userData.layersVisible) {
+                        slide5Group.userData.layersVisible = true;
+                        // curvedMesh ховаємо плавно
+                        if (curvedMesh) {
+                            gsap.to(curvedMesh.material, { opacity: 0, duration: 0.8, ease: "power2.in" });
+                        }
+                        // шари показуємо плавно
+                        if (layerGroup) {
+                            layerGroup.visible = true;
+                            layerGroup.children.forEach((layer, idx) => {
+                                gsap.to(layer.material, {
+                                    opacity: 1 - (idx / (layerGroup.children.length * 1.1)),
+                                    duration: 0.55,
+                                    ease: "power2.out"
+                                });
+                            });
+                        }
+                    }
+                    if (layerGroup) {
+                        layerGroup.rotation.x += (targetRotX - layerGroup.rotation.x) * 0.1;
+                        layerGroup.rotation.y += (targetRotY - layerGroup.rotation.y) * 0.1;
+                    }
+                }
+                // 2. Якщо кривизна НЕ плоска (при скролі вверх, на старті або після ховання всіх слайдів)
+                else {
+                    if (slide5Group.userData.layersVisible) {
+                        slide5Group.userData.layersVisible = false;
+                        // Шари зникають плавно, але НЕ ховаємо curvedMesh, поки шари не сховались!
+                        if (layerGroup) {
+                            layerGroup.children.forEach((layer, idx) => {
+                                gsap.to(layer.material, {
+                                    opacity: 0,
+                                    duration: 0.4,
+                                    ease: "power2.in",
+                                    onComplete: () => {
+                                        // після зникнення останнього шару — layerGroup.hide
+                                        if (idx === layerGroup.children.length - 1) {
+                                            layerGroup.visible = false;
+                                            layerGroup.rotation.set(0, 0, 0);
+                                        }
+                                    }
+                                });
+                            });
+                        }
+                        // curvedMesh проявляється одразу!
+                        if (curvedMesh) {
+                            gsap.to(curvedMesh.material, { opacity: 1, duration: 0.25, ease: "power2.out" });
+                        }
+                    }
+                }
+            }
+
+            renderer.render(scene, camera);
+        })();
+
+    });
+
+    // --- updateCurvatureByCamera --- (обчислює t від 0 до 1 і оновлює вершини)
+    function updateCurvatureByCamera() {
+        const camDist = Math.abs(camera.position.z);
+        const d1 = Math.abs(finalCamZ);
+        const d2 = Math.abs(initialCamZ);
+        const near = Math.min(d1, d2);
+        const far = Math.max(d1, d2);
+        let t = (camDist - near) / (far - near);
+        t = THREE.MathUtils.clamp(t, 0, 1);
+        const te = THREE.MathUtils.smoothstep(t, 0, 1);
+
+        group.children.forEach(child => {
+            if (child.name === 'wrapperSlide5') {
+                const curvedMesh = child.getObjectByName('curvedMesh');
+                if (curvedMesh) {
+                    const pos    = curvedMesh.geometry.attributes.position;
+                    const flat   = curvedMesh.geometry.userData.flatPositions;
+                    const curved = curvedMesh.geometry.userData.curvedPositions;
+                    for (let i = 0; i < pos.count; i++) {
+                        const zFlat = flat[i * 3 + 2];
+                        const zCur  = curved[i * 3 + 2];
+                        pos.setZ(i, THREE.MathUtils.lerp(zCur, zFlat, te));
+                    }
+                    pos.needsUpdate = true;
+                }
+            } else if (child.isMesh) {
+                const pos    = child.geometry.attributes.position;
+                const flat   = child.geometry.userData.flatPositions;
+                const curved = child.geometry.userData.curvedPositions;
+                for (let i = 0; i < pos.count; i++) {
+                    const zFlat = flat[i * 3 + 2];
+                    const zCur  = curved[i * 3 + 2];
+                    pos.setZ(i, THREE.MathUtils.lerp(zCur, zFlat, te));
+                }
+                pos.needsUpdate = true;
+            }
+        });
+
+        return te;
+    }
+
+    // --- Кривизна геометрії ---
+    function applyCurvature(geo, w, f, inward) {
+        const pos = geo.attributes.position;
+        const c   = pos.count;
+        const xs  = Array.from({length:c}, (_,i)=>pos.getX(i));
+        const min = Math.min(...xs), max = Math.max(...xs), aw = max-min||1;
+        for (let i = 0; i < c; i++){
+            const x = pos.getX(i), u = (x - min) / aw, off = f * Math.pow(u - 0.5, 2);
+            pos.setZ(i, inward ? -off : off);
+        }
+        pos.needsUpdate = true;
+    }
+
+    // --- Дисторшин: рух вершин за силою rotationVelocity ---
+    function applyDistortion(grp, strength) {
+        const thr = 0.2;
+        grp.children.forEach(sl => {
+            let meshToProcess = null;
+            if (sl.name === 'wrapperSlide5') {
+                meshToProcess = sl.getObjectByName('curvedMesh');
+            } else if (sl.isMesh) {
+                meshToProcess = sl;
+            }
+            if (!meshToProcess) return;
+
+            const pos  = meshToProcess.geometry.attributes.position;
+            const orig = meshToProcess.geometry.userData.curvedPositions;
+            for (let i = 0; i < pos.count; i++) {
+                const ox = orig[i * 3], oy = orig[i * 3 + 1], cx = pos.getX(i);
+                if (!isDragging && Math.abs(strength) < thr) {
+                    pos.setX(i, THREE.MathUtils.lerp(cx, ox, 0.15));
+                } else {
+                    const h = 6, ny = (oy + h / 1.2) / h, wave = Math.sin(ny * Math.PI);
+                    pos.setX(i, ox + wave * strength * 5);
+                }
+            }
+            pos.needsUpdate = true;
+        });
+    }
+
+    // --- Resize ---
+    function updateOnResize() {
+        const w = innerWidth, h = innerHeight;
+        renderer.setSize(w, h);
+        camera.aspect = w / h; camera.updateProjectionMatrix();
+        const vFOV = camera.fov * Math.PI / 180;
+        const vh   = 2 * Math.tan(vFOV / 2) * camera.position.z;
+        const vw   = vh * camera.aspect;
+        const bbox = new THREE.Box3().setFromObject(group);
+        const size = new THREE.Vector3(); bbox.getSize(size);
+        const sf = Math.min(vw / size.x, vh / size.y);
+        group.scale.setScalar(sf);
+    }
+
+    window.addEventListener('resize', updateOnResize);
+</script>
+</body>
+</html>
