@@ -34,21 +34,7 @@
         /* =================================
            3. Контент поверх градієнту (необов’язково)
            ================================= */
-        .content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;           /* щоб був поверх canvas */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none; /* кліки проходять через текст до canvas */
-            color: white;
-            font-family: sans-serif;
-            text-align: center;
-        }
+
     </style>
 </head>
 <body>
@@ -58,16 +44,6 @@
 <canvas id="gradient-canvas"></canvas>
 
 
-<!-- =============================
-     6. Підключаємо Whatamesh як ES-модуль
-     та одразу “підчеплюємо” шейдер до mousemove
-     =============================
-     Зверніть увагу: Gradient.js — це ES-модуль, тому
-     блоці <script> має стояти type="module".
-     URL: https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js
-     (якщо @0.2.0 не працює — спробуйте @latest
-     або https://unpkg.com/whatamesh@latest/lib/Gradient.js)
--->
 <script type="module">
     import { Gradient } from "https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js";
 
@@ -75,9 +51,6 @@
     const gradient = new Gradient();
     gradient.initGradient("#gradient-canvas");
 
-    // 2) Після initGradient у gradient.renderer та gradient.material
-    //    вже є Three.js-сцена, матеріал із uniform u_mouse. Зараз
-    //    ми підпишемося на рух миші і «покладемо» coords у шейдер.
 
     // Зачекаємо кілька мілісекунд, аби Three.js усе підняв:
     window.requestAnimationFrame(() => {
