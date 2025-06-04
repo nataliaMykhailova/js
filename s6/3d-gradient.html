@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mesh-градієнт Whatamesh (ESM)</title>
+    <style>
+        /* =============================
+           1. Базові стилі
+           ============================= */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* 2. Canvas, у якому Whatamesh малює mesh-градієнт */
+        #gradient-canvas {
+            display: block;      /* усуваємо inline-пробіли */
+            width: 100vw;
+            height: 100vh;
+
+            /* Чотири “стоп-кольори” mesh-градієнту */
+            --gradient-color-1: black;
+            --gradient-color-2: black;
+            --gradient-color-3: #AF5205;
+            --gradient-color-4: #FF5200;
+        }
+
+        /* 3. Додатковий контент поверх градієнту (опційно) */
+        .content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;           /* щоб був поверх canvas */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* кліки проходять через текст до canvas */
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!-- =============================
+     4. Сам <canvas> (буде займати весь екран)
+     ============================= -->
+<canvas id="gradient-canvas"></canvas>
+
+<!-- =============================
+     5. Опційний контент поверх градієнту
+     ============================= -->
+<div class="content">
+    <h1>Mesh-градієнт Whatamesh (ESM)</h1>
+</div>
+
+<!-- =============================
+     6. Підключаємо Whatamesh як ES-модуль
+     =============================
+     Зауважте: у пакеті whatamesh версії 0.2.0 ES-модуль лежить у папці lib/Gradient.js.
+     Тому URL → https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js
+     (якщо цей шлях дає 404 — спробуйте замість @0.2.0 написати @latest або перейти на unpkg:
+     https://unpkg.com/whatamesh@latest/lib/Gradient.js)
+-->
+<script type="module">
+    // Ось правильний шлях до ES-модуля:
+    import { Gradient } from "https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js";
+
+    // Створюємо екземпляр і ініціалізуємо градієнт
+    const gradient = new Gradient();
+    gradient.initGradient("#gradient-canvas");
+</script>
+</body>
+</html>
