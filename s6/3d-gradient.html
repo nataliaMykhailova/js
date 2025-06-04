@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mesh-градієнт Whatamesh (ESM)</title>
+    <title>Mesh-градієнт Whatamesh + Миша</title>
     <style>
-        /* =============================
+        /* =================================
            1. Базові стилі
-           ============================= */
+           ================================= */
         html, body {
             margin: 0;
             padding: 0;
@@ -16,20 +16,24 @@
             overflow: hidden;
         }
 
-        /* 2. Canvas, у якому Whatamesh малює mesh-градієнт */
+        /* =================================
+           2. Canvas, в якому Whatamesh малює mesh-градієнт
+           ================================= */
         #gradient-canvas {
-            display: block;      /* усуваємо inline-пробіли */
+            display: block;   /* усуваємо inline-відступи */
             width: 100vw;
             height: 100vh;
 
             /* Чотири “стоп-кольори” mesh-градієнту */
-            --gradient-color-1: black;
-            --gradient-color-2: black;
+            --gradient-color-1: #000000;
+            --gradient-color-2: #000000;
             --gradient-color-3: #AF5205;
             --gradient-color-4: #FF5200;
         }
 
-        /* 3. Додатковий контент поверх градієнту (опційно) */
+        /* =================================
+           3. Контент поверх градієнту (необов’язково)
+           ================================= */
         .content {
             position: absolute;
             top: 0;
@@ -49,7 +53,7 @@
 </head>
 <body>
 <!-- =============================
-     4. Сам <canvas> (буде займати весь екран)
+     4. Сам <canvas> (бере весь екран)
      ============================= -->
 <canvas id="gradient-canvas"></canvas>
 
@@ -57,24 +61,71 @@
      5. Опційний контент поверх градієнту
      ============================= -->
 <div class="content">
-    <h1>Mesh-градієнт Whatamesh (ESM)</h1>
+    <h1>Mesh-градієнт + Миша</h1>
 </div>
 
 <!-- =============================
      6. Підключаємо Whatamesh як ES-модуль
+     та одразу “підчеплюємо” шейдер до mousemove
      =============================
-     Зауважте: у пакеті whatamesh версії 0.2.0 ES-модуль лежить у папці lib/Gradient.js.
-     Тому URL → https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js
-     (якщо цей шлях дає 404 — спробуйте замість @0.2.0 написати @latest або перейти на unpkg:
-     https://unpkg.com/whatamesh@latest/lib/Gradient.js)
+     Зверніть увагу: Gradient.js — це ES-модуль, тому
+     блоці <script> має стояти type="module".
+     URL: https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js
+     (якщо @0.2.0 не працює — спробуйте @latest
+     або https://unpkg.com/whatamesh@latest/lib/Gradient.js)
 -->
 <script type="module">
-    // Ось правильний шлях до ES-модуля:
     import { Gradient } from "https://cdn.jsdelivr.net/npm/whatamesh@0.2.0/lib/Gradient.js";
 
-    // Створюємо екземпляр і ініціалізуємо градієнт
+    // 1) Створюємо grad-екземпляр і ініціалізуємо mesh-градієнт
     const gradient = new Gradient();
     gradient.initGradient("#gradient-canvas");
+
+    // 2) Після initGradient у gradient.renderer та gradient.material
+    //    вже є Three.js-сцена, матеріал із uniform u_mouse. Зараз
+    //    ми підпишемося на рух миші і «покладемо» coords у шейдер.
+
+    // Зачекаємо кілька мілісекунд, аби Three.js усе підняв:
+    window.requestAnimationFrame(() => {
+        // 2.1 Дістаємо WebGL-мaтеріал Three.js:
+        //    gradient.shaderMaterial — це саме ShaderMaterial, який
+        //    Whatamesh створює під капотом (див. вихідний lib/Gradient.js).
+        const mat = gradient.shaderMaterial;
+        if (!mat || !mat.uniforms || !mat.uniforms.u_mouse) {
+            console.warn("Не знайдено mat.uniforms.u_mouse — можливо версія Whatamesh змінилася.");
+            return;
+        }
+
+        // 2.2 Функція для оновлення координат миші:
+        function onMouseMove(event) {
+            const canvas = document.getElementById("gradient-canvas");
+            const rect = canvas.getBoundingClientRect();
+            // координати миші відносно кута canvas (в пікселях)
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            // нормалізуємо від [0..width] → в [-1..+1], а Y — в [+1..–1]
+            const nx = (mouseX / rect.width)  * 2 - 1;
+            const ny = -((mouseY / rect.height) * 2 - 1);
+            // записуємо у uniform
+            mat.uniforms.u_mouse.value.x = nx;
+            mat.uniforms.u_mouse.value.y = ny;
+        }
+
+        // 2.3 Прив’язуємо обробник
+        window.addEventListener("mousemove", onMouseMove);
+        // Якщо хочете підтримку дотику (тачскрін):
+        window.addEventListener("touchmove", (e) => {
+            if (!e.touches.length) return;
+            const canvas = document.getElementById("gradient-canvas");
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.touches[0].clientX - rect.left;
+            const mouseY = e.touches[0].clientY - rect.top;
+            const nx = (mouseX / rect.width)  * 2 - 1;
+            const ny = -((mouseY / rect.height) * 2 - 1);
+            mat.uniforms.u_mouse.value.x = nx;
+            mat.uniforms.u_mouse.value.y = ny;
+        }, { passive: true });
+    });
 </script>
 </body>
 </html>
