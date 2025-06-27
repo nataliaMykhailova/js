@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Плавна конвексна дуга при скролі</title>
+  <style>
+    .gallery {
+      width: 100%;             /* на всю ширину екрана */
+      margin: 0;                /* без бокових відступів */
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1rem;
+      padding: 2rem 0;
+      position: relative;
+      visibility: hidden;
+
+    }
+    .item {
+      position: relative;
+    }
+    .item img {
+      width: 100%;
+      height: 20vw;
+      display: block;
+    }
+    .caption {
+      position: relative;
+      z-index: 100;
+      text-align: center;
+
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #0A0E20;
+    }
+    #canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+  </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<div class="gallery">
+  <!-- 8 елементів для прикладу -->
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 1</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 2</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 3</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 5</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 6</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+  <div class="item"><img src="https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=600&q=80"><div class="caption">Підпис 7</div></div>
+
+
+</div>
+
+
+
+<script>
+  const gallery = document.querySelector('.gallery');
+  const canvas  = document.getElementById('canvas');
+  const ctx     = canvas.getContext('2d');
+
+  // Offscreen-canvas для всієї галереї
+  const off     = document.createElement('canvas');
+  const offCtx  = off.getContext('2d');
+
+  // Збираємо картинки та блоки
+  const blocks = Array.from(gallery.querySelectorAll('.item')).map(el => ({
+    el,
+    img: el.querySelector('img'),
+    rect: null
+  }));
+
+  let galleryRect, lastScroll = 0;
+  let smoothInt = 0;
+  const sliceH = 4;
+  const ease   = 0.1;
+
+  function resize() {
+    // повний розмір галереї за контентом
+    galleryRect    = gallery.getBoundingClientRect();
+    off.width      = gallery.scrollWidth;
+    off.height     = gallery.scrollHeight;
+
+    // підлаштовуємо видимий canvas
+    canvas.width   = window.innerWidth;
+    canvas.height  = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  window.addEventListener('load',  () => {
+    // чекаємо, поки всі картинки завантажаться
+    Promise.all(blocks.map(b => new Promise(r => {
+      if (b.img.complete) return r();
+      b.img.onload = b.img.onerror = r;
+    }))).then(() => {
+      resize();
+      requestAnimationFrame(loop);
+    });
+  });
+
+  // малюємо всі картинки в offscreen
+  function drawOffscreen() {
+    offCtx.clearRect(0, 0, off.width, off.height);
+
+    blocks.forEach(b => {
+      const {el, img} = b;
+      // пропускаємо «зламані» картинки
+      if (!img.complete || img.naturalWidth === 0) return;
+
+      // координати блоків відносно .gallery
+      const x = el.offsetLeft;
+      const y = el.offsetTop;
+      const w = el.clientWidth;
+      const h = el.clientHeight;
+
+      offCtx.drawImage(
+              img,
+              0, 0,
+              img.naturalWidth, img.naturalHeight,
+              x, y,
+              w, h
+      );
+    });
+  }
+
+  function draw() {
+    drawOffscreen();
+
+    // швидкість скролу сторінки
+    const deltaY = window.scrollY - lastScroll;
+    const target = Math.min(Math.abs(deltaY) / 50, 1);
+    smoothInt   += (target - smoothInt) * ease;
+    lastScroll   = window.scrollY;
+
+    const centerY = window.innerHeight / 2;
+    const R       = off.height;  // радіус для сагітти
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+
+    const curvature = 50;
+
+    // пробігаємо по кожній смужці offscreen
+    for (let yOff = 0; yOff < off.height; yOff += sliceH) {
+      // де ця смужка має опинитися на екрані:
+      // її page-координата мінус прокручена відстань
+      const yVis = galleryRect.top + yOff - window.scrollY;
+      if (yVis + sliceH < 0 || yVis > window.innerHeight) continue;
+
+      // відстань від центру екрану
+      const dY = yVis - centerY;
+      if (Math.abs(dY) > R) continue;
+
+      // класична сагітта круга
+      const sag = R - Math.sqrt(R*R - dY*dY);
+      const offsetX = sag * smoothInt * curvature;
+
+      ctx.drawImage(
+              off,
+              0, yOff,                // із off-canvas
+              off.width, sliceH,
+              galleryRect.left - offsetX,  // куди на екрані
+              yVis,
+              off.width + offsetX*2,  // нова ширина
+              sliceH
+      );
+    }
+  }
+
+  function loop() {
+    draw();
+    requestAnimationFrame(loop);
+  }
+</script>
+</body>
+</html>
