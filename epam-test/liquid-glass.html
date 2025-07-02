@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .content {
+            padding: 5rem;
+            line-height: 1.5;
+        }
+
+        .magnifier {
+            position: fixed;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #ccc;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .magnifier-content {
+            transform: scale(2);
+            transform-origin: top left;
+            width: 100vw;
+            height: 100vh;
+        }
+
+    </style>
+</head>
+<body>
+<div class="content">
+    <h1>Тестовий контент</h1>
+    <p>Води мишкою по тексту і побачиш збільшення в зоні курсора.</p>
+    <img src="https://avatarko.ru/img/kartinka/1/Crazy_Frog.jpg">
+</div>
+
+<div class="magnifier">
+    <div class="magnifier-content"></div>
+</div>
+
+<script>
+    const magnifier = document.querySelector('.magnifier');
+    const magnifierContent = document.querySelector('.magnifier-content');
+
+    // Клон контенту в лупу
+    const clone = document.querySelector('.content').cloneNode(true);
+    magnifierContent.appendChild(clone);
+
+    document.addEventListener('mousemove', (e) => {
+        const x = e.clientX;
+        const y = e.clientY;
+
+        // Розміщення самої лупи
+        magnifier.style.left = `${x - 75}px`;
+        magnifier.style.top = `${y - 75}px`;
+
+        // Зсув контенту в лупі (щоб імітувати збільшення)
+        magnifierContent.style.transform = `scale(2) translate(${-x}px, ${-y}px)`;
+    });
+
+</script>
+</body>
+</html>
