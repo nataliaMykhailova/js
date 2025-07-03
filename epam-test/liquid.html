@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Liquid Glass — посилений ефект</title>
+
+    <!-- SVG-фільтр для хвильової деформації -->
+    <svg width="0" height="0" style="position:absolute">
+        <filter id="wavy">
+            <feTurbulence type="fractalNoise"
+                          baseFrequency="0.02 0.03"
+                          numOctaves="2"
+                          result="noise"/>
+            <!-- scale підвищено з 8 → 12 для більшої деформації -->
+            <feDisplacementMap in="SourceGraphic"
+                               in2="noise"
+                               scale="12"
+                               xChannelSelector="R"
+                               yChannelSelector="G"/>
+        </filter>
+    </svg>
+
+    <style>
+        body {
+            margin: 0;
+            height: 200vh;
+            background: url('https://picsum.photos/1920/1080') center/cover no-repeat;
+        }
+
+        .demo-content {
+            padding: 2rem;
+            max-width: 600px;
+            margin: 2rem auto;
+            background: rgba(255,255,255,0.8);
+            border-radius: 8px;
+        }
+
+        .demo-content img {
+            display: block;
+            max-width: 100%;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+
+        /* сам “лупоподібний” круг */
+        .lg-circle {
+            position: fixed;
+            left: 0; top: 0;
+            transform: translate(-50%, -50%);
+            width: 150px; height: 150px;
+            pointer-events: none;
+            border-radius: 50%;
+            overflow: hidden;
+            /* трохи білий відтінок для стабільної роботи backdrop-filter у Safari */
+            background-color: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.6);
+            z-index: 9999;
+
+            /* посилене розмиття + яскравість + насиченість */
+            -webkit-backdrop-filter: blur(4px) brightness(1.2) saturate(1.3);
+            backdrop-filter: blur(4px) brightness(1.2) saturate(1.3);
+
+            /* SVG-деформація */
+            filter: url('#wavy');
+        }
+    </style>
+</head>
+<body>
+
+<div class="demo-content">
+    <h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, inventore!</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio esse harum minus modi veritatis voluptates?</p>
+    <img src="https://picsum.photos/600/400" alt="Демо-картинка"/>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, tempora.</p>
+</div>
+
+<div class="lg-circle" id="lgCircle"></div>
+
+<script>
+    const circle = document.getElementById('lgCircle');
+    const turb   = document.querySelector('filter#wavy feTurbulence');
+    const disp   = document.querySelector('filter#wavy feDisplacementMap');
+
+    // рухаємо круг за курсором
+    window.addEventListener('mousemove', e => {
+        circle.style.left = e.clientX + 'px';
+        circle.style.top  = e.clientY + 'px';
+    });
+
+    // анімація шума + динамічне збільшення scale для feDisplacementMap
+    function animateNoise() {
+        const t = performance.now() / 1000;
+        // плавне коливання шуму
+        const fx = 0.02 + Math.sin(t * 1.3) * 0.005;
+        const fy = 0.03 + Math.cos(t * 1.7) * 0.005;
+        turb.setAttribute('baseFrequency', `${fx} ${fy}`);
+        // додаткове коливання “глибини” хвиль
+        const scale = 10 + Math.sin(t * 0.8) * 4;
+        disp.setAttribute('scale', scale);
+        requestAnimationFrame(animateNoise);
+    }
+    animateNoise();
+</script>
+</body>
+</html>
