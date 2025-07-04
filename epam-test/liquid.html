@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Liquid Glass — посилений ефект</title>
 
-    <!-- SVG-фільтр для хвильової деформації -->
+    <!-- SVG-фільтр у <defs> з явними розмірами -->
     <svg width="0" height="0" style="position:absolute">
-        <filter id="wavy">
-            <feTurbulence type="fractalNoise"
-                          baseFrequency="0.02 0.03"
-                          numOctaves="2"
-                          result="noise"/>
-            <!-- scale підвищено з 8 → 12 для більшої деформації -->
-            <feDisplacementMap in="SourceGraphic"
-                               in2="noise"
-                               scale="12"
-                               xChannelSelector="R"
-                               yChannelSelector="G"/>
-        </filter>
+        <defs>
+            <filter id="wavy"
+                    filterUnits="objectBoundingBox"
+                    x="0%" y="0%"
+                    width="100%" height="100%">
+                <feTurbulence type="fractalNoise"
+                              baseFrequency="0.02 0.03"
+                              numOctaves="2"
+                              result="noise"/>
+                <feDisplacementMap in="SourceGraphic"
+                                   in2="noise"
+                                   scale="12"
+                                   xChannelSelector="R"
+                                   yChannelSelector="G"/>
+            </filter>
+        </defs>
     </svg>
 
     <style>
@@ -61,7 +65,8 @@
             -webkit-backdrop-filter: blur(4px) brightness(1.2) saturate(1.3);
             backdrop-filter: blur(4px) brightness(1.2) saturate(1.3);
 
-            /* SVG-деформація */
+            /* застосувати SVG-фільтр у WebKit і стандарті */
+            -webkit-filter: url('#wavy');
             filter: url('#wavy');
         }
     </style>
@@ -88,19 +93,20 @@
         circle.style.top  = e.clientY + 'px';
     });
 
-    // анімація шума + динамічне збільшення scale для feDisplacementMap
+    // анімація шуму та коливання масштабу деформації
     function animateNoise() {
         const t = performance.now() / 1000;
-        // плавне коливання шуму
+        // плавне коливання частоти шуму
         const fx = 0.02 + Math.sin(t * 1.3) * 0.005;
         const fy = 0.03 + Math.cos(t * 1.7) * 0.005;
         turb.setAttribute('baseFrequency', `${fx} ${fy}`);
-        // додаткове коливання “глибини” хвиль
+        // коливання глибини хвиль
         const scale = 10 + Math.sin(t * 0.8) * 4;
         disp.setAttribute('scale', scale);
         requestAnimationFrame(animateNoise);
     }
     animateNoise();
 </script>
+
 </body>
 </html>
