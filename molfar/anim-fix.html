@@ -3,35 +3,47 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>SVG Gradient Animation</title>
+    <title>SVG Gradient Animation — Safari-friendly</title>
     <style>
         html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
             overflow: hidden;
         }
-        #animatedSVG {
+        svg {
             display: block;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
-<svg
-        id="animatedSVG"
-        width="100%"
-        height="100%"
-        viewBox="0 0 992 567"
-        xmlns="http://www.w3.org/2000/svg"
->
+<svg viewBox="0 0 992 567"
+     preserveAspectRatio="xMidYMid slice"
+     xmlns="http://www.w3.org/2000/svg">
+
     <defs>
+        <!-- Горизонтальний градієнт, координати в одиницях userSpaceOnUse -->
         <linearGradient
                 id="lineGradient"
                 gradientUnits="userSpaceOnUse"
-                gradientTransform="translate(0 0)"
-                x1="0" y1="0" x2="100%" y2="0"
+                x1="-992" y1="0"
+                x2="0"    y2="0"
         >
+            <!-- Анімуємо самі координати x1 і x2 -->
+            <animate
+                    attributeName="x1"
+                    from="-992" to="992"
+                    dur="8s"
+                    repeatCount="indefinite"
+            />
+            <animate
+                    attributeName="x2"
+                    from="0" to="1984"
+                    dur="8s"
+                    repeatCount="indefinite"
+            />
+
             <stop offset="0%"   stop-color="#F5DB00" stop-opacity="0.2" />
             <stop offset="20%"  stop-color="#F5DB00" stop-opacity="0.7" />
             <stop offset="50%"  stop-color="#F5DB00" stop-opacity="0.8" />
@@ -39,28 +51,31 @@
             <stop offset="100%" stop-color="#F5DB00" stop-opacity="0.2" />
         </linearGradient>
 
+        <!-- Вертикальне згасання для маски -->
         <linearGradient id="verticalFade" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%"  stop-color="#F5DB00" stop-opacity="0.3" />
-            <stop offset="30%" stop-color="#F5DB00" stop-opacity="0.8" />
-            <stop offset="70%" stop-color="#F5DB00" stop-opacity="0.8" />
-            <stop offset="100%"stop-color="#F5DB00" stop-opacity="0.3" />
+            <stop offset="0%"   stop-color="#F5DB00" stop-opacity="0.3" />
+            <stop offset="30%"  stop-color="#F5DB00" stop-opacity="0.8" />
+            <stop offset="70%"  stop-color="#F5DB00" stop-opacity="0.8" />
+            <stop offset="100%" stop-color="#F5DB00" stop-opacity="0.3" />
         </linearGradient>
 
-        <!-- Явно вказуємо , щоб Safari не переймався координатами -->
-        <mask
-                id="verticalMask"
-                maskUnits="userSpaceOnUse"
-                maskContentUnits="userSpaceOnUse"
-                x="0" y="0"
-                width="100%" height="100%"
-        >
-            <rect width="100%" height="100%" fill="url(#verticalFade)" />
+        <!-- Маска в тих же просторових одиницях, що й viewBox -->
+        <mask id="verticalMask"
+              maskUnits="userSpaceOnUse"
+              maskContentUnits="userSpaceOnUse">
+            <rect x="0" y="0" width="992" height="567" fill="url(#verticalFade)" />
         </mask>
     </defs>
 
+    <!-- Статичний шлях: градієнт рухається всередині нього -->
     <path
-            id="animatedPath"
-            d="M829.421 0V294.219M829.421 294.219H450.694M829.421 294.219V409.056H1046.65M-166 294.219H142.347M450.694 294.219V198.514V0M450.694 294.219H142.347M142.347 294.219V566.923"
+            d="M829.421 0V294.219
+         M829.421 294.219H450.694
+         M829.421 294.219V409.056H1046.65
+         M-166 294.219H142.347
+         M450.694 294.219V198.514V0
+         M450.694 294.219H142.347
+         M142.347 294.219V566.923"
             stroke="url(#lineGradient)"
             stroke-width="1.2"
             stroke-dasharray="6.22 6.22"
@@ -68,32 +83,5 @@
             mask="url(#verticalMask)"
     />
 </svg>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const svg      = document.getElementById("animatedSVG");
-        const gradient = document.getElementById("lineGradient");
-        let offset = -1200;
-        const speed = 5.2;
-
-        function animateGradient() {
-            offset += speed;
-            if (offset > 1200) offset = -1200;
-
-            // Оновлюємо через SVGAnimatedTransformList — працює й на iOS Safari
-            const list = gradient.gradientTransform.baseVal;
-            if (list.numberOfItems === 0) {
-                const initial = svg.createSVGTransform();
-                initial.setTranslate(0, 0);
-                list.appendItem(initial);
-            }
-            list.getItem(0).setTranslate(offset, 0);
-
-            requestAnimationFrame(animateGradient);
-        }
-
-        animateGradient();
-    });
-</script>
 </body>
 </html>
