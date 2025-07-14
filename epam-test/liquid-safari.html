@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Лупа з деформацією</title>
+
+    <!-- SVG-фільтр для «хвилеподібної» деформації -->
+    <svg width="0" height="0" style="position:absolute">
+        <filter id="liquid" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
+            <!-- генеруємо шум -->
+            <feTurbulence type="fractalNoise"
+                          baseFrequency="0.05 0.08"
+                          numOctaves="2"
+                          result="noise"/>
+            <!-- зміщуємо пікселі за шумом -->
+            <feDisplacementMap in="SourceGraphic"
+                               in2="noise"
+                               scale="15"
+                               xChannelSelector="R"
+                               yChannelSelector="G"/>
+        </filter>
+    </svg>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 200vh;
+            background: url('https://picsum.photos/1200/800') no-repeat center center fixed;
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        .magnifier {
+            position: fixed;
+            left: 0; top: 0;
+            width: 150px; height: 150px;
+            pointer-events: none;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+
+            /* спочатку розмиваємо, потім накладаємо деформацію */
+            filter: blur(2px) url(#liquid);
+            /* для кращої підтримки в Safari додаємо префікс */
+            -webkit-filter: blur(2px) url(#liquid);
+
+            background-repeat: no-repeat;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+<div class="magnifier"></div>
+
+<script>
+    const magnifier = document.querySelector('.magnifier');
+    const zoom = 1.5;           // коефіцієнт зуму
+    const L = 150;              // діаметр лінзи (px)
+
+    document.addEventListener('mousemove', e => {
+        const x = e.clientX;
+        const y = e.clientY;
+
+        // позиціюємо саму лінзу
+        magnifier.style.left = x + 'px';
+        magnifier.style.top  = y + 'px';
+
+        // беремо той же фон, що у body
+        magnifier.style.backgroundImage = getComputedStyle(document.body).backgroundImage;
+
+        // масштаб фону всередині лупи
+        magnifier.style.backgroundSize =
+            `${window.innerWidth * zoom}px ${window.innerHeight * zoom}px`;
+
+        // зсуваємо фон, щоб під лупою було (x,y)
+        const posX = -(x * zoom - L / 2);
+        const posY = -(y * zoom - L / 2);
+        magnifier.style.backgroundPosition = `${posX}px ${posY}px`;
+    });
+</script>
+
+</body>
+</html>
