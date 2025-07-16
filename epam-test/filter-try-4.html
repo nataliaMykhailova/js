@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Лінза з безкінечною глибокою деформацією</title>
+
+    <!-- SVG‑фільтр “wavy” -->
+    <svg style="position:absolute; width:0; height:0">
+        <filter id="wavy">
+            <!-- шум -->
+            <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.02 0.02"
+                    numOctaves="2"
+                    result="noise"
+            />
+            <!-- зміщення, початковий scale=20 -->
+            <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="noise"
+                    scale="20"
+                    xChannelSelector="R"
+                    yChannelSelector="G"
+            />
+        </filter>
+    </svg>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 200vh;
+            background: url('https://picsum.photos/1200/800') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .glass-pyramid {
+            position: fixed;
+            width: 300px; height: 300px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+            z-index: 9999;
+        }
+        .glass-layer {
+            position: absolute; top: 50%; left: 50%;
+            transform-origin: center;
+            mask-image: radial-gradient(circle at center, black 50%, transparent 50%);
+            -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 50%);
+            background-color: rgba(255,255,255,0.02);
+            background-repeat: no-repeat;
+            /* застосовуємо глибоку деформацію + легкий blur */
+            filter: url(#wavy) blur(1px) brightness(1.05);
+            -webkit-filter: url(#wavy) blur(1px) brightness(1.05);
+        }
+        .layer1 { width:300px; height:300px; transform:translate(-50%,-50%) scale(1); }
+        .layer2 { width:280px; height:280px; transform:translate(-50%,-50%) scale(1.05); }
+        .layer3 { width:260px; height:260px; transform:translate(-50%,-50%) scale(1.1); }
+    </style>
+</head>
+<body>
+<div class="glass-pyramid">
+    <div class="glass-layer layer1"></div>
+    <div class="glass-layer layer2"></div>
+    <div class="glass-layer layer3"></div>
+</div>
+
+<!-- GSAP CDN -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script>
+    (function() {
+        const lens   = document.querySelector('.glass-pyramid');
+        const layers = document.querySelectorAll('.glass-layer');
+        const L      = lens.offsetWidth;
+        const ZOOM   = 1.5;
+
+        // Підтягуємо фон сторінки в кожен шар
+        const bodyBG = getComputedStyle(document.body).backgroundImage;
+        layers.forEach(el => el.style.backgroundImage = bodyBG);
+
+        // Завантажуємо реальні розміри зображення
+        const url = bodyBG.match(/url\(["']?(.+?)["']?\)/)?.[1];
+        if (!url) return;
+        const img = new Image();
+        img.src = url;
+
+        img.onload = () => {
+            const natW = img.naturalWidth, natH = img.naturalHeight;
+
+            function setup() {
+                const vw = window.innerWidth, vh = window.innerHeight;
+                const imgRatio = natW / natH, viewRatio = vw / vh;
+                let drawW, drawH;
+                if (viewRatio > imgRatio) {
+                    drawW = vw; drawH = vw / imgRatio;
+                } else {
+                    drawH = vh; drawW = vh * imgRatio;
+                }
+                const offsetX = (vw - drawW)/2, offsetY = (vh - drawH)/2;
+
+                window.onmousemove = e => {
+                    const x = e.clientX, y = e.clientY;
+                    lens.style.left = x + 'px';
+                    lens.style.top  = y + 'px';
+                    layers.forEach(el => {
+                        el.style.backgroundSize     = `${drawW*ZOOM}px ${drawH*ZOOM}px`;
+                        const posX = -x*ZOOM + L/2 + offsetX*ZOOM;
+                        const posY = -y*ZOOM + L/2 + offsetY*ZOOM;
+                        el.style.backgroundPosition = `${posX}px ${posY}px`;
+                    });
+                };
+            }
+
+            setup();
+            window.addEventListener('resize', setup);
+
+            // Безкінечна плавна мульти‑хвиля
+            const turb = document.querySelector('#wavy feTurbulence');
+            const disp = document.querySelector('#wavy feDisplacementMap');
+            const cycle = 10; // секунд на повний цикл
+
+            gsap.to({}, {
+                duration: cycle,
+                repeat: -1,
+                ease: 'none',
+                onUpdate() {
+                    const t = this.progress() * Math.PI * 2;
+                    // baseFrequency по X і Y: дві синусоїди з цілими кратними
+                    const bfX = 0.02 + 0.015 * Math.sin(1 * t);
+                    const bfY = 0.02 + 0.012 * Math.sin(2 * t);
+                    turb.setAttribute('baseFrequency', `${bfX} ${bfY}`);
+
+                    // scale: сумуємо дві хвилі з цілими кратними
+                    const scale =
+                        20
+                        + 10 * Math.sin(3 * t)
+                        + 5  * Math.sin(4 * t);
+                    disp.setAttribute('scale', scale);
+                }
+            });
+        };
+    })();
+</script>
+</body>
+</html>

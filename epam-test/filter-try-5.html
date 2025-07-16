@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Оптимізована лінза з деформацією</title>
+
+    <!-- SVG‑фільтр “chaotic” (спрощений) -->
+    <svg style="position:absolute; width:0; height:0">
+        <filter id="chaotic" x="-50%" y="-50%" width="200%" height="200%">
+            <!-- Шар великих “бульбашок” -->
+            <feTurbulence
+                    type="turbulence"
+                    baseFrequency="0.02 0.02"
+                    numOctaves="1"
+                    result="noise1"
+            />
+            <!-- Шар дрібних рипплів -->
+            <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.05 0.05"
+                    numOctaves="1"
+                    seed="5"
+                    result="noise2"
+            />
+            <!-- Мультиплікація шумів -->
+            <feBlend in="noise1" in2="noise2" mode="multiply" result="blended"/>
+            <!-- Легка згладжувальна розмитість -->
+            <feGaussianBlur in="blended" stdDeviation="0.5" result="blurred"/>
+            <!-- Карта зміщення -->
+            <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="blurred"
+                    scale="30"
+                    xChannelSelector="R"
+                    yChannelSelector="G"
+                    result="disp"
+            />
+        </filter>
+    </svg>
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 200vh;
+            background: url('https://picsum.photos/1200/800') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        .glass-pyramid {
+            position: fixed;
+            width: 300px; height: 300px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+            z-index: 9999;
+        }
+
+        .glass-layer {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(255,255,255,0.02);
+            background-repeat: no-repeat;
+
+            /* деформуємо вміст (без blur) */
+            filter: url(#chaotic) brightness(1.05);
+            -webkit-filter: url(#chaotic) brightness(1.05);
+            will-change: filter;
+
+            /* обрізаємо форму кола */
+            mask-image: radial-gradient(circle at center, black 50%, transparent 50%);
+            -webkit-mask-image: radial-gradient(circle at center, black 50%, transparent 50%);
+        }
+    </style>
+</head>
+<body>
+<div class="glass-pyramid">
+    <div class="glass-layer"></div>
+</div>
+
+<!-- GSAP -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script>
+    (function() {
+        const lens  = document.querySelector('.glass-pyramid');
+        const layer = document.querySelector('.glass-layer');
+        const L     = lens.offsetWidth;
+        const Z     = 1.5;
+
+        // прив’язуємо фон
+        const bg = getComputedStyle(document.body).backgroundImage;
+        layer.style.backgroundImage = bg;
+
+        // для backgroundPosition
+        const url = bg.match(/url\(["']?(.+?)["']?\)/)?.[1];
+        if (!url) return;
+        const img = new Image();
+        img.src = url;
+
+        img.onload = () => {
+            const w = img.naturalWidth, h = img.naturalHeight;
+            let drawW, drawH, oX, oY;
+
+            function calcSizes() {
+                const vw = innerWidth, vh = innerHeight;
+                const ir = w/h, vr = vw/vh;
+                if (vr > ir) {
+                    drawW = vw; drawH = vw/ir;
+                } else {
+                    drawH = vh; drawW = vh*ir;
+                }
+                oX = (vw - drawW)/2;
+                oY = (vh - drawH)/2;
+            }
+            calcSizes();
+            window.addEventListener('resize', calcSizes);
+
+            // троттлінг mousemove
+            let ticking = false;
+            window.addEventListener('mousemove', e => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const x = e.clientX, y = e.clientY;
+                        lens.style.left = x + 'px';
+                        lens.style.top  = y + 'px';
+                        layer.style.backgroundSize = `${drawW*Z}px ${drawH*Z}px`;
+                        layer.style.backgroundPosition =
+                            `${-x*Z + L/2 + oX*Z}px ${-y*Z + L/2 + oY*Z}px`;
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // GSAP-анімація шуму та масштабу без ривків
+            const t1 = document.querySelector('#chaotic feTurbulence[result="noise1"]');
+            const t2 = document.querySelector('#chaotic feTurbulence[result="noise2"]');
+            const dm = document.querySelector('#chaotic feDisplacementMap');
+            const cycle = 12;
+
+            gsap.to({}, {
+                duration: cycle,
+                repeat: -1,
+                ease: 'none',
+                onUpdate() {
+                    const t = this.progress() * Math.PI * 2;
+                    // синусоїди з цілими коефіцієнтами
+                    const bf1 = 0.02 + 0.01 * Math.sin(1 * t);
+                    const bf2 = 0.05 + 0.02 * Math.sin(2 * t);
+                    t1.setAttribute('baseFrequency', `${bf1} ${bf1}`);
+                    t2.setAttribute('baseFrequency', `${bf2} ${bf2}`);
+                    const scale =
+                        30
+                        + 10 * Math.sin(3 * t)
+                        + 5  * Math.sin(4 * t);
+                    dm.setAttribute('scale', scale);
+                }
+            });
+        };
+    })();
+</script>
+</body>
+</html>
