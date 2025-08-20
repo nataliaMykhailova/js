@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Fog Wave — WebGL</title>
+    <style>
+        html,body{height:100%;margin:0;background:#000;overflow:hidden}
+        #fog{position:fixed;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0}
+        /* демо-контент зверху (прибери у себе) */
+        .content{position:relative;z-index:1;color:#fff;padding:6vmin 8vmin;
+            font:600 4vw/1.1 system-ui,-apple-system,Segoe UI,Inter,Roboto,sans-serif;
+            text-shadow:0 2px 16px rgba(0,0,0,.55)}
+        .content p{max-width:60ch;opacity:.85;font-weight:400;font-size:clamp(14px,1.4vw,18px)}
+    </style>
+</head>
+<body>
+<canvas id="fog"></canvas>
+
+<div class="content">
+    <h1>Lorem ipsum dolor sit.</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Praesentium, tenetur.</p>
+</div>
+
+<script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+<script>
+    (function(){
+        // ---------- CONFIG ----------
+        const CONFIG = {
+            // кольори хвилі
+            color1: 0x2a46ff,  // яскравий синій
+            color2: 0x6a00ff,  // фіолет
+            // рух/форма
+            waveSpeed: 0.035,  // швидкість руху по X (фаза синуса)
+            driftY:   0.005,   // повільний вертикальний дрейф
+            curveAmp: 0.28,    // амплітуда кривизни хвилі (0.15..0.35)
+            curveFreq: 1.35,   // частота хвилі (0.9..1.6)
+            thickness: 0.62,   // товщина (чим більше — ширша стрічка)
+            softness: 0.55,    // розмитість краю стрічки
+            // “дихання” яскравості
+            pulseSpeed: 0.18,  // швидкість пульсації
+            pulseAmount: 0.40, // 0..1 внесок пульсації у щільність
+            // шум/туман
+            noiseScale: 1.25,  // масштаб fbm
+            noiseAmount: 0.55, // внесок шуму у форму стрічки
+            fogAmount:   0.65, // додатковий загальний туман
+            grain: 0.02,       // дрібне зерно
+            intensity: 0.95,   // загальна щільність
+            alpha: 0.95,       // прозорість шару
+            // продуктивність
+            dprMax: 1.75
+        };
+
+        // ---------- Three.js ----------
+        const canvas   = document.getElementById('fog');
+        const renderer = new THREE.WebGLRenderer({
+            canvas, antialias:false, alpha:true, powerPreference:'high-performance', premultipliedAlpha:true
+        });
+        renderer.setClearColor(0x000000, 0);
+        if (renderer.outputColorSpace) renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+        const scene  = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+        const quad   = new THREE.PlaneGeometry(2,2);
+
+        const vert = `
+      precision highp float;
+      void main(){ gl_Position = vec4(position,1.0); }
+    `;
+
+        const frag = `
+      precision highp float;
+      uniform vec2  uRes;
+      uniform float uTime;
+
+      uniform vec3  uC1, uC2;
+      uniform float uIntensity, uAlpha;
+
+      uniform float uWaveSpeed, uDriftY, uCurveAmp, uCurveFreq, uThickness, uSoft;
+      uniform float uPulseSpeed, uPulseAmt;
+      uniform float uNoiseScale, uNoiseAmt, uFogAmt, uGrain;
+
+      // simplex fbm (коротка версія)
+      vec3 mod289(vec3 x){return x - floor(x*(1.0/289.0))*289.0;}
+      vec4 mod289(vec4 x){return x - floor(x*(1.0/289.0))*289.0;}
+      vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+      vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314*r;}
+      float snoise(vec3 v){
+        const vec2 C=vec2(1.0/6.0,1.0/3.0); const vec4 D=vec4(0.0,0.5,1.0,2.0);
+        vec3 i=floor(v+dot(v,C.yyy)); vec3 x0=v-i+dot(i,C.xxx);
+        vec3 g=step(x0.yzx,x0.xyz); vec3 l=1.0-g;
+        vec3 i1=min(g.xyz,l.zxy); vec3 i2=max(g.xyz,l.zxy);
+        vec3 x1=x0-i1+C.xxx; vec3 x2=x0-i2+C.yyy; vec3 x3=x0-D.yyy;
+        i=mod289(i);
+        vec4 p=permute(permute(permute(i.z+vec4(0.0,i1.z,i2.z,1.0))+i.y+vec4(0.0,i1.y,i2.y,1.0))+i.x+vec4(0.0,i1.x,i2.x,1.0));
+        vec4 j=p-49.0*floor(p*(1.0/49.0));
+        vec4 x_=floor(j*(1.0/7.0)); vec4 y_=floor(j-7.0*x_);
+        vec4 x=(x_*2.0+0.5)/7.0-1.0; vec4 y=(y_*2.0+0.5)/7.0-1.0; vec4 h=1.0-abs(x)-abs(y);
+        vec4 b0=vec4(x.xy,y.xy), b1=vec4(x.zw,y.zw);
+        vec4 s0=floor(b0)*2.0+1.0, s1=floor(b1)*2.0+1.0; vec4 sh=-step(h,vec4(0.0));
+        vec4 a0=b0.xzyw + s0.xzyw*sh.xxyy; vec4 a1=b1.xzyw + s1.xzyw*sh.zzww;
+        vec3 g0=vec3(a0.xy,h.x), g1=vec3(a0.zw,h.y), g2=vec3(a1.xy,h.z), g3=vec3(a1.zw,h.w);
+        vec4 norm=taylorInvSqrt(vec4(dot(g0,g0),dot(g1,g1),dot(g2,g2),dot(g3,g3)));
+        g0*=norm.x; g1*=norm.y; g2*=norm.z; g3*=norm.w;
+        vec4 m=max(0.6-vec4(dot(x0,x0),dot(x1,x1),dot(x2,x2),dot(x3,x3)),0.0); m*=m;
+        return 42.0*dot(m*m, vec4(dot(g0,x0),dot(g1,x1),dot(g2,x2),dot(g3,x3)));
+      }
+      float fbm(vec3 p){ float a=.5,f=0.; for(int i=0;i<5;i++){ f+=a*snoise(p); p=p*2.05+0.15; a*=.5; } return f; }
+
+      void main(){
+        vec2 uv  = gl_FragCoord.xy / uRes;
+        vec2 p   = uv - 0.5;
+        p.x     *= uRes.x / uRes.y;
+
+        // рух фази по X та легкий дрейф по Y
+        float phase = uTime * uWaveSpeed;
+        float drift = sin(uTime * uDriftY);
+
+        // центральна крива "стрічки" (хвиляста S-форма)
+        float curve = uCurveAmp * sin(p.x * uCurveFreq + phase)
+                    - 0.20 * cos(p.x * (uCurveFreq*0.45) + 1.2 + phase*0.6)
+                    + drift * 0.06;
+
+        // fbm-шум для туманності + domain-warping
+        vec3 q = vec3(p * uNoiseScale, uTime * 0.08);
+        vec3 r = vec3(
+          fbm(q + vec3(0.0,0.0,0.0)),
+          fbm(q + vec3(5.2,1.3,0.0)),
+          fbm(q + vec3(1.7,9.2,0.0))
+        );
+        float n = fbm(q + 0.55 * r);
+
+        // підмішуємо шум у форму хвилі
+        float band = p.y - curve - n * uNoiseAmt * 0.35;
+
+        // профіль щільності стрічки (м’який перехід)
+        float width = mix(0.35, 0.75, uThickness); // нормалізуємо
+        float core  = smoothstep(width, -width, band);
+        core = pow(core, mix(1.2, 1.8, uSoft));
+
+        // загальний туман навколо
+        float fog  = smoothstep(0.15, 0.95, n) * uFogAmt;
+
+        // “дихання” яскравості
+        float pulse = 0.5 + 0.5 * sin(uTime * uPulseSpeed * 6.28318);
+        float density = core * (1.0 - uPulseAmt) + core * (pulse) * uPulseAmt;
+        density = clamp(density + fog, 0.0, 1.0);
+
+        // кольори та легка він’єтка
+        vec3 col = mix(uC1, uC2, clamp(0.35 + 0.65*n, 0.0, 1.0));
+        float vign = smoothstep(1.2, 0.25, length(p)*1.1);
+        density *= vign;
+
+        // дрібнозернистість (для “повітря”)
+        float g = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898,78.233))) * 43758.5453 + uTime*33.0) - 0.5) * uGrain;
+        density = clamp(density + g, 0.0, 1.0);
+
+        vec4 outc = vec4(col, density * uIntensity * uAlpha);
+        outc.rgb *= outc.a;    // premultiplied alpha для гарних країв
+        gl_FragColor = outc;
+      }
+    `;
+
+        const mat = new THREE.ShaderMaterial({
+            vertexShader: vert,
+            fragmentShader: frag,
+            transparent: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            uniforms: {
+                uRes: { value: new THREE.Vector2(1,1) },
+                uTime:{ value: 0 },
+
+                uC1:  { value: new THREE.Color(CONFIG.color1) },
+                uC2:  { value: new THREE.Color(CONFIG.color2) },
+
+                uIntensity:{ value: CONFIG.intensity },
+                uAlpha:    { value: CONFIG.alpha },
+
+                uWaveSpeed:{ value: CONFIG.waveSpeed },
+                uDriftY:   { value: CONFIG.driftY },
+                uCurveAmp: { value: CONFIG.curveAmp },
+                uCurveFreq:{ value: CONFIG.curveFreq },
+                uThickness:{ value: CONFIG.thickness },
+                uSoft:     { value: CONFIG.softness },
+
+                uPulseSpeed:{ value: CONFIG.pulseSpeed },
+                uPulseAmt:  { value: CONFIG.pulseAmount },
+
+                uNoiseScale:{ value: CONFIG.noiseScale },
+                uNoiseAmt:  { value: CONFIG.noiseAmount },
+                uFogAmt:    { value: CONFIG.fogAmount },
+                uGrain:     { value: CONFIG.grain }
+            }
+        });
+
+        scene.add(new THREE.Mesh(quad, mat));
+
+        function resize(){
+            const dpr = Math.min(window.devicePixelRatio||1, CONFIG.dprMax);
+            renderer.setPixelRatio(dpr);
+            renderer.setSize(window.innerWidth, window.innerHeight, false);
+            mat.uniforms.uRes.value.set(renderer.domElement.width, renderer.domElement.height);
+        }
+        window.addEventListener('resize', resize, {passive:true});
+        resize();
+
+        let last = performance.now();
+        function raf(now){
+            const dt = (now - last) / 1000; last = now;
+            mat.uniforms.uTime.value += dt;
+            renderer.render(scene, camera);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // простий фолбек
+        if (!renderer.capabilities.isWebGL2 && !renderer.capabilities.isWebGL){
+            canvas.style.display='none';
+            document.body.style.background =
+                'radial-gradient(120vw 60vh at 18% 70%, rgba(42,70,255,.35), transparent 60%),' +
+                'radial-gradient(100vw 50vh at 78% 30%, rgba(106,0,255,.45), transparent 60%), #000';
+        }
+    })();
+</script>
+</body>
+</html>

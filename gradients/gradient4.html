@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Soft Parabolic Line — 1.5 curves</title>
+    <style>
+        html,body{height:100%;margin:0;background:#000;overflow:hidden}
+        canvas{display:block;position:fixed;inset:0}
+    </style>
+</head>
+<body>
+<script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+    let renderer, scene, camera, mesh, t0;
+
+    init();
+    animate();
+
+    function init(){
+        renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true, premultipliedAlpha:true, powerPreference:'high-performance' });
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight, false);
+        renderer.setClearColor(0x000000, 0.0); // прозорий канвас
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        document.body.appendChild(renderer.domElement);
+
+        scene = new THREE.Scene();
+        camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+
+        const geo = new THREE.PlaneGeometry(2,2);
+
+        const mat = new THREE.ShaderMaterial({
+            uniforms:{
+                iResolution:    { value: new THREE.Vector3(innerWidth, innerHeight, 1) },
+                iTime:          { value: 0 },
+
+                // колір «лінії»
+                uDeep:          { value: new THREE.Color('#1a2aff') }, // глибокий синій
+                uBright:        { value: new THREE.Color('#6c7bff') }, // світліший синій
+
+                // геометрія «півтори параболи»
+                uCurvature:     { value: 0.26 },   // кривизна
+                uWidth:         { value: 0.58 },   // базова товщина (лінія з мʼякими краями)
+                uZoom:          { value: 0.80 },   // масштаб (менше → більша)
+                uMove:          { value: 0.07 },   // повільний зсув «вправо»
+
+                uSecondX:       { value: 0.60 },   // зсув другої (половинної) параболи по X
+                uSecondY:       { value: 0.03 },   // невеликий вертикальний зсув
+                uHalfEdge:      { value: 0.12 },   // мʼяке «обрізання» другої кривої
+
+                // варіації товщини та яскравості
+                uThickAmp:      { value: 0.32 },   // наскільки товщина може коливатись
+                uThickFreq:     { value: 1.1 },    // частота зміни товщини по X
+                uLightAmp:      { value: 0.45 },   // амплітуда переливу яскравості
+                uLightFreq:     { value: 0.9 },    // частота переливу
+
+                // прозорість усередині лінії
+                uAlphaMax:      { value: 0.85 }    // пік альфи
+            },
+            vertexShader: /* glsl */`
+      varying vec2 vUv;
+      void main(){ vUv = uv; gl_Position = vec4(position,1.0); }
+    `,
+            fragmentShader: /* glsl */`
+      precision highp float;
+
+      uniform vec3  iResolution;
+      uniform float iTime;
+
+      uniform vec3  uDeep, uBright;
+      uniform float uCurvature, uWidth, uZoom, uMove;
+      uniform float uSecondX, uSecondY, uHalfEdge;
+      uniform float uThickAmp, uThickFreq, uLightAmp, uLightFreq;
+      uniform float uAlphaMax;
+
+      varying vec2 vUv;
+
+      // дуже м'який профіль (гаус із «пір'ям») — без чітких країв
+      float softBand(float dist, float halfW){
+        float x = dist / max(halfW, 1e-4);
+        float g = exp(-x*x*2.1);     // гаус
+        return pow(g, 1.35);         // розтягнути «хвіст»
+      }
+
+      void main(){
+        float aspect = iResolution.x / iResolution.y;
+        vec2 uv = (gl_FragCoord.xy / iResolution.xy) * 2.0 - 1.0;
+        uv.x *= aspect;
+        uv *= uZoom;
+
+        // рух уліво→вправо (міграція всієї лінії)
+        float shift = sin(iTime * uMove) * 0.65;
+
+        // центральні осі парабол
+        float y0 = 0.0;
+        float k  = uCurvature;
+
+        // локальна товщина і яскравість змінюються по X і часу
+        float varyX = uv.x - shift;
+        float thicknessMul = 1.0 + uThickAmp * (
+            0.5*sin(varyX * 1.7 * uThickFreq + iTime*0.9) +
+            0.3*sin(varyX * 3.3 * uThickFreq - iTime*1.3) +
+            0.2*sin(varyX * 5.1 * uThickFreq + iTime*1.9)
+        );
+        float halfW = (uWidth * 0.5) * thicknessMul;
+
+        // головна парабола (повна)
+        float yMain = k * (varyX*varyX) + y0;
+        float dMain = abs(uv.y - yMain);
+        float coreMain = softBand(dMain, halfW);
+
+        // друга парабола (видима частково, дає «півтори»)
+        float x2 = uv.x - shift - uSecondX;
+        float ySecond = k * (x2*x2) + (y0 + uSecondY);
+        float dSecond = abs(uv.y - ySecond);
+        float halfMask = smoothstep(-uHalfEdge, 0.55, uv.x - (shift + 0.05));
+        float coreSecond = softBand(dSecond, halfW*0.92) * halfMask;
+
+        // сукупна «лінія» (мʼяка смуга уздовж осі) — поза нею прозоро
+        float lineMask = clamp(coreMain + coreSecond, 0.0, 1.0);
+        if(lineMask < 0.002){ discard; }
+
+        // локальна яскравість (перелив) по X із часом
+        float lightWave =
+            0.5 + 0.5 * sin(varyX * 1.5 * uLightFreq + iTime*0.8)
+          + 0.25* sin(varyX * 3.2 * uLightFreq - iTime*1.1);
+
+        // нормалізуємо до 0..1 і масштабуємо амплітуду
+        float brightness = clamp(0.55 + uLightAmp * lightWave, 0.0, 1.0);
+
+        // колірна шкала (глибокий → світліший синій) за яскравістю
+        vec3 col = mix(uDeep, uBright, pow(brightness, 0.85));
+
+        // легкий «core boost» ближче до осі — обʼємність
+        float axisBoost = smoothstep(0.65, 1.0, coreMain);
+        col += vec3(0.08, 0.14, 0.28) * axisBoost * 0.6;
+
+        // альфа лише в межах лінії; масштабуємо за lineMask, щоб краї були дуже мʼякі
+        float alpha = uAlphaMax * lineMask;
+
+        gl_FragColor = vec4(col, alpha);
+      }
+    `,
+            transparent:true,
+            depthTest:false,
+            depthWrite:false,
+            blending:THREE.NormalBlending
+        });
+
+        mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+
+        t0 = performance.now();
+        addEventListener('resize', onResize, { passive:true });
+    }
+
+    function onResize(){
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight, false);
+        mesh.material.uniforms.iResolution.value.set(innerWidth, innerHeight, 1);
+    }
+
+    function animate(){
+        const t = (performance.now() - t0) * 0.001;
+        mesh.material.uniforms.iTime.value = t;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+</script>
+</body>
+</html>

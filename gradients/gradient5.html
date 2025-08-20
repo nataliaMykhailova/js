@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Two Soft Parabolic Lines — offset & independent</title>
+    <style>
+        html,body{height:100%;margin:0;background:#000;overflow:hidden}
+        canvas{display:block;position:fixed;inset:0}
+    </style>
+</head>
+<body>
+<script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+    let renderer, scene, camera, mesh, t0;
+
+    init();
+    animate();
+
+    function init(){
+        renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true, premultipliedAlpha:true, powerPreference:'high-performance' });
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight, false);
+        renderer.setClearColor(0x000000, 0.0);
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        document.body.appendChild(renderer.domElement);
+
+        scene = new THREE.Scene();
+        camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+
+        const geo = new THREE.PlaneGeometry(2,2);
+
+        const mat = new THREE.ShaderMaterial({
+            uniforms:{
+                iResolution: { value: new THREE.Vector3(innerWidth, innerHeight, 1) },
+                iTime:       { value: 0 },
+
+                // спільні параметри форми
+                uCurvature:  { value: 0.26 },
+                uWidth:      { value: 0.58 },   // базова товщина однієї лінії
+                uZoom:       { value: 0.80 },
+                uMove:       { value: 0.07 },   // “міграція” всього вигину вліво→вправо
+
+                // колірна шкала
+                uDeep:       { value: new THREE.Color('#1a2aff') },
+                uBright:     { value: new THREE.Color('#6c7bff') },
+
+                // “півтори” — друга парабола
+                uSecondX1:   { value: 0.60 },   // зміщення другої кривої (лінія 1)
+                uSecondY1:   { value: 0.03 },
+                uSecondX2:   { value: 0.72 },   // трохи інше зміщення для лінії 2
+                uSecondY2:   { value: -0.01 },
+                uHalfEdge:   { value: 0.12 },
+
+                // незалежні варіації товщини/яскравості для 2-х ліній
+                uThickAmp1:  { value: 0.32 }, uThickFreq1: { value: 1.10 },
+                uLightAmp1:  { value: 0.45 }, uLightFreq1: { value: 0.90 },
+
+                uThickAmp2:  { value: 0.28 }, uThickFreq2: { value: 1.35 },
+                uLightAmp2:  { value: 0.52 }, uLightFreq2: { value: 1.05 },
+
+                // зсув другої лінії (щоб не лежали одна на одній)
+                uLine2OffsetX:{ value: 0.18 },
+                uLine2OffsetY:{ value: 0.18 },
+
+                // пікова альфа однієї лінії
+                uAlphaMax:   { value: 0.85 }
+            },
+            vertexShader: /* glsl */`
+      varying vec2 vUv;
+      void main(){ vUv = uv; gl_Position = vec4(position,1.0); }
+    `,
+            fragmentShader: /* glsl */`
+      precision highp float;
+
+      uniform vec3  iResolution;
+      uniform float iTime;
+
+      uniform float uCurvature, uWidth, uZoom, uMove;
+      uniform vec3  uDeep, uBright;
+
+      uniform float uSecondX1, uSecondY1, uSecondX2, uSecondY2, uHalfEdge;
+
+      uniform float uThickAmp1, uThickFreq1, uLightAmp1, uLightFreq1;
+      uniform float uThickAmp2, uThickFreq2, uLightAmp2, uLightFreq2;
+
+      uniform float uLine2OffsetX, uLine2OffsetY;
+      uniform float uAlphaMax;
+
+      varying vec2 vUv;
+
+      // м’який профіль (гаус із довгим “пером”)
+      float softBand(float dist, float halfW){
+        float x = dist / max(halfW, 1e-4);
+        float g = exp(-x*x*2.1);
+        return pow(g, 1.35);
+      }
+
+      // одна “лінія” півтори параболи з локальним варіюванням товщини/яскравості
+      // seedPhase — для розсинхронізації
+      // secondX/Y — параметри другої (половинної) параболи
+      // thickAmp/Freq, lightAmp/Freq — параметри варіацій
+      // lOffset — зсув усієї лінії
+      void lineContribution(
+        in vec2 uvBase,
+        in float seedPhase,
+        in float secondX,
+        in float secondY,
+        in float thickAmp, in float thickFreq,
+        in float lightAmp, in float lightFreq,
+        in vec2  lOffset,
+        out vec3 col, out float a
+      ){
+        float aspect = iResolution.x / iResolution.y;
+        vec2 uv = uvBase;
+        uv.x += lOffset.x;
+        uv.y += lOffset.y;
+
+        // масштаб
+        uv *= uZoom;
+
+        // глобальний “зсув” вигину по X (ліво→вправо)
+        float shift = sin(iTime * uMove + seedPhase*0.7) * 0.65;
+
+        float y0 = 0.0;
+        float k  = uCurvature;
+
+        // локальна товщина
+        float varyX = uv.x - shift;
+        float halfW = (uWidth * 0.5) * (
+          1.0 + thickAmp * (
+            0.5*sin(varyX * 1.7 * thickFreq + iTime*0.9 + seedPhase) +
+            0.3*sin(varyX * 3.3 * thickFreq - iTime*1.3 + seedPhase*1.7) +
+            0.2*sin(varyX * 5.1 * thickFreq + iTime*1.9 + seedPhase*2.3)
+          )
+        );
+
+        // головна парабола
+        float yMain = k * (varyX*varyX) + y0;
+        float dMain = abs(uv.y - yMain);
+        float coreMain = softBand(dMain, halfW);
+
+        // друга (половинна)
+        float x2 = uv.x - shift - secondX;
+        float ySecond = k * (x2*x2) + (y0 + secondY);
+        float dSecond = abs(uv.y - ySecond);
+        float halfMask = smoothstep(-uHalfEdge, 0.55, uv.x - (shift + 0.05));
+        float coreSecond = softBand(dSecond, halfW*0.92) * halfMask;
+
+        float mask = clamp(coreMain + coreSecond, 0.0, 1.0);
+        if(mask < 0.002){ col = vec3(0.0); a = 0.0; return; }
+
+        // локальна яскравість (незалежні фази/частоти)
+        float light =
+            0.5 + 0.5 * sin(varyX * 1.5 * lightFreq + iTime*0.8 + seedPhase*1.3)
+          + 0.25* sin(varyX * 3.2 * lightFreq - iTime*1.1 + seedPhase*2.1);
+
+        float brightness = clamp(0.55 + lightAmp * light, 0.0, 1.0);
+
+        // колірна шкала
+        col = mix(uDeep, uBright, pow(brightness, 0.85));
+
+        // невелике посилення вздовж осі головної параболи
+        float axisBoost = smoothstep(0.65, 1.0, coreMain);
+        col += vec3(0.08, 0.14, 0.28) * axisBoost * 0.55;
+
+        a = uAlphaMax * mask;
+      }
+
+      void main(){
+        vec2 uv = (gl_FragCoord.xy / iResolution.xy) * 2.0 - 1.0;
+        uv.x *= iResolution.x / iResolution.y;
+
+        // лінія 1 (seedPhase=0.0)
+        vec3 c1; float a1;
+        lineContribution(
+          uv, 0.0,
+          uSecondX1, uSecondY1,
+          uThickAmp1, uThickFreq1,
+          uLightAmp1, uLightFreq1,
+          vec2(0.0, 0.0),
+          c1, a1
+        );
+
+        // лінія 2 (інший seedPhase + зсув по X/Y)
+        vec3 c2; float a2;
+        lineContribution(
+          uv, 2.37,
+          uSecondX2, uSecondY2,
+          uThickAmp2, uThickFreq2,
+          uLightAmp2, uLightFreq2,
+          vec2(uLine2OffsetX, uLine2OffsetY),
+          c2, a2
+        );
+
+        // альфа-композитинг двох ліній всередині одного фрагменту
+        // outAlpha = 1 - (1-a1)*(1-a2)
+        float outA = 1.0 - (1.0 - a1) * (1.0 - a2);
+        if(outA < 0.002) discard;
+
+        // premultiplied mix: c = c1*a1 + c2*a2*(1-a1)
+        vec3 outC = c1 * a1 + c2 * a2 * (1.0 - a1);
+        // нормалізація до непре-множеної
+        outC /= max(outA, 1e-4);
+
+        gl_FragColor = vec4(outC, outA);
+      }
+    `,
+            transparent:true,
+            depthTest:false,
+            depthWrite:false,
+            blending:THREE.NormalBlending
+        });
+
+        mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+
+        t0 = performance.now();
+        addEventListener('resize', onResize, { passive:true });
+    }
+
+    function onResize(){
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight, false);
+        mesh.material.uniforms.iResolution.value.set(innerWidth, innerHeight, 1);
+    }
+
+    function animate(){
+        const t = (performance.now() - t0) * 0.001;
+        mesh.material.uniforms.iTime.value = t;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+</script>
+</body>
+</html>

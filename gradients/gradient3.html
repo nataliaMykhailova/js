@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Fluid Smoke Parabolic Wave — 1.5 parabola</title>
+    <style>
+        html,body{height:100%;margin:0;background:#000;overflow:hidden}
+        canvas{display:block;position:fixed;inset:0}
+    </style>
+</head>
+<body>
+<script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+    let renderer, scene, camera, mesh, t0;
+
+    init();
+    animate();
+
+    function init(){
+        renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+            premultipliedAlpha: true,
+            powerPreference: 'high-performance'
+        });
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight, false);
+        renderer.setClearColor(0x000000, 0.0); // прозорий канвас
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        document.body.appendChild(renderer.domElement);
+
+        scene = new THREE.Scene();
+        camera = new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+
+        const geo = new THREE.PlaneGeometry(2,2);
+
+        const mat = new THREE.ShaderMaterial({
+            uniforms: {
+                iResolution:   { value: new THREE.Vector3(innerWidth, innerHeight, 1) },
+                iTime:         { value: 0 },
+
+                // колір (під синій з твого прикладу)
+                uDeep:         { value: new THREE.Color('#1a2aff') },
+                uBright:       { value: new THREE.Color('#5f6eff') },
+
+                // форма хвилі
+                uCurvature:    { value: 0.26 },   // кривизна параболи
+                uWidth:        { value: 1.25 },   // товщина коридору хвилі
+                uZoom:         { value: 0.76 },   // масштаб (менше — форма більша)
+                uMovePhase:    { value: 0.06 },   // повільний зсув коридору
+
+                // «півтори» — друга парабола правіше, мʼяко обрізана
+                uSecondOffsetX:{ value: 0.62 },
+                uSecondShiftY: { value: 0.02 },
+                uHalfMaskEdge: { value: 0.10 },   // де починати «пів» видимість
+
+                // флюїд: поле швидкостей (curl-noise) та адvekція
+                uFlowScale:    { value: 1.35 },   // масштаб поля
+                uFlowSpeed:    { value: 0.35 },   // швидкість «течії»
+                uAdvect:       { value: 0.16 },   // сила зсуву текстури потоком
+                uShear:        { value: 0.22 },   // дод. зсув уздовж дотичної (ліво→право)
+
+                // детальність «диму»
+                uDetail:       { value: 1.7 },    // домен-ворпинг (посилення турбулентності)
+                uRidge:        { value: 0.55 },   // рідж-шум для прожилок
+                uOctaves:      { value: 5 },      // октави fbm (у коді зафіксовано 5)
+
+                // альфа всередині хвилі
+                uAlphaMin:     { value: 0.22 },   // гарантована мінімальна — не зникає
+                uAlphaMax:     { value: 0.70 }    // пік
+            },
+            vertexShader: /* glsl */`
+      varying vec2 vUv;
+      void main(){ vUv = uv; gl_Position = vec4(position,1.0); }
+    `,
+            fragmentShader: /* glsl */`
+      precision highp float;
+
+      uniform vec3  iResolution;
+      uniform float iTime;
+
+      uniform vec3  uDeep, uBright;
+      uniform float uCurvature, uWidth, uZoom, uMovePhase;
+      uniform float uSecondOffsetX, uSecondShiftY, uHalfMaskEdge;
+
+      uniform float uFlowScale, uFlowSpeed, uAdvect, uShear;
+      uniform float uDetail, uRidge, uOctaves;
+      uniform float uAlphaMin, uAlphaMax;
+
+      varying vec2 vUv;
+
+      // ==== утиліти шуму ====
+      vec3 mod289(vec3 x){return x - floor(x*(1.0/289.0))*289.0;}
+      vec2 mod289(vec2 x){return x - floor(x*(1.0/289.0))*289.0;}
+      vec3 permute(vec3 x){return mod289(((x*34.0)+1.0)*x);}
+
+      float snoise(vec2 v){
+        const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);
+        vec2 i=floor(v+dot(v,C.yy));
+        vec2 x0=v-i+dot(i,C.xx);
+        vec2 i1=(x0.x>x0.y)?vec2(1.0,0.0):vec2(0.0,1.0);
+        vec4 x12=x0.xyxy+C.xxzz; x12.xy-=i1;
+        i=mod289(i);
+        vec3 p=permute(permute(i.y+vec3(0.0,i1.y,1.0))+i.x+vec3(0.0,i1.x,1.0));
+        vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.0);
+        m=m*m; m=m*m;
+        vec3 x=2.0*fract(p*C.www)-1.0;
+        vec3 h=abs(x)-0.5;
+        vec3 ox=floor(x+0.5);
+        vec3 a0=x-ox;
+        m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);
+        vec3 g;
+        g.x=a0.x*x0.x+h.x*x0.y;
+        g.yz=a0.yz*x12.xz+h.yz*x12.yw;
+        return 130.0*dot(m,g);
+      }
+
+      float fbm(vec2 p){
+        float f=0.0, a=0.5;
+        mat2 r=mat2(0.8,-0.6,0.6,0.8);
+        for(int i=0;i<5;i++){
+          f += a*snoise(p); p = r*p*2.0 + 11.0; a *= 0.5;
+        }
+        return f;
+      }
+
+      // curl noise: приблизний обертальний потік для «флюїд»-ефекту
+      vec2 curl(vec2 p){
+        float e = 0.45;
+        float n1 = fbm(p + vec2(0.0, e));
+        float n2 = fbm(p - vec2(0.0, e));
+        float n3 = fbm(p + vec2(e, 0.0));
+        float n4 = fbm(p - vec2(e, 0.0));
+        return vec2(n1 - n2, n4 - n3) / (2.0*e);
+      }
+
+      // дуже мʼякий профіль смуги (гаус/перо)
+      float softBand(float dist, float halfW){
+        float x = dist / max(halfW, 1e-4);
+        float g = exp(-(x*x)*2.1);
+        return pow(g, 1.35);
+      }
+
+      // зручний мікс кольору за «насиченістю»
+      vec3 blueRamp(float x){ return mix(uDeep, uBright, pow(clamp(x,0.0,1.0), 0.85)); }
+
+      void main(){
+        // нормалізовані координати -1..1 з урахуванням аспекту
+        float aspect = iResolution.x / iResolution.y;
+        vec2 uv = (gl_FragCoord.xy / iResolution.xy) * 2.0 - 1.0;
+        uv.x *= aspect;
+
+        // збільшуємо хвилю на екран
+        uv *= uZoom;
+
+        // повільний «здвиг» коридору (без реверсу відчувається як хвиля)
+        float shift = sin(iTime * uMovePhase) * 0.65;
+
+        // центральні лінії парабол
+        float y0 = 0.0;
+        float curve = uCurvature;
+
+        // головна парабола
+        float yMain = curve * pow(uv.x - shift, 2.0) + y0;
+        float dMain = abs(uv.y - yMain);
+        float coreMain = softBand(dMain, uWidth*0.5);
+
+        // друга — «половинна» (правіше і трохи зсунуто по Y)
+        float x2 = uv.x - shift - uSecondOffsetX;
+        float ySecond = curve * (x2*x2) + (y0 + uSecondShiftY);
+        float dSecond = abs(uv.y - ySecond);
+
+        float halfMask = smoothstep(-uHalfMaskEdge, 0.55, uv.x - (shift+0.05));
+        float coreSecond = softBand(dSecond, uWidth*0.48) * halfMask;
+
+        // сукупний «коридор» хвилі (півтори параболи)
+        float corridor = clamp(coreMain + coreSecond, 0.0, 1.0);
+
+        // --- напрямна дотична до головної параболи (рух здебільшого вздовж) ---
+        // похідна y'=2k(x-shift); дотична T = normalize(vec2(1, y'))
+        float slope = 2.0*curve*(uv.x - shift);
+        vec2  T = normalize(vec2(1.0, slope));
+        vec2  N = vec2(-T.y, T.x); // нормаль (для «дихання» товщини)
+
+        // --- поле швидкостей (curl-noise) у межах хвилі ---
+        vec2 pFlow = (uv* uFlowScale) + vec2(iTime*uFlowSpeed, -iTime*uFlowSpeed*0.6);
+        vec2 v = curl(pFlow);
+        // домен-ворпинг (детальність)
+        vec2 v2 = curl(pFlow*1.7 + 7.0);
+        vec2 v3 = curl(pFlow*2.3 - 11.0);
+
+        vec2 flow = (v + v2 * 0.6 + v3 * 0.35) * uAdvect;
+
+        // зсув уздовж дотичної (щоб рух був відчутно ліво→право)
+        flow += T * uShear;
+
+        // позиція для «зразка диму» (адvekція)
+        vec2 s = uv + flow;
+
+        // інтенсивність «димних прожилок» всередині коридору
+        float ridged =
+          abs(fbm(s*1.2) - 0.5) * 2.0 * uRidge +
+          0.5*fbm(s*2.1 + 3.14) * (1.0-uRidge);
+
+        // підсилення текстури ближче до осі параболи — виглядає обʼємніше
+        float axisBoost = smoothstep(0.65, 1.0, coreMain);
+        float smoke = clamp(ridged * mix(0.85, 1.35, axisBoost), 0.0, 1.0);
+
+        // маска коридору (поза ним — прозоро)
+        float mask = corridor;
+
+        // перелив яскравості + кольоровий градієнт
+        float brightness = clamp(0.35 + 0.75*smoke, 0.0, 1.0);
+        vec3 col = blueRamp(brightness);
+
+        // альфа всередині хвилі
+        float alpha = mix(uAlphaMin, uAlphaMax, brightness) * mask;
+
+        if(alpha < 0.002) discard;
+        gl_FragColor = vec4(col, alpha);
+      }
+    `,
+            transparent: true,
+            depthTest: false,
+            depthWrite: false,
+            blending: THREE.NormalBlending
+        });
+
+        mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+
+        t0 = performance.now();
+        addEventListener('resize', onResize, { passive: true });
+    }
+
+    function onResize(){
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        renderer.setSize(innerWidth, innerHeight, false);
+        mesh.material.uniforms.iResolution.value.set(innerWidth, innerHeight, 1);
+    }
+
+    function animate(){
+        const t = (performance.now() - t0)*0.001;
+        mesh.material.uniforms.iTime.value = t;
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+</script>
+</body>
+</html>
