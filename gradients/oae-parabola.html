@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Parabolic Smoke Line — springy scroll</title>
+    <style>
+        html,body{margin:0;height:100%;background:#000;overflow-x:hidden}
+        #parabola-smoke{
+            position:fixed; inset:0; width:100vw; height:100vh;
+            display:block; pointer-events:none; z-index:0;
+        }
+        /* DEMO-зона скролу. На проді заміниш на свою секцію з тим же id */
+        #parabola-scroll-area{ height:200vh; }
+    </style>
+</head>
+<body>
+
+<canvas id="parabola-smoke"></canvas>
+<div id="parabola-scroll-area"></div>
+
+<script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+    const clamp01=v=>Math.min(1,Math.max(0,v));
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    const easeInOutCubic=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+
+    let renderer, scene, camera, mesh, mat, startTime, lastTime=null;
+
+    /* ── ПАРАМЕТРИ ФОРМИ/ТОВЩИНИ ─────────────────────────────────────────────── */
+    const WIDTH_START_PX = 560.0;
+    const WIDTH_END_PX   = 320.0;
+    const EDGE_FRAC_START = 0.55;
+    const EDGE_FRAC_END   = 0.02;
+    const APEX_FRAC       = 0.95;
+    const EXTRA_DOWN_FRAC = 1.80;
+    const EXTRA_START_DOWN_FRAC = 0.75;
+
+    /* ── «ФІЗИКА» СКРОЛУ (пружина) ─────────────────────────────────────────────
+       simP — положення, яке анімуємо пружиною до target p (0..1).
+       shapeP — відстаюча версія simP (lag), щоб форма «доганяла» і створювала ефект розтягнення.
+    --------------------------------------------------------------------------- */
+    const SPRING_K = 18.0;    // жорсткість пружини (більше — «жвавіше»)
+    const SPRING_C = 10.5;    // демпфування (щоб не розгойдувалось)
+    const SHAPE_TAU = 0.22;   // сек. — інерція форми (відставання)
+    const STRETCH_SHIFT_FRAC = 0.22; // скільки висоти екрана додавати як «еластичний» зсув
+    const STRETCH_THIN = 0.35;       // на скільки тоншає при сильному розтягненні (0..1)
+
+    let simP = 0.0, simV = 0.0; // пружина для положення
+    let shapeP = 0.0;           // відстаюча форма (для кривизни/товщини)
+
+    /* ── ШЕЙДЕРИ ─────────────────────────────────────────────────────────────── */
+    const vtx = `
+precision mediump float;
+uniform mat4 modelMatrix, viewMatrix, projectionMatrix;
+attribute vec3 position;
+void main(){
+  gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+}
+`;
+
+    const frg = `
+precision highp float;
+
+uniform vec2  uResolution;
+uniform float uTime;
+
+/* Геометрія параболи */
+uniform float uApexFrac;   // 0..1 (y0 = uApexFrac*H)
+uniform float uEdgeFrac;   // 0..1 (yE = uEdgeFrac*H)
+uniform float uShiftYPx;   // вертикальний зсув (скрол)
+uniform float uLineWidthPx;
+
+/* Дим/шум */
+uniform float uSmokeScale;
+uniform float uFlowSpeed;
+uniform float uVarScale;
+uniform float uVarSpeed;
+uniform float uGapAmount;
+uniform float uAlphaMax;
+
+/* Кольори */
+uniform vec3 uRed;
+uniform vec3 uOrange;
+uniform vec3 uGreen;
+
+/* noise */
+vec3 mod289(vec3 x){return x - floor(x*(1.0/289.0))*289.0;}
+vec2 mod289(vec2 x){return x - floor(x*(1.0/289.0))*289.0;}
+vec3 permute(vec3 x){return mod289(((x*34.0)+1.0)*x);}
+float snoise(vec2 v){
+  const vec4 C=vec4(0.211324865405187,0.366025403784439,-0.577350269189626,0.024390243902439);
+  vec2 i=floor(v+dot(v,C.yy));
+  vec2 x0=v-i+dot(i,C.xx);
+  vec2 i1=(x0.x>x0.y)?vec2(1.0,0.0):vec2(0.0,1.0);
+  vec4 x12=x0.xyxy+C.xxzz; x12.xy-=i1;
+  i=mod289(i);
+  vec3 p=permute(permute(i.y+vec3(0.0,i1.y,1.0))+i.x+vec3(0.0,i1.x,1.0));
+  vec3 m=max(0.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.0);
+  m=m*m; m=m*m;
+  vec3 x=2.0*fract(p*C.www)-1.0;
+  vec3 h=abs(x)-0.5;
+  vec3 ox=floor(x+0.5);
+  vec3 a0=x-ox;
+  m*=1.79284291400159-0.85373472095314*(a0*a0+h*h);
+  vec3 g;
+  g.x=a0.x*x0.x+h.x*x0.y;
+  g.y=a0.y*x12.x+h.y*x12.y;
+  g.z=a0.z*x12.z+h.z*x12.w;
+  return 130.0*dot(m,g);
+}
+float fbm(vec2 p){
+  float a=0.0, amp=0.5, f=1.0;
+  for(int i=0;i<3;i++){ a+=amp*snoise(p*f); f*=2.0; amp*=0.5; }
+  return a;
+}
+
+float softBand(float d,float halfW){
+  float x = d / max(halfW, 1e-3);
+  float g = exp(-x*x*0.85);
+  return pow(g, 1.35);
+}
+
+void main(){
+  vec2 p = gl_FragCoord.xy;
+  float W = uResolution.x;
+  float H = uResolution.y;
+
+  /* Парабола y = y0 - k*(x-xC)^2 */
+  float xC = 0.5 * W;
+  float y0 = uApexFrac * H;
+  float yE = uEdgeFrac * H;
+  float w2 = 0.25 * W * W;
+  float k  = (y0 - yE) / max(w2, 1.0);
+
+  float dx = p.x - xC;
+  float yCurve = (y0 - k*dx*dx) + uShiftYPx;
+
+  /* Підписана відстань по нормалі */
+  float m = -2.0*k*dx;
+  float denom = sqrt(1.0 + m*m);
+  float dSigned = (p.y - yCurve) / denom;
+  float d = abs(dSigned);
+
+  float along = clamp(p.x / W, 0.0, 1.0);
+  float baseHalfW = 0.5 * uLineWidthPx;
+
+  /* М'які варіації */
+  float flow = fbm(vec2(along * uSmokeScale + uTime*uFlowSpeed,
+                        (yCurve/H) * uSmokeScale - uTime*0.05));
+  float varT = 0.5 + 0.5 * fbm(vec2(along * uVarScale + uTime*uVarSpeed,
+                                    0.35*(yCurve/H)));
+  varT = smoothstep(0.35, 0.65, varT);
+  float cover = 1.0 - uGapAmount * (0.55 + 0.45*flow);
+
+  /* Плавне змішування внутрішнього/зовнішнього країв */
+  float halfWInner   = baseHalfW * mix(0.78, 0.90, varT) * clamp(cover, 0.6, 1.0);
+  float halfWOuter   = baseHalfW * mix(1.00, 1.18, varT) * clamp(cover, 0.55, 1.0);
+  float offsetOuter  = (flow - 0.5) * 0.14 * halfWOuter;
+
+  float side   = smoothstep(-1.0, 1.0, dSigned);
+  float halfW  = mix(halfWInner, halfWOuter, side);
+  float offset = mix(0.0,        offsetOuter, side);
+
+  float core = softBand(d + offset, halfW);
+  if (core < 1e-3) discard;
+
+  /* Колір уздовж X: RED → ORANGE → GREEN */
+  vec3 col1 = mix(uRed,    uOrange, clamp(along*2.0, 0.0, 1.0));
+  vec3 col2 = mix(col1,    uGreen,  clamp((along-0.5)*2.0, 0.0, 1.0));
+
+  float light = 0.6 + 0.4 * fbm(vec2(along*1.5 + uTime*0.10,
+                                     (yCurve/H)*1.2 - uTime*0.08));
+  vec3 col = col2 * (0.65 + 0.35*pow(light, 1.05));
+
+  float g = fbm(p*0.012 + vec2(uTime*0.25, -uTime*0.18));
+  col += (g - 0.5) * 0.008;
+
+  float alpha = uAlphaMax * core * (0.96 + 0.04*light);
+  col *= (0.68 + 0.32*core);
+
+  gl_FragColor = vec4(col, alpha);
+}
+`;
+
+    /* ── ІНІЦІАЛІЗАЦІЯ ─────────────────────────────────────────────────────── */
+    init();
+    onResize();
+    animate();
+    window.addEventListener('resize', onResize, { passive:true });
+
+    function init(){
+        const canvas = document.getElementById('parabola-smoke');
+
+        renderer = new THREE.WebGLRenderer({
+            canvas,
+            antialias:true,
+            alpha:true,
+            premultipliedAlpha:true,
+            powerPreference:'high-performance'
+        });
+        renderer.setPixelRatio(window.devicePixelRatio || 1);
+        renderer.setSize(window.innerWidth, window.innerHeight, true);
+        renderer.setClearColor(0x000000, 0.0);
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+        scene = new THREE.Scene();
+
+        const aspect = window.innerWidth / window.innerHeight;
+        const halfH = 1, halfW = halfH * aspect;
+        camera = new THREE.OrthographicCamera(-halfW, halfW, halfH, -halfH, -10, 10);
+        camera.position.set(0,0,1);
+        camera.lookAt(0,0,0);
+
+        const geo = new THREE.PlaneGeometry(2*halfW, 2*halfH, 1, 1);
+
+        mat = new THREE.RawShaderMaterial({
+            vertexShader: vtx,
+            fragmentShader: frg,
+            transparent: true,
+            depthTest: false,
+            depthWrite: false,
+            blending: THREE.NormalBlending,
+            uniforms: {
+                uResolution:   { value: new THREE.Vector2() },
+                uTime:         { value: 0 },
+
+                uApexFrac:     { value: APEX_FRAC },
+                uEdgeFrac:     { value: EDGE_FRAC_START },
+                uLineWidthPx:  { value: WIDTH_START_PX },
+                uShiftYPx:     { value: 0.0 },
+
+                /* Дим/шум — м'які */
+                uSmokeScale:   { value: 1.6 },
+                uFlowSpeed:    { value: 0.025 },
+                uVarScale:     { value: 2.0 },
+                uVarSpeed:     { value: 0.20 },
+                uGapAmount:    { value: 0.35 },
+                uAlphaMax:     { value: 0.95 },
+
+                uRed:    { value: new THREE.Color('#E22626') },
+                uOrange: { value: new THREE.Color('#FF8A00') },
+                uGreen:  { value: new THREE.Color('#2DFF66') },
+            }
+        });
+
+        mesh = new THREE.Mesh(geo, mat);
+        scene.add(mesh);
+
+        startTime = performance.now();
+
+        // старт: видно лише «верх» параболи внизу
+        updateShiftFromProgress(0, 0);
+    }
+
+    function onResize(){
+        const pr = window.devicePixelRatio || 1;
+        renderer.setPixelRatio(pr);
+        renderer.setSize(window.innerWidth, window.innerHeight, true);
+
+        const aspect = window.innerWidth / window.innerHeight;
+        const halfH = 1, halfW = halfH * aspect;
+        camera.left = -halfW; camera.right = halfW;
+        camera.top  =  halfH; camera.bottom = -halfH;
+        camera.updateProjectionMatrix();
+
+        mat.uniforms.uResolution.value.set(window.innerWidth*pr, window.innerHeight*pr);
+    }
+
+    /* ── АНІМАЦІЯ ──────────────────────────────────────────────────────────── */
+    function animate(){
+        requestAnimationFrame(animate);
+
+        const now = performance.now() * 0.001;
+        const dt = Math.min(0.05, lastTime ? (now - lastTime) : 1/60);
+        lastTime = now;
+
+        mat.uniforms.uTime.value = now;
+
+        // ціль від скролу (0..1)
+        const pTarget = getScrollProgress();
+
+        // пружина для положення (simP -> pTarget)
+        const a = -SPRING_K * (simP - pTarget) - SPRING_C * simV;
+        simV += a * dt;
+        simP += simV * dt;
+        simP = clamp01(simP);
+
+        // інерція форми (shapeP «доганяє» simP)
+        const w = 1 - Math.exp(-dt / SHAPE_TAU);
+        shapeP += (simP - shapeP) * w;
+
+        // «розтягнення»: різниця між положенням і формою
+        const stretch = simP - shapeP;         // може бути + або -
+        const absStretch = Math.abs(stretch);
+
+        // базові кривина/товщина від відстаючої форми
+        const kShape = easeInOutCubic(shapeP);
+        const baseWidth = lerp(WIDTH_START_PX, WIDTH_END_PX, kShape);
+
+        // тоншає під час розтягнення і повертається
+        const widthNow = baseWidth * (1.0 - STRETCH_THIN * absStretch);
+        mat.uniforms.uLineWidthPx.value = widthNow;
+        mat.uniforms.uEdgeFrac.value    = lerp(EDGE_FRAC_START, EDGE_FRAC_END, kShape);
+
+        // еластичний додатковий вертикальний зсув (у px)
+        const extraShiftPx = (window.innerHeight * (window.devicePixelRatio||1)) * STRETCH_SHIFT_FRAC * stretch;
+
+        // основний зсув по скролу + еластичний
+        updateShiftFromProgress(simP, extraShiftPx);
+
+        renderer.render(scene, camera);
+    }
+
+    /* ── СКРОЛ-ЛОГІКА ──────────────────────────────────────────────────────── */
+    function getScrollProgress(){
+        const area = document.getElementById('parabola-scroll-area');
+        const vh = window.innerHeight || 1;
+
+        if (area) {
+            const rect = area.getBoundingClientRect();
+            const total = rect.height + vh;
+            const p = (vh - rect.top) / total;
+            return clamp01(p);
+        }
+        const max = (document.documentElement.scrollHeight - vh) || 1;
+        return clamp01(window.scrollY / max);
+    }
+
+    /* p=0 → вершина біля низу; p=1 → вершина майже вгорі.
+       extraPx — еластичний додатковий зсув. */
+    function updateShiftFromProgress(p, extraPx){
+        const pr = window.devicePixelRatio || 1;
+        const H  = window.innerHeight * pr;
+        const y0 = APEX_FRAC * H;
+
+        const halfW = 0.5 * mat.uniforms.uLineWidthPx.value;
+        const marginBottom = halfW * 0.25;
+        const marginTop    = halfW * 1.10;
+
+        const SHIFT_START = -(y0 - marginBottom) - EXTRA_START_DOWN_FRAC * H;
+
+        const extraDown   = EXTRA_DOWN_FRAC * H;
+        const SHIFT_END   = (H - marginTop + extraDown) - y0;
+
+        const k = easeInOutCubic(p);
+        let shift = lerp(SHIFT_START, SHIFT_END, k);
+        shift += extraPx || 0;
+
+        mat.uniforms.uShiftYPx.value = shift;
+    }
+</script>
+</body>
+</html>
